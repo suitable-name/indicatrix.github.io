@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indicatrix — Physically-Based Spectral Gemstone Path Tracer & Faceting Studio</title>
+  <meta name="description" content="Uncompromising physically-based spectral gemstone path tracer and faceting-design studio in Rust and WGSL. 8-channel hero-wavelength sampling, Stokes-Mueller polarization, biaxial crystal optics, and meet-point CAD.">
+  <link rel="icon" type="image/png" href="assets/images/icon.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand">
+        <img src="assets/images/icon.png" alt="Indicatrix Logo" class="brand-icon">
+        <span>Indicatrix</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link active">Overview</a></li>
+        <li><a href="physics.html" class="nav-link">Physics & Optics</a></li>
+        <li><a href="editor.html" class="nav-link">Desktop Studio</a></li>
+        <li><a href="materials.html" class="nav-link">Gem Materials</a></li>
+        <li><a href="distributed.html" class="nav-link">Remote Cluster</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery & Screenshots</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://github.com/suitable-name/indicatrix" target="_blank" rel="noopener" class="btn btn-github btn-sm">
+          <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge-row">
+          <span class="hero-badge">
+            <span>💎</span> 100% Free & Open Source · MIT License
+          </span>
+          <span class="hero-badge">
+            <span>⚡</span> Pure Rust & Verified WGSL GPU Kernel
+          </span>
+          <span class="hero-badge">
+            <span>📐</span> GemCAD .asc Native Support
+          </span>
+        </div>
+
+        <h1 class="hero-title">
+          Physically-Based Spectral Gemstone Ray Tracing & <span class="gradient-text">Faceting Studio</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          See what cut gemstones actually look like from real cutting schedules. Full 8-channel hero-wavelength spectral dispersion (fire), Stokes–Mueller polarized light transport, and biaxial crystal optics — not the scalar RGB approximations of conventional 3D engines.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="https://github.com/suitable-name/indicatrix" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            Explore on GitHub
+          </a>
+          <a href="physics.html" class="btn btn-secondary">
+            Read the Physics Blueprint
+          </a>
+          <a href="editor.html" class="btn btn-outline">
+            Studio Guide
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-value cyan">8-HWSS</div>
+            <div class="stat-label">Hero-Wavelength Spectral Channels</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value ruby">4D Stokes</div>
+            <div class="stat-label">Polarized Mueller Transport</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value emerald">ULP = 0</div>
+            <div class="stat-label">Verified GPU Megakernel</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value amethyst">13+ Species</div>
+            <div class="stat-label">Calibrated Sellmeier Materials</div>
+          </div>
+        </div>
+
+        <!-- Application Showcase Window -->
+        <div class="hero-media">
+          <div class="app-window-frame">
+            <div class="window-titlebar">
+              <div class="window-dots">
+                <span class="window-dot red"></span>
+                <span class="window-dot yellow"></span>
+                <span class="window-dot green"></span>
+              </div>
+              <span class="window-title">Indicatrix Cut Studio — Diamond Standard Round Brilliant [96 Gear · 57 Tiers]</span>
+              <span></span>
+            </div>
+            <img src="assets/images/main.png" alt="Indicatrix Desktop Application Window" class="app-screenshot">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Problem & The Solution -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Scientific Optics</span>
+          <h2 class="section-title">Why Conventional 3D Engines Fail on Cut Gemstones</h2>
+          <p class="section-description">
+            Standard game and VFX renderers rely on empirical approximations designed for diffuse materials and tinted glass. When light bounces 20–50 times inside a faceted gemstone, those shortcuts collapse into lifeless, plastic-looking renders.
+          </p>
+        </div>
+
+        <div class="comparison-grid">
+          <!-- Conventional Engine Column -->
+          <div class="comparison-card conventional">
+            <div class="comparison-header">
+              <span class="comparison-badge badge-fail">Conventional Engines</span>
+              <h3 class="comparison-title">Tristimulus RGB & Empirical Hacks</h3>
+            </div>
+            <ul class="comparison-list">
+              <li class="comparison-item">
+                <span class="comparison-icon">❌</span>
+                <div>
+                  <strong>Fixed 3-Channel RGB Sampling</strong>
+                  <p>Traces red, green, and blue rays independently or uses a single scalar IOR. Produces synthetic RGB color fringing rather than continuous spectral rainbows.</p>
+                </div>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-icon">❌</span>
+                <div>
+                  <strong>Scalar Fresnel & Ignored Polarization</strong>
+                  <p>Light undergoing 10–50 internal reflections becomes intensely polarized. Treating Fresnel reflectance as unpolarized scalar probabilities causes artificial light leakage and false critical angles.</p>
+                </div>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-icon">❌</span>
+                <div>
+                  <strong>Isotropic Glass Approximation</strong>
+                  <p>Real gems (Sapphire, Ruby, Tourmaline, Zircon, Alexandrite, Tanzanite) are anisotropic. Conventional shaders cannot split ordinary and extraordinary rays or model spatial Poynting walk-off.</p>
+                </div>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-icon">❌</span>
+                <div>
+                  <strong>Mesh BVH Traversal Overhead</strong>
+                  <p>Tessellating facet planes into millions of triangles slows down ray-tracing and causes subtle rounding gaps at facet junctions.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Indicatrix Column -->
+          <div class="comparison-card indicatrix">
+            <div class="comparison-header">
+              <span class="comparison-badge badge-pass">Indicatrix Engine</span>
+              <h3 class="comparison-title">Rigorous Gemological Physics</h3>
+            </div>
+            <ul class="comparison-list">
+              <li class="comparison-item">
+                <span class="comparison-icon">✅</span>
+                <div>
+                  <strong>8-Channel Stratified HWSS (380–780 nm)</strong>
+                  <p>Every ray carries 8 correlated wavelengths (one hero plus 7 rotated companions), evaluating continuous Sellmeier equations to render authentic spectral fire with zero color-banding.</p>
+                </div>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-icon">✅</span>
+                <div>
+                  <strong>Full 4D Stokes–Mueller Calculus</strong>
+                  <p>Tracks polarization states and total-internal-reflection (TIR) phase retardation δ = δ_p − δ_s, accurately modeling Brewster extinction and facet-reflection energy preservation.</p>
+                </div>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-icon">✅</span>
+                <div>
+                  <strong>Uniaxial & Biaxial Crystal Indicatrices</strong>
+                  <p>True anisotropic ray splitting with Poynting vector walk-off and 2nd-rank directional pleochroic absorption tensors evaluated via the Beer–Lambert law.</p>
+                </div>
+              </li>
+              <li class="comparison-item">
+                <span class="comparison-icon">✅</span>
+                <div>
+                  <strong>Exact Analytical O(M) Polyhedral Half-Spaces</strong>
+                  <p>Gemstone geometry is represented directly as planar half-spaces. Ray-slab intersections are solved analytically with zero BVH overhead and razor-sharp facet edges.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Capabilities Grid -->
+    <section class="section" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Key Features</span>
+          <h2 class="section-title">Built for Lapidaries, Researchers, and Optical Artists</h2>
+          <p class="section-description">
+            From raw GemCAD .asc cutting schedules to 8K wide-gamut master renders and interactive tilt-performance analytics.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon-box cyan">🌈</div>
+            <h3 class="feature-title">Continuous Spectral Dispersion</h3>
+            <p class="feature-text">
+              Multi-term Sellmeier and Cauchy dispersion equations model refractive index n(λ) continuously from ultraviolet (380 nm) to infrared (780 nm). Real spectral fire without artificial RGB fringing.
+            </p>
+            <div class="feature-tag-list">
+              <span class="feature-pill">Sellmeier 3-Pole</span>
+              <span class="feature-pill">HWSS</span>
+              <span class="feature-pill">Fraunhofer Lines</span>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box ruby">🔬</div>
+            <h3 class="feature-title">Polarized Light Transport</h3>
+            <p class="feature-text">
+              4D Stokes vectors [I, Q, U, V] and 4×4 Mueller matrices evaluate Fresnel reflection/transmission and TIR phase shifts at every facet interface. Preserves genuine extinction and polarization patterns.
+            </p>
+            <div class="feature-tag-list">
+              <span class="feature-pill">Mueller Matrix</span>
+              <span class="feature-pill">Phase Retardation</span>
+              <span class="feature-pill">Brewster Angle</span>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box amethyst">💎</div>
+            <h3 class="feature-title">Anisotropic Birefringence</h3>
+            <p class="feature-text">
+              Rays split into Ordinary (o) and Extraordinary (e) wavefronts inside non-cubic crystals. Biaxial indicatrices model Chrysoberyl (Alexandrite), Topaz, and Tanzanite on both CPU and GPU.
+            </p>
+            <div class="feature-tag-list">
+              <span class="feature-pill">Uniaxial & Biaxial</span>
+              <span class="feature-pill">Poynting Walk-Off</span>
+              <span class="feature-pill">Trichroism</span>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box emerald">⚡</div>
+            <h3 class="feature-title">Verified GPU Megakernel</h3>
+            <p class="feature-text">
+              A complete WGSL compute shader port of the spectral transport engine. Verified against the multi-threaded CPU reference by a 4-tier harness achieving a genuine max ULP = 0 across all core functions.
+            </p>
+            <div class="feature-tag-list">
+              <span class="feature-pill">WGPU</span>
+              <span class="feature-pill">WGSL Compute</span>
+              <span class="feature-pill">ULP Budgets</span>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box amber">📐</div>
+            <h3 class="feature-title">Constraint-Based Faceting CAD</h3>
+            <p class="feature-text">
+              Reverse-engineers mast cutting depths from meet constraints and index gears. Includes rough preforms, autonomous angle optimization, and manufacturability linting for real-world laps.
+            </p>
+            <div class="feature-tag-list">
+              <span class="feature-pill">Meet-Point Solver</span>
+              <span class="feature-pill">Rough Preforms</span>
+              <span class="feature-pill">Linter</span>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box blue">📊</div>
+            <h3 class="feature-title">Gemological Performance Metrics</h3>
+            <p class="feature-text">
+              Calculates ISO/GIA standard optical metrics: Brilliance (%), Fire Index, Scintillation (%), Windowing (%), and Extinction (%). Sweeps 181 tilt angles across 4 camera azimuths to evaluate stone performance in motion.
+            </p>
+            <div class="feature-tag-list">
+              <span class="feature-pill">Tilt Profile</span>
+              <span class="feature-pill">Fire Metric</span>
+              <span class="feature-pill">GIA Eye Cone</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Material Explorer Widget -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Interactive Optical Database</span>
+          <h2 class="section-title">Explore Gemstone Dispersion & Crystal Spectra</h2>
+          <p class="section-description">
+            Select a gemstone to evaluate its continuous Sellmeier dispersion equation n(λ) across the visible spectrum (380–780 nm) and inspect its crystallographic characteristics.
+          </p>
+        </div>
+
+        <div class="material-widget-box">
+          <div class="material-selector-bar">
+            <button class="material-chip active" data-material="diamond">Diamond (C)</button>
+            <button class="material-chip" data-material="sapphire">Sapphire (Corundum)</button>
+            <button class="material-chip" data-material="alexandrite">Alexandrite (Chrysoberyl)</button>
+            <button class="material-chip" data-material="emerald">Emerald (Beryl)</button>
+            <button class="material-chip" data-material="moissanite">Moissanite (4H-SiC)</button>
+            <button class="material-chip" data-material="zircon">Zircon (ZrSiO₄)</button>
+            <button class="material-chip" data-material="tanzanite">Tanzanite (Zoisite)</button>
+            <button class="material-chip" data-material="demantoid">Demantoid Garnet</button>
+            <button class="material-chip" data-material="rutile">Synthetic Rutile (TiO₂)</button>
+          </div>
+
+          <div class="material-display-grid">
+            <div class="material-info-panel">
+              <h3 id="matName">Diamond (C)</h3>
+              <div class="material-badges">
+                <span class="feature-pill" id="matCrystal">Cubic (Isotropic)</span>
+                <span class="feature-pill" id="matCharacter">Isotropic</span>
+              </div>
+
+              <table class="material-meta-table">
+                <tbody>
+                  <tr>
+                    <td>Sodium D Refractive Index (n_D)</td>
+                    <td id="matRi">2.4173</td>
+                  </tr>
+                  <tr>
+                    <td>Dispersion (n_F − n_C)</td>
+                    <td id="matDispersion">0.0440</td>
+                  </tr>
+                  <tr>
+                    <td>Abbe Number (V_d)</td>
+                    <td id="matAbbe">55.3</td>
+                  </tr>
+                  <tr>
+                    <td>Birefringence (Δn)</td>
+                    <td id="matBirefringence">0.0000 (None)</td>
+                  </tr>
+                  <tr>
+                    <td>Specific Gravity</td>
+                    <td id="matSg">3.52</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p id="matDesc" style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                Exceptional brilliance and adamantine luster with intense fire. The ultimate isotropic gemstone standard.
+              </p>
+            </div>
+
+            <div class="canvas-container">
+              <div class="canvas-title">
+                <span>Continuous Refractive Index n(λ)</span>
+                <span style="color: var(--accent-cyan);">Visible Spectrum (380 nm – 780 nm)</span>
+              </div>
+              <canvas id="dispersionCanvas" class="dispersion-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workspace Architecture / Ecosystem -->
+    <section class="section" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Modular Rust Architecture</span>
+          <h2 class="section-title">The Indicatrix Workspace Ecosystem</h2>
+          <p class="section-description">
+            A cohesive suite of specialized, high-performance crates. Publishable standalone with near-zero base dependencies.
+          </p>
+        </div>
+
+        <div class="ecosystem-grid">
+          <div class="ecosystem-card">
+            <div class="crate-type">Desktop App</div>
+            <div class="crate-name">indicatrix-cut</div>
+            <p class="crate-desc">
+              Desktop faceting editor built with Slint 1.17: browse designs, orbit in 3D, inspect cutting schedules, and export up to 8K master stills.
+            </p>
+          </div>
+
+          <div class="ecosystem-card">
+            <div class="crate-type">WebAssembly & WebGPU</div>
+            <div class="crate-name">indicatrix-web</div>
+            <p class="crate-desc">
+              In-browser spectral path tracer running via WebGPU. Drag and drop any GemCAD .asc schedule to render in real-time with zero installation.
+            </p>
+          </div>
+
+          <div class="ecosystem-card">
+            <div class="crate-type">Headless Server & CLI</div>
+            <div class="crate-name">indicatrix-worker</div>
+            <p class="crate-desc">
+              High-throughput CLI renderer and remote worker daemon. Offloads tilt-performance sweeps and sample tracing over mutual TLS (mTLS).
+            </p>
+          </div>
+
+          <div class="ecosystem-card">
+            <div class="crate-type">Physics Core</div>
+            <div class="crate-name">indicatrix</div>
+            <p class="crate-desc">
+              The pure spectral path tracer. 8-channel stratified HWSS, Stokes-Mueller polarization, Sellmeier dispersion, and verified WGSL GPU megakernel.
+            </p>
+          </div>
+
+          <div class="ecosystem-card">
+            <div class="crate-type">CAD Engine</div>
+            <div class="crate-name">indicatrix-cut-core</div>
+            <p class="crate-desc">
+              Preforms, constraint-based cutting schedule solver, undo/redo history stack, autonomous angle optimizer, and manufacturability linter.
+            </p>
+          </div>
+
+          <div class="ecosystem-card">
+            <div class="crate-type">Local Storage</div>
+            <div class="crate-name">indicatrix-vault</div>
+            <p class="crate-desc">
+              Privacy-first local SQLite library. Fast parametric searching across RI, gear, facet count, and L/W ratio with zero telemetry.
+            </p>
+          </div>
+
+          <div class="ecosystem-card">
+            <div class="crate-type">Zero-Dep Parser</div>
+            <div class="crate-name">indicatrix-formats</div>
+            <p class="crate-desc">
+              Zero-runtime-dependency parser and writer for GemCAD .asc schedules and native .indicatrix.toml paired sidecars.
+            </p>
+          </div>
+
+          <div class="ecosystem-card">
+            <div class="crate-type">Wire Protocol</div>
+            <div class="crate-name">indicatrix-net</div>
+            <p class="crate-desc">
+              Framed binary wire protocol with sample-range additivity, enabling distributed cluster rendering without tile stitching seams.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Application Tour & Screenshots Preview -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Visual Tour</span>
+          <h2 class="section-title">Designed for Precision & Insight</h2>
+          <p class="section-description">
+            Every screen provides actionable optical feedback, allowing you to perfect facet angles before touching rough gemstone material.
+          </p>
+        </div>
+
+        <div class="gallery-grid">
+          <!-- Card 1: Main Viewport -->
+          <div class="gallery-card">
+            <div class="gallery-img-wrapper">
+              <img src="assets/images/main.png" alt="Indicatrix Studio Main Viewport" class="gallery-img">
+            </div>
+            <div class="gallery-info">
+              <span class="gallery-tag">Interactive 3D Studio</span>
+              <h3 class="gallery-title">Real-Time Spectral Viewport & Library</h3>
+              <p class="gallery-text">
+                Browse thousands of faceting designs with fast parametric filtering. Orbit with mouse controls while the progressive path tracer accumulates samples in real-time.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 2: Tilt Performance Graph -->
+          <div class="gallery-card">
+            <div class="gallery-img-wrapper">
+              <img src="assets/images/tilt_performance.png" alt="Tilt Performance Curve Graph" class="gallery-img">
+            </div>
+            <div class="gallery-info">
+              <span class="gallery-tag">Performance Analytics</span>
+              <h3 class="gallery-title">181-Point Tilt Performance Sweeps</h3>
+              <p class="gallery-text">
+                Evaluates gemstone light return, windowing (light leakage through the pavilion), and extinction across 4 azimuth axes as the stone tilts in the wearer's hand.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 3: Render Quality & Settings -->
+          <div class="gallery-card">
+            <div class="gallery-img-wrapper">
+              <img src="assets/images/settings.png" alt="Settings and Render Quality Dialog" class="gallery-img">
+            </div>
+            <div class="gallery-info">
+              <span class="gallery-tag">Optics & Engine Controls</span>
+              <h3 class="gallery-title">Comprehensive Physical Controls</h3>
+              <p class="gallery-text">
+                Adjust maximum bounces, target SPP, exposure, lighting angles, inclusion scattering (Henyey-Greenstein silk/rutile simulation), and load custom HDR equirectangular maps.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 4: Hybrid Remote Rendering -->
+          <div class="gallery-card">
+            <div class="gallery-img-wrapper">
+              <img src="assets/images/hybrid_remote_rendering.png" alt="Hybrid Remote Rendering Architecture" class="gallery-img">
+            </div>
+            <div class="gallery-info">
+              <span class="gallery-tag">Distributed Compute</span>
+              <h3 class="gallery-title">Preview-Then-Handoff Architecture</h3>
+              <p class="gallery-text">
+                Local GPU/CPU provides zero-latency interactive viewport feedback. When the camera settles, computation seamlessly hands off to a high-powered remote GPU server over mutual TLS.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructions for adding more images -->
+        <div class="image-guide-box">
+          <div class="image-guide-header">
+            <span style="font-size: 1.5rem;">📸</span>
+            <span class="image-guide-title">How & Where to Add More Screenshots</span>
+          </div>
+          <div class="image-guide-steps">
+            <p>
+              To add or update screenshots of specific application parts (such as the Solid Inspection View, Meet Solver, Material Retargeting, or Web Viewer):
+            </p>
+            <p>
+              <strong>1. Image Directory:</strong> Save your image files inside <code>/mnt/c/temp/mcp/ghp/assets/images/</code> (or relative to website root: <code>assets/images/</code>).
+            </p>
+            <p>
+              <strong>2. Recommended Names & Dimensions:</strong> Use standard 16:10 or 16:9 PNGs (e.g. <code>solid_inspection.png</code>, <code>editor_solve.png</code>, <code>retarget_dialog.png</code>).
+            </p>
+            <p>
+              <strong>3. See Complete Instructions:</strong> Visit the <a href="gallery.html"><strong>Gallery & Media Guide</strong></a> page for a full list of suggested screenshots and exact HTML markup snippets!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quickstart & Installation -->
+    <section class="section" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Getting Started</span>
+          <h2 class="section-title">Build and Run in Minutes</h2>
+          <p class="section-description">
+            Written in modern Rust (2024 edition). Works on Linux and Windows. Zero proprietary drivers required.
+          </p>
+        </div>
+
+        <div style="max-width: 860px; margin: 0 auto;">
+          <div class="code-block-container">
+            <div class="code-header">
+              <span class="code-title">Terminal — Run the Desktop Studio</span>
+              <button class="copy-btn">Copy</button>
+            </div>
+            <div class="code-content">
+              <code><span class="comment"># 1. Clone the repository</span>
+<span class="keyword">git</span> clone https://github.com/suitable-name/indicatrix.git
+<span class="keyword">cd</span> indicatrix
+
+<span class="comment"># 2. Launch the Desktop Faceting Studio</span>
+<span class="keyword">cargo</span> run -p indicatrix-cut
+
+<span class="comment"># 3. Or launch with GPU Megakernel Acceleration (Vulkan / Metal / DX12)</span>
+<span class="keyword">cargo</span> run -p indicatrix-cut --features gpu</code>
+            </div>
+          </div>
+
+          <div class="code-block-container">
+            <div class="code-header">
+              <span class="code-title">Terminal — Headless CLI Rendering</span>
+              <button class="copy-btn">Copy</button>
+            </div>
+            <div class="code-content">
+              <code><span class="comment"># Render a scene headlessly at 4K resolution with 256 SPP</span>
+<span class="keyword">cargo</span> run -p indicatrix-worker --features worker -- render \
+  --scene scene.json \
+  --out render.png \
+  --width 3840 \
+  --height 2160 \
+  --samples 256</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div id="lightboxModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <img id="lightboxImg" class="modal-img" src="" alt="Enlarged screenshot">
+      <div id="lightboxCaption" class="modal-caption"></div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand">
+            <img src="assets/images/icon.png" alt="Indicatrix Logo" class="brand-icon">
+            <span>Indicatrix</span>
+          </div>
+          <p>
+            An uncompromising, physically-based spectral gemstone path tracer and faceting-design CAD studio in Rust and WGSL.
+          </p>
+          <p style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted);">
+            Open Source under the MIT License.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Documentation</h4>
+          <ul class="footer-links">
+            <li><a href="physics.html" class="footer-link">Physics & Optics</a></li>
+            <li><a href="editor.html" class="footer-link">Studio CAD Guide</a></li>
+            <li><a href="materials.html" class="footer-link">Gem Materials</a></li>
+            <li><a href="distributed.html" class="footer-link">Remote Workers</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Software</h4>
+          <ul class="footer-links">
+            <li><a href="editor.html#indicatrix-cut" class="footer-link">Desktop App</a></li>
+            <li><a href="https://github.com/suitable-name/indicatrix/tree/main/apps/indicatrix-web" class="footer-link">WebGPU App</a></li>
+            <li><a href="distributed.html#indicatrix-worker" class="footer-link">Worker Daemon</a></li>
+            <li><a href="gallery.html" class="footer-link">Screenshots</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Project Links</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/suitable-name/indicatrix" target="_blank" rel="noopener" class="footer-link">GitHub Repository</a></li>
+            <li><a href="https://github.com/suitable-name/indicatrix/issues" target="_blank" rel="noopener" class="footer-link">Issue Tracker</a></li>
+            <li><a href="https://slint.dev" target="_blank" rel="noopener" class="footer-link">Made with Slint</a></li>
+            <li><a href="https://wgpu.rs" target="_blank" rel="noopener" class="footer-link">Powered by WGPU</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© Indicatrix Project Contributors · MIT License</div>
+        <div>Designed for the lapidary, gemology, and computer graphics communities.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

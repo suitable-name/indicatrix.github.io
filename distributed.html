@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Distributed Rendering & Remote Clusters — Indicatrix</title>
+  <meta name="description" content="Architecture of Indicatrix remote rendering: mutual TLS security, sample-range additivity, preview-then-handoff orchestration, and headless CLI rendering.">
+  <link rel="icon" type="image/png" href="assets/images/icon.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand">
+        <img src="assets/images/icon.png" alt="Indicatrix Logo" class="brand-icon">
+        <span>Indicatrix</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Overview</a></li>
+        <li><a href="physics.html" class="nav-link">Physics & Optics</a></li>
+        <li><a href="editor.html" class="nav-link">Desktop Studio</a></li>
+        <li><a href="materials.html" class="nav-link">Gem Materials</a></li>
+        <li><a href="distributed.html" class="nav-link active">Remote Cluster</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery & Screenshots</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://github.com/suitable-name/indicatrix" target="_blank" rel="noopener" class="btn btn-github btn-sm">
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="doc-header">
+    <div class="container">
+      <span class="section-tag">Distributed Systems</span>
+      <h1 class="hero-title" style="font-size: 2.75rem; text-align: left; margin-bottom: 0.75rem;">
+        Distributed Rendering & Remote Clustering
+      </h1>
+      <p class="hero-subtitle" style="text-align: left; margin: 0; font-size: 1.15rem;">
+        Harness powerful remote GPUs, cluster render farms, and secure mutual TLS networking with zero tile-stitching seams.
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="doc-layout">
+      <!-- Sticky Navigation Sidebar -->
+      <aside class="doc-sidebar">
+        <ul class="doc-nav-list">
+          <li class="doc-nav-item"><a href="#handoff-model">1. The Preview-Then-Handoff Model</a></li>
+          <li class="doc-nav-item"><a href="#sample-additivity">2. Sample-Range Additivity</a></li>
+          <li class="doc-nav-item"><a href="#mtls-security">3. Mutual TLS & Token Enrollment</a></li>
+          <li class="doc-nav-item"><a href="#worker-cli">4. Headless CLI Rendering</a></li>
+          <li class="doc-nav-item"><a href="#cluster-setup">5. Quick Cluster Setup Guide</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Documentation Content -->
+      <article class="doc-content">
+        <section id="handoff-model">
+          <h2>1. The Preview-Then-Handoff Model</h2>
+          <p>
+            Spectral ray tracing through high-refractive-index gemstones with 20–50 internal bounces is computationally demanding. While modern desktop GPUs can render interactive previews, high-resolution 8K stills or batch catalogue sweeps benefit immensely from dedicated compute servers.
+          </p>
+          <p>
+            However, streaming every interactive viewport frame across a network introduces input latency. Indicatrix solves this with an elegant <strong>Preview-Then-Handoff</strong> state machine:
+          </p>
+
+          <div class="app-window-frame" style="margin: 2rem 0;">
+            <img src="assets/images/hybrid_remote_rendering.png" alt="Hybrid Remote Rendering Architecture Diagram" class="app-screenshot">
+          </div>
+
+          <ol>
+            <li><strong>Interactive Phase (Local)</strong>: While the user orbits, zooms, or adjusts lights, the local CPU/GPU renders low-sample preview frames with zero latency.</li>
+            <li><strong>Settle Detection</strong>: When camera movement stops for a few hundred milliseconds, the client captures primary-ray albedo/normal guide passes locally.</li>
+            <li><strong>Handoff Phase (Remote)</strong>: The client sends a compact <code>SceneState</code> packet (a few kilobytes via <code>postcard</code>) to the remote worker. The remote GPU traces high-sample deltas at full speed and streams radiance buffers back over mutual TLS.</li>
+            <li><strong>Seamless Blend</strong>: Remote radiance buffers are folded directly into the client's local accumulation buffer, converging to a noise-free render in seconds.</li>
+          </ol>
+        </section>
+
+        <section id="sample-additivity">
+          <h2>2. Sample-Range Additivity vs. Screen Tiles</h2>
+          <p>
+            Traditional distributed renderers split images into rectangular screen-space tiles. In gemstone rendering, this creates severe load imbalance:
+          </p>
+          <ul>
+            <li>Tiles covering the dark background finish in microseconds (0 bounces).</li>
+            <li>Tiles covering the gemstone table must trace 50 internal reflections and complex Sellmeier dispersion, taking orders of magnitude longer.</li>
+          </ul>
+
+          <div class="doc-callout tip">
+            <div class="doc-callout-title">💎 The Indicatrix Advantage: Sample Partitioning</div>
+            <p>
+              Indicatrix partitions work <strong>by sample index range</strong> across the <em>entire frame</em>. For example:
+              <br>Node A traces samples <code>[0, 64)</code>
+              <br>Node B traces samples <code>[64, 128)</code>
+              <br>Node C traces samples <code>[128, 192)</code>
+            </p>
+          </div>
+
+          <p>
+            Because the per-sample RNG seed is a pure deterministic function <code>hash(pixel_index, sample_number)</code>, sample contributions are strictly additive and order-independent:
+          </p>
+          <div class="code-block-container" style="margin: 1rem 0;">
+            <div class="code-content">
+              <code>Radiance_Total = ∑ Radiance(sample_i)   for i ∈ [0, N)</code>
+            </div>
+          </div>
+          <p>
+            There are zero tile seams, zero boundary stitching artifacts, and load balancing across heterogeneous machines (e.g. a laptop paired with a 64-core threadripper and a remote RTX 4090) is 100% linear.
+          </p>
+        </section>
+
+        <section id="mtls-security">
+          <h2>3. Mutual TLS (mTLS) Security & Token Enrollment</h2>
+          <p>
+            Remote computation runs over a custom binary framing protocol defined in <code>crates/indicatrix-net</code>. Security is uncompromising:
+          </p>
+          <ul>
+            <li><strong>Strict TLS 1.3 Only</strong>: Powered by <code>rustls</code> with the audited <code>ring</code> crypto provider. Legacy TLS 1.2 is disabled at compile time.</li>
+            <li><strong>Mutual Authentication (mTLS)</strong>: Both the client and the worker verify each other's cryptographic x509 certificates. Rogue clients cannot steal render compute, and rogue servers cannot spoof library catalogs.</li>
+            <li><strong>One-Time Enrollment Tokens</strong>: No complex manual OpenSSL commands! Run <code>indicatrix-worker enroll</code> to generate a short-lived token. Paste the token into the Desktop app, and the client automatically generates keys, requests a signed certificate from the worker CA, and pins the server fingerprint.</li>
+            <li><strong>Build Hash Integrity Gate</strong>: The connection handshake exchanges <code>INDICATRIX_BUILD_ID</code> (a 64-bit FNV-1a hash of all physics code and WGSL compute shaders). If the client and worker physics differ by even a single byte, the connection safely aborts to prevent silent corruption of accumulated samples.</li>
+          </ul>
+        </section>
+
+        <section id="worker-cli">
+          <h2>4. Headless CLI Rendering (`indicatrix-worker`)</h2>
+          <p>
+            <code>indicatrix-worker</code> can also operate completely headlessly for render farms, CI/CD pipelines, and cloud instances:
+          </p>
+
+          <div class="code-block-container" style="margin: 1rem 0;">
+            <div class="code-header">
+              <span class="code-title">Bash — Render Headless Scene</span>
+              <button class="copy-btn">Copy</button>
+            </div>
+            <div class="code-content">
+              <code><span class="comment"># Render an 8K image at 1024 SPP with the GPU megakernel</span>
+<span class="keyword">cargo</span> run -p indicatrix-worker --features worker,gpu -- render \
+  --scene design_scene.json \
+  --out diamond_render_8k.png \
+  --width 7680 \
+  --height 4320 \
+  --samples 1024 \
+  --bounces 24</code>
+            </div>
+          </div>
+        </section>
+
+        <section id="cluster-setup">
+          <h2>5. Quick Setup: Pairing Desktop with a Worker</h2>
+
+          <div class="code-block-container" style="margin: 1rem 0;">
+            <div class="code-header">
+              <span class="code-title">Terminal — On the Remote Machine (Server)</span>
+              <button class="copy-btn">Copy</button>
+            </div>
+            <div class="code-content">
+              <code><span class="comment"># 1. Initialize server PKI certificate authority</span>
+<span class="keyword">cargo</span> run -p indicatrix-worker -- cert init --common-name "GemComputeNode1"
+
+<span class="comment"># 2. Start the daemon with GPU rendering capacity</span>
+<span class="keyword">cargo</span> run -p indicatrix-worker --features worker,gpu -- serve --bind 0.0.0.0:9443
+
+<span class="comment"># 3. Generate a one-time enrollment token for your desktop</span>
+<span class="keyword">cargo</span> run -p indicatrix-worker -- enroll create --ttl 15m</code>
+            </div>
+          </div>
+
+          <div class="doc-callout note">
+            <div class="doc-callout-title">🖥️ On Your Desktop (Client)</div>
+            <p>
+              In <code>indicatrix-cut</code>, click the <strong>Remote Workers</strong> button in the top toolbar. Enter the server's IP address (e.g. <code>192.168.1.50:9443</code>) and paste the enrollment token. The app automatically completes the mTLS handshake and begins offloading renders immediately!
+            </p>
+          </div>
+        </section>
+      </article>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© Indicatrix Project Contributors · MIT License</div>
+        <div><a href="index.html">Home</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Desktop Studio</a> · <a href="materials.html">Materials</a> · <a href="gallery.html">Screenshots</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

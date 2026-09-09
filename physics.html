@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physics & Optics — Indicatrix Gemstone Engine</title>
+  <meta name="description" content="Technical specification and mathematical blueprint of the Indicatrix spectral gemstone ray tracer: HWSS, Stokes-Mueller polarization, Sellmeier dispersion, and biaxial crystal optics.">
+  <link rel="icon" type="image/png" href="assets/images/icon.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand">
+        <img src="assets/images/icon.png" alt="Indicatrix Logo" class="brand-icon">
+        <span>Indicatrix</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Overview</a></li>
+        <li><a href="physics.html" class="nav-link active">Physics & Optics</a></li>
+        <li><a href="editor.html" class="nav-link">Desktop Studio</a></li>
+        <li><a href="materials.html" class="nav-link">Gem Materials</a></li>
+        <li><a href="distributed.html" class="nav-link">Remote Cluster</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery & Screenshots</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://github.com/suitable-name/indicatrix" target="_blank" rel="noopener" class="btn btn-github btn-sm">
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="doc-header">
+    <div class="container">
+      <span class="section-tag">Engineering Blueprint</span>
+      <h1 class="hero-title" style="font-size: 2.75rem; text-align: left; margin-bottom: 0.75rem;">
+        The Physics & Optics Blueprint
+      </h1>
+      <p class="hero-subtitle" style="text-align: left; margin: 0; font-size: 1.15rem;">
+        Mathematical formulation of hero-wavelength spectral sampling, polarized Stokes–Mueller light transport, continuous Sellmeier dispersion, and crystal anisotropy in Indicatrix.
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="doc-layout">
+      <!-- Sticky Navigation Sidebar -->
+      <aside class="doc-sidebar">
+        <ul class="doc-nav-list">
+          <li class="doc-nav-item"><a href="#hwss">1. Hero-Wavelength Spectral Sampling</a></li>
+          <li class="doc-nav-item"><a href="#dispersion">2. Continuous Sellmeier Dispersion</a></li>
+          <li class="doc-nav-item"><a href="#polarization">3. Stokes–Mueller Polarized Transport</a></li>
+          <li class="doc-nav-item"><a href="#birefringence">4. Anisotropic Crystal Optics</a></li>
+          <li class="doc-nav-item"><a href="#pleochroism">5. Directional Pleochroic Absorption</a></li>
+          <li class="doc-nav-item"><a href="#polyhedral">6. Exact O(M) Polyhedral Half-Spaces</a></li>
+          <li class="doc-nav-item"><a href="#colormetrics">7. Color Science & Tonemapping</a></li>
+          <li class="doc-nav-item"><a href="#gpu-harness">8. Verified GPU Equivalence Harness</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Documentation Content -->
+      <article class="doc-content">
+        <section id="hwss">
+          <h2>1. 8-Channel Stratified Hero-Wavelength Spectral Sampling (HWSS)</h2>
+          <p>
+            Standard rendering engines compress light into three discrete tristimulus channels (RGB). While adequate for diffuse or non-dispersive scenes, RGB rendering fails utterly inside cut gemstones: it cannot resolve continuous wavelength-dependent ray refraction, causing harsh 3-channel color fringing instead of authentic prismatic dispersion.
+          </p>
+          <p>
+            Conversely, naive Monte Carlo spectral sampling (tracing one independent random wavelength per ray) creates extreme high-frequency chromatic noise that takes tens of thousands of samples to converge.
+          </p>
+          <p>
+            Indicatrix implements <strong>8-channel stratified Hero-Wavelength Spectral Sampling (HWSS)</strong>:
+          </p>
+          <ul>
+            <li>For each camera ray, a single "hero" wavelength λ₀ is drawn uniformly from the visible spectrum [380 nm, 780 nm].</li>
+            <li>Seven companion wavelengths λᵢ are deterministically spaced across the visible range by fixed fractional shifts:
+              <br><code>λᵢ = λ_min + ((λ₀ − λ_min + i · Δλ) mod (λ_max − λ_min))</code> where <code>Δλ = (λ_max − λ_min) / 8</code>.</li>
+            <li>All 8 wavelengths travel along the path chosen by the hero ray until dispersion causes companion ray paths to diverge. When divergence exceeds threshold (<code>DIRECTION_MATCH_COS_TOL = 1.0 − 1e-6</code>), companion energy is terminated gracefully, maintaining an unbiased estimator.</li>
+            <li>Energy is combined using Multiple Importance Sampling (MIS), yielding ultra-smooth, continuous spectral rainbow caustics and internal fire at a fraction of the sample count.</li>
+          </ul>
+
+          <div class="doc-callout tip">
+            <div class="doc-callout-title">💡 Why 8 Channels?</div>
+            <p>
+              8 channels align perfectly with SIMD vector widths (AVX2 / AVX-512) and GPU 32-bit float storage vectors (2 × <code>vec4&lt;f32&gt;</code> in WGSL), maximizing hardware throughput with zero memory padding waste.
+            </p>
+          </div>
+        </section>
+
+        <section id="dispersion">
+          <h2>2. Continuous Sellmeier & Cauchy Dispersion</h2>
+          <p>
+            Instead of assigning fixed refractive indices at Red, Green, and Blue, Indicatrix evaluates true continuous empirical dispersion equations for every wavelength:
+          </p>
+          
+          <h3>The 3-Term Sellmeier Equation</h3>
+          <p>
+            For high-refractive-index materials such as Diamond, Corundum (Sapphire/Ruby), and Beryl (Emerald), the refractive index n(λ) is calculated using the standard 3-term Sellmeier formula:
+          </p>
+          <div class="code-block-container" style="margin: 1rem 0;">
+            <div class="code-content">
+              <code>n²(λ) = 1 + ∑ [ Bᵢ · λ² / (λ² − Cᵢ) ]   for i ∈ {1, 2, 3}</code>
+            </div>
+          </div>
+          <p>
+            where <code>Bᵢ</code> are oscillator strengths and <code>Cᵢ</code> are resonance wavelength squares (in μm²).
+          </p>
+
+          <h3>The Cauchy Dispersion Formula</h3>
+          <p>
+            For crystalline materials characterized by polynomial dispersion curves (such as Topaz and Quartz):
+          </p>
+          <div class="code-block-container" style="margin: 1rem 0;">
+            <div class="code-content">
+              <code>n(λ) = A + B / λ² + C / λ⁴</code>
+            </div>
+          </div>
+          <p>
+            Every built-in material in Indicatrix is rigorously cited against published spectroscopic literature (e.g., Peter 1923 for Diamond, Malitson 1962 for Synthetic Sapphire, Ghosh 1999 for Beryl).
+          </p>
+        </section>
+
+        <section id="polarization">
+          <h2>3. Full Stokes–Mueller Polarized Light Transport</h2>
+          <p>
+            In a cut gemstone, light undergoes between 10 and 50+ internal facet reflections before exiting through the crown. At every reflection, partial reflection and total internal reflection (TIR) induce strong polarization and phase retardation. Neglecting polarization causes incorrect critical-angle behavior and artificial light leakage.
+          </p>
+          <p>
+            Indicatrix models light as a full <strong>4D Stokes Vector</strong>:
+          </p>
+          <div class="code-block-container" style="margin: 1rem 0;">
+            <div class="code-content">
+              <code>S = [ I, Q, U, V ]ᵀ</code>
+            </div>
+          </div>
+          <ul>
+            <li><strong>I</strong>: Total beam intensity</li>
+            <li><strong>Q</strong>: Horizontal vs. vertical linear polarization</li>
+            <li><strong>U</strong>: +45° vs. −45° linear polarization</li>
+            <li><strong>V</strong>: Right-handed vs. left-handed circular polarization</li>
+          </ul>
+
+          <p>
+            Every facet interaction applies a <strong>4×4 Mueller Matrix M</strong> that rotates the reference frame, computes parallel (p) and perpendicular (s) Fresnel amplitudes, and applies total-internal-reflection phase retardation:
+          </p>
+          <div class="code-block-container" style="margin: 1rem 0;">
+            <div class="code-content">
+              <code>tan(δ / 2) = cos(θᵢ) · √(sin²(θᵢ) − (n_t / n_i)²) / sin²(θᵢ)
+δ = δ_p − δ_s</code>
+            </div>
+          </div>
+          <p>
+            This ensures that Brewster-angle extinction, phase shifts, and circular polarization states are fully preserved through complex multiple-bounce light trains.
+          </p>
+        </section>
+
+        <section id="birefringence">
+          <h2>4. Anisotropic Crystal Optics: Uniaxial & Biaxial Systems</h2>
+          <p>
+            Non-cubic gemstones possess an optical indicatrix: an ellipsoid describing how the refractive index varies with the wave propagation direction and electric field vector.
+          </p>
+          
+          <h3>Uniaxial Crystals (Sapphire, Ruby, Tourmaline, Zircon, Quartz)</h3>
+          <p>
+            Uniaxial crystals possess a single optical c-axis. Upon entering the crystal, incident unpolarized light splits into two orthogonally polarized wavefronts:
+          </p>
+          <ul>
+            <li><strong>Ordinary Ray (o-ray)</strong>: Spherical wavefront with constant refractive index <code>n_o</code> independent of direction.</li>
+            <li><strong>Extraordinary Ray (e-ray)</strong>: Ellipsoidal wavefront with effective index <code>n_e(θ)</code> varying from <code>n_o</code> to <code>n_e</code> depending on the angle θ between the wave normal and the crystallographic c-axis:
+              <br><code>1 / n_e²(θ) = cos²(θ) / n_o² + sin²(θ) / n_e²</code>
+            </li>
+            <li><strong>Spatial Poynting Walk-Off</strong>: The energy flow direction (Poynting vector <strong>S</strong>) walks off from the wave normal <strong>k</strong>, creating the distinctive "doubling" of facet reflections seen in High Zircon and Tourmaline.</li>
+          </ul>
+
+          <h3>Biaxial Crystals (Alexandrite, Topaz, Tanzanite)</h3>
+          <p>
+            Orthorhombic, monoclinic, and triclinic crystals possess three distinct principal refractive indices: <code>n_α &lt; n_β &lt; n_γ</code> and two optic axes forming an acute angle <code>2V</code>. Indicatrix implements the complete <code>BiaxialIndicatrix</code> wave-surface solver on both CPU and GPU compute shaders, accurately predicting the optical behavior of Chrysoberyl, Topaz, and Tanzanite.
+          </p>
+        </section>
+
+        <section id="pleochroism">
+          <h2>5. Directional Pleochroic Absorption Tensors</h2>
+          <p>
+            Pleochroic gemstones exhibit different colors when viewed from different crystallographic directions because absorption depends on the electric field orientation.
+          </p>
+          <p>
+            Indicatrix evaluates directional absorption via a <strong>2nd-Rank Spectral Absorption Tensor A(λ)</strong> using the Beer–Lambert law:
+          </p>
+          <div class="code-block-container" style="margin: 1rem 0;">
+            <div class="code-content">
+              <code>T(λ) = exp( − A(λ, Ê) · d )</code>
+            </div>
+          </div>
+          <p>
+            where <code>d</code> is the chord length through the facet interior and <code>Ê</code> is the normalized electric field vector derived from the ray's Stokes polarization state.
+          </p>
+          <ul>
+            <li><strong>Dichroism</strong> (Uniaxial: Ruby, Sapphire, Tourmaline): Evaluates distinct absorption bands for the o-ray and e-ray.</li>
+            <li><strong>Trichroism</strong> (Biaxial: Alexandrite, Tanzanite): Evaluates three independent principal absorption spectra along the α, β, and γ optical axes, producing Alexandrite's famed color-shift and Tanzanite's blue-violet-burgundy tri-color signature.</li>
+          </ul>
+        </section>
+
+        <section id="polyhedral">
+          <h2>6. Exact Analytical O(M) Polyhedral Half-Spaces</h2>
+          <p>
+            Conventional renderers tessellate gemstones into triangle meshes and build Bounding Volume Hierarchies (BVHs). For cut gemstones, this introduces rounding seams at meet points and traversal memory overhead.
+          </p>
+          <p>
+            Indicatrix treats every facet as an infinite planar half-space defined by its outward unit normal <strong>n</strong>ᵢ and signed mast distance <code>dᵢ</code>:
+          </p>
+          <div class="code-block-container" style="margin: 1rem 0;">
+            <div class="code-content">
+              <code>Hᵢ = { x ∈ ℝ³ | nᵢ · x + dᵢ ≤ 0 }</code>
+            </div>
+          </div>
+          <p>
+            The gemstone is the convex polyhedral intersection of <code>M</code> half-spaces: <code>P = ⋂ Hᵢ</code>.
+          </p>
+          <p>
+            Ray intersection reduces to an analytical slab test:
+          </p>
+          <ul>
+            <li>Calculate entry and exit parameters <code>t_enter</code> and <code>t_exit</code> across all <code>M</code> facet planes.</li>
+            <li>If <code>t_enter &lt; t_exit</code>, the ray intersects the gemstone precisely at <code>t = t_enter</code> (or <code>t = t_exit</code> from the interior).</li>
+            <li>Executes in <code>O(M)</code> operations with zero memory indirection, zero BVH building, and 100% razor-sharp geometric facet edges.</li>
+          </ul>
+        </section>
+
+        <section id="colormetrics">
+          <h2>7. Color Science & Tone Mapping</h2>
+          <p>
+            To transform spectral radiance into pixels:
+          </p>
+          <ul>
+            <li><strong>CIE 1931 2° Standard Observer</strong>: Continuous analytical integration against standard color matching functions x̄(λ), ȳ(λ), z̄(λ) to convert 8 spectral radiance channels into CIE 1931 XYZ coordinates.</li>
+            <li><strong>Luminance-Only Filmic Tone Mapping</strong>: The ACES tone-mapping curve is applied exclusively to the luminance scalar Y, scaling the XYZ vector uniformly. This prevents hue-shifting artifacts on ultra-saturated dispersion flares (the "fire").</li>
+            <li><strong>Bounded Gamut Projection</strong>: Over-bright saturated colors outside target gamuts (sRGB, Display P3, Rec.2020) are brought into gamut via a bounded radial walk toward the white point, preserving chromatic hue.</li>
+            <li><strong>Wide-Gamut Master Exports</strong>: 16-bit and 8-bit PNG exports embed certified ICC color profiles for Apple Display P3 and ITU-R Rec.2020.</li>
+          </ul>
+        </section>
+
+        <section id="gpu-harness">
+          <h2>8. The 4-Tier GPU Equivalence Harness</h2>
+          <p>
+            The GPU backend in <code>crates/indicatrix/src/renderer/gpu</code> compiles the entire spectral transport kernel into WebGPU / WGSL (<code>spectral_transport.wgsl</code>).
+          </p>
+          <p>
+            To ensure the GPU implementation never diverges from the multi-threaded CPU reference, Indicatrix features a rigorous 4-tier verification test suite:
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>Validation Scope</th>
+                <th>Acceptance Standard</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tier 1: Bit-Exact</strong></td>
+                <td>RNG seed hashing, Halton 2D sub-pixel jitter, and integer coordinate encoding.</td>
+                <td>Bit-for-bit exact equality (0 bits divergence).</td>
+              </tr>
+              <tr>
+                <td><strong>Tier 2: ULP Budgets</strong></td>
+                <td>Individual mathematical functions: Sellmeier evaluations, Fresnel reflectance, Stokes vector rotations, and ray-plane slab intersections.</td>
+                <td><strong>Max genuine ULP = 0</strong> across all ported functions.</td>
+              </tr>
+              <tr>
+                <td><strong>Tier 3: Furnace Anchor</strong></td>
+                <td>Analytical thermodynamic equilibrium test: a stone immersed in a uniform 1.0 radiance spherical blackbody environment.</td>
+                <td>Total integrated radiance must equal exactly 1.0 (energy conservation).</td>
+              </tr>
+              <tr>
+                <td><strong>Tier 4: Statistical</strong></td>
+                <td>Pixel-by-pixel structural similarity (SSIM) and root-mean-square error (RMSE) on full converged renders across all 13+ built-in gem materials.</td>
+                <td>Mean absolute error &lt; 0.002 across entire framebuffers.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="doc-callout note">
+            <div class="doc-callout-title">🔍 Run the Harness Locally</div>
+            <p>
+              Developers can run the full GPU equivalence harness on their local adapter:
+              <br><code>cargo run --profile probe -p indicatrix --features gpu --example gpu_equivalence_harness</code>
+            </p>
+          </div>
+        </section>
+      </article>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© Indicatrix Project Contributors · MIT License</div>
+        <div><a href="index.html">Home</a> · <a href="editor.html">Desktop Studio</a> · <a href="materials.html">Materials</a> · <a href="gallery.html">Screenshots</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

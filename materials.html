@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemstone Optical Database — Indicatrix</title>
+  <meta name="description" content="Complete spectroscopic optical constants and Sellmeier dispersion database for 20+ gemstone species in Indicatrix: Diamond, Sapphire, Alexandrite, Emerald, Tanzanite, Moissanite, and more.">
+  <link rel="icon" type="image/png" href="assets/images/icon.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand">
+        <img src="assets/images/icon.png" alt="Indicatrix Logo" class="brand-icon">
+        <span>Indicatrix</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Overview</a></li>
+        <li><a href="physics.html" class="nav-link">Physics & Optics</a></li>
+        <li><a href="editor.html" class="nav-link">Desktop Studio</a></li>
+        <li><a href="materials.html" class="nav-link active">Gem Materials</a></li>
+        <li><a href="distributed.html" class="nav-link">Remote Cluster</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery & Screenshots</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="https://github.com/suitable-name/indicatrix" target="_blank" rel="noopener" class="btn btn-github btn-sm">
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="doc-header">
+    <div class="container">
+      <span class="section-tag">Spectroscopic Reference</span>
+      <h1 class="hero-title" style="font-size: 2.75rem; text-align: left; margin-bottom: 0.75rem;">
+        Gemstone Optical Database
+      </h1>
+      <p class="hero-subtitle" style="text-align: left; margin: 0; font-size: 1.15rem;">
+        Rigorous physical constants, Sellmeier dispersion equations, birefringence deltas, and directional absorption tensors for 20+ calibrated gem species.
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="doc-layout">
+      <!-- Sticky Navigation Sidebar -->
+      <aside class="doc-sidebar">
+        <ul class="doc-nav-list">
+          <li class="doc-nav-item"><a href="#database-table">1. Master Species Table</a></li>
+          <li class="doc-nav-item"><a href="#alexandrite-case">2. Alexandrite & Color Shift</a></li>
+          <li class="doc-nav-item"><a href="#corundum-case">3. Sapphire & Ruby Dichroism</a></li>
+          <li class="doc-nav-item"><a href="#extreme-optics">4. High Dispersion: Rutile & Moissanite</a></li>
+          <li class="doc-nav-item"><a href="#custom-materials">5. Creating Custom Gem Materials</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Documentation Content -->
+      <article class="doc-content">
+        <section id="database-table">
+          <h2>1. Master Gemstone Optical Constants Table</h2>
+          <p>
+            Every material in Indicatrix ships with empirical dispersion coefficients calibrated against peer-reviewed optical and spectroscopic literature.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Species (Variety)</th>
+                <th>Crystal System</th>
+                <th>Optical Character</th>
+                <th>n_D (589 nm)</th>
+                <th>Dispersion (n_F−n_C)</th>
+                <th>Birefringence (Δn)</th>
+                <th>Specific Gravity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Diamond (C)</strong></td>
+                <td>Cubic</td>
+                <td>Isotropic</td>
+                <td>2.4173</td>
+                <td>0.0440</td>
+                <td>0.0000</td>
+                <td>3.52</td>
+              </tr>
+              <tr>
+                <td><strong>Sapphire / Ruby (Al₂O₃)</strong></td>
+                <td>Trigonal</td>
+                <td>Uniaxial Negative</td>
+                <td>1.7682</td>
+                <td>0.0180</td>
+                <td>-0.0082</td>
+                <td>4.00</td>
+              </tr>
+              <tr>
+                <td><strong>Alexandrite (BeAl₂O₄:Cr)</strong></td>
+                <td>Orthorhombic</td>
+                <td>Biaxial Positive</td>
+                <td>1.7450</td>
+                <td>0.0150</td>
+                <td>+0.0090</td>
+                <td>3.73</td>
+              </tr>
+              <tr>
+                <td><strong>Emerald (Beryl)</strong></td>
+                <td>Hexagonal</td>
+                <td>Uniaxial Negative</td>
+                <td>1.5770</td>
+                <td>0.0140</td>
+                <td>-0.0060</td>
+                <td>2.72</td>
+              </tr>
+              <tr>
+                <td><strong>Aquamarine (Beryl)</strong></td>
+                <td>Hexagonal</td>
+                <td>Uniaxial Negative</td>
+                <td>1.5750</td>
+                <td>0.0140</td>
+                <td>-0.0060</td>
+                <td>2.72</td>
+              </tr>
+              <tr>
+                <td><strong>Moissanite (4H-SiC)</strong></td>
+                <td>Hexagonal</td>
+                <td>Uniaxial Positive</td>
+                <td>2.6500</td>
+                <td>0.1040</td>
+                <td>+0.0430</td>
+                <td>3.22</td>
+              </tr>
+              <tr>
+                <td><strong>High Zircon (ZrSiO₄)</strong></td>
+                <td>Tetragonal</td>
+                <td>Uniaxial Positive</td>
+                <td>1.9250</td>
+                <td>0.0380</td>
+                <td>+0.0590</td>
+                <td>4.70</td>
+              </tr>
+              <tr>
+                <td><strong>Tanzanite (Zoisite)</strong></td>
+                <td>Orthorhombic</td>
+                <td>Biaxial Positive</td>
+                <td>1.6910</td>
+                <td>0.0210</td>
+                <td>+0.0090</td>
+                <td>3.35</td>
+              </tr>
+              <tr>
+                <td><strong>Topaz (Al₂SiO₄(F,OH)₂)</strong></td>
+                <td>Orthorhombic</td>
+                <td>Biaxial Positive</td>
+                <td>1.6190</td>
+                <td>0.0140</td>
+                <td>+0.0080</td>
+                <td>3.53</td>
+              </tr>
+              <tr>
+                <td><strong>Tourmaline (Elbaite)</strong></td>
+                <td>Trigonal</td>
+                <td>Uniaxial Negative</td>
+                <td>1.6240</td>
+                <td>0.0170</td>
+                <td>-0.0180</td>
+                <td>3.06</td>
+              </tr>
+              <tr>
+                <td><strong>Quartz / Amethyst / Citrine</strong></td>
+                <td>Trigonal</td>
+                <td>Uniaxial Positive</td>
+                <td>1.5442</td>
+                <td>0.0130</td>
+                <td>+0.0091</td>
+                <td>2.65</td>
+              </tr>
+              <tr>
+                <td><strong>Spinel (MgAl₂O₄)</strong></td>
+                <td>Cubic</td>
+                <td>Isotropic</td>
+                <td>1.7180</td>
+                <td>0.0200</td>
+                <td>0.0000</td>
+                <td>3.60</td>
+              </tr>
+              <tr>
+                <td><strong>Demantoid Garnet (Andradite)</strong></td>
+                <td>Cubic</td>
+                <td>Isotropic</td>
+                <td>1.8880</td>
+                <td>0.0570</td>
+                <td>0.0000</td>
+                <td>3.84</td>
+              </tr>
+              <tr>
+                <td><strong>Tsavorite Garnet (Grossular)</strong></td>
+                <td>Cubic</td>
+                <td>Isotropic</td>
+                <td>1.7400</td>
+                <td>0.0270</td>
+                <td>0.0000</td>
+                <td>3.61</td>
+              </tr>
+              <tr>
+                <td><strong>Pyrope / Almandine Garnet</strong></td>
+                <td>Cubic</td>
+                <td>Isotropic</td>
+                <td>1.740–1.790</td>
+                <td>0.0240</td>
+                <td>0.0000</td>
+                <td>3.78</td>
+              </tr>
+              <tr>
+                <td><strong>Peridot (Olivine)</strong></td>
+                <td>Orthorhombic</td>
+                <td>Biaxial Positive</td>
+                <td>1.6540</td>
+                <td>0.0200</td>
+                <td>+0.0360</td>
+                <td>3.34</td>
+              </tr>
+              <tr>
+                <td><strong>Benitoite (BaTiSi₃O₉)</strong></td>
+                <td>Hexagonal</td>
+                <td>Uniaxial Positive</td>
+                <td>1.7570</td>
+                <td>0.0460</td>
+                <td>+0.0470</td>
+                <td>3.65</td>
+              </tr>
+              <tr>
+                <td><strong>Synthetic Rutile (TiO₂)</strong></td>
+                <td>Tetragonal</td>
+                <td>Uniaxial Positive</td>
+                <td>2.6130</td>
+                <td>0.3300</td>
+                <td>+0.2870</td>
+                <td>4.26</td>
+              </tr>
+              <tr>
+                <td><strong>Cubic Zirconia (ZrO₂)</strong></td>
+                <td>Cubic</td>
+                <td>Isotropic</td>
+                <td>2.1500</td>
+                <td>0.0600</td>
+                <td>0.0000</td>
+                <td>5.70</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="alexandrite-case">
+          <h2>2. Alexandrite & The "Daylight-to-Incandescent" Shift</h2>
+          <p>
+            Chrysoberyl variety Alexandrite is famed as <em>"emerald by day, ruby by night"</em>.
+          </p>
+          <p>
+            This phenomenon cannot be replicated by adjusting an RGB albedo color. It occurs because Alexandrite's chromium chromophore (Cr³⁺) creates a transmission window with two competing peaks: one in the blue-green (500 nm) and one in the deep red (680 nm), separated by a strong absorption valley around 580 nm (yellow).
+          </p>
+          <ul>
+            <li>Under <strong>daylight (D65, ~6500K)</strong> rich in blue/green photons, the 500 nm transmission window dominates, rendering the stone a cool emerald green.</li>
+            <li>Under <strong>incandescent lighting (~2850K)</strong> rich in red photons, the 680 nm red transmission window dominates, shifting the perceived hue to intense ruby red.</li>
+            <li>In addition, Alexandrite is orthorhombic biaxial, exhibiting distinct <strong>trichroic absorption</strong> along its α, β, and γ optical axes. Indicatrix evaluates these absorption tensors directionally per ray.</li>
+          </ul>
+        </section>
+
+        <section id="corundum-case">
+          <h2>3. Sapphire & Ruby Dichroism</h2>
+          <p>
+            Corundum is trigonal uniaxial negative. Light traveling through a sapphire or ruby experiences two distinct absorption behaviors:
+          </p>
+          <ul>
+            <li><strong>Ordinary Ray (o-ray)</strong>: Vibrating perpendicular to the c-axis, exhibiting deeper, richer violet-blue in sapphire or vivid crimson in ruby.</li>
+            <li><strong>Extraordinary Ray (e-ray)</strong>: Vibrating parallel to the c-axis, exhibiting lighter, greenish-blue or pale orange-red.</li>
+          </ul>
+          <p>
+            Lapidaries deliberately orient the gemstone's table facet perpendicular to the c-axis to display the most saturated o-ray color face-up. In Indicatrix, you can adjust the crystallographic c-axis angle interactively in the Settings dialog to visualize the impact of crystal orientation on color yield.
+          </p>
+        </section>
+
+        <section id="extreme-optics">
+          <h2>4. High-Dispersion & Extreme Birefringence Materials</h2>
+          <p>
+            While conventional renderers struggle with diamond, they completely break down on extreme optical materials:
+          </p>
+          <ul>
+            <li><strong>Synthetic Rutile (TiO₂)</strong> has a dispersion of 0.330 (nearly 8 times diamond!) and a massive birefringence of +0.287. Light rays split so violently that every back facet appears double.</li>
+            <li><strong>Moissanite (4H-SiC)</strong> has more than double the dispersion of diamond (0.104) and high birefringence (+0.043), creating brilliant disco-ball rainbow flashes and visible facet doubling.</li>
+          </ul>
+          <p>
+            Indicatrix models these extreme physics without numerical instability, using strict ULP-bounded math and Russian-roulette path bounds.
+          </p>
+        </section>
+
+        <section id="custom-materials">
+          <h2>5. Creating Custom Gem Materials</h2>
+          <p>
+            You can define custom gem species and synthetic crystals in <code>apps/indicatrix-cut</code> using the Material Editor or in TOML configuration files:
+          </p>
+
+          <div class="code-block-container" style="margin: 1.5rem 0;">
+            <div class="code-header">
+              <span class="code-title">TOML — Custom Gemstone Material Definition</span>
+              <button class="copy-btn">Copy</button>
+            </div>
+            <div class="code-content">
+              <code><span class="comment"># Example custom synthetic garnet definition</span>
+<span class="keyword">[[custom_material]]</span>
+name = <span class="string">"Cerium-doped YAG"</span>
+crystal_system = <span class="string">"Cubic"</span>
+optical_character = <span class="string">"Isotropic"</span>
+refractive_index_d = 1.832
+dispersion_delta = 0.028
+birefringence_delta = 0.0
+specific_gravity = 4.56
+c_axis = [0.0, 1.0, 0.0]
+
+<span class="comment"># Inclusion scattering parameters (silk / rutile simulation)</span>
+scattering_sigma_s = 0.15     <span class="comment"># 0.0 = clean, 0.05-3.0 = hazy to milky</span>
+scattering_g = 0.7            <span class="comment"># Henyey-Greenstein forward scattering asymmetry</span>
+edge_rounding_radius = 0.005  <span class="comment"># micron-scale soft facet edge glint</span></code>
+            </div>
+          </div>
+        </section>
+      </article>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© Indicatrix Project Contributors · MIT License</div>
+        <div><a href="index.html">Home</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Desktop Studio</a> · <a href="gallery.html">Screenshots</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
