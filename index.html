@@ -457,7 +457,7 @@ cargo run -p indicatrix-worker --features worker -- render \
       <li>The faceting CAD (<code>indicatrix-cut-core</code> and the editor UI in <code>apps/indicatrix-cut</code>) is beta; its interaction model is still changing.</li>
       <li><code>indicatrix-web</code> is an experimental WebGPU-only browser build with no CPU fallback and no design library — see its own <code>README.md</code>.</li>
       <li>The GPU compute path requires a wgpu-supported adapter with at least 11 storage buffers per shader stage (<code>MEGAKERNEL_STORAGE_BUFFERS</code>, <code>crates/indicatrix/src/renderer/gpu/context.rs</code>); without one, rendering falls back to the CPU tracer.</li>
-      <li>macOS is not mentioned in the workspace README or build scripts and is not known to have been tested.</li>
+      <li>macOS has not been tested.</li>
     </ul>
   </section>
 
