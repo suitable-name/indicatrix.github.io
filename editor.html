@@ -1,248 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desktop Studio & Faceting CAD — Indicatrix Cut</title>
-  <meta name="description" content="Guide to Indicatrix Cut: the modern Slint desktop studio for lapidaries, gem cutters, and CAD designers. Real-time 3D spectral rendering, meet-point solver, and tilt sweeps.">
-  <link rel="icon" type="image/png" href="assets/images/icon.png">
-  <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio &amp; CAD — Indicatrix</title>
+<meta name="description" content="Indicatrix Cut: the desktop faceting studio. Design library, live spectral viewport, tilt performance sweeps, and the beta meet-point solver and CAD engine.">
+<link rel="icon" type="image/png" href="assets/images/icon.png">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-  <!-- Site Navigation -->
-  <header class="site-header">
-    <div class="container navbar">
-      <a href="index.html" class="brand">
-        <img src="assets/images/icon.png" alt="Indicatrix Logo" class="brand-icon">
-        <span>Indicatrix</span>
-      </a>
-
-      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-
-      <ul class="nav-menu">
-        <li><a href="index.html" class="nav-link">Overview</a></li>
-        <li><a href="physics.html" class="nav-link">Physics & Optics</a></li>
-        <li><a href="editor.html" class="nav-link active">Desktop Studio</a></li>
-        <li><a href="materials.html" class="nav-link">Gem Materials</a></li>
-        <li><a href="distributed.html" class="nav-link">Remote Cluster</a></li>
-        <li><a href="gallery.html" class="nav-link">Gallery & Screenshots</a></li>
-      </ul>
-
-      <div class="nav-actions">
-        <a href="https://github.com/suitable-name/indicatrix" target="_blank" rel="noopener" class="btn btn-github btn-sm">
-          GitHub
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <div class="doc-header">
-    <div class="container">
-      <span class="section-tag">Desktop Application</span>
-      <h1 class="hero-title" style="font-size: 2.75rem; text-align: left; margin-bottom: 0.75rem;">
-        Facet Diagrams Studio (`indicatrix-cut`)
-      </h1>
-      <p class="hero-subtitle" style="text-align: left; margin: 0; font-size: 1.15rem;">
-        The desktop workspace for lapidaries: browse design libraries, edit cutting schedules with real constraint solvers, and simulate stone performance before you touch a lap.
-      </p>
-    </div>
-  </div>
-
+<header class="masthead">
   <div class="container">
-    <div class="doc-layout">
-      <!-- Sticky Navigation Sidebar -->
-      <aside class="doc-sidebar">
-        <ul class="doc-nav-list">
-          <li class="doc-nav-item"><a href="#studio-overview">1. Studio Overview</a></li>
-          <li class="doc-nav-item"><a href="#catalogue">2. Local Design Catalogue</a></li>
-          <li class="doc-nav-item"><a href="#viewport">3. 3D Viewport & Optics Controls</a></li>
-          <li class="doc-nav-item"><a href="#tilt-analytics">4. Tilt Performance Sweeps</a></li>
-          <li class="doc-nav-item"><a href="#cad-solver">5. Constraint Solver & Tier Editor</a></li>
-          <li class="doc-nav-item"><a href="#optimizer">6. Autonomous Angle Optimizer</a></li>
-          <li class="doc-nav-item"><a href="#inspection">7. Solid Inspection View</a></li>
-          <li class="doc-nav-item"><a href="#export">8. High-Res Wide-Gamut Export</a></li>
-        </ul>
-      </aside>
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="physics.html">Physics</a>
+      <a href="editor.html" aria-current="page">Studio &amp; CAD</a>
+      <a href="materials.html">Materials</a>
+      <a href="distributed.html">Distributed</a>
+      <a href="gallery.html">Figures</a>
+    </nav>
+    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+  </div>
+</header>
 
-      <!-- Main Documentation Content -->
-      <article class="doc-content">
-        <section id="studio-overview">
-          <h2>1. Studio Overview</h2>
-          <p>
-            <code>indicatrix-cut</code> is the flagship GUI application of the Indicatrix ecosystem. Built with <a href="https://slint.dev" target="_blank" rel="noopener">Slint 1.17</a>, it provides a fluid, responsive native interface on both Linux and Windows.
-          </p>
-          <p>
-            The studio seamlessly integrates three key pillars of modern lapidary work:
-          </p>
-          <ol>
-            <li><strong>The Catalogue Browser</strong>: Search, filter, and organize your personal faceting library.</li>
-            <li><strong>The 3D Spectral Viewport</strong>: Photorealistic real-time ray tracing with progressive accumulation, live gemological performance indicators, and tilt curves.</li>
-            <li><strong>The Faceting CAD Engine</strong>: Edit cutting tiers, define rough preforms, solve meet points, check manufacturability, and optimize angles for different gem species.</li>
-          </ol>
-
-          <div class="app-window-frame" style="margin: 2rem 0;">
-            <img src="assets/images/main.png" alt="Indicatrix Main Window Overview" class="app-screenshot">
-          </div>
-        </section>
-
-        <section id="catalogue">
-          <h2>2. The Local Design Catalogue</h2>
-          <p>
-            Your designs belong entirely to you. Indicatrix stores your catalogue in a local SQLite database (<code>facet_diagrams.sqlite</code>) with zero telemetry, zero cloud locks, and zero external tracking.
-          </p>
-          
-          <h3>Parametric Filtering</h3>
-          <ul>
-            <li><strong>Refractive Index Range</strong>: Find designs calculated for specific materials (e.g., Quartz 1.54, Beryl 1.58, Corundum 1.77, Diamond 2.42).</li>
-            <li><strong>L/W Ratio Range</strong>: Filter by stone proportions (1.0 for rounds and squares; 1.3–1.8 for ovals and marquises).</li>
-            <li><strong>Facet Count & Gear</strong>: Filter by pavilion, crown, or total facet count, and index gear tooth count (96, 64, 80, 120).</li>
-            <li><strong>Shape Vocabulary</strong>: Automatic classification into Round, Oval, Cushion, Emerald, Trillion, Heart, Freeform, and more.</li>
-            <li><strong>Full-Text Search</strong>: Fast search over titles, designers, and footnotes.</li>
-          </ul>
-
-          <h3>Import & Export</h3>
-          <p>
-            Import single <code>.asc</code> GemCAD files or entire folders of cutting schedules. Original files are preserved byte-for-byte in the database as attachments, alongside rendered preview thumbnails and notes.
-          </p>
-        </section>
-
-        <section id="viewport">
-          <h2>3. The 3D Spectral Viewport & Controls</h2>
-          <p>
-            The main viewport runs the full spectral path tracer directly:
-          </p>
-          <ul>
-            <li><strong>Interactive Orbit Camera</strong>: Left-click and drag to rotate the stone in 3D space; right-click to pan; scroll wheel to zoom.</li>
-            <li><strong>Progressive Accumulation</strong>: Renders progressively refine from 1 to 256+ samples per pixel (SPP). When the stone moves, the buffer resets instantly to deliver low-latency interaction.</li>
-            <li><strong>Adjustable Lighting & Presets</strong>: Choose from Studio Ring Lights, Key & Fill spotlights, or load custom 32-bit Radiance equirectangular <code>.hdr</code> environment maps.</li>
-            <li><strong>Gemological Performance Readout</strong>: Real-time readouts of:
-              <ul>
-                <li><strong>Brilliance (%)</strong>: Percentage of incident light returned through the crown to the eye.</li>
-                <li><strong>Fire Index</strong>: Dispersion measure characterizing rainbow prismatic flares across Fraunhofer lines.</li>
-                <li><strong>Scintillation (%)</strong>: Flash contrast and dynamic sparkle as the stone tilts.</li>
-                <li><strong>Windowing (%)</strong>: Light lost through the pavilion (the "fish-eye" effect).</li>
-                <li><strong>Extinction (%)</strong>: Dark, non-reflective facet zones.</li>
-              </ul>
-            </li>
-          </ul>
-        </section>
-
-        <section id="tilt-analytics">
-          <h2>4. 181-Point Tilt Performance Sweeps</h2>
-          <p>
-            A gemstone is not a static object: it is held in the hand and turned under light. A design that looks brilliant face-up may black out or window severely at just 10° of tilt.
-          </p>
-          <div class="app-window-frame" style="margin: 1.5rem 0;">
-            <img src="assets/images/tilt_performance.png" alt="Tilt Performance Curves" class="app-screenshot">
-          </div>
-          <p>
-            Indicatrix sweeps 19 discrete tilt angles (interpolated to 181 points) across <strong>four camera azimuths (0°, 45°, 90°, 135°)</strong>. The interactive graph plots Brilliance, Windowing, and Extinction simultaneously, showing you precisely how the cut behaves at every angle of view.
-          </p>
-        </section>
-
-        <section id="cad-solver">
-          <h2>5. Constraint-Based Solver & Tier Editor (`indicatrix-cut-core`)</h2>
-          <p>
-            Unlike traditional software where cutting schedules are static lists of numbers, Indicatrix treats a design as an editable geometric constraint graph.
-          </p>
-
-          <h3>The Meet-Point Solver</h3>
-          <p>
-            Faceting schedules frequently specify meet-point cutting: <em>"Cut facet tier P2 until it meets P1 and G1 at a single sharp point"</em>.
-          </p>
-          <p>
-            Indicatrix's analytical meet solver calculates the exact mast (depth) distance by intersecting the plane normal with adjacent vertex coordinates. If you change the angle of a tier, the solver automatically recalculates the cutting depths of all dependent tiers down the schedule.
-          </p>
-
-          <h3>Rough Preforms</h3>
-          <p>
-            Define the physical rough gem before cutting: cylinders, cubes, cones, or custom prisms. Indicatrix reports:
-          </p>
-          <ul>
-            <li><strong>Exact Volumetric Yield (%)</strong>: Ratio of finished gem volume to initial rough volume.</li>
-            <li><strong>Estimated Carat Weight</strong>: Derived from the material's specific gravity table.</li>
-            <li><strong>Preform Exceed Warning</strong>: Alerts you immediately if a proposed facet design breaches the rough boundary.</li>
-          </ul>
-
-          <h3>Manufacturability Linting</h3>
-          <p>
-            Before you cut stone, Indicatrix runs automated manufacturability checks:
-          </p>
-          <ul>
-            <li><strong>Vanishing Facets</strong>: Detects tiers that fail to form actual geometric faces on the finished stone.</li>
-            <li><strong>Undersized Facets</strong>: Flags facets that are too microscopic to cut reliably on a standard lap.</li>
-            <li><strong>Gear Quantization Errors</strong>: Identifies rounding errors in index gear divisions.</li>
-            <li><strong>Out-of-Order Meets</strong>: Flags schedules where a tier references vertices that haven't been cut yet.</li>
-          </ul>
-        </section>
-
-        <section id="optimizer">
-          <h2>6. Autonomous Angle Optimizer</h2>
-          <p>
-            Want to maximize brilliance or recut a quartz design for sapphire?
-          </p>
-          <p>
-            The built-in coordinate-search optimizer evaluates the objective function:
-          </p>
-          <div class="code-block-container" style="margin: 1rem 0;">
-            <div class="code-content">
-              <code>Score = w_brilliance · Brilliance − w_windowing · Windowing − w_tilt · TiltDropoff</code>
-            </div>
-          </div>
-          <p>
-            The optimizer explores free facet angles deterministically, ensuring that:
-          </p>
-          <ul>
-            <li>Pinned tiers (e.g., girdle facets) never move.</li>
-            <li>Proposed angles strictly maintain closed polyhedral geometry.</li>
-            <li>No manufacturability warnings are introduced.</li>
-          </ul>
-        </section>
-
-        <section id="inspection">
-          <h2>7. Solid Inspection View</h2>
-          <p>
-            The Edit tab features a secondary 3D Solid Inspection View:
-          </p>
-          <ul>
-            <li><strong>Polyhedral B-Rep Mesh</strong>: Displays exact facet edges, vertices, and facet polygon outlines.</li>
-            <li><strong>Facet Picking</strong>: Click on any facet in 3D to jump directly to its tier in the cutting schedule table.</li>
-            <li><strong>Critical-Angle Risk Overlays</strong>: Highlights facets where incident light exceeds the critical angle and risks severe windowing (color-coded in amber and red).</li>
-          </ul>
-        </section>
-
-        <section id="export">
-          <h2>8. High-Resolution Wide-Gamut Master Export</h2>
-          <p>
-            When you need publication-grade images for portfolios, websites, or client presentations:
-          </p>
-          <ul>
-            <li><strong>Resolution up to 8192 × 8192 (8K)</strong> at up to 32,768 samples per pixel.</li>
-            <li><strong>Color Spaces</strong>: sRGB, Display P3, and Rec.2020. Wide-gamut exports embed certified ICC color profiles.</li>
-            <li><strong>File Formats</strong>:
-              <ul>
-                <li>Standard GemCAD <code>.asc</code> cutting schedules.</li>
-                <li>Native paired <code>.indicatrix.toml</code> sidecars preserving constraints, preforms, and custom materials.</li>
-                <li>Lossless 16-bit PNG master renders.</li>
-              </ul>
-            </li>
-          </ul>
-        </section>
-      </article>
-    </div>
+<main class="container">
+  <div class="page-head">
+    <span class="tag">Desktop application</span>
+    <h1>The studio &amp; faceting CAD</h1>
+    <p class="subtitle"><code>indicatrix-cut</code> — a Slint desktop application: design library, live spectral viewport, and a constraint-based faceting editor.</p>
   </div>
 
-  <!-- Site Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-bottom">
-        <div>© Indicatrix Project Contributors · MIT License</div>
-        <div><a href="index.html">Home</a> · <a href="physics.html">Physics</a> · <a href="materials.html">Materials</a> · <a href="gallery.html">Screenshots</a></div>
-      </div>
-    </div>
-  </footer>
+  <div class="status">
+    <span class="status-label">STATUS</span>
+    <p>
+      The faceting CAD is in beta and under active development. Solving,
+      optimising and export work on the designs in the bundled catalogue, but
+      the editor's interaction model is still changing and results should be
+      checked against a conventional CAD before cutting. The design library
+      and 3D viewport (sections 1–4 below) are more stable than the editor
+      itself (sections 5–7).
+    </p>
+  </div>
 
-  <script src="assets/js/main.js"></script>
+  <section id="overview">
+    <h2><span class="sec-num">1</span>Overview</h2>
+    <p>
+      <code>apps/indicatrix-cut</code> is built with
+      <a href="https://slint.dev">Slint</a>. It combines a design-library
+      browser, a live 3D spectral viewport, and the faceting CAD engine in
+      one window.
+    </p>
+    <figure class="fig">
+      <a href="assets/images/fig_studio_main.jpg">
+        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1080" alt="Studio main window: library and viewport">
+      </a>
+      <figcaption>Fig. 1 — Design library on the left, live spectral viewport on the right.</figcaption>
+    </figure>
+  </section>
+
+  <section id="catalogue">
+    <h2><span class="sec-num">2</span>The design library</h2>
+    <p>
+      Designs are stored in a local SQLite database
+      (<code>indicatrix-vault</code>) by default — no account, no telemetry —
+      though the library view can also switch to browsing a remote worker's
+      catalogue over the network instead. Filterable by shape, index-gear
+      tooth count, refractive-index range, length/width ratio, and facet
+      count. The shape filter is populated partly by automatic
+      classification: girdle facet count and length/width ratio identify a
+      confident round, triangle, square, hexagon, or octagon outline;
+      elongated shapes such as oval, cushion, and emerald are not
+      auto-detected and keep whatever label the source data or a manual edit
+      gives them. Import brings in single <code>.asc</code> files or entire
+      folders; the original file is preserved alongside the parsed schedule.
+    </p>
+  </section>
+
+  <section id="viewport">
+    <h2><span class="sec-num">3</span>The 3D viewport</h2>
+    <p>
+      The viewport switches between a fast solid preview and the full
+      spectral path tracer. Orbit, pan, and zoom with the mouse; the
+      progressive path tracer accumulates samples while the camera is still
+      and resets on any camera or material change. Lighting presets and
+      custom HDR equirectangular environment maps are both supported, along
+      with live readouts of brilliance, fire, scintillation, windowing, and
+      extinction as the stone is orbited.
+    </p>
+  </section>
+
+  <section id="tilt-analytics">
+    <h2><span class="sec-num">4</span>Tilt performance sweeps</h2>
+    <figure class="fig">
+      <a href="assets/images/fig_tilt_curve.png">
+        <img src="assets/images/fig_tilt_curve.png" width="1671" height="847" alt="Tilt performance curve graph">
+      </a>
+      <figcaption>Fig. 2 — Brilliance, windowing, and extinction across a tilt sweep.</figcaption>
+    </figure>
+    <p>
+      A cut that looks brilliant face-up can black out or window heavily at a
+      few degrees of tilt. Indicatrix sweeps a 181-point tilt profile
+      (<code>±90°</code>) at each of 4 fixed camera azimuths — 0°, 45°, 90°,
+      135° (<code>PROFILE_AZIMUTHS_DEG</code>, <code>crates/indicatrix/src/color/metrics.rs</code>)
+      — and plots brilliance, windowing, and extinction together so a design's
+      behaviour in the hand, not just face-up, is visible.
+    </p>
+  </section>
+
+  <section id="cad-solver">
+    <h2><span class="sec-num">5</span>Constraint solver and tier editor <span class="tag">beta</span></h2>
+    <figure class="fig">
+      <a href="assets/images/fig_cad_edit.png">
+        <img src="assets/images/fig_cad_edit.png" width="1800" height="1072" alt="Faceting tier editor">
+      </a>
+      <figcaption>Fig. 3 — Editing tier angles and meet constraints.</figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="assets/images/fig_cad_diagram.png">
+        <img src="assets/images/fig_cad_diagram.png" width="1800" height="1085" alt="Facet diagram with resolved meet points">
+      </a>
+      <figcaption>Fig. 4 — The facet diagram after the meet-point solver runs.</figcaption>
+    </figure>
+    <p>
+      A cutting schedule is a geometric constraint graph, not a static list of
+      numbers. A meet-point instruction ("cut tier P2 until it meets P1 and G1
+      at a single point") specifies a facet's depth implicitly; the solver in
+      <code>crates/indicatrix/src/geometry/meet_solver</code> resolves that
+      depth by intersecting the facet plane with its neighbours' already-known
+      vertices, walking the schedule in dependency order so that changing one
+      tier's angle recomputes every tier that depends on it. Where a design
+      has no <code>.asc</code> file to anchor against, the solver can instead
+      anchor a block against the design's own printed <code>C/W</code>/<code>P/W</code>
+      proportions (<code>meet_solver/anchors.rs</code>).
+    </p>
+  </section>
+
+  <section id="preforms-optimizer">
+    <h2><span class="sec-num">6</span>Preforms and the angle optimizer <span class="tag">beta</span></h2>
+    <p>
+      <code>indicatrix-cut-core</code>'s <code>preform</code> module models
+      the rough gem material as a rectangular block or a round/oval cylinder.
+      Its <code>yield_metrics</code> module reports volumetric yield, an
+      estimated carat weight from the material's specific gravity, and flags
+      a design whose facets cut outside the stated rough. The
+      <code>optimize</code> module runs a coordinate-search
+      optimizer over free facet angles, holding pinned tiers (such as the
+      girdle) fixed and rejecting any candidate that breaks closed polyhedral
+      geometry or introduces a new manufacturability warning.
+    </p>
+    <p>
+      Manufacturability checks (<code>manufacturability/</code>) run against
+      every edit: vanishing facets that fail to form a real face, facets too
+      small to cut reliably, index-gear quantization error, and meets
+      referencing a tier that has not been cut yet.
+    </p>
+  </section>
+
+  <section id="inspection">
+    <h2><span class="sec-num">7</span>Solid inspection view</h2>
+    <figure class="fig">
+      <a href="assets/images/fig_solid_view.png">
+        <img src="assets/images/fig_solid_view.png" width="1800" height="1059" alt="Solid inspection view with facet picking">
+      </a>
+      <figcaption>Fig. 5 — Solid inspection: click a facet to jump to its row in the schedule.</figcaption>
+    </figure>
+    <p>
+      A secondary 3D view shows the exact polyhedral solid (facet edges and
+      vertices, not a tessellated approximation). Clicking a facet selects
+      its row in the cutting-schedule table.
+    </p>
+  </section>
+
+  <section id="export">
+    <h2><span class="sec-num">8</span>Export</h2>
+    <figure class="fig">
+      <a href="assets/images/fig_cutting_schedule.png">
+        <img src="assets/images/fig_cutting_schedule.png" width="1396" height="1016" alt="Cutting schedule table">
+      </a>
+      <figcaption>Fig. 6 — The cutting schedule table: index, angle, mast per facet.</figcaption>
+    </figure>
+    <dl class="deflist">
+      <dt>Max resolution</dt><dd>8192 × 8192 px (<code>MAX_EXPORT_DIM</code>)</dd>
+      <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>
+      <dt>Max bounces</dt><dd>128 (<code>MAX_EXPORT_BOUNCES</code>)</dd>
+      <dt>Colour spaces</dt><dd>sRGB, Display P3, Rec. 2020 (Display P3/Rec. 2020 exports embed an ICC profile so they aren't misread as sRGB)</dd>
+      <dt>File formats</dt><dd>GemCAD <code>.asc</code>; native <code>.indicatrix.toml</code> sidecar; 8-bit PNG renders</dd>
+    </dl>
+    <p class="small">Constants from <code>apps/indicatrix-cut/src/bridge/export_thread/params.rs</code>.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="materials.html">Materials</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
 </body>
 </html>

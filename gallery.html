@@ -1,152 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery & Screenshots Guide — Indicatrix</title>
-  <meta name="description" content="Visual gallery of Indicatrix Cut Studio, 3D spectral viewports, tilt sweeps, and a comprehensive guide on how to add and update screenshots.">
-  <link rel="icon" type="image/png" href="assets/images/icon.png">
-  <link rel="stylesheet" href="assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figures — Indicatrix</title>
+<meta name="description" content="Every figure referenced across the Indicatrix site: renders, studio screenshots, faceting CAD, and the distributed rendering diagram.">
+<link rel="icon" type="image/png" href="assets/images/icon.png">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-  <!-- Site Navigation -->
-  <header class="site-header">
-    <div class="container navbar">
-      <a href="index.html" class="brand">
-        <img src="assets/images/icon.png" alt="Indicatrix Logo" class="brand-icon">
-        <span>Indicatrix</span>
-      </a>
+<header class="masthead">
+  <div class="container">
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="physics.html">Physics</a>
+      <a href="editor.html">Studio &amp; CAD</a>
+      <a href="materials.html">Materials</a>
+      <a href="distributed.html">Distributed</a>
+      <a href="gallery.html" aria-current="page">Figures</a>
+    </nav>
+    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+  </div>
+</header>
 
-      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-
-      <ul class="nav-menu">
-        <li><a href="index.html" class="nav-link">Overview</a></li>
-        <li><a href="physics.html" class="nav-link">Physics & Optics</a></li>
-        <li><a href="editor.html" class="nav-link">Desktop Studio</a></li>
-        <li><a href="materials.html" class="nav-link">Gem Materials</a></li>
-        <li><a href="distributed.html" class="nav-link">Remote Cluster</a></li>
-        <li><a href="gallery.html" class="nav-link active">Gallery & Screenshots</a></li>
-      </ul>
-
-      <div class="nav-actions">
-        <a href="https://github.com/suitable-name/indicatrix" target="_blank" rel="noopener" class="btn btn-github btn-sm">
-          GitHub
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <div class="doc-header">
-    <div class="container">
-      <span class="section-tag">Visual Showcase & User Guide</span>
-      <h1 class="hero-title" style="font-size: 2.75rem; text-align: left; margin-bottom: 0.75rem;">
-        Application Gallery & Media Guide
-      </h1>
-      <p class="hero-subtitle" style="text-align: left; margin: 0; font-size: 1.15rem;">
-        Explore high-resolution screenshots of the studio in action, and learn exactly how and where to drop new screenshots into this website.
-      </p>
-    </div>
+<main class="container">
+  <div class="page-head">
+    <span class="tag">Reference</span>
+    <h1>Figures</h1>
+    <p class="subtitle">Every figure used across this site. Click one to open the image file directly.</p>
   </div>
 
-  <main class="container section">
-    <div class="section-header">
-      <h2 class="section-title">Current Studio Screenshots</h2>
-      <p class="section-description">
-        Click any image to enlarge in full-resolution lightbox view.
-      </p>
-    </div>
+  <figure class="fig">
+    <a href="assets/images/fig_render_tanzanite.jpg">
+      <img src="assets/images/fig_render_tanzanite.jpg" width="1800" height="1200" alt="Rendered tanzanite gemstone">
+    </a>
+    <figcaption>Fig. 1 — Tanzanite, 1920 × 1080, 32 768 samples per pixel. Rendered by indicatrix-worker.</figcaption>
+  </figure>
 
-    <div class="gallery-grid">
-      <!-- Screenshot 1 -->
-      <div class="gallery-card">
-        <div class="gallery-img-wrapper">
-          <img src="assets/images/main.png" alt="Indicatrix Studio Main 3D Viewport" class="gallery-img">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Desktop Studio Interface</span>
-          <h3 class="gallery-title">3D Spectral Viewport & Design Library</h3>
-          <p class="gallery-text">
-            The flagship interface displaying a Diamond Standard Round Brilliant cut under progressive ray tracing. Features left-hand design library filtering, right-hand cutting schedule tables, live optical metrics, and orbit controls.
-          </p>
-          <div class="feature-tag-list">
-            <span class="feature-pill">File: assets/images/main.png</span>
-          </div>
-        </div>
-      </div>
+  <figure class="fig">
+    <a href="assets/images/fig_render_sapphire.jpg">
+      <img src="assets/images/fig_render_sapphire.jpg" width="1800" height="1200" alt="Rendered sapphire gemstone" loading="lazy">
+    </a>
+    <figcaption>Fig. 2 — Sapphire, 3840 × 2160, 8 192 samples per pixel. Rendered by indicatrix-worker.</figcaption>
+  </figure>
 
-      <!-- Screenshot 2 -->
-      <div class="gallery-card">
-        <div class="gallery-img-wrapper">
-          <img src="assets/images/tilt_performance.png" alt="181-Point Tilt Performance Graph" class="gallery-img">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Performance Analytics</span>
-          <h3 class="gallery-title">181-Point Tilt Performance Sweep</h3>
-          <p class="gallery-text">
-            Interactive multi-curve analysis sweeping tilt angles from −45° to +45° across 4 azimuth axes. Quantifies brilliance retention, windowing leakage, and extinction contrast.
-          </p>
-          <div class="feature-tag-list">
-            <span class="feature-pill">File: assets/images/tilt_performance.png</span>
-          </div>
-        </div>
-      </div>
+  <figure class="fig">
+    <a href="assets/images/fig_render_emerald.jpg">
+      <img src="assets/images/fig_render_emerald.jpg" width="1800" height="1200" alt="Rendered emerald gemstone" loading="lazy">
+    </a>
+    <figcaption>Fig. 3 — Emerald, 1920 × 1080, 16 384 samples per pixel. Rendered by indicatrix-worker.</figcaption>
+  </figure>
 
-      <!-- Screenshot 3 -->
-      <div class="gallery-card">
-        <div class="gallery-img-wrapper">
-          <img src="assets/images/settings.png" alt="Render Quality & Settings Dialog" class="gallery-img">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Engine Settings</span>
-          <h3 class="gallery-title">Render Quality & Optics Dialog</h3>
-          <p class="gallery-text">
-            Configure ray bounce depth, target SPP, exposure, crystallographic c-axis angles, Henyey-Greenstein inclusion scattering (silk / rutile simulation), and equirectangular HDR environment maps.
-          </p>
-          <div class="feature-tag-list">
-            <span class="feature-pill">File: assets/images/settings.png</span>
-          </div>
-        </div>
-      </div>
+  <figure class="fig">
+    <a href="assets/images/fig_render_detail.jpg">
+      <img src="assets/images/fig_render_detail.jpg" width="1400" height="900" alt="1:1 pixel crop of the sapphire render" loading="lazy">
+    </a>
+    <figcaption>Fig. 4 — 1:1 pixel crop of the sapphire render (fig. 2). Rendered by indicatrix-worker.</figcaption>
+  </figure>
 
-      <!-- Screenshot 4 -->
-      <div class="gallery-card">
-        <div class="gallery-img-wrapper">
-          <img src="assets/images/hybrid_remote_rendering.png" alt="Hybrid Remote Rendering Architecture" class="gallery-img">
-        </div>
-        <div class="gallery-info">
-          <span class="gallery-tag">Distributed Compute</span>
-          <h3 class="gallery-title">Hybrid Remote Rendering Handoff</h3>
-          <p class="gallery-text">
-            Architectural schematic demonstrating zero-latency local interactive orbit camera rendering transitioning to remote multi-threaded GPU cluster compute upon camera settle.
-          </p>
-          <div class="feature-tag-list">
-            <span class="feature-pill">File: assets/images/hybrid_remote_rendering.png</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+  <figure class="fig">
+    <a href="assets/images/fig_studio_main.jpg">
+      <img src="assets/images/fig_studio_main.jpg" width="1800" height="1080" alt="Studio main window: library and viewport" loading="lazy">
+    </a>
+    <figcaption>Fig. 5 — The studio: design library and live spectral viewport.</figcaption>
+  </figure>
 
-  <!-- Lightbox Modal -->
-  <div id="lightboxModal" class="modal">
-    <div class="modal-content">
-      <button class="modal-close">&times;</button>
-      <img id="lightboxImg" class="modal-img" src="" alt="Enlarged screenshot">
-      <div id="lightboxCaption" class="modal-caption"></div>
-    </div>
+  <figure class="fig">
+    <a href="assets/images/fig_cad_edit.png">
+      <img src="assets/images/fig_cad_edit.png" width="1800" height="1072" alt="Faceting tier editor" loading="lazy">
+    </a>
+    <figcaption>Fig. 6 — Editing a cutting schedule's tier angles and constraints (CAD, beta).</figcaption>
+  </figure>
+
+  <figure class="fig">
+    <a href="assets/images/fig_cad_diagram.png">
+      <img src="assets/images/fig_cad_diagram.png" width="1800" height="1085" alt="Facet diagram with resolved meet points" loading="lazy">
+    </a>
+    <figcaption>Fig. 7 — The facet diagram after the meet-point solver runs (CAD, beta).</figcaption>
+  </figure>
+
+  <figure class="fig">
+    <a href="assets/images/fig_solid_view.png">
+      <img src="assets/images/fig_solid_view.png" width="1800" height="1059" alt="Solid inspection view with facet picking" loading="lazy">
+    </a>
+    <figcaption>Fig. 8 — Solid inspection view: click a facet to jump to its schedule row.</figcaption>
+  </figure>
+
+  <figure class="fig">
+    <a href="assets/images/fig_cutting_schedule.png">
+      <img src="assets/images/fig_cutting_schedule.png" width="1396" height="1016" alt="Cutting schedule table" loading="lazy">
+    </a>
+    <figcaption>Fig. 9 — The cutting schedule table: index, angle, mast per facet.</figcaption>
+  </figure>
+
+  <figure class="fig">
+    <a href="assets/images/fig_tilt_curve.png">
+      <img src="assets/images/fig_tilt_curve.png" width="1671" height="847" alt="Tilt performance curve graph" loading="lazy">
+    </a>
+    <figcaption>Fig. 10 — Tilt performance sweep: 181 points across 4 camera azimuths.</figcaption>
+  </figure>
+
+  <figure class="fig">
+    <a href="assets/images/fig_settings.png">
+      <img src="assets/images/fig_settings.png" width="1192" height="1400" alt="Render settings dialog" loading="lazy">
+    </a>
+    <figcaption>Fig. 11 — Render and optics settings.</figcaption>
+  </figure>
+
+  <figure class="fig diagram-fig">
+<svg class="diagram" viewBox="0 0 900 300" role="img" aria-labelledby="handoff-title" xmlns="http://www.w3.org/2000/svg">
+  <title id="handoff-title">Preview-then-handoff: the desktop renders a local preview while the camera moves, then a remote worker traces sample-index ranges that are summed into the same accumulator.</title>
+  <style>
+    .diagram text { font-family: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace; font-size: 12.5px; fill: var(--ink); }
+    .diagram .lbl { font-size: 11px; fill: var(--ink-2); letter-spacing: 0.06em; }
+    .diagram .muted { fill: var(--ink-2); }
+    .diagram .box { fill: none; stroke: var(--ink-2); stroke-width: 1; }
+    .diagram .bar { fill: var(--paper-2); stroke: var(--rule); stroke-width: 1; }
+    .diagram .arrow { fill: none; stroke: var(--accent); stroke-width: 1.5; }
+    .diagram .head { fill: var(--accent); }
+  </style>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path class="head" d="M 0 0 L 10 5 L 0 10 z"/>
+    </marker>
+  </defs>
+
+  <rect class="box" x="20" y="34" width="300" height="168"/>
+  <text class="lbl" x="34" y="56">DESKTOP · indicatrix-cut</text>
+  <text x="34" y="86">camera moving</text>
+  <text class="muted" x="34" y="106">  local CPU / GPU preview,</text>
+  <text class="muted" x="34" y="124">  few samples, immediate</text>
+  <text x="34" y="154">camera settled</text>
+  <text class="muted" x="34" y="174">  hand sample tracing off</text>
+  <text class="muted" x="34" y="192">  to the worker</text>
+
+  <rect class="box" x="580" y="34" width="300" height="168"/>
+  <text class="lbl" x="594" y="56">WORKER · indicatrix-worker</text>
+  <text x="594" y="86">GPU / CPU path tracer</text>
+  <text class="muted" x="594" y="106">  traces sample-index ranges</text>
+  <text class="muted" x="594" y="124">  [0, 4096)  [4096, 8192) …</text>
+  <text x="594" y="154">not screen tiles</text>
+  <text class="muted" x="594" y="174">  no seams, no per-tile load</text>
+  <text class="muted" x="594" y="192">  imbalance on a small stone</text>
+
+  <path class="arrow" d="M 322 92 H 578" marker-end="url(#ah)"/>
+  <text class="lbl" x="450" y="82" text-anchor="middle">mTLS 1.3 · token enrolment</text>
+  <path class="arrow" d="M 578 152 H 322" marker-end="url(#ah)"/>
+  <text class="lbl" x="450" y="174" text-anchor="middle">finished sample ranges, any order</text>
+
+  <rect class="bar" x="20" y="232" width="860" height="48"/>
+  <text class="lbl" x="34" y="252">ACCUMULATOR</text>
+  <text x="34" y="270">local and remote samples are summed per pixel; the image converges as ranges arrive, whichever side produced them</text>
+  <path class="arrow" d="M 170 204 V 230" marker-end="url(#ah)"/>
+  <path class="arrow" d="M 730 204 V 230" marker-end="url(#ah)"/>
+</svg>
+<figcaption>Fig. 12 — Preview-then-handoff: local preview while the camera moves, remote sample-index ranges once it settles, one shared accumulator.</figcaption>
+</figure>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="materials.html">Materials</a> · <a href="distributed.html">Distributed</a></p>
   </div>
+</footer>
 
-  <!-- Site Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-bottom">
-        <div>© Indicatrix Project Contributors · MIT License</div>
-        <div><a href="index.html">Home</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Desktop Studio</a> · <a href="materials.html">Materials</a></div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="assets/js/main.js"></script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>

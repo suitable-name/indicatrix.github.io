@@ -1,57 +1,34 @@
 /**
- * Indicatrix - Main JavaScript Interaction & Material Spectrum Visualizer
+ * Indicatrix — site script.
  * License: MIT | https://github.com/suitable-name/indicatrix
+ *
+ * No external resources are loaded. Everything on the site works with this
+ * script disabled except the dispersion chart on materials.html, which prints
+ * a plain-text note in that case (see the <noscript> below the canvas).
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initNavigation();
   initCopyButtons();
   initMaterialExplorer();
-  initTiltSimulator();
-  initLightbox();
 });
 
 /* -------------------------------------------------------------
- * 1. Mobile Navigation & Scroll Highlighting
- * ----------------------------------------------------------- */
-function initNavigation() {
-  const navToggle = document.querySelector('.nav-toggle');
-  const navMenu = document.querySelector('.nav-menu');
-
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('open');
-      navToggle.setAttribute('aria-expanded', navMenu.classList.contains('open'));
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.remove('open');
-      }
-    });
-  }
-}
-
-/* -------------------------------------------------------------
- * 2. Code Block Copy to Clipboard
+ * Copy-to-clipboard for code blocks.
  * ----------------------------------------------------------- */
 function initCopyButtons() {
   document.querySelectorAll('.copy-btn').forEach(button => {
     button.addEventListener('click', async () => {
-      const codeBlock = button.closest('.code-block-container')?.querySelector('code');
+      const codeBlock = button.closest('.code-block')?.querySelector('code');
       if (!codeBlock) return;
 
-      const text = codeBlock.innerText.replace(/^\$\s+/gm, ''); // strip shell prompts if any
+      const text = codeBlock.innerText.replace(/^\$\s+/gm, '');
       try {
         await navigator.clipboard.writeText(text);
         const originalText = button.textContent;
-        button.textContent = 'Copied!';
-        button.style.color = '#10b981';
+        button.textContent = 'Copied';
         setTimeout(() => {
           button.textContent = originalText;
-          button.style.color = '';
-        }, 2000);
+        }, 1500);
       } catch (err) {
         console.error('Failed to copy code: ', err);
       }
@@ -60,9 +37,14 @@ function initCopyButtons() {
 }
 
 /* -------------------------------------------------------------
- * 3. Interactive Gemstone Material & Dispersion Explorer
- *    Evaluates real 2-term & 3-term Sellmeier or Cauchy equations
- *    and draws authentic dispersion curves across 380 - 780 nm.
+ * Interactive gemstone dispersion explorer.
+ *
+ * Sellmeier/Cauchy coefficients and evaluate() functions are transcribed
+ * directly from crates/indicatrix/src/optics/materials.rs's DispersionModel
+ * values for each material (see optics/dispersion.rs for the exact
+ * Sellmeier3/Cauchy evaluation form these mirror). The drawing code is
+ * restyled to the datasheet palette (read from the page's own CSS custom
+ * properties, so it follows the light/dark theme automatically).
  * ----------------------------------------------------------- */
 const GEM_MATERIALS = {
   diamond: {
@@ -70,14 +52,14 @@ const GEM_MATERIALS = {
     crystal: "Cubic (Isotropic)",
     character: "Isotropic",
     ri_d: "2.4173",
-    dispersion: "0.0440",
+    dispersion: "0.0256",
     abbe: "55.3",
-    birefringence: "0.0000 (None)",
+    birefringence: "0.0000 (none)",
     sg: "3.52",
     formula: "Sellmeier 2-pole (Peter 1923)",
-    description: "Exceptional brilliance and adamantine luster with intense fire. The ultimate isotropic gemstone standard.",
+    description: "Exceptional brilliance and adamantine luster with intense fire. The reference isotropic gemstone.",
     evaluate: (lambdaUm) => {
-      // Peter (1923): n^2 - 1 = 4.3356*λ^2 / (λ^2 - 0.1060^2) + 0.3306*λ^2 / (λ^2 - 0.1750^2)
+      // Peter (1923): n^2 - 1 = 4.3356*l^2/(l^2 - 0.1060^2) + 0.3306*l^2/(l^2 - 0.1750^2)
       const l2 = lambdaUm * lambdaUm;
       const term1 = (4.3356 * l2) / (l2 - 0.1060 * 0.1060);
       const term2 = (0.3306 * l2) / (l2 - 0.1750 * 0.1750);
@@ -85,18 +67,17 @@ const GEM_MATERIALS = {
     }
   },
   sapphire: {
-    name: "Sapphire / Ruby (Corundum Al₂O₃)",
+    name: "Sapphire / Ruby (Corundum, Al2O3)",
     crystal: "Trigonal",
-    character: "Uniaxial Negative",
-    ri_d: "1.7682 (nₒ) / 1.7600 (nₑ)",
-    dispersion: "0.0180",
-    abbe: "72.2",
-    birefringence: "-0.0082",
+    character: "Uniaxial negative",
+    ri_d: "1.7681 (no) / 1.7600 (ne)",
+    dispersion: "0.0106",
+    abbe: "72.3",
+    birefringence: "-0.0081",
     sg: "4.00",
-    formula: "Sellmeier 3-pole (Malitson 1962)",
-    description: "Durable trigonal corundum with distinct dichroism (stronger along the extraordinary ray) and crisp facet reflections.",
+    formula: "Sellmeier 3-pole (Malitson & Dodge 1972)",
+    description: "Durable trigonal corundum with dichroism and crisp facet reflections.",
     evaluate: (lambdaUm) => {
-      // Malitson (1962) ordinary ray
       const l2 = lambdaUm * lambdaUm;
       const term1 = (1.4313493 * l2) / (l2 - 0.0726631 * 0.0726631);
       const term2 = (0.65054713 * l2) / (l2 - 0.1193242 * 0.1193242);
@@ -105,193 +86,211 @@ const GEM_MATERIALS = {
     }
   },
   alexandrite: {
-    name: "Alexandrite (Chrysoberyl BeAl₂O₄:Cr³⁺)",
+    name: "Alexandrite (Chrysoberyl, BeAl2O4:Cr)",
     crystal: "Orthorhombic",
-    character: "Biaxial Positive",
-    ri_d: "1.7450 (n_β)",
-    dispersion: "0.0150",
-    abbe: "68.0",
-    birefringence: "+0.0090",
+    character: "Biaxial positive",
+    ri_d: "1.7427",
+    dispersion: "0.0101",
+    abbe: "73.9",
+    birefringence: "+0.0076",
     sg: "3.73",
-    formula: "Cauchy / Sellmeier Indicatrix",
-    description: "Famous for daylight (emerald green) to incandescent (ruby red) color shift driven by directional trichroic absorption tensors.",
+    formula: "Sellmeier 3-pole (Walling 1980)",
+    description: "Daylight (green) to incandescent (red) colour shift from directional absorption.",
     evaluate: (lambdaUm) => {
-      // Base Cauchy fit for n_beta
-      const invL2 = 1.0 / (lambdaUm * lambdaUm);
-      const invL4 = invL2 * invL2;
-      return 1.7345 + 0.0075 * invL2 + 0.00035 * invL4;
+      // Walling et al. 1980, n(alpha)-direction Sellmeier, encoded as three
+      // poles (materials.rs: b=[0.78522, 1.21202, 16.81], c=[0.0, 0.01262, 1000.0]).
+      const l2 = lambdaUm * lambdaUm;
+      const term0 = 0.78522 * l2 / (l2 - 0.0);
+      const term1 = 1.21202 * l2 / (l2 - 0.01262);
+      const term2 = 16.81 * l2 / (l2 - 1000.0);
+      return Math.sqrt(1.0 + term0 + term1 + term2);
     }
   },
   emerald: {
-    name: "Emerald (Beryl Be₃Al₂Si₆O₁₈:Cr/V)",
+    name: "Emerald (Beryl, Be3Al2Si6O18:Cr/V)",
     crystal: "Hexagonal",
-    character: "Uniaxial Negative",
-    ri_d: "1.5770",
-    dispersion: "0.0140",
-    abbe: "60.0",
+    character: "Uniaxial negative",
+    ri_d: "1.5791",
+    dispersion: "0.0082",
+    abbe: "70.9",
     birefringence: "-0.0060",
     sg: "2.72",
-    formula: "Sellmeier (GHOSH 1999)",
-    description: "Calm vitreous luster with deep green pleochroism. Sensitive to internal inclusion scattering and facet angles.",
+    formula: "Cauchy fit",
+    description: "Vitreous luster with a two-window green transmission band; sensitive to inclusion scattering.",
     evaluate: (lambdaUm) => {
-      const l2 = lambdaUm * lambdaUm;
-      return Math.sqrt(1.0 + (1.455 * l2) / (l2 - 0.098 * 0.098) + (0.015 * l2) / (l2 - 0.22 * 0.22));
+      // No primary Sellmeier fit exists for beryl; materials.rs uses a
+      // 2-parameter Cauchy fit (a=1.566794, b=0.004273, c=0).
+      const invL2 = 1.0 / (lambdaUm * lambdaUm);
+      return 1.566794 + 0.004273 * invL2;
     }
   },
   moissanite: {
-    name: "Moissanite (Silicon Carbide 4H-SiC)",
+    name: "Moissanite (silicon carbide, 4H-SiC)",
     crystal: "Hexagonal",
-    character: "Uniaxial Positive",
-    ri_d: "2.6500",
-    dispersion: "0.1040",
-    abbe: "20.5",
-    birefringence: "+0.0430 (Extreme)",
+    character: "Uniaxial positive",
+    ri_d: "2.6474",
+    dispersion: "0.0635",
+    abbe: "25.9",
+    birefringence: "+0.0415",
     sg: "3.22",
-    formula: "Sellmeier (Shaffer 1971)",
-    description: "More than double the dispersion of diamond with massive birefringence, casting dazzling rainbow flares and double facet reflections.",
+    formula: "Sellmeier 3-pole (Wang 2013)",
+    description: "More than double diamond's dispersion, with strong birefringence and visible facet doubling.",
     evaluate: (lambdaUm) => {
+      // 6H-SiC ordinary-ray fit (Wang et al. 2013), encoded as three poles
+      // (materials.rs: b=[1.163887, 4.408433, 21.53], c=[0.0, 0.03178, 1000.0]).
       const l2 = lambdaUm * lambdaUm;
-      return Math.sqrt(1.0 + (5.555 * l2) / (l2 - 0.1625 * 0.1625));
+      const term0 = 1.163887 * l2 / (l2 - 0.0);
+      const term1 = 4.408433 * l2 / (l2 - 0.03178);
+      const term2 = 21.53 * l2 / (l2 - 1000.0);
+      return Math.sqrt(1.0 + term0 + term1 + term2);
     }
   },
   zircon: {
-    name: "High Zircon (ZrSiO₄)",
+    name: "High zircon (ZrSiO4)",
     crystal: "Tetragonal",
-    character: "Uniaxial Positive",
+    character: "Uniaxial positive",
     ri_d: "1.9250",
-    dispersion: "0.0380",
-    abbe: "32.0",
-    birefringence: "+0.0590 (Heavy Doubling)",
+    dispersion: "0.0226",
+    abbe: "41.0",
+    birefringence: "+0.0590",
     sg: "4.70",
-    formula: "Sellmeier (Medenbach 1980)",
-    description: "High refractive index and dramatic birefringence walk-off producing visible facet doubling inside the stone.",
+    formula: "Cauchy fit",
+    description: "High refractive index and heavy birefringence producing visible facet doubling.",
     evaluate: (lambdaUm) => {
-      const l2 = lambdaUm * lambdaUm;
-      return Math.sqrt(1.0 + (2.615 * l2) / (l2 - 0.138 * 0.138));
+      // No primary fit exists for zircon; materials.rs uses a 2-parameter
+      // Cauchy fit (a=1.890963, b=0.011820, c=0).
+      const invL2 = 1.0 / (lambdaUm * lambdaUm);
+      return 1.890963 + 0.011820 * invL2;
     }
   },
   tanzanite: {
-    name: "Tanzanite (Zoisite Ca₂Al₃(SiO₄)₃(OH):V)",
+    name: "Tanzanite (Zoisite, Ca2Al3(SiO4)3(OH):V)",
     crystal: "Orthorhombic",
-    character: "Biaxial Positive",
-    ri_d: "1.6910",
-    dispersion: "0.0210",
-    abbe: "48.0",
-    birefringence: "+0.0090",
+    character: "Biaxial positive",
+    ri_d: "1.7009",
+    dispersion: "0.0174",
+    abbe: "40.2",
+    birefringence: "+0.0130",
     sg: "3.35",
-    formula: "Biaxial Sellmeier Tensors",
-    description: "Spectacular trichroism displaying sapphire blue, deep violet-purple, and burgundy depending on crystallographic orientation.",
+    formula: "Cauchy fit",
+    description: "Unheated trichroism spanning red, blue, and yellow-green by orientation.",
     evaluate: (lambdaUm) => {
+      // No primary fit exists for zoisite/tanzanite; materials.rs uses a
+      // 2-parameter Cauchy fit (a=1.674589, b=0.009123, c=0).
       const invL2 = 1.0 / (lambdaUm * lambdaUm);
-      return 1.6820 + 0.0071 * invL2 + 0.00028 * invL2 * invL2;
+      return 1.674589 + 0.009123 * invL2;
     }
   },
   demantoid: {
-    name: "Demantoid Garnet (Andradite Ca₃Fe₂(SiO₄)₃)",
-    crystal: "Cubic (Isotropic)",
+    name: "Demantoid garnet (Andradite, Ca3Fe2(SiO4)3)",
+    crystal: "Cubic (isotropic)",
     character: "Isotropic",
-    ri_d: "1.8880",
-    dispersion: "0.0570",
-    abbe: "24.0",
+    ri_d: "1.8870",
+    dispersion: "0.0330",
+    abbe: "26.9",
     birefringence: "0.0000",
     sg: "3.84",
-    formula: "Sellmeier Garnet Series",
-    description: "The king of garnets: dispersion exceeding diamond, vivid olive to emerald green, prized for its golden 'horsetail' inclusions.",
+    formula: "Cauchy fit",
+    description: "Dispersion exceeding diamond; vivid green, prized for horsetail inclusions.",
     evaluate: (lambdaUm) => {
-      const l2 = lambdaUm * lambdaUm;
-      return Math.sqrt(1.0 + (2.48 * l2) / (l2 - 0.155 * 0.155));
+      // No primary fit exists for andradite garnet; materials.rs uses a
+      // 2-parameter Cauchy fit (a=1.837264, b=0.017276, c=0).
+      const invL2 = 1.0 / (lambdaUm * lambdaUm);
+      return 1.837264 + 0.017276 * invL2;
     }
   },
   rutile: {
-    name: "Synthetic Rutile (TiO₂)",
+    name: "Synthetic rutile (TiO2)",
     crystal: "Tetragonal",
-    character: "Uniaxial Positive",
-    ri_d: "2.6130 (nₒ) / 2.9090 (nₑ)",
-    dispersion: "0.3300 (Massive)",
-    abbe: "8.5",
-    birefringence: "+0.2870 (Unmatched)",
+    character: "Uniaxial positive",
+    ri_d: "2.6161 (no) / 2.9030 (ne)",
+    dispersion: "≈0.300",
+    abbe: "5.4",
+    birefringence: "+0.2870",
     sg: "4.26",
-    formula: "Sellmeier 3-term (Devore 1951)",
-    description: "Extreme optical properties: six times the fire of diamond and giant optical walk-off, pushing spectral rendering algorithms to the limit.",
+    formula: "Cauchy fit (DeVore 1951 figures)",
+    description: "Extreme dispersion and the largest birefringence of any built-in material.",
     evaluate: (lambdaUm) => {
-      const l2 = lambdaUm * lambdaUm;
-      return Math.sqrt(5.913 + (0.2441) / (l2 - 0.0803));
+      // Curve shown is the ordinary ray. materials.rs fits a per-ray
+      // 2-parameter Cauchy independently to DeVore 1951's n_d and Delta n(F-C)
+      // figures (o-ray: a=2.1634, b=0.1572); the e-ray (a=2.4354, b=0.1624,
+      // n_e(D)=2.903) is not drawn here.
+      const invL2 = 1.0 / (lambdaUm * lambdaUm);
+      return 2.1634 + 0.1572 * invL2;
     }
   }
 };
 
 function initMaterialExplorer() {
   const chips = document.querySelectorAll('.material-chip');
-  if (!chips.length) return;
-
   const canvas = document.getElementById('dispersionCanvas');
-  if (!canvas) return;
+  if (!chips.length || !canvas) return;
   const ctx = canvas.getContext('2d');
 
   function selectMaterial(matKey) {
     const data = GEM_MATERIALS[matKey] || GEM_MATERIALS.diamond;
 
-    // Update chips
     chips.forEach(chip => {
-      chip.classList.toggle('active', chip.dataset.material === matKey);
+      const active = chip.dataset.material === matKey;
+      chip.setAttribute('aria-pressed', String(active));
     });
 
-    // Update Text Data
-    const titleEl = document.getElementById('matName');
-    const crystalEl = document.getElementById('matCrystal');
-    const characterEl = document.getElementById('matCharacter');
-    const riEl = document.getElementById('matRi');
-    const dispEl = document.getElementById('matDispersion');
-    const abbeEl = document.getElementById('matAbbe');
-    const birefEl = document.getElementById('matBirefringence');
-    const sgEl = document.getElementById('matSg');
-    const descEl = document.getElementById('matDesc');
+    const set = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    };
+    set('matName', data.name);
+    set('matCrystal', data.crystal);
+    set('matCharacter', data.character);
+    set('matRi', data.ri_d);
+    set('matDispersion', data.dispersion);
+    set('matAbbe', data.abbe);
+    set('matBirefringence', data.birefringence);
+    set('matSg', data.sg);
+    set('matDesc', data.description);
 
-    if (titleEl) titleEl.textContent = data.name;
-    if (crystalEl) crystalEl.textContent = data.crystal;
-    if (characterEl) characterEl.textContent = data.character;
-    if (riEl) riEl.textContent = data.ri_d;
-    if (dispEl) dispEl.textContent = data.dispersion;
-    if (abbeEl) abbeEl.textContent = data.abbe;
-    if (birefEl) birefEl.textContent = data.birefringence;
-    if (sgEl) sgEl.textContent = data.sg;
-    if (descEl) descEl.textContent = data.description;
-
-    // Redraw Canvas
     drawDispersionCurve(ctx, canvas, data);
   }
 
   chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      selectMaterial(chip.dataset.material);
-    });
+    chip.addEventListener('click', () => selectMaterial(chip.dataset.material));
   });
 
-  // Window resize re-draws
   window.addEventListener('resize', () => {
-    const activeChip = document.querySelector('.material-chip.active');
+    const activeChip = document.querySelector('.material-chip[aria-pressed="true"]');
     if (activeChip) selectMaterial(activeChip.dataset.material);
   });
 
-  // Initial draw
   selectMaterial('diamond');
 }
 
+function readPaletteColors() {
+  const style = getComputedStyle(document.documentElement);
+  const get = (name, fallback) => (style.getPropertyValue(name) || fallback).trim();
+  return {
+    ink: get('--ink', '#191919'),
+    ink2: get('--ink-2', '#4a4740'),
+    rule: get('--rule', '#c7c1b4'),
+    accent: get('--accent', '#6b1f2a'),
+    paper2: get('--paper-2', '#ebe7df')
+  };
+}
+
 function drawDispersionCurve(ctx, canvas, material) {
-  // Support high-DPI displays
+  const colors = readPaletteColors();
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(dpr, dpr);
 
   const width = rect.width;
   const height = rect.height;
-  const padding = { top: 25, right: 30, bottom: 40, left: 55 };
+  const padding = { top: 20, right: 20, bottom: 34, left: 52 };
 
   ctx.clearRect(0, 0, width, height);
 
-  // Wavelength range: 380 nm to 780 nm (0.38 um to 0.78 um)
   const lambdaMin = 0.38;
   const lambdaMax = 0.78;
   const steps = 150;
@@ -308,7 +307,6 @@ function drawDispersionCurve(ctx, canvas, material) {
     if (n > maxN) maxN = n;
   }
 
-  // Margin on Y axis
   const span = Math.max(maxN - minN, 0.02);
   const yMin = minN - span * 0.15;
   const yMax = maxN + span * 0.15;
@@ -316,19 +314,12 @@ function drawDispersionCurve(ctx, canvas, material) {
   const graphW = width - padding.left - padding.right;
   const graphH = height - padding.top - padding.bottom;
 
-  function toX(lambda) {
-    return padding.left + ((lambda - lambdaMin) / (lambdaMax - lambdaMin)) * graphW;
-  }
+  const toX = (lambda) => padding.left + ((lambda - lambdaMin) / (lambdaMax - lambdaMin)) * graphW;
+  const toY = (n) => padding.top + graphH - ((n - yMin) / (yMax - yMin)) * graphH;
 
-  function toY(n) {
-    return padding.top + graphH - ((n - yMin) / (yMax - yMin)) * graphH;
-  }
-
-  // Draw Grid & Axes
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+  // Grid
+  ctx.strokeStyle = colors.rule;
   ctx.lineWidth = 1;
-
-  // Horizontal Grid Lines
   const ySteps = 4;
   for (let i = 0; i <= ySteps; i++) {
     const yVal = yMin + (i / ySteps) * (yMax - yMin);
@@ -338,20 +329,19 @@ function drawDispersionCurve(ctx, canvas, material) {
     ctx.lineTo(width - padding.right, yPos);
     ctx.stroke();
 
-    // Label
-    ctx.fillStyle = '#64748b';
-    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.fillStyle = colors.ink2;
+    ctx.font = '10px ui-monospace, monospace';
     ctx.textAlign = 'right';
     ctx.fillText(yVal.toFixed(3), padding.left - 8, yPos + 3);
   }
 
-  // Vertical Spectrum Wavelength Markers (F, d, C Fraunhofer lines)
+  // Fraunhofer wavelength markers
   const lines = [
-    { name: 'UV (380)', lambda: 0.380 },
-    { name: 'F (486)', lambda: 0.4861 },
-    { name: 'd (589)', lambda: 0.5893 },
-    { name: 'C (656)', lambda: 0.6563 },
-    { name: 'IR (780)', lambda: 0.780 }
+    { name: '380', lambda: 0.380 },
+    { name: 'F 486', lambda: 0.4861 },
+    { name: 'd 589', lambda: 0.5893 },
+    { name: 'C 656', lambda: 0.6563 },
+    { name: '780', lambda: 0.780 }
   ];
 
   lines.forEach(line => {
@@ -361,201 +351,34 @@ function drawDispersionCurve(ctx, canvas, material) {
     ctx.lineTo(xPos, height - padding.bottom);
     ctx.stroke();
 
-    ctx.fillStyle = '#64748b';
-    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.fillStyle = colors.ink2;
+    ctx.font = '10px ui-monospace, monospace';
     ctx.textAlign = 'center';
     ctx.fillText(line.name, xPos, height - padding.bottom + 16);
   });
 
-  // Gradient fill underneath the dispersion curve
-  const fillGrad = ctx.createLinearGradient(padding.left, 0, width - padding.right, 0);
-  fillGrad.addColorStop(0.00, 'rgba(168, 85, 247, 0.25)'); // Violet 380 nm
-  fillGrad.addColorStop(0.25, 'rgba(56, 189, 248, 0.25)');  // Blue 480 nm
-  fillGrad.addColorStop(0.50, 'rgba(16, 185, 129, 0.25)');  // Green 580 nm
-  fillGrad.addColorStop(0.70, 'rgba(245, 158, 11, 0.25)');  // Amber 650 nm
-  fillGrad.addColorStop(1.00, 'rgba(244, 63, 94, 0.25)');   // Red 780 nm
-
-  ctx.beginPath();
-  ctx.moveTo(toX(curvePoints[0].lambda), height - padding.bottom);
-  curvePoints.forEach(pt => {
-    ctx.lineTo(toX(pt.lambda), toY(pt.n));
-  });
-  ctx.lineTo(toX(curvePoints[curvePoints.length - 1].lambda), height - padding.bottom);
-  ctx.closePath();
-  ctx.fillStyle = fillGrad;
-  ctx.fill();
-
-  // Draw Stroke Line
-  const strokeGrad = ctx.createLinearGradient(padding.left, 0, width - padding.right, 0);
-  strokeGrad.addColorStop(0.00, '#a855f7');
-  strokeGrad.addColorStop(0.25, '#38bdf8');
-  strokeGrad.addColorStop(0.50, '#10b981');
-  strokeGrad.addColorStop(0.70, '#f59e0b');
-  strokeGrad.addColorStop(1.00, '#f43f5e');
-
+  // Curve
   ctx.beginPath();
   curvePoints.forEach((pt, idx) => {
     if (idx === 0) ctx.moveTo(toX(pt.lambda), toY(pt.n));
     else ctx.lineTo(toX(pt.lambda), toY(pt.n));
   });
-  ctx.strokeStyle = strokeGrad;
-  ctx.lineWidth = 2.5;
+  ctx.strokeStyle = colors.accent;
+  ctx.lineWidth = 2;
   ctx.stroke();
 
-  // Draw Sodium D line indicator circle
+  // Sodium D-line marker
   const dPoint = curvePoints.find(p => p.lambda >= 0.5893) || curvePoints[Math.floor(curvePoints.length / 2)];
   const dx = toX(0.5893);
   const dy = toY(dPoint.n);
 
   ctx.beginPath();
-  ctx.arc(dx, dy, 5, 0, Math.PI * 2);
-  ctx.fillStyle = '#00f0ff';
+  ctx.arc(dx, dy, 3.5, 0, Math.PI * 2);
+  ctx.fillStyle = colors.accent;
   ctx.fill();
-  ctx.strokeStyle = '#ffffff';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
 
-  ctx.fillStyle = '#00f0ff';
-  ctx.font = 'bold 11px "JetBrains Mono", monospace';
+  ctx.fillStyle = colors.ink;
+  ctx.font = 'bold 11px ui-monospace, monospace';
   ctx.textAlign = 'left';
   ctx.fillText(` n_D = ${dPoint.n.toFixed(4)}`, dx + 8, dy - 6);
-}
-
-/* -------------------------------------------------------------
- * 4. Interactive Tilt Performance Simulator
- * ----------------------------------------------------------- */
-function initTiltSimulator() {
-  const canvas = document.getElementById('tiltCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  function renderTilt() {
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    ctx.scale(dpr, dpr);
-
-    const w = rect.width;
-    const h = rect.height;
-    const pad = { top: 20, right: 30, bottom: 35, left: 45 };
-
-    ctx.clearRect(0, 0, w, h);
-
-    const graphW = w - pad.left - pad.right;
-    const graphH = h - pad.top - pad.bottom;
-
-    // Grid
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= 4; i++) {
-      const y = pad.top + (i / 4) * graphH;
-      ctx.beginPath();
-      ctx.moveTo(pad.left, y);
-      ctx.lineTo(w - pad.right, y);
-      ctx.stroke();
-
-      ctx.fillStyle = '#64748b';
-      ctx.font = '10px "JetBrains Mono", monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText(`${(100 - i * 25)}%`, pad.left - 6, y + 3);
-    }
-
-    // Tilt Angles: -45 deg to +45 deg
-    const angles = [];
-    for (let deg = -45; deg <= 45; deg += 2) angles.push(deg);
-
-    // Brilliance Curve (Gaussian-like peak around 0, falling with tilt)
-    ctx.beginPath();
-    angles.forEach((deg, idx) => {
-      const x = pad.left + ((deg + 45) / 90) * graphW;
-      const brilliance = 88 * Math.exp(-Math.pow(deg / 28, 2)) + 6 * Math.sin(deg / 5);
-      const y = pad.top + graphH - (brilliance / 100) * graphH;
-      if (idx === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.strokeStyle = '#00f0ff';
-    ctx.lineWidth = 2.5;
-    ctx.stroke();
-
-    // Windowing Curve (increases as stone tilts past critical angles)
-    ctx.beginPath();
-    angles.forEach((deg, idx) => {
-      const x = pad.left + ((deg + 45) / 90) * graphW;
-      const windowing = 4 + 40 * Math.pow(Math.abs(deg) / 45, 3);
-      const y = pad.top + graphH - (windowing / 100) * graphH;
-      if (idx === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.strokeStyle = '#f43f5e';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([4, 4]);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Extinction Curve
-    ctx.beginPath();
-    angles.forEach((deg, idx) => {
-      const x = pad.left + ((deg + 45) / 90) * graphW;
-      const extinction = 8 + 30 * Math.pow(Math.abs(deg) / 45, 2);
-      const y = pad.top + graphH - (extinction / 100) * graphH;
-      if (idx === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.strokeStyle = '#a855f7';
-    ctx.lineWidth = 1.8;
-    ctx.stroke();
-
-    // Legend
-    ctx.font = '11px -apple-system, sans-serif';
-    ctx.textAlign = 'left';
-
-    ctx.fillStyle = '#00f0ff';
-    ctx.fillText('● Brilliance (%)', pad.left + 15, pad.top + 18);
-
-    ctx.fillStyle = '#f43f5e';
-    ctx.fillText('■ Windowing (%)', pad.left + 135, pad.top + 18);
-
-    ctx.fillStyle = '#a855f7';
-    ctx.fillText('▲ Extinction (%)', pad.left + 255, pad.top + 18);
-  }
-
-  window.addEventListener('resize', renderTilt);
-  renderTilt();
-}
-
-/* -------------------------------------------------------------
- * 5. Screenshot Lightbox Modal
- * ----------------------------------------------------------- */
-function initLightbox() {
-  const modal = document.getElementById('lightboxModal');
-  const modalImg = document.getElementById('lightboxImg');
-  const modalCaption = document.getElementById('lightboxCaption');
-  const closeBtn = document.querySelector('.modal-close');
-
-  if (!modal || !modalImg) return;
-
-  document.querySelectorAll('.gallery-img-wrapper').forEach(wrapper => {
-    wrapper.addEventListener('click', () => {
-      const img = wrapper.querySelector('img');
-      const title = wrapper.closest('.gallery-card')?.querySelector('.gallery-title')?.textContent;
-      if (img) {
-        modalImg.src = img.src;
-        if (modalCaption) modalCaption.textContent = title || img.alt;
-        modal.classList.add('active');
-      }
-    });
-  });
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-  }
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('active');
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') modal.classList.remove('active');
-  });
 }
