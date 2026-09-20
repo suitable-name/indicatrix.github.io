@@ -18,6 +18,7 @@
       <a href="physics.html" aria-current="page">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
       <a href="materials.html">Materials</a>
+      <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
       <a href="gallery.html">Figures</a>
     </nav>
@@ -194,8 +195,39 @@ delta = delta_p - delta_s</code></pre></div>
     </ul>
   </section>
 
+  <section id="environment">
+    <h2><span class="sec-num">8</span>Environment and lighting models</h2>
+    <p>
+      A ray that misses the stone, or exits it, samples an environment rather than a
+      light list. Seven presets span three analytic models plus a loaded HDR panorama
+      (<code>optics/raytracer/environment.rs</code>):
+    </p>
+    <ul>
+      <li><strong>Studio</strong> (<code>Daylight</code>, <code>Incandescent</code>, <code>RingLights</code>, <code>DarkSpotlight</code>) — a charcoal backdrop, one key softbox, one fill, and sixteen ring pinpoints. Its arithmetic is pinned by golden images and does not change.</li>
+      <li><strong>ISO hemisphere</strong> — the whole upper hemisphere at radiance 1 and nothing below the girdle plane: the reference case, with no directional structure to flatter a cut.</li>
+      <li><strong>Light tent</strong> — dim tent walls, one broad overhead softbox, three black cards on the ring positions away from the key, one small hard spark light, black velvet below the girdle. The black cards are the contrast a jewellery photographer adds so a bright stone reads as a facet pattern instead of a white blur.</li>
+      <li><strong>Daylight sky and sun</strong> — a clear sky brighter at the horizon than at the zenith, a 2° sun disc with an aureole around it, dark ground.</li>
+    </ul>
+    <p>
+      The three lit models also darken every exit direction that falls inside the
+      observer's own head-shadow cone — the term that gives a face-up stone its dark
+      table reflections. The Studio rig ignores the observer. Radiances are chosen so
+      that at exposure 1 the ambient terms land near middle grey after the ACES curve
+      and only a direct reflection of a light source clips to white.
+    </p>
+    <p>
+      Separately from the environment, a <em>backdrop card</em> can be placed behind
+      the stone: <code>BACKDROP_GREY</code> (0.23, tone-mapping to roughly sRGB 160) or
+      <code>BACKDROP_WHITE</code> (8.0, a light box). Only the primary camera ray sees
+      it — the stone's own optics never do — so light leaking through a window or a
+      poorly-angled pavilion stays as dark as the real ground behind it instead of
+      picking up a glow the card would otherwise cast. Every render in figure 5 of the
+      <a href="index.html#renders">overview</a> sits on the grey card.
+    </p>
+  </section>
+
   <section id="gpu-harness">
-    <h2><span class="sec-num">8</span>GPU equivalence harness</h2>
+    <h2><span class="sec-num">9</span>GPU equivalence harness</h2>
     <p>
       The optional GPU backend (<code>crates/indicatrix/src/renderer/gpu</code>) compiles the
       transport physics to WGSL and dispatches it as a compute kernel. It is checked against
@@ -240,7 +272,7 @@ delta = delta_p - delta_s</code></pre></div>
 <footer>
   <div class="container">
     <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
-    <p><a href="index.html">Overview</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="materials.html">Materials</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+    <p><a href="index.html">Overview</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>
 

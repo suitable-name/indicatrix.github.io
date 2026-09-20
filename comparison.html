@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indicatrix — how it compares to other faceting and gem-rendering software</title>
+<meta name="description" content="Where Indicatrix sits next to GemCAD, GemRay, Gem Cut Studio, DiamCalc and general 3D renderers: design authoring, rendering physics, analysis, and file-format interoperability.">
+<link rel="icon" type="image/png" href="assets/images/icon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="physics.html">Physics</a>
+      <a href="editor.html">Studio &amp; CAD</a>
+      <a href="materials.html">Materials</a>
+      <a href="comparison.html" aria-current="page">Comparison</a>
+      <a href="distributed.html">Distributed</a>
+      <a href="gallery.html">Figures</a>
+    </nav>
+    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="page-head">
+    <span class="tag">Reference</span>
+    <h1>How Indicatrix compares</h1>
+    <p class="subtitle">Where it sits next to the established faceting and gem-rendering tools, and what it deliberately does not try to be.</p>
+  </div>
+
+  <section id="landscape">
+    <h2><span class="sec-num">1</span>The landscape</h2>
+    <p>
+      Faceting software splits into three jobs that different programs solve to
+      different depths: <strong>authoring</strong> a cutting schedule a human will
+      actually cut on a faceting machine, <strong>rendering</strong> what the finished
+      stone will look like, and <strong>analysing</strong> how well the cut performs as
+      the stone is tilted. Indicatrix is one program that attempts all three, with the
+      renderer being the mature part and the design editor still in beta.
+    </p>
+    <dl class="deflist">
+      <dt>GemCAD</dt>
+      <dd>Robert Strickland's faceting-design program: the long-standing reference for authoring a cutting schedule. Its <code>.asc</code> text export is the closest thing this field has to an interchange format, and <code>.gem</code> is its own binary save format.</dd>
+      <dt>GemRay</dt>
+      <dd>The ray-tracing companion to GemCAD: it takes a design and produces rendered images and brilliance figures, rather than authoring designs itself.</dd>
+      <dt>Gem Cut Studio</dt>
+      <dd>A Windows faceting-design application, separate from GemCAD, with its own <code>.gcs</code> project format that stores a <em>solved</em> design (facets already closed into polygons) rather than a schedule to be solved.</dd>
+      <dt>DiamCalc</dt>
+      <dd>OctoNus's commercial cut-analysis and visualisation package, aimed principally at diamond grading and appraisal rather than at authoring hand-faceted designs.</dd>
+      <dt>General 3D renderers</dt>
+      <dd>Blender/Cycles, LuxCoreRender and similar. They will render a gemstone mesh beautifully, but they have no notion of a cutting schedule, an index wheel, or a meet point.</dd>
+    </dl>
+  </section>
+
+  <section id="matrix">
+    <h2><span class="sec-num">2</span>Feature matrix</h2>
+    <div class="status">
+      <span class="status-label">READ THIS FIRST</span>
+      <p>
+        Only the Indicatrix column is authoritative — every cell in it is checked
+        against this repository's own source. The other columns describe each tool
+        <em>as a category of program</em>, at the level its own publicly documented
+        purpose establishes; cells marked <code>?</code> are ones this page has not
+        verified and does not assert either way. Nothing here is a benchmark, and no
+        version numbers are implied. Corrections are welcome as
+        <a href="https://github.com/suitable-name/indicatrix/issues">issues</a>.
+        Indicatrix is not affiliated with, endorsed by, or derived from any of these
+        programs.
+      </p>
+    </div>
+
+    <div class="table-scroll">
+    <table class="matrix">
+      <caption>✓ yes &middot; ✗ no &middot; ? not verified by this page. Last reviewed 2026-09-20.</caption>
+      <thead>
+        <tr>
+          <th scope="col">&nbsp;</th>
+          <th scope="col">Indicatrix</th>
+          <th scope="col">GemCAD</th>
+          <th scope="col">GemRay</th>
+          <th scope="col">Gem Cut Studio</th>
+          <th scope="col">DiamCalc</th>
+          <th scope="col">General 3D</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="group"><th colspan="7" scope="colgroup">Authoring</th></tr>
+        <tr>
+          <th scope="row">Authors a cutting schedule (angle, index, mast)</th>
+          <td>✓ <span class="qual">beta</span></td><td>✓</td><td>✗</td><td>✓</td><td>?</td><td>✗</td>
+        </tr>
+        <tr>
+          <th scope="row">Solves meet points from stated constraints</th>
+          <td>✓</td><td>?</td><td>✗</td><td>?</td><td>?</td><td>✗</td>
+        </tr>
+        <tr>
+          <th scope="row">Searches for better angles against an optical objective</th>
+          <td>✓ <span class="qual">beta</span></td><td>?</td><td>?</td><td>?</td><td>?</td><td>✗</td>
+        </tr>
+        <tr>
+          <th scope="row">Manufacturability checks (vanishing facets, gear quantization)</th>
+          <td>✓</td><td>?</td><td>✗</td><td>?</td><td>?</td><td>✗</td>
+        </tr>
+
+        <tr class="group"><th colspan="7" scope="colgroup">Rendering</th></tr>
+        <tr>
+          <th scope="row">Produces a physically-based image of the cut stone</th>
+          <td>✓</td><td>✗</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td>
+        </tr>
+        <tr>
+          <th scope="row">Refractive index evaluated per wavelength, not as an RGB triple</th>
+          <td>✓ <span class="qual">8 channels/path</span></td><td>✗</td><td>?</td><td>?</td><td>?</td><td>✗ <span class="qual">usually RGB</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Polarization tracked through every interface (Stokes–Mueller)</th>
+          <td>✓</td><td>✗</td><td>?</td><td>?</td><td>?</td><td>✗</td>
+        </tr>
+        <tr>
+          <th scope="row">Birefringence, uniaxial <em>and</em> biaxial, with walk-off</th>
+          <td>✓</td><td>✗</td><td>?</td><td>?</td><td>?</td><td>✗</td>
+        </tr>
+        <tr>
+          <th scope="row">Direction-dependent (pleochroic) absorption</th>
+          <td>✓</td><td>✗</td><td>?</td><td>?</td><td>?</td><td>✗</td>
+        </tr>
+        <tr>
+          <th scope="row">GPU compute path, verified against the CPU reference</th>
+          <td>✓ <span class="qual">tiered harness</span></td><td>✗</td><td>?</td><td>?</td><td>?</td><td>✓ <span class="qual">unverified against CPU</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Renders split across machines on a local network</th>
+          <td>✓ <span class="qual">mTLS 1.3</span></td><td>✗</td><td>?</td><td>?</td><td>?</td><td>✓ <span class="qual">varies</span></td>
+        </tr>
+
+        <tr class="group"><th colspan="7" scope="colgroup">Analysis</th></tr>
+        <tr>
+          <th scope="row">Brilliance / windowing / extinction figures</th>
+          <td>✓</td><td>✗</td><td>✓</td><td>?</td><td>✓</td><td>✗</td>
+        </tr>
+        <tr>
+          <th scope="row">Performance swept across tilt angle, not a single pose</th>
+          <td>✓ <span class="qual">181 pts × 4 azimuths</span></td><td>✗</td><td>?</td><td>?</td><td>?</td><td>✗</td>
+        </tr>
+        <tr>
+          <th scope="row">Searchable local library of designs</th>
+          <td>✓ <span class="qual">SQLite</span></td><td>✗</td><td>✗</td><td>?</td><td>?</td><td>✗</td>
+        </tr>
+
+        <tr class="group"><th colspan="7" scope="colgroup">Practicalities</th></tr>
+        <tr>
+          <th scope="row">Source available under an open licence</th>
+          <td>✓ <span class="qual">MIT</span></td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✓ <span class="qual">Blender: GPL</span></td>
+        </tr>
+        <tr>
+          <th scope="row">Runs natively on Linux</th>
+          <td>✓</td><td>?</td><td>?</td><td>?</td><td>?</td><td>✓</td>
+        </tr>
+        <tr>
+          <th scope="row">Runs in a browser</th>
+          <td>✓ <span class="qual">WebGPU, renderer only</span></td><td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section id="interop">
+    <h2><span class="sec-num">3</span>Interoperability</h2>
+    <p>
+      This part is entirely verifiable, and it is the practical answer to "can I keep
+      using what I already have?". Everything below lives in
+      <code>crates/indicatrix-formats</code>.
+    </p>
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>Format</th><th>Origin</th><th>Indicatrix reads</th><th>Indicatrix writes</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>.asc</code></td>
+          <td>GemCAD text export</td>
+          <td>✓</td>
+          <td>✓</td>
+          <td>A cutting <em>schedule</em>: angle, mast and index positions, plus meet instructions. The field's de facto interchange format.</td>
+        </tr>
+        <tr>
+          <td><code>.gcs</code></td>
+          <td>Gem Cut Studio</td>
+          <td>✓</td>
+          <td>✗</td>
+          <td>Plain-text XML holding a <em>solved</em> design — every tier already carries its facets as closed polygons. Reverse-engineered from 59 real files and checked field by field against the 56 that have an <code>.asc</code> sibling for the same design.</td>
+        </tr>
+        <tr>
+          <td><code>.gem</code></td>
+          <td>GemCAD native save</td>
+          <td>Partial</td>
+          <td>✗</td>
+          <td>Binary, with no published specification. Only the embedded length-prefixed text is recovered — facet names, cutting and meet instructions, title and author — from a corpus of 254 files. The geometry is <em>not</em> decoded, and the reader says so rather than guessing.</td>
+        </tr>
+        <tr>
+          <td><code>.indicatrix.toml</code></td>
+          <td>Indicatrix</td>
+          <td>✓</td>
+          <td>✓</td>
+          <td>A sidecar beside the <code>.asc</code>, carrying the constraints and preform an <code>.asc</code> cannot express. Plain text, versioned, and losing it costs you only the extra metadata.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="small">
+      The <code>.gcs</code> and <code>.gem</code> readers exist because real designs are
+      published in those formats with no <code>.asc</code> counterpart. They are clean-room
+      reverse-engineering from file corpora, documented in the source with what is
+      confirmed, what is inferred, and what is not decoded at all.
+    </p>
+  </section>
+
+  <section id="not-trying">
+    <h2><span class="sec-num">4</span>What Indicatrix is not trying to be</h2>
+    <ul>
+      <li><strong>Not a diamond grading tool.</strong> There is no cut-grade verdict, no proportion certificate, no scanner integration. The tilt sweep reports optical channels; it does not translate them into a grade.</li>
+      <li><strong>Not a jewellery CAD.</strong> Settings, prongs, shanks and casting are all out of scope — the stone is the whole model.</li>
+      <li><strong>Not a general renderer.</strong> Geometry is convex half-space intersection, not triangle meshes; there is no scene graph, no import of arbitrary models, and no animation.</li>
+      <li><strong>Not a replacement for checking your work.</strong> The faceting CAD is beta. Designs it solves should be checked against a conventional CAD before anyone cuts rough with them.</li>
+    </ul>
+  </section>
+
+  <section id="why">
+    <h2><span class="sec-num">5</span>Why the optics depth matters</h2>
+    <p>
+      Most of the rendering rows above are the same argument in different forms. A
+      gemstone is one of the few subjects where an RGB renderer's approximations are
+      visible rather than academic: dispersion is the whole point of the object, the
+      material is anisotropic, absorption depends on the direction light travelled
+      through the crystal, and total internal reflection introduces phase shifts that
+      a polarization-free tracer simply discards. Indicatrix evaluates the refractive
+      index per wavelength from Sellmeier and Cauchy fits, carries Stokes vectors
+      through Mueller matrices at every interface, splits ordinary and extraordinary
+      rays with genuine Poynting walk-off, and applies absorption per direction — and
+      then checks its own GPU port of all that against the CPU reference with a
+      <a href="physics.html#gpu-harness">tiered equivalence harness</a>.
+    </p>
+    <p>
+      Whether that depth is worth it depends on what you are doing. For laying out a
+      schedule and getting it cut, an established authoring tool plus a quick preview
+      is a perfectly sound workflow. The case for Indicatrix is when you want to see
+      what a cut will actually look like in a specific material before committing rough
+      to it — figure 5 on the <a href="index.html#renders">overview</a> is one cut in
+      five materials with nothing else changed — or when you want the source of the
+      thing making that claim.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="materials.html">Materials</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

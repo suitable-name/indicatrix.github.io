@@ -296,6 +296,21 @@ figcaption {
   gap: 1.75rem;
 }
 
+/* A responsive strip for a multi-panel figure (e.g. one cut in five materials):
+   as many columns as fit, wrapping instead of forcing a ragged fixed grid. Lives
+   INSIDE a single <figure>, so the panels share one caption and one number. */
+.fig-grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2px;
+}
+
+.fig-grid-auto img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .fig-grid .fig {
   margin: 0;
 }
@@ -320,6 +335,50 @@ table {
   margin: 1.5rem 0;
   font-family: var(--font-mono);
   font-size: 0.85rem;
+}
+
+/* A wide table (the comparison matrix) scrolls in its own box rather than making
+   the whole page scroll sideways. */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll table {
+  min-width: 46rem;
+}
+
+/* The comparison matrix: row labels are prose, the cells are single glyphs, so the
+   labels get the serif face and left alignment while everything else centres. */
+.matrix th[scope="row"] {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  text-align: left;
+  white-space: normal;
+}
+
+.matrix td {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.matrix tr.group th {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  text-align: left;
+  padding-top: 1.1rem;
+}
+
+/* A qualifier beside a tick ("beta", "MIT"): present but deliberately quiet, so the
+   column still reads as a column of glyphs at a glance. */
+.qual {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
 }
 
 caption {

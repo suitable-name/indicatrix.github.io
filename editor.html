@@ -18,6 +18,7 @@
       <a href="physics.html">Physics</a>
       <a href="editor.html" aria-current="page">Studio &amp; CAD</a>
       <a href="materials.html">Materials</a>
+      <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
       <a href="gallery.html">Figures</a>
     </nav>
@@ -84,8 +85,12 @@
       The viewport switches between a fast solid preview and the full
       spectral path tracer. Orbit, pan, and zoom with the mouse; the
       progressive path tracer accumulates samples while the camera is still
-      and resets on any camera or material change. Lighting presets and
-      custom HDR equirectangular environment maps are both supported, along
+      and resets on any camera or material change. Seven lighting presets —
+      an analytic studio rig in four moods, an ISO hemisphere, a jewellery
+      light tent and a daylight sky (see the
+      <a href="physics.html#environment">physics page</a>) — plus an optional
+      grey or white backdrop card behind the stone, and
+      custom HDR equirectangular environment maps, are all supported, along
       with live readouts of brilliance, fire, scintillation, windowing, and
       extinction as the stone is orbited.
     </p>
@@ -186,7 +191,7 @@
       <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>
       <dt>Max bounces</dt><dd>128 (<code>MAX_EXPORT_BOUNCES</code>)</dd>
       <dt>Colour spaces</dt><dd>sRGB, Display P3, Rec. 2020 (Display P3/Rec. 2020 exports embed an ICC profile so they aren't misread as sRGB)</dd>
-      <dt>File formats</dt><dd>GemCAD <code>.asc</code>; native <code>.indicatrix.toml</code> sidecar; 8-bit PNG renders</dd>
+      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, native <code>.indicatrix.toml</code> sidecar, 8-bit PNG renders. Read only: <code>.gcs</code> (Gem Cut Studio), <code>.gem</code> (GemCAD's binary save format — embedded text only)</dd>
     </dl>
     <p class="small">Constants from <code>apps/indicatrix-cut/src/bridge/export_thread/params.rs</code>.</p>
   </section>
@@ -196,7 +201,7 @@
 <footer>
   <div class="container">
     <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="materials.html">Materials</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>
 
