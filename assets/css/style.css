@@ -345,7 +345,7 @@ table {
 }
 
 .table-scroll table {
-  min-width: 46rem;
+  min-width: 54rem;
 }
 
 /* The comparison matrix: row labels are prose, the cells are single glyphs, so the
