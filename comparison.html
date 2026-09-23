@@ -98,19 +98,19 @@
         </tr>
         <tr>
           <th scope="row">Positions facets by meet point rather than by a typed depth</th>
-          <td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>?</td><td>✗</td>
+          <td>✓</td><td>✓</td><td>✗</td><td>✓</td><td>✗ <span class="qual">angle + auto-distance</span></td><td>✓ <span class="qual">Cut Designer: 3-pt facets</span></td>
         </tr>
         <tr>
           <th scope="row">Automatic search over angles against an optical objective</th>
-          <td>✓ <span class="qual">beta</span></td><td>✗ <span class="qual">manual, via ray paths</span></td><td>✗</td><td>✗ <span class="qual">manual optimizer</span></td><td>?</td><td>✓ <span class="qual">Pro: cut proportions</span></td>
+          <td>✓ <span class="qual">beta, cancellable</span></td><td>✗ <span class="qual">manual, via ray paths</span></td><td>✗</td><td>✗ <span class="qual">manual optimizer</span></td><td>✗ <span class="qual">yield search, not angle</span></td><td>✓ <span class="qual">Pro: cut proportions</span></td>
         </tr>
         <tr>
           <th scope="row">Preform support</th>
-          <td>✓</td><td>✓</td><td>✗</td><td>?</td><td>?</td><td>✗</td>
+          <td>✓</td><td>✓</td><td>✗</td><td>✓ <span class="qual">preform tier</span></td><td>?</td><td>✓ <span class="qual">Cut Designer: Custom Preform</span></td>
         </tr>
         <tr>
           <th scope="row">Manufacturability checks (vanishing facets, gear quantization)</th>
-          <td>✓</td><td>?</td><td>✗</td><td>?</td><td>?</td><td>?</td>
+          <td>✓</td><td>?</td><td>✗</td><td>✓ <span class="qual">gear re-map report</span></td><td>?</td><td>?</td>
         </tr>
         <tr class="group"><th colspan="7" scope="colgroup">Rendering</th></tr>
         <tr>
@@ -119,7 +119,7 @@
         </tr>
         <tr>
           <th scope="row">Refractive index evaluated per wavelength</th>
-          <td>✓ <span class="qual">8 channels/path</span></td><td>✗</td><td>✗ <span class="qual">3 colours</span></td><td>✗ <span class="qual">3 colours</span></td><td>?</td><td>?</td>
+          <td>✓ <span class="qual">8 channels/path</span></td><td>✗</td><td>✗ <span class="qual">3 colours</span></td><td>✗ <span class="qual">3 colours</span></td><td>✓ <span class="qual">dispersion value</span></td><td>✓ <span class="qual">chromatic dispersion</span></td>
         </tr>
         <tr>
           <th scope="row">Polarization tracked through every interface (Stokes–Mueller)</th>
@@ -131,11 +131,11 @@
         </tr>
         <tr>
           <th scope="row">Direction-dependent (pleochroic) absorption</th>
-          <td>✓</td><td>✗</td><td>✗ <span class="qual">stated</span></td><td>✗ <span class="qual">“in the future”</span></td><td>?</td><td>?</td>
+          <td>✓</td><td>✗</td><td>✗ <span class="qual">stated</span></td><td>✗ <span class="qual">“in the future”</span></td><td>✓ <span class="qual">Alexandrite only, 3-axis</span></td><td>?</td>
         </tr>
         <tr>
           <th scope="row">Volumetric inclusions / haze</th>
-          <td>✓</td><td>✗</td><td>?</td><td>? <span class="qual">clarity parameter</span></td><td>?</td><td>?</td>
+          <td>✓</td><td>✗</td><td>?</td><td>✓ <span class="qual">Clarity: distance-based haze</span></td><td>?</td><td>✓ <span class="qual">Pro: inclusion defocus</span></td>
         </tr>
         <tr>
           <th scope="row">GPU compute path, verified against the CPU reference</th>
@@ -148,19 +148,19 @@
         <tr class="group"><th colspan="7" scope="colgroup">Analysis</th></tr>
         <tr>
           <th scope="row">Brilliance / windowing / extinction figures</th>
-          <td>✓</td><td>✗</td><td>✓</td><td>✓</td><td>?</td><td>✓ <span class="qual">ASET, Ideal-Scope</span></td>
+          <td>✓</td><td>✗</td><td>✓</td><td>✓</td><td>✓ <span class="qual">windowing check + Ray Studio</span></td><td>✓ <span class="qual">ASET, Ideal-Scope</span></td>
         </tr>
         <tr>
           <th scope="row">Performance swept across tilt angle, not a single pose</th>
-          <td>✓ <span class="qual">181 pts × 4 azimuths</span></td><td>✗</td><td>✓ <span class="qual">brightness vs. tilt</span></td><td>✓ <span class="qual">Tilt Performance</span></td><td>?</td><td>?</td>
+          <td>✓ <span class="qual">181 pts × 4 azimuths, video export</span></td><td>✗</td><td>✓ <span class="qual">brightness vs. tilt</span></td><td>✓ <span class="qual">Tilt Performance</span></td><td>?</td><td>✓ <span class="qual">DETAS: tilt sweep</span></td>
         </tr>
         <tr>
           <th scope="row">Searchable library of designs</th>
-          <td>✓ <span class="qual">SQLite, built in</span></td><td>✓ <span class="qual">via Datavue II</span></td><td>✗</td><td>✓ <span class="qual">via Datavue</span></td><td>?</td><td>?</td>
+          <td>✓ <span class="qual">SQLite, built in</span></td><td>✓ <span class="qual">via Datavue II</span></td><td>✗</td><td>✓ <span class="qual">via Datavue</span></td><td>✗ <span class="qual">“no preset library yet”</span></td><td>✓ <span class="qual">via DataVue2</span></td>
         </tr>
         <tr>
           <th scope="row">Cut grade / appraisal report</th>
-          <td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>?</td><td>✓</td>
+          <td>✗</td><td>✗</td><td>✗</td><td>✗</td><td>✗ <span class="qual">stats only, no grade</span></td><td>✓</td>
         </tr>
         <tr class="group"><th colspan="7" scope="colgroup">Practicalities</th></tr>
         <tr>
@@ -169,7 +169,7 @@
         </tr>
         <tr>
           <th scope="row">Runs natively on Linux</th>
-          <td>✓</td><td>✗ <span class="qual">Windows</span></td><td>✗ <span class="qual">Windows</span></td><td>✗ <span class="qual">Windows, Mac</span></td><td>✓ <span class="qual">browser</span></td><td>?</td>
+          <td>✓</td><td>✗ <span class="qual">Windows</span></td><td>✗ <span class="qual">Windows</span></td><td>✗ <span class="qual">Windows, Mac</span></td><td>✓ <span class="qual">browser</span></td><td>✗ <span class="qual">Windows</span></td>
         </tr>
         <tr>
           <th scope="row">Runs in a browser</th>
@@ -198,7 +198,7 @@
           <td>GemCAD text export</td>
           <td>✓</td>
           <td>✓</td>
-          <td>A cutting <em>schedule</em>: angle, mast and index positions, plus meet instructions. The field's de facto interchange format.</td>
+          <td>A cutting <em>schedule</em>: angle, mast and index positions, plus meet instructions. The field's de facto interchange format, verified against a real-world corpus of 5,759 files.</td>
         </tr>
         <tr>
           <td><code>.gcs</code></td>
@@ -236,7 +236,8 @@
     <h2><span class="sec-num">4</span>Scope, and where it is today</h2>
     <p>
       The goal is a complete gemstone faceting suite: author a design, solve it,
-      optimise it, see what it will look like cut in a given material, and export
+      optimise it, see what it will look like cut in a given material (32 built into
+      the shared catalogue — see <a href="materials.html">Materials</a>), and export
       something a cutter can work from — one program, one data model, no round trip
       through a second tool. The renderer is the mature part of that. The design
       editor is not there yet.
@@ -251,6 +252,17 @@
         current state, not about the intended scope.
       </p>
     </div>
+    <p>
+      Concretely, what "in beta" already covers: a new design starts from a template
+      gallery (five built-in starting shapes plus a blank design) or a step-by-step
+      guided walkthrough that highlights the relevant panel at each stage; Solve and
+      the angle-search Optimize pass both run off the UI thread and can be cancelled
+      mid-search — a real checkpoint the search itself observes, not just a UI
+      dismissal — rather than blocking the editor until a multi-minute run finishes;
+      and the exported cutting sheet reports mast in millimetres once a girdle
+      diameter is set, a yield/weight-loss figure against the preform, and a per-tier
+      cheater (azimuth) offset column when a tier actually carries one.
+    </p>
     <p>
       Two things are out of scope by design rather than by schedule, and knowing
       which is which matters when you are deciding what to use:
@@ -309,8 +321,8 @@
       <li>GemCAD — <a href="https://www.gemcad.com/gemcad.html">gemcad.com/gemcad.html</a> and the <a href="https://www.gemcad.com/downloads/gemcadman.pdf"><cite>GemCad for Windows User's Guide</cite></a> (Strickland).</li>
       <li>GemRay — <a href="https://www.gemcad.com/gemray.html">gemcad.com/gemray.html</a>, which states the non-modelling of birefringence, dichroism/trichroism and polarized light directly.</li>
       <li>Gem Cut Studio — <a href="http://www.gemcutstudio.com/app_download/UserManual_v110.pdf"><cite>Gem Cut Studio User's Manual v1.1.0</cite></a>.</li>
-      <li>Gem Diagram — <a href="https://www.gemdiagram.com/">gemdiagram.com</a>.</li>
-      <li>DiamCalc — <a href="https://www.octonus.com/3dcalc-software/diamcalc">octonus.com/3dcalc-software/diamcalc</a>.</li>
+      <li>Gem Diagram — <a href="https://www.gemdiagram.com/">gemdiagram.com</a> and its documentation site, <a href="https://docs.gemdiagram.com/getting-started">docs.gemdiagram.com</a> (Faceting Workflow, The Index Wheel, Working with Tiers, Refractive Index &amp; Dispersion, Pleochroism, Ray Studio, Rough Planner, Materials, Presets, Saving &amp; Opening Designs, Reports &amp; Export, System Requirements, Troubleshooting &amp; FAQ, Reference: Glossary).</li>
+      <li>DiamCalc — <a href="https://www.octonus.com/3dcalc-software/diamcalc">octonus.com/3dcalc-software/diamcalc</a>, the <a href="http://legacy.octonus.com/oct/download/files/DiamondCalculator3_2beta.pdf"><cite>DiamCalc 3.2 beta Documentation</cite></a> PDF it links (Cut Designer's Custom Preform/Recut and facet-through-three-points tools, DETAS tilt sweep, inclusion rendering, DataVue2 library import), and the <a href="https://octonus.com/downloads/diamcalc-downloads">DiamCalc download page</a>, whose installer is Windows-only.</li>
     </ul>
   </section>
 

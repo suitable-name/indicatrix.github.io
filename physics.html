@@ -199,7 +199,8 @@ delta = delta_p - delta_s</code></pre></div>
     <h2><span class="sec-num">8</span>Environment and lighting models</h2>
     <p>
       A ray that misses the stone, or exits it, samples an environment rather than a
-      light list. Seven presets span three analytic models plus a loaded HDR panorama
+      light list. Seven presets span four analytic models, and a real HDR panorama can
+      be loaded in their place
       (<code>optics/raytracer/environment.rs</code>):
     </p>
     <ul>
@@ -214,6 +215,21 @@ delta = delta_p - delta_s</code></pre></div>
       table reflections. The Studio rig ignores the observer. Radiances are chosen so
       that at exposure 1 the ambient terms land near middle grey after the ACES curve
       and only a direct reflection of a light source clips to white.
+    </p>
+    <p>
+      In place of an analytic preset, a real HDR panorama can be loaded instead
+      (<code>EnvironmentSource::HdrMap</code>, <code>renderer/env_map.rs</code>): a 2D
+      piecewise-constant inverse-CDF sampler draws directions proportional to the
+      map's own solid-angle-corrected luminance, so samples land where the panorama is
+      actually bright rather than being spent on a typical capture's dark majority.
+      The solid-angle Jacobian is written symmetrically around both poles
+      (<code>sin(min(v, 1&minus;v)&nbsp;&middot;&nbsp;&pi;)</code>) so texels near the
+      north and south pole get equally well-conditioned densities. The same
+      distribution backs a genuine next-event-estimation path on both CPU and the WGSL
+      compute kernel: volumetric scattering inside the stone and a frosted facet's
+      diffusely-sampled exit each sample the environment directly and combine it with
+      the phase/BSDF-sampled continuation via a Veach-style balance-heuristic MIS
+      weight, rather than waiting for a bounce to randomly find a bright pixel.
     </p>
     <p>
       Separately from the environment, a <em>backdrop card</em> can be placed behind

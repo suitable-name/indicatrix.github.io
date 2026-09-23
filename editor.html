@@ -36,12 +36,15 @@
   <div class="status">
     <span class="status-label">STATUS</span>
     <p>
-      The faceting CAD is in beta and under active development. Solving,
-      optimising and export work on the designs in the bundled catalogue, but
-      the editor's interaction model is still changing and results should be
-      checked against a conventional CAD before cutting. The design library
-      and 3D viewport (sections 1–4 below) are more stable than the editor
-      itself (sections 5–7).
+      The faceting CAD is in beta. Solving now runs on a background solve
+      service with real mid-solve cancellation and a progress-tracked
+      activity list rather than freezing the editor, new designs are guided
+      by a template gallery and an in-app worked example, and results carry
+      stale badges the moment they no longer match the current design — but
+      the editor's interaction model is still evolving, and results should
+      be checked against a conventional CAD before cutting. The design
+      library and 3D viewport (sections 1–4 below) are more stable than the
+      editor itself (sections 5–7).
     </p>
   </div>
 
@@ -92,7 +95,11 @@
       grey or white backdrop card behind the stone, and
       custom HDR equirectangular environment maps, are all supported, along
       with live readouts of brilliance, fire, scintillation, windowing, and
-      extinction as the stone is orbited.
+      extinction as the stone is orbited. If the optional GPU compute path
+      loses its device mid-session, the viewport re-acquires it once and
+      retries the same frame; if that also fails it falls back to the CPU
+      tracer for the rest of the session with a visible status message,
+      rather than freezing.
     </p>
   </section>
 
@@ -111,6 +118,22 @@
       135° (<code>PROFILE_AZIMUTHS_DEG</code>, <code>crates/indicatrix/src/color/metrics.rs</code>)
       — and plots brilliance, windowing, and extinction together so a design's
       behaviour in the hand, not just face-up, is visible.
+    </p>
+    <p>
+      A tilt sweep can also be exported as a video: pick one of the four
+      camera azimuths as the sweep axis, a step from 0.01° up to 5° between
+      frames (<code>MIN_STEP_DEG</code>/<code>MAX_STEP_DEG</code>,
+      <code>apps/indicatrix-cut/src/gui/tilt/video_export/params.rs</code>),
+      and a resolution from 128 × 128 up to 8K (7680 × 4320), or a custom
+      size clamped to the same 128–8192 px range per axis. An optional
+      performance overlay burns the brilliance/windowing/extinction readout
+      into each frame in a layout that adapts to the chosen width. Every
+      frame renders on the CPU (the app's single shared GPU adapter stays
+      free for the live viewport); the numbered PNG sequence is then muxed
+      into an H.264 MP4 with <code>ffmpeg</code> when it is found on
+      <code>PATH</code>, an animated GIF via the <code>image</code> crate
+      when it is not, or, failing both, left as a PNG sequence with a
+      <code>README.txt</code> explaining how to mux it by hand.
     </p>
   </section>
 
@@ -140,6 +163,36 @@
       anchor a block against the design's own printed <code>C/W</code>/<code>P/W</code>
       proportions (<code>meet_solver/anchors.rs</code>).
     </p>
+    <p>
+      Solving runs on a background solve service (one persistent worker
+      thread with last-wins request coalescing and real mid-solve
+      cancellation) once a design is large enough that solving stops being
+      instantaneous; the Solve/Deep Solve/Optimize buttons relabel to a
+      running state with an Abandon/Cancel action, and a status-strip
+      activity list shows every long-running operation — background solve,
+      Deep Solve, Optimize, Retarget, a tilt curve or video export — with
+      elapsed time and, where the operation can measure one, a progress
+      fraction. Editing the design while a solve is in flight discards the
+      stale result rather than applying it over a newer edit, and every
+      analysis result the editor keeps on screen (Retarget's proposal, a
+      tier's manufacturability warnings, the tilt curve cache) carries a
+      stale badge the instant an edit invalidates it, cleared only by
+      re-running that analysis.
+    </p>
+    <p>
+      A pavilion tier's row shows a colour-coded critical-angle margin bar
+      next to its angle field, live as you type, and the first time (per
+      session) a design has no anchor tier, a one-time explainer card walks
+      through why the solver needs one before you hit the "no anchor"
+      status message cold. New designs start from an empty-state card
+      offering a template
+      gallery or an in-app guided worked example that builds a simple
+      round-brilliant-style stone step by step, highlighting the tier table
+      or Design Settings panel for whichever step is current
+      (<code>apps/indicatrix-cut/docs/manual/07-new-design-worked-example.md</code>).
+      A full keyboard-shortcut overlay is one press of <code>?</code> away
+      (or Help → Keyboard Shortcuts) whenever no text field has focus.
+    </p>
   </section>
 
   <section id="preforms-optimizer">
@@ -160,6 +213,19 @@
       every edit: vanishing facets that fail to form a real face, facets too
       small to cut reliably, index-gear quantization error, and meets
       referencing a tier that has not been cut yet.
+    </p>
+    <p>
+      A tier's constraint can also be authored as a real-world target rather
+      than a dimensionless mast: cut to a stated depth in millimetres, or
+      bisect the tier's mast until the design's measured girdle thickness or
+      table width lands on a stated millimetre figure
+      (<code>TierTarget::DepthMm</code>/<code>GirdleThicknessMm</code>/<code>
+      TableWidthMm</code>, <code>indicatrix-cut-core/src/design/targets.rs</code>).
+      Every tier also keeps a stable id (<code>tier_id</code>) that survives
+      reordering, duplication, and a Save Native/reopen round trip through
+      the native <code>.indicatrix.toml</code> sidecar, so a manufacturability
+      warning or an authored target keeps pointing at the same tier across
+      edits rather than a table row position.
     </p>
   </section>
 
@@ -186,6 +252,19 @@
       </a>
       <figcaption>Fig. 6 — The cutting schedule table: index, angle, mast per facet.</figcaption>
     </figure>
+    <p>
+      A split button in the command bar groups the master-still render
+      export with two further File-menu exports built from the same solved
+      schedule: <strong>Export Cutting Sheet (HTML)</strong>, a
+      self-contained printable page with an embedded crown/pavilion/profile
+      diagram and one row per tier (sequence, name, angle, indices, solved
+      mast, meet instruction, and any cheater/azimuth offset), and
+      <strong>Export Diagram (PNG)</strong>, the same facet drawing alone at
+      print quality. Where a real girdle diameter is set, the cutting sheet
+      also prints each facet's cutting depth in millimetres and its unsigned
+      angle of elevation for a machine's dial, alongside the dimensionless
+      mast.
+    </p>
     <dl class="deflist">
       <dt>Max resolution</dt><dd>8192 × 8192 px (<code>MAX_EXPORT_DIM</code>)</dd>
       <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>

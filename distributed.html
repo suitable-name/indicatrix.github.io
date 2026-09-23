@@ -122,8 +122,10 @@
       <li>TLS 1.3 only, via <code>rustls</code> with the <code>ring</code> crypto provider; TLS 1.2 is excluded from the feature set at compile time, not merely disabled at runtime (<code>tls::server_config</code>/<code>tls::client_config</code>).</li>
       <li>Mutual authentication: both sides present a certificate signed by the same private CA (<code>indicatrix-worker cert</code> subcommands manage that CA).</li>
       <li>A fingerprint allowlist decides which signed clients are actually trusted, separately from which CA signed them (<code>--allowlist</code>, off by default only with <code>--trust-any-client-cert</code>).</li>
-      <li>One-time token enrollment (<code>crates/indicatrix-net/src/enroll</code>): <code>indicatrix-worker cert issue-token</code> mints a short-lived token from the loopback side; <code>cert claim</code> redeems it, generating a keypair and requesting a signed certificate without a manual certificate exchange.</li>
+      <li>One-time token enrollment (the wire protocol and claim-side verification in <code>crates/indicatrix-net/src/enroll</code>; the server-side registry that mints and expires tokens in <code>apps/indicatrix-worker/src/enroll</code>): <code>indicatrix-worker cert issue-token</code> asks a running <code>serve</code> process's loopback-only enrollment listener to mint a 180-second, single-use token; <code>cert claim</code> redeems it — verifying the listener's certificate chain against the CA fingerprint carried inside the token itself, before sending the token's secret — and writes the same three-file certificate bundle <code>cert issue-client</code> would, without a manual copy.</li>
       <li>Plaintext serving (<code>--insecure-no-tls</code>) is available for local debugging and refused on any non-loopback bind address.</li>
+      <li>Every connection negotiates a protocol version during its HELLO/WELCOME handshake (<code>PROTOCOL_VERSION</code>, currently 13, <code>crates/indicatrix-net/src/messages/mod.rs</code>); a mismatched peer is refused outright rather than risking a misread frame.</li>
+      <li>Every message is length-prefixed and bounded before a payload is even allocated (<code>framing::MAX_FRAME_LEN</code>, 512&nbsp;MiB; the enrollment listener caps its own request further, at 4&nbsp;KiB), and a just-accepted socket carries a 20-second read/write timeout until its TLS handshake completes (<code>serve::HANDSHAKE_TIMEOUT</code>) — an idle or slow-loris connection cannot pin a worker thread indefinitely.</li>
     </ul>
   </section>
 
@@ -168,18 +170,25 @@
     <div class="code-block">
       <div class="code-block-head"><span>terminal — on the worker machine</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># 1. create a CA</span>
-indicatrix-worker cert init
+indicatrix-worker cert init --dir pki/
 
-<span class="cmt"># 2. start serving</span>
+<span class="cmt"># 2. issue this worker's own certificate</span>
+indicatrix-worker cert issue-server --dir pki/ --host worker.local --ip 192.0.2.10
+
+<span class="cmt"># 3. start serving</span>
 indicatrix-worker serve --bind 0.0.0.0:9443 --allow-remote \
-  --ca ca.pem --cert server.pem --key server.key
+  --ca pki/ca.pem --cert pki/server.pem --key pki/server.key
 
-<span class="cmt"># 3. mint a one-time enrollment token</span>
-indicatrix-worker cert issue-token</code></pre>
+<span class="cmt"># 4. mint a one-time, 180-second enrollment token (loopback only)</span>
+indicatrix-worker cert issue-token --ca pki/ca.pem --admin-addr 127.0.0.1:9444 --name my-laptop</code></pre>
     </div>
     <p>
+      <code>serve</code>'s enrollment listener defaults to the same host as
+      <code>--bind</code>, one port up (<code>--enroll-bind</code> overrides it), but
+      <code>cert issue-token</code> only ever succeeds from a loopback peer regardless of
+      that address — the operator runs it on the worker machine itself, not remotely.
       In <code>indicatrix-cut</code>, open the remote workers panel, enter the
-      worker's address, and paste the enrollment token; the client redeems it
+      worker's address, and paste the printed token; the client redeems it
       (<code>cert claim</code>'s wire equivalent), generates its own keypair,
       and completes the mutual-TLS handshake.
     </p>

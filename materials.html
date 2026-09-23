@@ -177,8 +177,10 @@
   <section id="custom-materials">
     <h2><span class="sec-num">6</span>Custom materials</h2>
     <p>
-      The desktop studio's material retargeting dialog builds a custom
-      material at runtime via <code>GemMaterial::new_custom</code>
+      The desktop studio's <strong>Material Editor</strong> dialog (the
+      pencil button next to the live viewport's Render Material dropdown)
+      builds a custom material at runtime via
+      <code>GemMaterial::new_custom</code>
       (<code>crates/indicatrix/src/optics/materials.rs</code>), which takes a
       name, mean refractive index, an F−C dispersion delta, a birefringence
       delta, and an RGB absorption tint, and fits a 2-parameter Cauchy curve
@@ -187,7 +189,31 @@
       table in the same <code>facet_diagrams.sqlite</code> database the app
       already uses for designs, via <code>indicatrix-vault</code>'s
       <code>CustomMaterialRow</code> and <code>Database::save_gem_material</code>
-      — not embedded in the design/schedule file itself.
+      — not embedded in the design/schedule file itself. This is a separate
+      feature from <strong>Retarget</strong>, which proposes new facet angles
+      for an existing design in a different material rather than authoring a
+      new material (see the <a href="editor.html">studio page</a>).
+    </p>
+    <p>
+      Every material picker in the app — the studio's Design Settings
+      Material combo, the New Design dialog's Starting Material combo, and
+      the Live Render viewport's Render Material dropdown — reads from one
+      shared <code>MaterialCatalogue</code>
+      (<code>crates/indicatrix-cut-core/src/material.rs</code>): all 32
+      built-in materials above, in <code>GemMaterial::all_materials()</code>'s
+      own order, followed by every custom material you have saved, sorted
+      alphabetically. A species available to the renderer is therefore never
+      missing from the CAD editor's own pickers, or vice versa.
+    </p>
+    <p>
+      An imported <code>.asc</code> file carries only a bare refractive
+      index, never a species name. When a design's material is otherwise
+      unset, the studio looks for the nearest built-in preset within 0.02 of
+      the design's effective RI and shows it as a labelled guess — e.g.
+      "Sapphire? (from RI 1.76)" — never as a recorded fact, with a
+      <strong>Set material</strong> button next to it that writes the name in
+      as an ordinary, undoable edit. If nothing built in is within tolerance,
+      no guess is shown at all.
     </p>
   </section>
 

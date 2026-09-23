@@ -175,7 +175,7 @@
         <a href="assets/images/fig_mat_rutile.jpg"><img src="assets/images/fig_mat_rutile.jpg" width="900" height="600" alt="The same step cut rendered as rutile" loading="lazy"></a>
       </div>
       <figcaption>Fig. 5 &mdash; One octagon step cut in five materials, left to right: diamond, sapphire, emerald, tanzanite, rutile. 1920 &times; 1080, 4 096 samples per pixel each.</figcaption>
-      <p class="fig-note">Identical geometry, camera, light tent and backdrop card &mdash; only the material changed. Diamond and rutile share a cut and differ almost entirely in dispersion (0.044 against 0.280); sapphire and tanzanite differ in where their absorption bands sit, not in brightness.</p>
+      <p class="fig-note">Identical geometry, camera, light tent and backdrop card &mdash; only the material changed. Diamond and rutile share a cut and differ almost entirely in dispersion (0.0256 against &asymp;0.300); sapphire and tanzanite differ in where their absorption bands sit, not in brightness.</p>
     </figure>
   </section>
 
@@ -201,6 +201,10 @@
       stills export up to 8192 × 8192 pixels at up to 32 768 samples per pixel
       (<code>MAX_EXPORT_DIM</code>, <code>MAX_EXPORT_SPP</code> in
       <code>apps/indicatrix-cut/src/bridge/export_thread/params.rs</code>).
+      If the GPU compute path loses its device mid-session, the viewport
+      re-acquires it once and retries the same frame; if that also fails it
+      falls back to the CPU tracer for the rest of the session with a
+      visible status message, rather than freezing.
     </p>
     <figure class="fig">
       <a href="assets/images/fig_studio_main.jpg">
@@ -235,10 +239,13 @@
     <div class="status">
       <span class="status-label">STATUS</span>
       <p>
-        The faceting CAD is in beta and under active development. Solving,
-        optimising and export work on the designs in the bundled catalogue,
-        but the editor's interaction model is still changing and results
-        should be checked against a conventional CAD before cutting.
+        The faceting CAD is in beta. Solving runs on a background solve
+        service with real mid-solve cancellation and a progress-tracked
+        activity list, new designs are guided by a template gallery and an
+        in-app worked example, and results carry stale badges when they no
+        longer match the current design — but the editor's interaction
+        model is still evolving, and results should be checked against a
+        conventional CAD before cutting.
       </p>
     </div>
     <figure class="fig">
@@ -284,6 +291,22 @@
       and meet instructions, title and author — is recovered. Neither reader is
       affiliated with or endorsed by those tools' authors.
     </p>
+    <p>
+      For a cutter at the machine, the cutting schedule doubles as a printable
+      cutting sheet: each solved mast converts to a real cutting depth and an
+      unsigned dial reading in millimetres, cheater/azimuth offsets are applied
+      to the printed geometry so the sheet matches what the solid view and
+      tracer show, and a facet can target a girdle thickness or table width in
+      millimetres directly instead of a dimensionless mast
+      (<code>indicatrix-cut-core/src/cutting_sheet.rs</code>,
+      <code>design/targets.rs</code>). Every tier keeps a stable id across
+      edits and file round trips, and the preform module reports volumetric
+      yield and an estimated carat weight from the rough
+      (<code>yield_metrics/</code>). See the <a href="editor.html">studio page</a>
+      for the guidance UI (empty-state cards, a template gallery, an in-app
+      worked example, and a keyboard-shortcut overlay) built around this
+      workflow.
+    </p>
   </section>
 
   <section id="materials">
@@ -293,9 +316,15 @@
       <code>crates/indicatrix/src/optics/materials.rs</code>, each with a
       dispersion fit either transcribed from a primary optical-constants
       paper or derived from corroborated gemological reference values (the
-      source code documents which, per material). The chart below evaluates
-      a subset of these dispersion curves live in your browser; the full
-      table is on the <a href="materials.html">materials page</a>.
+      source code documents which, per material). The same 32 materials,
+      plus any custom material you save in the desktop studio, back one
+      shared catalogue used by both the renderer's material picker and the
+      CAD editor's design settings, so a species available in one is
+      available in the other. The chart below evaluates a subset of these
+      dispersion curves live in your browser; the full table, the shared
+      catalogue, and how an imported design's material is inferred (and
+      flagged as a guess) are on the <a href="materials.html">materials
+      page</a>.
     </p>
 
     <div class="chart-box">
@@ -317,7 +346,7 @@
         <dt>Crystal system</dt><dd id="matCrystal">Cubic (Isotropic)</dd>
         <dt>Optical character</dt><dd id="matCharacter">Isotropic</dd>
         <dt>n_D (589 nm)</dt><dd id="matRi">2.4173</dd>
-        <dt>Dispersion (n_F − n_C)</dt><dd id="matDispersion">0.0440</dd>
+        <dt>Dispersion (n_F − n_C)</dt><dd id="matDispersion">0.0256</dd>
         <dt>Abbe number (V_d)</dt><dd id="matAbbe">55.3</dd>
         <dt>Birefringence (Δn)</dt><dd id="matBirefringence">0.0000 (none)</dd>
         <dt>Specific gravity</dt><dd id="matSg">3.52</dd>
@@ -454,7 +483,36 @@
   <section id="getting-started">
     <h2><span class="sec-num">9</span>Getting started</h2>
     <div class="code-block">
-      <div class="code-block-head"><span>terminal</span><button class="copy-btn">Copy</button></div>
+      <div class="code-block-head"><span>terminal — install Rust</span><button class="copy-btn">Copy</button></div>
+      <pre><code><span class="cmt"># Linux/macOS</span>
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+<span class="cmt"># Windows (or download rustup-init.exe from https://rustup.rs) --</span>
+<span class="cmt"># rustup's installer also offers to set up the MSVC C++ build tools it needs</span>
+winget install --id Rustlang.Rustup
+
+<span class="cmt"># either platform: make sure the toolchain is current --</span>
+<span class="cmt"># indicatrix needs rust-version 1.95 or newer (workspace Cargo.toml)</span>
+rustup update stable</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal — install from crates.io</span><button class="copy-btn">Copy</button></div>
+      <pre><code><span class="cmt"># CPU-only build</span>
+cargo install indicatrix-cut
+
+<span class="cmt"># with the GPU path-tracing backend</span>
+cargo install indicatrix-cut --features gpu
+
+<span class="cmt"># HDR environment-map (.hdr) loading is always included, not a separate feature</span>
+
+<span class="cmt"># then start it</span>
+indicatrix-cut
+
+<span class="cmt"># optional: the remote render worker</span>
+cargo install indicatrix-worker --features worker</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal — build from source</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># clone and build</span>
 git clone https://github.com/suitable-name/indicatrix.git
 cd indicatrix
@@ -478,7 +536,12 @@ cargo run -p indicatrix-worker --features worker -- render \
       <code>Cargo.toml</code>). Windows and Linux are the platforms exercised
       by this repository's own build scripts
       (<code>scripts/pgo-build.ps1</code>, <code>scripts/pgo-bolt-build.sh</code>);
-      macOS is not currently tested.
+      macOS is not currently tested. The desktop app writes a log file
+      (<code>indicatrix-cut.log</code>, next to the executable, falling back
+      to the temp directory) for diagnosing a background-thread failure;
+      verbosity follows <code>RUST_LOG</code>, defaulting to <code>warn</code>
+      everywhere and <code>info</code> for <code>indicatrix</code>/
+      <code>indicatrix_cut</code> (<code>apps/indicatrix-cut/src/main.rs</code>).
     </p>
   </section>
 
