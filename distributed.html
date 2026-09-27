@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Distributed rendering — Indicatrix</title>
-<meta name="description" content="Indicatrix's remote rendering architecture: preview-then-handoff, sample-range additivity, mutual TLS with token enrollment, and the indicatrix-worker CLI.">
+<meta name="description" content="Indicatrix's remote rendering architecture: preview-then-handoff, sample-range additivity, a coordinator that joining workers dial into, lossless result compression, mutual TLS with token enrollment, and the indicatrix-worker CLI.">
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -30,7 +30,7 @@
   <div class="page-head">
     <span class="tag">Networking</span>
     <h1>Distributed rendering</h1>
-    <p class="subtitle">Offloading sample tracing to a remote worker over mutual TLS.</p>
+    <p class="subtitle">Offloading sample tracing to a coordinator and its joined workers over mutual TLS.</p>
   </div>
 
   <section id="handoff-model">
@@ -88,11 +88,33 @@
       Spectral path tracing through a high-index gemstone with dozens of
       internal bounces is expensive, and streaming every interactive frame
       to a remote machine would add visible input latency. Indicatrix instead
-      renders locally while the camera moves, and hands off to a remote
-      <code>indicatrix-worker</code> once the camera settles: the client
-      sends a compact <code>SceneState</code> (serialized with
-      <code>postcard</code>) and the worker streams traced radiance back,
-      which is folded into the client's own accumulation buffer.
+      renders locally while the camera moves, and hands off to its one
+      configured remote endpoint once the camera settles: the client sends a
+      compact <code>SceneState</code> (serialized with <code>postcard</code>)
+      and the remote streams traced radiance back, which is folded into the
+      client's own accumulation buffer. That endpoint is always a
+      <em>coordinator</em>, <code>indicatrix-worker serve</code>, which renders
+      the request itself, splits it across render workers that have joined it,
+      or both (section 3); the desktop app never talks to a worker directly.
+    </p>
+    <p>
+      The settings dialog's <strong>Live Compute</strong> choice decides what
+      happens at the settle: <em>Local only</em>, <em>Remote only</em>, or
+      <em>Local + Remote</em>. With Local + Remote both sides trace the same
+      image against one shared sample budget — the live view's single target
+      sample count, there is no separate remote setting — through one sample
+      cursor per settle (<code>LiveEpoch</code>,
+      <code>apps/indicatrix-cut/src/bridge/sample_cursor/live.rs</code>), so
+      their samples are combined, never duplicated. The remote side claims short
+      chunks sized to about 1.5&nbsp;s of its measured rate (8 samples for the
+      first chunk, before a rate is known; <code>LIVE_CHUNK_TARGET_SECS</code>,
+      <code>bridge/remote/live_lane</code>), so a camera drag wastes at most a
+      second or two of remote time. A chunk that fails keeps the prefix the
+      remote already traced and returns the untraced remainder to the local
+      tracer; after two consecutive failures the remote sits out the rest of
+      that settle. Each settle is stamped with the scene it was dispatched for,
+      so a scene change during the handoff can never merge samples of the old
+      scene into the new image.
     </p>
   </section>
 
@@ -109,35 +131,214 @@
       so on — with no tile-seam stitching and linear load balancing across
       heterogeneous machines.
     </p>
+    <p>
+      Disjointness is the whole correctness condition, so it is enforced in one
+      place: a <code>SampleCursor</code> in the GUI-free
+      <code>crates/indicatrix-dispatch</code> hands out disjoint absolute sample
+      ranges to every contributor of one image — the export's local and remote
+      lanes, the live view's local tracer and remote chunks, and the
+      coordinator's own lane and joined workers alike. Every backend also applies
+      the same non-finite rule (<code>add_finite_sample</code>,
+      <code>crates/indicatrix/src/optics/raytracer/sampling.rs</code>, with its
+      twin in the GPU reduction): a sample with a NaN or infinite component is
+      dropped but still counted, so one bad sample can never poison a pixel's sum
+      and the divisor of a merge is always the number of samples actually traced.
+      A statistical test renders one range on the CPU and the next on the GPU,
+      merges them the production way, and checks the result against an
+      independent CPU reference (<code>renderer/gpu/merge_tests.rs</code>).
+    </p>
+  </section>
+
+  <section id="coordinator">
+    <h2><span class="sec-num">3</span>The coordinator and joining workers</h2>
+    <p>
+      <code>indicatrix-worker serve</code> is the coordinator
+      (<code>apps/indicatrix-worker/src/serve</code>,
+      <code>src/coordinator</code>). It always serves the read-only design
+      library to viewers. On a build with the <code>worker</code> feature it also
+      opens a separate worker port that render workers dial into, and it traces
+      samples with its own CPU/GPU only when started with <code>--render</code>
+      (<code>--only-gpu</code>/<code>--only-cpu</code> imply it); without that
+      flag it acquires no GPU and traces nothing itself. Its WELCOME advertises
+      exactly that: no render capability for a bare coordinator with no joined
+      workers (the desktop app then sees a library-only remote and renders
+      locally), the plain CPU or GPU backend for <code>--render</code> alone, and
+      a <code>Coordinator { workers, threads, gpus }</code> backend as soon as a
+      worker has joined. A capability change between requests is announced to
+      the viewer with <code>CAPABILITY_CHANGED</code>.
+    </p>
+    <div class="status">
+      <span class="status-label">RELEASE NOTE</span>
+      <p>
+        <code>serve</code> no longer renders by default. A single-machine setup
+        that should keep rendering must add <code>--render</code> (or
+        <code>--only-gpu</code>/<code>--only-cpu</code>, which imply it).
+      </p>
+    </div>
+    <p>
+      A worker is <code>indicatrix-worker join &lt;coordinator-host:port&gt;</code>
+      (<code>apps/indicatrix-worker/src/join</code>): it connects out to the
+      coordinator's worker port over mutual TLS with a worker certificate,
+      reports its render capability in its HELLO, and then serves the
+      coordinator's requests on that connection. No inbound port is needed on
+      the worker, so a machine behind NAT or a cloud VM can join.
+      <code>--slots K</code> opens K parallel connections (default 1, at most
+      64), each serving one request stream at a time; every slot reconnects
+      forever with jittered backoff, 1&nbsp;s doubling to 60&nbsp;s.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Default port</th><th>Listener</th><th>Who connects</th><th>Allowlist</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>7878</td><td>viewer port (<code>--bind</code>)</td><td><code>indicatrix-cut</code></td><td><code>allowlist-viewers.txt</code></td></tr>
+        <tr><td>7879</td><td>viewer enrollment (<code>--enroll-bind</code>)</td><td>a viewer redeeming a token</td><td>—</td></tr>
+        <tr><td>7880</td><td>worker port (<code>--worker-bind</code>)</td><td><code>indicatrix-worker join</code></td><td><code>allowlist-workers.txt</code></td></tr>
+        <tr><td>7881</td><td>worker enrollment (<code>--worker-enroll-bind</code>)</td><td><code>join --token</code></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p class="small">
+      The worker port sits two ports above <code>--bind</code> and each
+      enrollment listener one above its own port, on <code>--bind</code>'s host
+      unless overridden (<code>WORKER_PORT_OFFSET</code>,
+      <code>apps/indicatrix-worker/src/cli/mod.rs</code>). Every listener binds
+      loopback only unless <code>--allow-remote</code> is passed.
+      <code>--no-workers</code> skips the worker port and its enrollment
+      listener; <code>--no-enroll</code> skips both enrollment listeners.
+    </p>
+    <p>
+      How a request runs depends on its kind (<code>src/coordinator/job</code>).
+      An export-type request — a still export, a tilt-video frame — becomes a
+      job: a lane pool (<code>indicatrix-dispatch</code>'s <code>LanePool</code>)
+      over the request's sample range, with one lane for every idle joined
+      worker whose pixel cap accepts the image plus the coordinator's own lane,
+      each claiming chunks from the shared sample cursor sized to its measured
+      rate. A live-view request stays on the own lane alone, the lowest-latency
+      path; a coordinator without <code>--render</code> gives it the single
+      fastest idle worker instead. If a worker dies mid-job, the samples it had
+      not finished go back to the cursor and the remaining lanes trace them, so
+      the viewer still receives every sample of the request exactly once. Only
+      when no lane at all is left does the viewer get
+      <code>ALL_WORKERS_LOST</code>, and it then renders the unfinished part
+      locally. The coordinator pings every idle joined connection after 10&nbsp;s
+      without traffic and drops it after 30&nbsp;s of silence
+      (<code>LivenessConfig</code>, <code>src/coordinator/registry.rs</code>); a
+      joined worker that hears nothing for 45&nbsp;s reconnects
+      (<code>JOIN_IDLE_TIMEOUT</code>).
+    </p>
+    <p>
+      Two advanced flags change the live-view rule:
+      <code>--interactive-workers N</code> also gives each live-view request up
+      to N of the fastest idle joined workers (default 0), and
+      <code>--pin-interactive-worker &lt;label&gt;</code> prefers one named
+      worker while it is connected, idle and accepts the image. Throughput jobs —
+      an export streamed final-only, or any final-picture request — wait in a
+      per-viewer queue, one active job per viewer certificate, and all
+      in-flight jobs share one memory budget, <code>--max-job-memory-mib</code>
+      (default 2048; each job is charged width × height × 48 bytes, and a job
+      past the cap is refused, not queued).
+    </p>
+  </section>
+
+  <section id="wire">
+    <h2><span class="sec-num">4</span>What travels on the wire</h2>
+    <ul>
+      <li>
+        <strong>Lossless result compression.</strong> A radiance delta
+        (<code>FRAME</code>/<code>PREVIEW</code> payload) can travel compressed,
+        negotiated per connection: the client lists the encodings it can decode
+        in its HELLO and the server picks the first entry of its own preference
+        list the client accepts (<code>negotiate</code>,
+        <code>crates/indicatrix-net/src/messages/encoding.rs</code>). The default
+        preference is a byte shuffle (four planes: every value's first byte,
+        then every second byte, …) followed by Zstandard level 1, then shuffle
+        plus LZ4, then raw; a loopback peer gets raw only, and raw is also the
+        fallback whenever the two sides share nothing. Each frame header names
+        its own encoding, so a payload that would not shrink is simply sent raw.
+        The decoded bytes are bit-identical to the raw <code>f32</code> buffer,
+        NaN payloads and signed zeros included. On captured real frames the
+        default came out 1.54–1.99× smaller — 35–50&nbsp;% fewer bytes on the
+        link — encoding at 465–621&nbsp;MB/s and decoding above 1&nbsp;GB/s on
+        one laptop core. Decoding is bounded against decompression bombs: the
+        declared raw length must equal width × height × 12 before anything is
+        decoded, the output buffer is exactly that size, and output that is
+        short or would overflow it is rejected
+        (<code>radiance/payload.rs</code>). Both hops negotiate it: viewer to
+        coordinator, and coordinator to each joined worker.
+      </li>
+      <li>
+        <strong>Final picture only.</strong> The export dialog and the tilt-video
+        export have a <em>Transfer</em> choice (its default is set in the Remote
+        Coordinator form): <em>Full data</em> sends float radiance that is merged
+        with the local lanes; <em>Final picture only</em> has the coordinator
+        render, tone-map with the desktop export's own function
+        (<code>tonemap_accumulation</code>) and send one PNG per image, the same
+        PNG the desktop would have written from the same samples, while the local
+        lanes stay idle. The <strong>Live Transfer</strong> setting offers the
+        same trade for the viewport: <em>Final picture</em> streams finished,
+        denoised 8-bit display frames (denoised on the coordinator with the
+        desktop's own À-Trous denoiser, its guides from the coordinator's own
+        primary-ray prepass) instead of float deltas. A finished picture cannot
+        be summed with anything, so this mode is remote-only by construction:
+        the local GPU/CPU pauses after the handoff. A remote that does not
+        implement it answers <code>UNSUPPORTED_REQUEST</code>, and the app falls
+        back to full data with one note.
+      </li>
+      <li>
+        <strong>HDR environment maps by content hash.</strong> A scene lit by a
+        loaded HDR panorama names the map only by the SHA-256 of its file bytes
+        (<code>crates/indicatrix-net/src/messages/asset.rs</code>). A node that
+        lacks it answers <code>NEED_ASSET</code>; the requester sends the bytes
+        once (<code>ASSET</code>, at most 256&nbsp;MiB, checked before anything
+        is allocated); the receiver verifies the hash and keeps the bytes in a
+        bounded on-disk cache (<code>asset-cache</code> next to
+        <code>--db</code> or <code>--cert-dir</code>, or
+        <code>$INDICATRIX_ASSET_CACHE_DIR</code>; size cap
+        <code>$INDICATRIX_ASSET_CACHE_MIB</code>, default 2048&nbsp;MiB), and a
+        later request naming the same hash is never asked again. The coordinator
+        asks the viewer once and forwards the map to each joined worker that
+        asks. A remote advertises HDR support in its WELCOME only when some lane
+        can render it, and HDR jobs only go to workers whose own cache works. For
+        a remote without HDR support, or a map that cannot be sent (not loaded
+        from a file, or over the size limit), HDR scenes render locally, with
+        one status note.
+      </li>
+    </ul>
   </section>
 
   <section id="mtls-security">
-    <h2><span class="sec-num">3</span>Mutual TLS and token enrollment</h2>
+    <h2><span class="sec-num">5</span>Mutual TLS, roles and token enrollment</h2>
     <p>
       The wire protocol lives in <code>crates/indicatrix-net</code>, typed
-      message framing with no networking of its own. The worker's
-      <code>serve</code> command carries the actual sockets and TLS.
+      message framing with no networking of its own.
+      <code>indicatrix-worker</code>'s <code>serve</code> and <code>join</code>
+      commands carry the actual sockets and TLS.
     </p>
     <ul>
       <li>TLS 1.3 only, via <code>rustls</code> with the <code>ring</code> crypto provider; TLS 1.2 is excluded from the feature set at compile time, not merely disabled at runtime (<code>tls::server_config</code>/<code>tls::client_config</code>).</li>
-      <li>Mutual authentication: both sides present a certificate signed by the same private CA (<code>indicatrix-worker cert</code> subcommands manage that CA).</li>
-      <li>A fingerprint allowlist decides which signed clients are actually trusted, separately from which CA signed them (<code>--allowlist</code>, off by default only with <code>--trust-any-client-cert</code>).</li>
-      <li>One-time token enrollment (the wire protocol and claim-side verification in <code>crates/indicatrix-net/src/enroll</code>; the server-side registry that mints and expires tokens in <code>apps/indicatrix-worker/src/enroll</code>): <code>indicatrix-worker cert issue-token</code> asks a running <code>serve</code> process's loopback-only enrollment listener to mint a 180-second, single-use token; <code>cert claim</code> redeems it — verifying the listener's certificate chain against the CA fingerprint carried inside the token itself, before sending the token's secret — and writes the same three-file certificate bundle <code>cert issue-client</code> would, without a manual copy.</li>
-      <li>Plaintext serving (<code>--insecure-no-tls</code>) is available for local debugging and refused on any non-loopback bind address.</li>
-      <li>Every connection negotiates a protocol version during its HELLO/WELCOME handshake (<code>PROTOCOL_VERSION</code>, currently 13, <code>crates/indicatrix-net/src/messages/mod.rs</code>); a mismatched peer is refused outright rather than risking a misread frame.</li>
-      <li>Every message is length-prefixed and bounded before a payload is even allocated (<code>framing::MAX_FRAME_LEN</code>, 512&nbsp;MiB; the enrollment listener caps its own request further, at 4&nbsp;KiB), and a just-accepted socket carries a 20-second read/write timeout until its TLS handshake completes (<code>serve::HANDSHAKE_TIMEOUT</code>) — an idle or slow-loris connection cannot pin a worker thread indefinitely.</li>
+      <li>Mutual authentication: both sides present a certificate signed by the same private CA (<code>indicatrix-worker cert</code> subcommands manage that CA). The coordinator's own certificate is used on both of its ports.</li>
+      <li>Every client certificate carries a role: a worker certificate's Common Name is <code>worker:&lt;label&gt;</code>, a viewer's is the plain label (which may not start with <code>worker:</code>). Each listener checks the role and its own fingerprint allowlist — <code>allowlist-viewers.txt</code> and <code>allowlist-workers.txt</code> next to the CA, with a pre-role <code>allowlist.txt</code> still honoured as the viewers list while it is the only one — so a viewer certificate is never accepted on the worker port, nor a worker certificate on the viewer port. The HELLO carries the peer's role too, and a mismatch is refused with <code>ROLE_REFUSED</code>. <code>--trust-any-client-cert</code> skips both allowlists, never the role check.</li>
+      <li>One-time token enrollment (the wire protocol and claim-side verification in <code>crates/indicatrix-net/src/enroll</code>; the server-side registry that mints and expires tokens in <code>apps/indicatrix-worker/src/enroll</code>): <code>indicatrix-worker cert issue-token</code> asks a running <code>serve</code> process's enrollment listener, from a loopback connection only, to mint a 180-second, single-use token for a viewer, or with <code>--role worker</code> for a worker. The desktop app's Redeem button, <code>cert claim</code>, or <code>join --token</code> redeems it — verifying the listener's certificate chain against the CA fingerprint carried inside the token itself, before sending the token's secret — and writes the same three-file certificate bundle <code>cert issue-client</code> would, without a manual copy. A listener refuses a token request for the other role.</li>
+      <li>Plaintext serving (<code>--insecure-no-tls</code>) is available for local debugging, refused on any non-loopback bind address, and disables the worker port and both enrollment listeners.</li>
+      <li>Every connection negotiates a protocol version during its HELLO/WELCOME handshake (<code>PROTOCOL_VERSION</code>, currently 14, <code>crates/indicatrix-net/src/messages/mod.rs</code>), together with a build hash and, where both sides can establish it, a content hash of the <code>indicatrix</code> source tree; a mismatched peer is refused outright (<code>BUILD_MISMATCH</code>) rather than risking a misread frame or a merge of samples from different physics.</li>
+      <li>Every message is length-prefixed and bounded before a payload is even allocated (<code>framing::MAX_FRAME_LEN</code>, 512&nbsp;MiB; the enrollment listener caps its own request further, at 4&nbsp;KiB), and a just-accepted socket carries a 20-second read/write timeout through its TLS handshake until its first HELLO arrives (<code>HANDSHAKE_TIMEOUT</code>, <code>serve/socket.rs</code>) — an idle or slow-loris connection cannot pin a thread indefinitely. <code>--max-connections</code> (default 64) bounds authenticated connections, counted separately for viewers and joined workers, and a second limiter at four times that cap bounds connections still in their handshake.</li>
     </ul>
   </section>
 
   <section id="worker-cli">
-    <h2><span class="sec-num">4</span>The <code>indicatrix-worker</code> CLI</h2>
+    <h2><span class="sec-num">6</span>The <code>indicatrix-worker</code> CLI</h2>
     <p>
-      <code>indicatrix-worker</code> has three subcommands: <code>render</code>
+      <code>indicatrix-worker</code> has four subcommands: <code>render</code>
       (one-shot scene-to-PNG, no networking), <code>serve</code> (the
-      design-library protocol over TLS, plus render requests with the
-      <code>worker</code> feature), and <code>cert</code> (manages the private
-      CA). Flags below are copied from the CLI's own <code>--help</code> text
-      in <code>apps/indicatrix-worker/src/cli/mod.rs</code>.
+      coordinator: the design-library protocol over TLS, the worker port, and
+      with <code>--render</code> its own render lane), <code>join</code> (a
+      render worker dialling a coordinator), and <code>cert</code> (manages the
+      private CA: <code>init</code>, <code>issue-server</code>,
+      <code>issue-client</code>, <code>issue-token</code>, <code>claim</code>).
+      <code>render</code>, <code>join</code> and <code>serve --render</code>
+      need a build with the <code>worker</code> feature (<code>gpu</code>
+      implies it). Flags below are copied from the CLI's own <code>--help</code>
+      text in <code>apps/indicatrix-worker/src/cli/mod.rs</code>.
     </p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — render</span><button class="copy-btn">Copy</button></div>
@@ -151,46 +352,91 @@
     </div>
     <p class="small"><code>--only-gpu</code> / <code>--only-cpu</code> force a backend; the default is a hybrid split across both when it measures as worthwhile.</p>
     <div class="code-block">
-      <div class="code-block-head"><span>terminal — serve</span><button class="copy-btn">Copy</button></div>
+      <div class="code-block-head"><span>terminal — serve (coordinator)</span><button class="copy-btn">Copy</button></div>
       <pre><code>indicatrix-worker serve \
-  --bind 0.0.0.0:9443 --allow-remote \
-  --ca ca.pem --cert server.pem --key server.key</code></pre>
+  --bind 0.0.0.0:7878 --allow-remote \
+  --ca pki/ca.pem --cert pki/server.pem --key pki/server.key \
+  --render</code></pre>
     </div>
     <p class="small">
       <code>--bind</code> defaults to loopback only (<code>127.0.0.1:7878</code>);
-      <code>--allow-remote</code> is required for any other address.
-      <code>--db</code> points at the design-library SQLite file (default
-      <code>facet_diagrams.sqlite</code>). <code>--max-connections</code>
-      defaults to 64.
+      <code>--allow-remote</code> is required for any other address, on any of
+      the four listeners. <code>--db</code> points at the design-library SQLite
+      file (default <code>facet_diagrams.sqlite</code> in the working
+      directory). Leave out <code>--render</code> for a coordinator that only
+      distributes work to joined workers. <code>--threads</code> and
+      <code>--only-gpu</code>/<code>--only-cpu</code> govern the own lane;
+      <code>--max-connections</code> defaults to 64.
+    </p>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal — join (worker)</span><button class="copy-btn">Copy</button></div>
+      <pre><code>indicatrix-worker join coordinator.local:7880 --slots 2</code></pre>
+    </div>
+    <p class="small">
+      The address is the coordinator's worker port (also accepted as
+      <code>--coordinator</code>). <code>--cert-dir</code> names the worker
+      certificate bundle (<code>ca.pem</code>, <code>client.pem</code>,
+      <code>client.key</code>; default <code>worker-cert</code> in the working
+      directory); <code>--threads</code> and
+      <code>--only-gpu</code>/<code>--only-cpu</code> work as for
+      <code>render</code>. With one GPU, more than one slot mainly helps
+      CPU-only machines.
     </p>
   </section>
 
   <section id="cluster-setup">
-    <h2><span class="sec-num">5</span>Pairing a worker with the desktop app</h2>
+    <h2><span class="sec-num">7</span>Setting up a coordinator, its workers and the desktop app</h2>
     <div class="code-block">
-      <div class="code-block-head"><span>terminal — on the worker machine</span><button class="copy-btn">Copy</button></div>
+      <div class="code-block-head"><span>terminal — on the coordinator machine</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># 1. create a CA</span>
 indicatrix-worker cert init --dir pki/
 
-<span class="cmt"># 2. issue this worker's own certificate</span>
-indicatrix-worker cert issue-server --dir pki/ --host worker.local --ip 192.0.2.10
+<span class="cmt"># 2. issue the coordinator's own certificate (used on the viewer and worker ports)</span>
+indicatrix-worker cert issue-server --dir pki/ --host coordinator.local --ip 192.0.2.10
 
-<span class="cmt"># 3. start serving</span>
-indicatrix-worker serve --bind 0.0.0.0:9443 --allow-remote \
-  --ca pki/ca.pem --cert pki/server.pem --key pki/server.key
+<span class="cmt"># 3. start the coordinator; drop --render if this machine should not trace samples itself</span>
+indicatrix-worker serve --bind 0.0.0.0:7878 --allow-remote \
+  --ca pki/ca.pem --cert pki/server.pem --key pki/server.key --render
 
-<span class="cmt"># 4. mint a one-time, 180-second enrollment token (loopback only)</span>
-indicatrix-worker cert issue-token --ca pki/ca.pem --admin-addr 127.0.0.1:9444 --name my-laptop</code></pre>
+<span class="cmt"># 4. mint one-time, 180-second enrollment tokens (loopback only)</span>
+indicatrix-worker cert issue-token --ca pki/ca.pem --admin-addr 127.0.0.1:7879 --name my-laptop
+indicatrix-worker cert issue-token --ca pki/ca.pem --admin-addr 127.0.0.1:7881 --name gpu-box --role worker</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal — on each worker machine</span><button class="copy-btn">Copy</button></div>
+      <pre><code><span class="cmt"># first run: claim the worker token into worker-cert/, then join</span>
+indicatrix-worker join --coordinator coordinator.local:7880 --token GW1-...
+
+<span class="cmt"># every later run reuses the claimed bundle</span>
+indicatrix-worker join coordinator.local:7880</code></pre>
     </div>
     <p>
-      <code>serve</code>'s enrollment listener defaults to the same host as
-      <code>--bind</code>, one port up (<code>--enroll-bind</code> overrides it), but
-      <code>cert issue-token</code> only ever succeeds from a loopback peer regardless of
-      that address — the operator runs it on the worker machine itself, not remotely.
-      In <code>indicatrix-cut</code>, open the remote workers panel, enter the
-      worker's address, and paste the printed token; the client redeems it
-      (<code>cert claim</code>'s wire equivalent), generates its own keypair,
-      and completes the mutual-TLS handshake.
+      <code>serve</code>'s viewer enrollment listener defaults to the same host
+      as <code>--bind</code>, one port up, and the worker enrollment listener to
+      one port above the worker port (<code>--enroll-bind</code> and
+      <code>--worker-enroll-bind</code> override them), but
+      <code>cert issue-token</code> only ever succeeds from a loopback peer
+      regardless of that address — the operator runs it on the coordinator
+      itself, not remotely. <code>join --token</code> claims one port above the
+      worker port it was given (7881) unless <code>--enroll-addr</code> says
+      otherwise; a
+      token is single-use, so later runs leave it out. For an air-gapped
+      machine, <code>cert issue-client --role worker</code> writes the same
+      bundle for copying by hand.
+    </p>
+    <p>
+      In <code>indicatrix-cut</code>, open the <strong>Remote</strong> panel
+      (<strong>Remote Coordinator</strong>) and choose <em>Set up remote
+      coordinator</em>: enter the coordinator's viewer address
+      (<code>coordinator.local:7878</code>), paste the enrollment address
+      (<code>coordinator.local:7879</code>) and the printed token, and press
+      <em>Redeem</em>. The client redeems it (<code>cert claim</code>'s wire
+      equivalent), stores the returned certificate bundle, fills in the
+      certificate folder, and completes the mutual-TLS handshake on the next
+      <em>Test connection</em> or render. The same form holds the live stream
+      preferences and the default export <em>Transfer</em>; the app keeps
+      exactly one such endpoint, and a settings file from an older build that
+      listed several workers keeps only the first.
     </p>
   </section>
 

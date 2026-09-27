@@ -69,8 +69,8 @@
     <p>
       Designs are stored in a local SQLite database
       (<code>indicatrix-vault</code>) by default — no account, no telemetry —
-      though the library view can also switch to browsing a remote worker's
-      catalogue over the network instead. Filterable by shape, index-gear
+      though the library view can also switch to browsing the remote
+      coordinator's catalogue over the network instead. Filterable by shape, index-gear
       tooth count, refractive-index range, length/width ratio, and facet
       count. The shape filter is populated partly by automatic
       classification: girdle facet count and length/width ratio identify a
@@ -128,12 +128,20 @@
       size clamped to the same 128–8192 px range per axis. An optional
       performance overlay burns the brilliance/windowing/extinction readout
       into each frame in a layout that adapts to the chosen width. Every
-      frame renders on the CPU (the app's single shared GPU adapter stays
-      free for the live viewport); the numbered PNG sequence is then muxed
-      into an H.264 MP4 with <code>ffmpeg</code> when it is found on
-      <code>PATH</code>, an animated GIF via the <code>image</code> crate
-      when it is not, or, failing both, left as a PNG sequence with a
-      <code>README.txt</code> explaining how to mux it by hand.
+      frame renders through the same local CPU/GPU/hybrid setting and
+      configured remote coordinator as a still-image export — not a separate,
+      CPU-only tracer — including the same <em>Transfer</em> choice while a
+      remote is configured: <em>Full data</em> merges the remote's samples
+      with the local lanes, <em>Final picture only</em> has the coordinator
+      send one finished PNG per frame while the local lanes stay idle. The
+      live viewport pauses for the whole video's
+      duration exactly as it does during a still-image export, and never
+      shares the app's single GPU adapter with it while it runs. The
+      numbered PNG sequence is then muxed into an H.264 MP4 with
+      <code>ffmpeg</code> when it is found on <code>PATH</code>, an animated
+      GIF via the <code>image</code> crate when it is not, or, failing both,
+      left as a PNG sequence with a <code>README.txt</code> explaining how
+      to mux it by hand.
     </p>
   </section>
 
@@ -185,10 +193,27 @@
       session) a design has no anchor tier, a one-time explainer card walks
       through why the solver needs one before you hit the "no anchor"
       status message cold. New designs start from an empty-state card
-      offering a template
-      gallery or an in-app guided worked example that builds a simple
-      round-brilliant-style stone step by step, highlighting the tier table
-      or Design Settings panel for whichever step is current
+      offering the New Design dialog's template gallery or an in-app guided
+      worked example. <strong>New Design</strong> always opens a design: even
+      the Empty template leaves a zero-tier design with its preform in the
+      viewport, a "no tiers yet" hint and an <strong>+ Add Tier</strong>
+      button. The worked example (Help → Guide: New Design Walkthrough) walks
+      you through building a simple round-brilliant-style stone yourself,
+      tier by tier — it does not build the stone for you. Each step lists its
+      actions as numbered lines with the exact values to type, outlines the
+      control it is about, and moves on by itself once its goal is reached —
+      the tier exists with the right name, angle and indices, the material is
+      applied, the design solves to a closed stone — whichever route got
+      there (the tier form, a quick-add button, an inline edit, Undo/Redo, or
+      auto-solve); a status chip reads "Waiting for: …" until then.
+      <em>Skip step</em> moves on without the goal, <em>Back</em> returns to
+      the previous step, and the two reading steps wait for <em>Next</em>.
+      Controls the current step does not use are locked — dimmed, with a
+      tooltip saying so, keyboard shortcuts included — until the guide is
+      closed. The guide panel sits beside the tier table on a wide Edit
+      layout and floats at the window's right edge everywhere else, where it
+      can be dragged out of the way; either way it collapses to a small
+      "Guide · Step N of M" pill
       (<code>apps/indicatrix-cut/docs/manual/07-new-design-worked-example.md</code>).
       A full keyboard-shortcut overlay is one press of <code>?</code> away
       (or Help → Keyboard Shortcuts) whenever no text field has focus.

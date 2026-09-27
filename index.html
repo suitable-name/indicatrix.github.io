@@ -138,6 +138,7 @@
       <li>Tier 3 — statistical image comparison, CPU vs. GPU (<code>renderer/gpu/estimator_check/image_comparison.rs</code>)</li>
       <li>Furnace anchor — CPU/GPU convergence against an analytically-computed target for the CMF-integration pipeline (<code>renderer/gpu/furnace_check.rs</code>)</li>
       <li>Shader validation — every WGSL unit is parsed with <code>naga</code> in <code>renderer/gpu/shader_validation_tests.rs</code></li>
+      <li>Cross-backend merge — a CPU sample range plus a GPU sample range, merged the production way, checked statistically against an independent CPU reference (<code>renderer/gpu/merge_tests.rs</code>); every backend drops a non-finite sample but still counts it, under one shared rule</li>
     </ul>
   </section>
 
@@ -185,8 +186,8 @@
       <code>indicatrix-cut</code> is the desktop application: a design library
       on the left, a live 3D viewport on the right. The library is a local
       SQLite database (no account) searchable by shape, index gear, facet
-      count, and length/width ratio; it can also switch to browsing a
-      remote worker's design catalogue over the same network connection
+      count, and length/width ratio; it can also switch to browsing the
+      remote coordinator's design catalogue over the same network connection
       used for render offload (see section 7).
     </p>
     <p>
@@ -415,17 +416,29 @@
     </figure>
     <p>
       The viewport renders locally while the camera moves, then hands off
-      sample tracing to a remote <code>indicatrix-worker</code> once the
-      camera settles. Because each sample's contribution is additive and
-      order-independent, work is partitioned by sample-index range rather
-      than by screen tile, which avoids the load imbalance that tiling causes
-      on a gemstone (most of the frame is background, a few facets absorb
-      most of the bounce budget). The connection is mutual TLS 1.3
-      (<code>rustls</code>, TLS 1.2 compiled out) with one-time token
-      enrollment, so a new client can pair with a worker without a manual
-      certificate exchange. See the <a href="distributed.html">distributed
-      rendering page</a> for the protocol and the <code>indicatrix-worker</code>
-      CLI.
+      sample tracing to one remote endpoint, a coordinator
+      (<code>indicatrix-worker serve</code>), once the camera settles. Because
+      each sample's contribution is additive and order-independent, work is
+      partitioned by sample-index range rather than by screen tile, which
+      avoids the load imbalance that tiling causes on a gemstone (most of the
+      frame is background, a few facets absorb most of the bounce budget).
+      The coordinator traces with its own CPU/GPU when started with
+      <code>--render</code>, and splits exports across the render workers that
+      dial out to it with <code>indicatrix-worker join</code> —
+      no inbound port on the worker, so machines behind NAT or cloud VMs can
+      join — surviving a worker that drops out mid-job. In
+      <em>Local + Remote</em> mode the desktop and the coordinator share one
+      sample budget, so their samples are combined, never duplicated. Results
+      travel losslessly compressed (35–50&nbsp;% smaller on measured frames),
+      or as a finished picture only when bandwidth matters more than combining
+      with local samples, and HDR environment maps travel by content hash so
+      HDR-lit scenes can render remotely too, wherever the remote advertises
+      HDR support. Every connection is mutual
+      TLS 1.3 (<code>rustls</code>, TLS 1.2 compiled out) with one-time token
+      enrollment, so a new client or worker can pair with a coordinator
+      without a manual certificate exchange. See the
+      <a href="distributed.html">distributed rendering page</a> for the
+      protocol and the <code>indicatrix-worker</code> CLI.
     </p>
   </section>
 
@@ -462,6 +475,11 @@
           <td>Wire protocol for offloading indicatrix spectral ray samples to a remote render worker.</td>
         </tr>
         <tr>
+          <td><code>indicatrix-dispatch</code></td>
+          <td>library</td>
+          <td>Sample-range scheduling for render lanes: a shared disjoint sample cursor, per-lane rate models, a lane pool that merges chunk sums deterministically, and a whole-item batch queue. No networking and no GUI types.</td>
+        </tr>
+        <tr>
           <td><code>indicatrix-cut</code></td>
           <td>app (desktop)</td>
           <td>Desktop faceting-design editor: library browsing, spectral 3D rendering, material retargeting, and a solid inspection view.</td>
@@ -469,7 +487,7 @@
         <tr>
           <td><code>indicatrix-worker</code></td>
           <td>app (CLI / server)</td>
-          <td>Library server for an indicatrix-backed design catalogue; the optional <code>worker</code> feature adds render capacity, and <code>render</code> a one-shot scene-to-PNG CLI.</td>
+          <td>The coordinator (<code>serve</code>): serves an indicatrix-backed design catalogue over mutual TLS and accepts joining render workers. The optional <code>worker</code> feature adds render capacity — <code>serve --render</code>, <code>join</code> to work for a coordinator, and <code>render</code>, a one-shot scene-to-PNG CLI.</td>
         </tr>
         <tr>
           <td><code>indicatrix-web</code></td>
@@ -508,9 +526,25 @@ cargo install indicatrix-cut --features gpu
 <span class="cmt"># then start it</span>
 indicatrix-cut
 
-<span class="cmt"># optional: the remote render worker</span>
+<span class="cmt"># optional: the coordinator / remote render worker (add --features gpu for the GPU tracer)</span>
 cargo install indicatrix-worker --features worker</code></pre>
     </div>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal — remote rendering quick start</span><button class="copy-btn">Copy</button></div>
+      <pre><code><span class="cmt"># on the coordinator: serve the library and render with this machine's own CPU/GPU</span>
+<span class="cmt"># (serve no longer renders by default; --render turns that on)</span>
+indicatrix-worker serve --bind 0.0.0.0:7878 --allow-remote \
+  --ca pki/ca.pem --cert pki/server.pem --key pki/server.key --render
+
+<span class="cmt"># on any further machine: dial out to the coordinator's worker port and render for it</span>
+indicatrix-worker join coordinator.local:7880</code></pre>
+    </div>
+    <p class="small">
+      The certificates and one-time enrollment tokens both commands need are
+      set up with <code>indicatrix-worker cert</code>; the full walkthrough is
+      on the <a href="distributed.html#cluster-setup">distributed rendering
+      page</a>.
+    </p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — build from source</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># clone and build</span>
