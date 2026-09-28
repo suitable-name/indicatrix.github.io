@@ -198,21 +198,21 @@
           <td>GemCAD text export</td>
           <td>✓</td>
           <td>✓</td>
-          <td>A cutting <em>schedule</em>: angle, mast and index positions, plus meet instructions. The field's de facto interchange format, verified against a real-world corpus of 5,759 files.</td>
+          <td>Cutting <em>instructions</em>: angle, mast and index positions, per-facet names, plus meet instructions. The field's de facto interchange format, verified against a real-world corpus of 5,759 files: Windows-1252 files, both line endings, GemCAD's culet convention (angle 0 with a negative distance) and names bound to their index are all read and written back as GemCAD does.</td>
         </tr>
         <tr>
           <td><code>.gcs</code></td>
           <td>Gem Cut Studio</td>
           <td>✓</td>
-          <td>✗</td>
-          <td>Plain-text XML holding a <em>solved</em> design — every tier already carries its facets as closed polygons. Reverse-engineered from 59 real files and checked field by field against the 56 that have an <code>.asc</code> sibling for the same design.</td>
+          <td>✓ experimental</td>
+          <td>Plain-text XML holding a <em>solved</em> design — every tier already carries its facets as closed polygons. Read per the file description in the Gem Cut Studio 1.1 user's manual; the conventions the manual leaves open were measured on 59 real files and checked field by field against the 56 that have an <code>.asc</code> sibling for the same design. The writer solves each facet's polygon from the facet planes and reads back correctly here, but has not yet been checked in Gem Cut Studio itself, and chiral designs are untested.</td>
         </tr>
         <tr>
           <td><code>.gem</code></td>
           <td>GemCAD native save</td>
-          <td>Partial</td>
+          <td>✓</td>
           <td>✗</td>
-          <td>Binary, with no published specification. Only the embedded length-prefixed text is recovered — facet names, cutting and meet instructions, title and author — from a corpus of 254 files. The geometry is <em>not</em> decoded, and the reader says so rather than guessing.</td>
+          <td>Binary, with no published specification. The geometry is now decoded from the binary: every facet plane, tier, name and cutting note, plus gear, symmetry, refractive index, headings and footnotes. Verified against a corpus of 254 files, all of which decode byte-exactly end to end; where a design also exists as an <code>.asc</code>, every tier's angle, mast and index set matches it. An embedded CAM preform is read but not converted.</td>
         </tr>
         <tr>
           <td><code>.indicatrix.toml</code></td>
@@ -226,9 +226,11 @@
     </div>
     <p class="small">
       The <code>.gcs</code> and <code>.gem</code> readers exist because real designs are
-      published in those formats with no <code>.asc</code> counterpart. They are clean-room
-      reverse-engineering from file corpora, documented in the source with what is
-      confirmed, what is inferred, and what is not decoded at all.
+      published in those formats with no <code>.asc</code> counterpart. The desktop editor
+      imports both into its library and opens both directly, converting them to
+      <code>.asc</code> cutting instructions. The <code>.gem</code> layout is clean-room
+      reverse-engineering from a file corpus; both readers are documented in the source
+      with what is confirmed, what is inferred, and what is still open.
     </p>
   </section>
 

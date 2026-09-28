@@ -295,7 +295,7 @@
       <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>
       <dt>Max bounces</dt><dd>128 (<code>MAX_EXPORT_BOUNCES</code>)</dd>
       <dt>Colour spaces</dt><dd>sRGB, Display P3, Rec. 2020 (Display P3/Rec. 2020 exports embed an ICC profile so they aren't misread as sRGB)</dd>
-      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, native <code>.indicatrix.toml</code> sidecar, 8-bit PNG renders. Read only: <code>.gcs</code> (Gem Cut Studio), <code>.gem</code> (GemCAD's binary save format — embedded text only)</dd>
+      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, native <code>.indicatrix.toml</code> sidecar, 8-bit PNG renders. Read, import and open: <code>.gem</code> (GemCAD's binary save format, geometry decoded) and <code>.gcs</code> (Gem Cut Studio), both converted to <code>.asc</code> cutting instructions. Write, experimental: <code>.gcs</code></dd>
     </dl>
     <p class="small">Constants from <code>apps/indicatrix-cut/src/bridge/export_thread/params.rs</code>.</p>
   </section>

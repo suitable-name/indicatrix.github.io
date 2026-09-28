@@ -283,14 +283,16 @@
       <code>.indicatrix.toml</code> sidecar format
       (<code>crates/indicatrix-formats/src/native</code>), which preserves
       constraints and preforms that a plain <code>.asc</code> file cannot
-      express. Two further formats are readable but not writable:
-      <code>.gcs</code> (Gem Cut Studio), reverse-engineered from a corpus of
-      59 files and checked field by field against the 56 of them that have an
-      <code>.asc</code> sibling for the same design; and <code>.gem</code>
+      express. Two further formats import and open directly, converted to
+      <code>.asc</code> cutting instructions: <code>.gcs</code> (Gem Cut Studio),
+      read per the file description in that program's 1.1 manual and checked
+      against 59 real files, with an experimental writer; and <code>.gem</code>
       (GemCAD's own binary save format, which has no published specification),
-      from which only the embedded length-prefixed text — facet names, cutting
-      and meet instructions, title and author — is recovered. Neither reader is
-      affiliated with or endorsed by those tools' authors.
+      whose geometry — every facet plane, tier, name and cutting note, plus gear,
+      symmetry and refractive index — is decoded from the binary and verified
+      against a corpus of 254 files. Neither reader is affiliated with or
+      endorsed by those tools' authors. See the
+      <a href="comparison.html#interop">file-format table</a>.
     </p>
     <p>
       For a cutter at the machine, the cutting instructions double as a printable
