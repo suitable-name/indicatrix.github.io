@@ -155,12 +155,12 @@
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_cad_diagram.png">
-        <img src="assets/images/fig_cad_diagram.png" width="1800" height="1085" alt="Facet diagram with resolved meet points">
+        <img src="assets/images/fig_cad_diagram.png" width="1800" height="1085" alt="Faceting diagram with resolved meet points">
       </a>
-      <figcaption>Fig. 4 — The facet diagram after the meet-point solver runs.</figcaption>
+      <figcaption>Fig. 4 — The faceting diagram after the meet-point solver runs.</figcaption>
     </figure>
     <p>
-      A cutting schedule is a geometric constraint graph, not a static list of
+      Cutting instructions are a geometric constraint graph, not a static list of
       numbers. A meet-point instruction ("cut tier P2 until it meets P1 and G1
       at a single point") specifies a facet's depth implicitly; the solver in
       <code>crates/indicatrix/src/geometry/meet_solver</code> resolves that
@@ -273,9 +273,9 @@
     <h2><span class="sec-num">8</span>Export</h2>
     <figure class="fig">
       <a href="assets/images/fig_cutting_schedule.png">
-        <img src="assets/images/fig_cutting_schedule.png" width="1396" height="1016" alt="Cutting schedule table">
+        <img src="assets/images/fig_cutting_schedule.png" width="1396" height="1016" alt="Cutting instructions table">
       </a>
-      <figcaption>Fig. 6 — The cutting schedule table: index, angle, mast per facet.</figcaption>
+      <figcaption>Fig. 6 — The cutting instructions table: index, angle, mast per facet.</figcaption>
     </figure>
     <p>
       A split button in the command bar groups the master-still render

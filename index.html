@@ -48,7 +48,7 @@
         It is built for previewing faceting designs before cutting, comparing
         how different gem materials render the same cut, and producing
         reference-quality still renders. Designs come from GemCAD-style
-        <code>.asc</code> cutting schedules or from Indicatrix's own faceting
+        <code>.asc</code> cutting instructions or from Indicatrix's own faceting
         editor.
       </p>
       <p>
@@ -231,7 +231,7 @@
       <a href="assets/images/fig_solid_view.png">
         <img src="assets/images/fig_solid_view.png" width="1800" height="1059" alt="Solid inspection view of a faceted stone" loading="lazy">
       </a>
-      <figcaption>Fig. 9 — Solid inspection view: facet picking against the cutting schedule.</figcaption>
+      <figcaption>Fig. 9 — Solid inspection view: facet picking against the cutting instructions.</figcaption>
     </figure>
   </section>
 
@@ -253,22 +253,22 @@
       <a href="assets/images/fig_cad_edit.png">
         <img src="assets/images/fig_cad_edit.png" width="1800" height="1072" alt="Faceting tier editor" loading="lazy">
       </a>
-      <figcaption>Fig. 10 — Editing a cutting schedule's tier angles and constraints.</figcaption>
+      <figcaption>Fig. 10 — Editing tier angles and constraints in the cutting instructions.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_cad_diagram.png">
-        <img src="assets/images/fig_cad_diagram.png" width="1800" height="1085" alt="Facet diagram with meet points" loading="lazy">
+        <img src="assets/images/fig_cad_diagram.png" width="1800" height="1085" alt="Faceting diagram with meet points" loading="lazy">
       </a>
-      <figcaption>Fig. 11 — The facet diagram, with meet points resolved by the solver.</figcaption>
+      <figcaption>Fig. 11 — The faceting diagram, with meet points resolved by the solver.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_cutting_schedule.png">
-        <img src="assets/images/fig_cutting_schedule.png" width="1396" height="1016" alt="Cutting schedule table" loading="lazy">
+        <img src="assets/images/fig_cutting_schedule.png" width="1396" height="1016" alt="Cutting instructions table" loading="lazy">
       </a>
-      <figcaption>Fig. 12 — The cutting schedule: index, angle, and mast per facet.</figcaption>
+      <figcaption>Fig. 12 — The cutting instructions: index, angle, and mast per facet.</figcaption>
     </figure>
     <p>
-      A cutting schedule is treated as a constraint graph rather than a static
+      The cutting instructions are treated as a constraint graph rather than a static
       list of numbers. The meet-point solver (<code>crates/indicatrix/src/geometry/meet_solver</code>)
       resolves each facet's cutting depth from its meet constraints in
       dependency order, and can anchor an otherwise-unconstrained schedule
@@ -293,7 +293,7 @@
       affiliated with or endorsed by those tools' authors.
     </p>
     <p>
-      For a cutter at the machine, the cutting schedule doubles as a printable
+      For a cutter at the machine, the cutting instructions double as a printable
       cutting sheet: each solved mast converts to a real cutting depth and an
       unsigned dial reading in millimetres, cheater/azimuth offsets are applied
       to the printed geometry so the sheet matches what the solid view and
@@ -452,12 +452,12 @@
         <tr>
           <td><code>indicatrix</code></td>
           <td>library</td>
-          <td>A physically-based spectral gemstone renderer that turns GemCAD-style cutting schedules into rendered output.</td>
+          <td>A physically-based spectral gemstone renderer that turns GemCAD-style cutting instructions into rendered output.</td>
         </tr>
         <tr>
           <td><code>indicatrix-cut-core</code></td>
           <td>library</td>
-          <td>Editor-core library for a faceting cutting schedule: preform, tiers, undo/redo, and live solid validation.</td>
+          <td>Editor-core library for faceting cutting instructions: preform, tiers, undo/redo, and live solid validation.</td>
         </tr>
         <tr>
           <td><code>indicatrix-formats</code></td>
@@ -492,7 +492,7 @@
         <tr>
           <td><code>indicatrix-web</code></td>
           <td>app (browser, WebGPU)</td>
-          <td>Browser build of indicatrix: upload a GemCAD .asc cutting schedule, get an interactive rendered stone. No design library, no remote worker, no database.</td>
+          <td>Browser build of indicatrix: upload GemCAD .asc cutting instructions, get an interactive rendered stone. No design library, no remote worker, no database.</td>
         </tr>
       </tbody>
     </table>
@@ -579,8 +579,48 @@ cargo run -p indicatrix-worker --features worker -- render \
     </p>
   </section>
 
+  <section id="roadmap">
+    <h2><span class="sec-num">10</span>Roadmap</h2>
+    <div class="status">
+      <span class="status-label">PLANNED, NOT IMPLEMENTED</span>
+      <p>
+        Everything in this section is a plan, not a feature. None of it exists in
+        the current source tree, none of it has a release date, and the order below
+        is not a promise of sequence. It is listed so that the direction of the
+        project is visible.
+      </p>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Planned feature</th><th>What it will do</th><th>Builds on</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Rough planner from 3D scans</td>
+          <td>Fit a design into a scanned piece of rough instead of an idealised outline: import a 3D scan of the rough, place and orient the design inside it, and compare yield and orientation options against the real shape, including inclusions the scan captures.</td>
+          <td>The existing solver and yield report (section 5), extended from a bounding outline to a scanned volume.</td>
+        </tr>
+        <tr>
+          <td>Colour from a photograph of the rough</td>
+          <td>Pick the render colour from a photo of the actual rough rather than from a catalogue preset: sample the stone's colour in the picture and derive an absorption spectrum that reproduces it, so the preview shows the stone you have, not a generic one.</td>
+          <td>The spectral material model and the shared material catalogue (section 6).</td>
+        </tr>
+        <tr>
+          <td>Mobile app</td>
+          <td>A phone or tablet client for browsing the library and viewing designs in high-definition renders. The rendering itself happens on a coordinator or worker over the existing remote protocol, so a mobile device gets the same quality as the desktop without tracing anything locally.</td>
+          <td>Distributed rendering and the coordinator model (section 7).</td>
+        </tr>
+        <tr>
+          <td>Concave designs</td>
+          <td>Facets cut with a cylindrical or spherical tool rather than a flat lap, in both the tracer and the CAD: curved facet geometry, its optical behaviour, and cutting instructions that carry the tool radius.</td>
+          <td>Today the geometry is strictly half-space planes (section 1); this is the one item that changes the geometric model.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
   <section id="status">
-    <h2><span class="sec-num">10</span>Status and limitations</h2>
+    <h2><span class="sec-num">11</span>Status and limitations</h2>
     <ul>
       <li>The faceting CAD (<code>indicatrix-cut-core</code> and the editor UI in <code>apps/indicatrix-cut</code>) is beta; its interaction model is still changing.</li>
       <li><code>indicatrix-web</code> is an experimental WebGPU-only browser build with no CPU fallback and no design library — see its own <code>README.md</code>.</li>

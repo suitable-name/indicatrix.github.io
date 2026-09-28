@@ -38,7 +38,7 @@
     <h2><span class="sec-num">1</span>The landscape</h2>
     <p>
       Faceting software splits into three jobs that different programs solve to
-      different depths: <strong>authoring</strong> a cutting schedule a human will
+      different depths: <strong>authoring</strong> cutting instructions a human will
       actually cut on a faceting machine, <strong>rendering</strong> what the finished
       stone will look like, and <strong>analysing</strong> how well the cut performs as
       the stone is tilted. Indicatrix is one program that attempts all three, with the
@@ -46,7 +46,7 @@
     </p>
     <dl class="deflist">
       <dt>GemCAD</dt>
-      <dd>Robert Strickland's faceting-design program: the long-standing reference for authoring a cutting schedule. Its <code>.asc</code> text export is the closest thing this field has to an interchange format, and <code>.gem</code> is its own binary save format. Strickland retired in 2023 and released GemCAD and GemRay free of charge — free to use, but not open source.</dd>
+      <dd>Robert Strickland's faceting-design program: the long-standing reference for authoring cutting instructions. Its <code>.asc</code> text export is the closest thing this field has to an interchange format, and <code>.gem</code> is its own binary save format. Strickland retired in 2023 and released GemCAD and GemRay free of charge — free to use, but not open source.</dd>
       <dt>GemRay</dt>
       <dd>The ray-tracing companion to GemCAD: it renders a design and plots its brightness against tilt, and cannot author designs itself. Its own documentation is unusually explicit about its limits — it does not model birefringence, dichroism or polarized light, and follows three colour rays rather than a spectrum.</dd>
       <dt>Gem Cut Studio</dt>
@@ -93,7 +93,7 @@
       <tbody>
         <tr class="group"><th colspan="7" scope="colgroup">Authoring</th></tr>
         <tr>
-          <th scope="row">Authors a cutting schedule (angle, index, mast)</th>
+          <th scope="row">Authors cutting instructions (angle, index, mast)</th>
           <td>✓ <span class="qual">beta</span></td><td>✓</td><td>✗</td><td>✓</td><td>✓</td><td>✗ <span class="qual">parametric cuts</span></td>
         </tr>
         <tr>
@@ -291,7 +291,7 @@
     <p>
       The question that usually follows is why not simply render the stone in a
       general 3D package — Blender/Cycles, LuxCoreRender and the rest. They will light
-      a gemstone mesh beautifully, but they have no notion of a cutting schedule, an
+      a gemstone mesh beautifully, but they have no notion of cutting instructions, an
       index wheel or a meet point, and they carry a single refractive index per
       material rather than a dispersion curve, so the fire has to be faked. The
       faceting tools above have the opposite problem: they know exactly what a tier

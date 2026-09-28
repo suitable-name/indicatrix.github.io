@@ -359,7 +359,23 @@ table {
 
 .matrix td {
   text-align: center;
-  white-space: nowrap;
+  /* Qualifiers wrap inside a bounded column instead of stretching it, so every
+     product column stays roughly the same width and a tick sits under its name. */
+  white-space: normal;
+  min-width: 6.5rem;
+  max-width: 9rem;
+}
+
+/* The product names sit CENTRED over their columns of glyphs (the page-wide `th`
+   rule is left-aligned, which put each name at the left edge of a column whose
+   ticks are centred). The empty corner cell keeps the row-label column's alignment. */
+.matrix thead th[scope="col"] {
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.matrix thead th[scope="col"]:first-child {
+  text-align: left;
 }
 
 .matrix tr.group th {
