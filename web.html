@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web app — Indicatrix</title>
+<meta name="description" content="Indicatrix in the browser: open or start a faceting design, edit and solve it, and render it on your own CPU cores. Nothing to install, nothing uploaded. What the web app does, and what only the desktop app does yet.">
+<link rel="icon" type="image/png" href="assets/images/icon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="physics.html">Physics</a>
+      <a href="editor.html">Studio &amp; CAD</a>
+      <a href="web.html" aria-current="page">Web app</a>
+      <a href="materials.html">Materials</a>
+      <a href="comparison.html">Comparison</a>
+      <a href="distributed.html">Distributed</a>
+      <a href="gallery.html">Figures</a>
+    </nav>
+    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="page-head">
+    <span class="tag">Browser application</span>
+    <h1>Indicatrix in the browser</h1>
+    <p class="subtitle">Open or start a faceting design, edit and solve it, and render it in a browser tab. Nothing to install.</p>
+    <p><a class="cta" href="https://live.indicatrix-suite.com">Open the web app &rarr; live.indicatrix-suite.com</a></p>
+  </div>
+
+  <div class="status">
+    <span class="status-label">BETA</span>
+    <p>
+      The web app shares its faceting engine with the desktop studio, so it
+      shares the desktop editor's beta status: check results against a
+      conventional CAD before cutting. It is also a smaller program than the
+      desktop app. Section 3 lists exactly what is missing today; several of
+      those items are current limits of this first browser build, not decisions.
+    </p>
+  </div>
+
+  <section id="what">
+    <h2><span class="sec-num">1</span>What it is</h2>
+    <p>
+      The web app is the same Indicatrix, compiled to run inside a browser page.
+      You open a design file (or start a new one from a template), edit its
+      cutting instructions, let the solver close the meet points, look at the
+      stone as a solid, a faceting diagram and a spectral render, read off the
+      optical figures, and save the design back to your disk as a download.
+    </p>
+    <p>
+      It runs entirely on your own machine. The page is a set of static files;
+      once it has loaded, your designs, your settings and the rendering all stay
+      in the browser and nothing is uploaded anywhere. There is no account.
+    </p>
+  </section>
+
+  <section id="can">
+    <h2><span class="sec-num">2</span>What it can do</h2>
+    <dl class="deflist">
+      <dt>Designs</dt>
+      <dd>Start a new design from the template gallery (an empty design plus five built-in templates). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own <code>.indicatrix.toml</code> (alone, or together with its <code>.asc</code>), by file picker or by dragging files onto the page. Save <code>.asc</code>, the native pair, or the native file alone. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG.</dd>
+
+      <dt>CAD editor</dt>
+      <dd>The tier table with inline angle editing, keyboard and Ctrl+wheel nudging, undo and redo; the four-tab inspector (Tier, Preform, Optimize, Schedule); design settings, including a compact custom-material editor; and the guided walkthrough, the same ten-step worked example as the desktop.</dd>
+
+      <dt>Mouse manipulation</dt>
+      <dd>In the Solid view, drag the angle, depth and index handles of a selected facet, or switch to Slice mode and cut a new facet by dragging a line across the stone. One drag is one undo step, and the design solves itself when you let go.</dd>
+
+      <dt>Solving</dt>
+      <dd>Solves run in a background Web Worker, so the page stays responsive, and can re-run automatically after each edit (auto-solve). Optimize and Retarget also run there with live progress, and Cancel stops the search between steps and keeps the best result found so far.</dd>
+
+      <dt>Rendering</dt>
+      <dd>A progressive spectral path-traced render on your CPU cores, with a denoise once the picture settles. It uses the same physics, the same material catalogue and the same lighting choices as the desktop app, and it can load an HDR environment map (see the limits below). Export the result as a PNG in sRGB or Display P3.</dd>
+
+      <dt>Views</dt>
+      <dd>The Render view, the Solid view (facet picking and selection linked to the tier table) and the Diagram view (crown, pavilion and profile panels).</dd>
+
+      <dt>Optical figures</dt>
+      <dd>The metrics readout (brilliance, fire, scintillation, windowing, extinction) and the Tilt Performance dialog: brilliance, windowing and extinction against tilt, four azimuths of 181 points each. Both run in their own worker, so they never wait behind a solve.</dd>
+
+      <dt>Session memory</dt>
+      <dd>Your settings, the current design and your place in the walkthrough are kept for the life of the browser tab, so a reload brings them back. Closing the tab clears them, so save your design as a download before you leave.</dd>
+    </dl>
+  </section>
+
+  <section id="cannot">
+    <h2><span class="sec-num">3</span>What it cannot do yet</h2>
+    <p>
+      These are the differences from the desktop application, as of this
+      beta. The right-hand column says where each one lives today.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Feature</th><th>Web app</th><th>Desktop app</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Design library</td>
+          <td>No. Open files one at a time.</td>
+          <td>The searchable local library and the remote coordinator's catalogue (<a href="editor.html#catalogue">studio page</a>).</td>
+        </tr>
+        <tr>
+          <td>Rough planner</td>
+          <td>No. It plans across the design library, which the browser app does not have.</td>
+          <td>Library &rarr; Plan Rough...: ranks up to 10 layouts of up to 99 stones from a block of rough (beta; <a href="editor.html#rough-planner">studio page</a>). Desktop-only for now.</td>
+        </tr>
+        <tr>
+          <td>Remote and distributed rendering</td>
+          <td>No.</td>
+          <td>Hand sample tracing to a coordinator or render worker (<a href="distributed.html">distributed page</a>).</td>
+        </tr>
+        <tr>
+          <td>GPU rendering</td>
+          <td>No. Rendering is CPU-only for now.</td>
+          <td>The GPU compute path, when the machine has a suitable adapter. A browser-sized GPU path is being researched; it is planned, not promised (see <a href="index.html#roadmap">roadmap</a>).</td>
+        </tr>
+        <tr>
+          <td>Deep Solve</td>
+          <td>No.</td>
+          <td>Available in the desktop editor.</td>
+        </tr>
+        <tr>
+          <td>Tilt video export</td>
+          <td>No.</td>
+          <td>Tilt Performance dialog in the desktop studio.</td>
+        </tr>
+        <tr>
+          <td>Tilt dialog: hover preview, copy data table</td>
+          <td>No. The curves, axis switches and hover readout work.</td>
+          <td>Tilt Performance dialog in the desktop studio.</td>
+        </tr>
+        <tr>
+          <td>Ghost preview and Compare window for Optimize and Retarget</td>
+          <td>No. Results are listed tier by tier; the stone is not redrawn with the pending angles.</td>
+          <td>Viewport preview and the before/after Compare window in the desktop editor.</td>
+        </tr>
+        <tr>
+          <td>Full custom-material editor</td>
+          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and colour; one custom material travels with the design.</td>
+          <td>The full editor and the saved custom-material store.</td>
+        </tr>
+        <tr>
+          <td>Large master stills</td>
+          <td>Up to 4096 pixels on the longest edge and 4096 samples per pixel.</td>
+          <td>Up to 8192 &times; 8192 pixels and 32768 samples per pixel.</td>
+        </tr>
+        <tr>
+          <td>Saved state</td>
+          <td>This tab's session only. Save your work as downloads.</td>
+          <td>Designs live in the local database and on disk.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="how">
+    <h2><span class="sec-num">4</span>How it works</h2>
+    <p>
+      The desktop application and the web app are built from the same Rust code
+      for the editor, the meet-point solver and the optics. The browser build
+      compiles that code to WebAssembly and draws its interface with the same
+      toolkit (Slint) inside a single canvas.
+    </p>
+    <p>
+      The heavy work runs in Web Workers so the page never freezes: rendering is
+      spread over a pool of them, one per CPU core minus one, up to eight;
+      solving, Optimize and Retarget share one more, and the optical figures
+      have their own, so they never wait behind a solve. Rendering is the same spectral, polarization-aware path tracer, run on
+      the CPU; there is no GPU involved.
+    </p>
+    <p>
+      Your work is kept in the browser tab's session storage (settings, the
+      current design, walkthrough progress) and in the files you save. There is
+      no server side to the app: no upload, no account, no design database.
+    </p>
+  </section>
+
+  <section id="requirements">
+    <h2><span class="sec-num">5</span>Browser requirements</h2>
+    <p>
+      A current desktop Chrome, Edge, Firefox or Safari. The page needs
+      WebAssembly, Web Workers and WebGL 2 (used to draw the interface), and it
+      uses <code>sessionStorage</code> if it is available. It does not need
+      WebGPU, and it does not need any special server settings. If WebGL 2 is
+      disabled, the page says so instead of starting.
+    </p>
+    <p>
+      A tablet works for viewing and tapping. Touch arrives as mouse events, so
+      Ctrl or Shift gestures and the keyboard shortcuts need a keyboard;
+      everything they do is also reachable from the menus and buttons.
+    </p>
+  </section>
+
+  <section id="limits">
+    <h2><span class="sec-num">6</span>Limits</h2>
+    <ul>
+      <li><strong>Render speed.</strong> The desktop app can use the GPU; the browser renders on the CPU. A few hundred samples per pixel take tens of seconds to minutes depending on the machine and the size of the view, so expect it to be slower than the desktop's GPU path. The live view traces at most 960 pixels on its longest edge.</li>
+      <li><strong>Samples and export size.</strong> The live render takes 64 to 1024 samples per pixel. PNG export takes 16 to 4096 samples and up to 4096 pixels on the longest edge.</li>
+      <li><strong>HDR environment maps.</strong> A <code>.hdr</code> file is limited to 64 MiB and 8192 &times; 4096 texels in the browser. Each render worker keeps its own decoded copy, so a large map is used on fewer workers, with a message, rather than being downsampled.</li>
+      <li><strong>Long solves.</strong> A solve in the worker that runs for more than 60 seconds is stopped.</li>
+      <li><strong>Memory.</strong> Rendering is held to a fixed memory budget across the workers, which is why very large environment maps are limited.</li>
+    </ul>
+  </section>
+
+  <section id="desktop">
+    <h2><span class="sec-num">7</span>Get the desktop app</h2>
+    <p>
+      For the design library, the Rough planner, GPU rendering, remote rendering, Deep Solve, tilt
+      video export and full-size master stills, use the desktop application. It
+      installs from crates.io or builds from source; the commands are in the
+      <a href="index.html#getting-started">getting started section</a> of the
+      overview, and the application itself is described on the
+      <a href="editor.html">studio and CAD page</a>. The two open the same
+      files, so a design saved from the web app opens on the desktop and back.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

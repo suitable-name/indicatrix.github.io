@@ -124,25 +124,22 @@ const GEM_MATERIALS = {
       return 1.566794 + 0.004273 * invL2;
     }
   },
-  moissanite: {
-    name: "Moissanite (silicon carbide, 4H-SiC)",
-    crystal: "Hexagonal",
-    character: "Uniaxial positive",
-    ri_d: "2.6474",
-    dispersion: "0.0635",
-    abbe: "25.9",
-    birefringence: "+0.0415",
-    sg: "3.22",
-    formula: "Sellmeier 3-pole (Wang 2013)",
-    description: "More than double diamond's dispersion, with strong birefringence and visible facet doubling.",
+  peridot: {
+    name: "Peridot (forsterite-rich olivine, (Mg,Fe)2SiO4)",
+    crystal: "Orthorhombic",
+    character: "Biaxial positive",
+    ri_d: "1.6540",
+    dispersion: "0.0116",
+    abbe: "56.5",
+    birefringence: "+0.0360",
+    sg: "3.34",
+    formula: "Cauchy fit",
+    description: "Olive to lime green from iron; a strong birefringence doubles the back facets.",
     evaluate: (lambdaUm) => {
-      // 6H-SiC ordinary-ray fit (Wang et al. 2013), encoded as three poles
-      // (materials.rs: b=[1.163887, 4.408433, 21.53], c=[0.0, 0.03178, 1000.0]).
-      const l2 = lambdaUm * lambdaUm;
-      const term0 = 1.163887 * l2 / (l2 - 0.0);
-      const term1 = 4.408433 * l2 / (l2 - 0.03178);
-      const term2 = 21.53 * l2 / (l2 - 1000.0);
-      return Math.sqrt(1.0 + term0 + term1 + term2);
+      // No primary fit exists for olivine; materials.rs uses a 2-parameter
+      // Cauchy fit (a=1.636549, b=0.006062, c=0).
+      const invL2 = 1.0 / (lambdaUm * lambdaUm);
+      return 1.636549 + 0.006062 * invL2;
     }
   },
   zircon: {
@@ -199,24 +196,43 @@ const GEM_MATERIALS = {
       return 1.837264 + 0.017276 * invL2;
     }
   },
-  rutile: {
-    name: "Synthetic rutile (TiO2)",
-    crystal: "Tetragonal",
-    character: "Uniaxial positive",
-    ri_d: "2.6161 (no) / 2.9030 (ne)",
-    dispersion: "≈0.300",
-    abbe: "5.4",
-    birefringence: "+0.2870",
-    sg: "4.26",
-    formula: "Cauchy fit (DeVore 1951 figures)",
-    description: "Extreme dispersion and the largest birefringence of any built-in material.",
+  cubicZirconia: {
+    name: "Cubic zirconia (ZrO2, yttria-stabilized)",
+    crystal: "Cubic (isotropic)",
+    character: "Isotropic",
+    ri_d: "2.1585",
+    dispersion: "0.0346",
+    abbe: "33.5",
+    birefringence: "0.0000 (none)",
+    sg: "5.80",
+    formula: "Sellmeier 3-pole (Wood & Nassau 1982)",
+    description: "The common diamond simulant: an index between the garnets and diamond, with more fire than diamond.",
     evaluate: (lambdaUm) => {
-      // Curve shown is the ordinary ray. materials.rs fits a per-ray
-      // 2-parameter Cauchy independently to DeVore 1951's n_d and Delta n(F-C)
-      // figures (o-ray: a=2.1634, b=0.1572); the e-ray (a=2.4354, b=0.1624,
-      // n_e(D)=2.903) is not drawn here.
+      // Wood & Nassau (1982), materials.rs: b=[1.347091, 2.117788, 9.452943],
+      // c=[0.003912, 0.027802, 591.489] (the pole wavelengths squared).
+      const l2 = lambdaUm * lambdaUm;
+      const term0 = 1.347091 * l2 / (l2 - 0.003912);
+      const term1 = 2.117788 * l2 / (l2 - 0.027802);
+      const term2 = 9.452943 * l2 / (l2 - 591.489);
+      return Math.sqrt(1.0 + term0 + term1 + term2);
+    }
+  },
+  ggg: {
+    name: "GGG (gadolinium gallium garnet, Gd3Ga5O12)",
+    crystal: "Cubic (isotropic)",
+    character: "Isotropic",
+    ri_d: "1.9700",
+    dispersion: "0.0450",
+    abbe: "21.6",
+    birefringence: "0.0000 (none)",
+    sg: "7.05",
+    formula: "Cauchy fit",
+    description: "A synthetic diamond simulant from before cubic zirconia: a moderate index with more fire than diamond.",
+    evaluate: (lambdaUm) => {
+      // materials.rs: a lower-confidence 2-parameter Cauchy fit solved from
+      // n_d=1.970 and Delta n(F-C)=0.045 (a=1.902186, b=0.023556, c=0).
       const invL2 = 1.0 / (lambdaUm * lambdaUm);
-      return 2.1634 + 0.1572 * invL2;
+      return 1.902186 + 0.023556 * invL2;
     }
   }
 };
@@ -276,6 +292,48 @@ function readPaletteColors() {
   };
 }
 
+// One vertical range for every material, so switching materials shows where each one
+// actually sits instead of rescaling every curve to fill the plot. The plot runs
+// exactly from the highest index any material reaches (the top) to the lowest (the
+// bottom), with no padding.
+let sharedIndexRange = null;
+function dispersionIndexRange() {
+  if (sharedIndexRange) return sharedIndexRange;
+  let lo = Infinity;
+  let hi = -Infinity;
+  Object.values(GEM_MATERIALS).forEach(material => {
+    for (let i = 0; i <= 150; i++) {
+      const n = material.evaluate(0.38 + (i / 150) * 0.40);
+      if (Number.isFinite(n)) {
+        lo = Math.min(lo, n);
+        hi = Math.max(hi, n);
+      }
+    }
+  });
+  sharedIndexRange = { yMin: lo, yMax: hi, ySteps: 5 };
+  return sharedIndexRange;
+}
+
+// An approximate display colour for a visible wavelength in nm (the usual piecewise-
+// linear hue ramp), dimmed toward both ends of the spectrum where the eye's response
+// falls off, but never below 45 % so the ends of the curve stay visible.
+function spectralColor(nm) {
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  if (nm < 440) { r = (440 - nm) / 60; b = 1; }
+  else if (nm < 490) { g = (nm - 440) / 50; b = 1; }
+  else if (nm < 510) { g = 1; b = (510 - nm) / 20; }
+  else if (nm < 580) { r = (nm - 510) / 70; g = 1; }
+  else if (nm < 645) { r = 1; g = (645 - nm) / 65; }
+  else { r = 1; }
+  let level = 1;
+  if (nm < 420) level = 0.45 + 0.55 * (nm - 380) / 40;
+  else if (nm > 700) level = 0.45 + 0.55 * (780 - nm) / 80;
+  const channel = (v) => Math.round(255 * Math.min(1, Math.max(0, v * level)));
+  return `rgb(${channel(r)}, ${channel(g)}, ${channel(b)})`;
+}
+
 function drawDispersionCurve(ctx, canvas, material) {
   const colors = readPaletteColors();
   const dpr = window.devicePixelRatio || 1;
@@ -296,20 +354,12 @@ function drawDispersionCurve(ctx, canvas, material) {
   const steps = 150;
   const curvePoints = [];
 
-  let minN = Infinity;
-  let maxN = -Infinity;
-
   for (let i = 0; i <= steps; i++) {
     const lambda = lambdaMin + (i / steps) * (lambdaMax - lambdaMin);
-    const n = material.evaluate(lambda);
-    curvePoints.push({ lambda, n });
-    if (n < minN) minN = n;
-    if (n > maxN) maxN = n;
+    curvePoints.push({ lambda, n: material.evaluate(lambda) });
   }
 
-  const span = Math.max(maxN - minN, 0.02);
-  const yMin = minN - span * 0.15;
-  const yMax = maxN + span * 0.15;
+  const { yMin, yMax, ySteps } = dispersionIndexRange();
 
   const graphW = width - padding.left - padding.right;
   const graphH = height - padding.top - padding.bottom;
@@ -320,7 +370,6 @@ function drawDispersionCurve(ctx, canvas, material) {
   // Grid
   ctx.strokeStyle = colors.rule;
   ctx.lineWidth = 1;
-  const ySteps = 4;
   for (let i = 0; i <= ySteps; i++) {
     const yVal = yMin + (i / ySteps) * (yMax - yMin);
     const yPos = toY(yVal);
@@ -332,7 +381,7 @@ function drawDispersionCurve(ctx, canvas, material) {
     ctx.fillStyle = colors.ink2;
     ctx.font = '10px ui-monospace, monospace';
     ctx.textAlign = 'right';
-    ctx.fillText(yVal.toFixed(3), padding.left - 8, yPos + 3);
+    ctx.fillText(yVal.toFixed(2), padding.left - 8, yPos + 3);
   }
 
   // Fraunhofer wavelength markers
@@ -357,25 +406,48 @@ function drawDispersionCurve(ctx, canvas, material) {
     ctx.fillText(line.name, xPos, height - padding.bottom + 16);
   });
 
-  // Curve
-  ctx.beginPath();
-  curvePoints.forEach((pt, idx) => {
-    if (idx === 0) ctx.moveTo(toX(pt.lambda), toY(pt.n));
-    else ctx.lineTo(toX(pt.lambda), toY(pt.n));
-  });
-  ctx.strokeStyle = colors.accent;
-  ctx.lineWidth = 2;
-  ctx.stroke();
+  // Curve, each segment in the colour of its own wavelength. On a light page a dark
+  // outline goes under it first, or the yellow part would vanish into the paper.
+  ctx.fillStyle = colors.paper2;
+  const paper = ctx.fillStyle;
+  const lightPage = paper.startsWith('#')
+    && (parseInt(paper.slice(1, 3), 16) + parseInt(paper.slice(3, 5), 16)
+      + parseInt(paper.slice(5, 7), 16)) / 3 > 128;
+  ctx.lineCap = 'round';
+  if (lightPage) {
+    ctx.beginPath();
+    curvePoints.forEach((pt, idx) => {
+      if (idx === 0) ctx.moveTo(toX(pt.lambda), toY(pt.n));
+      else ctx.lineTo(toX(pt.lambda), toY(pt.n));
+    });
+    ctx.strokeStyle = 'rgba(40, 36, 30, 0.6)';
+    ctx.lineWidth = 5;
+    ctx.stroke();
+  }
+  ctx.lineWidth = 3;
+  for (let i = 1; i < curvePoints.length; i++) {
+    const a = curvePoints[i - 1];
+    const b = curvePoints[i];
+    ctx.beginPath();
+    ctx.moveTo(toX(a.lambda), toY(a.n));
+    ctx.lineTo(toX(b.lambda), toY(b.n));
+    ctx.strokeStyle = spectralColor((a.lambda + b.lambda) * 500);
+    ctx.stroke();
+  }
+  ctx.lineCap = 'butt';
 
   // Sodium D-line marker
-  const dPoint = curvePoints.find(p => p.lambda >= 0.5893) || curvePoints[Math.floor(curvePoints.length / 2)];
+  const dPoint = { lambda: 0.5893, n: material.evaluate(0.5893) };
   const dx = toX(0.5893);
   const dy = toY(dPoint.n);
 
   ctx.beginPath();
-  ctx.arc(dx, dy, 3.5, 0, Math.PI * 2);
-  ctx.fillStyle = colors.accent;
+  ctx.arc(dx, dy, 4.5, 0, Math.PI * 2);
+  ctx.fillStyle = spectralColor(589.3);
   ctx.fill();
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = colors.ink;
+  ctx.stroke();
 
   ctx.fillStyle = colors.ink;
   ctx.font = 'bold 11px ui-monospace, monospace';

@@ -17,6 +17,7 @@
       <a href="index.html">Overview</a>
       <a href="physics.html">Physics</a>
       <a href="editor.html" aria-current="page">Studio &amp; CAD</a>
+      <a href="web.html">Web app</a>
       <a href="materials.html">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -44,7 +45,7 @@
       the editor's interaction model is still evolving, and results should
       be checked against a conventional CAD before cutting. The design
       library and 3D viewport (sections 1–4 below) are more stable than the
-      editor itself (sections 5–7).
+      editor itself and the rough planner (sections 5–8).
     </p>
   </div>
 
@@ -79,6 +80,17 @@
       auto-detected and keep whatever label the source data or a manual edit
       gives them. Import brings in single <code>.asc</code> files or entire
       folders; the original file is preserved alongside the parsed schedule.
+    </p>
+    <p>
+      The <strong>Library</strong> menu holds the whole-library actions.
+      <em>Regenerate All Preview Images...</em>, <em>Regenerate All Tilt
+      Curves...</em> and <em>Regenerate Both...</em> rebuild the cached preview
+      thumbnails and tilt curves for every design in the library; each one opens a
+      confirmation step first and is greyed out only while such a batch is already
+      running. (The filter panel has a matching pair of buttons that regenerate
+      just the filtered set.) <em>Plan Rough...</em> opens the
+      <a href="#rough-planner">Rough planner</a> (section 7), which draws its
+      candidate designs from this library.
     </p>
   </section>
 
@@ -254,8 +266,65 @@
     </p>
   </section>
 
+  <section id="rough-planner">
+    <h2><span class="sec-num">7</span>Rough planner <span class="tag">beta</span></h2>
+    <p>
+      <strong>Library &rarr; Plan Rough...</strong> answers a question the
+      preform's single-design yield figure cannot: given a block of rough and
+      the designs in the library, what is the heaviest set of stones that can be
+      sawn out of it? You enter the block's X, Y and Z in millimetres, a
+      <em>Stones (up to)</em> limit from 1 to 99 (a maximum, not a target: a layout may
+      cut fewer), and a material. Only materials with a known specific gravity
+      are offered, because the specific gravity turns volume into carats. The
+      planner returns up to 10 layouts, heaviest first.
+    </p>
+    <p>
+      The <em>candidate designs</em> are either the designs the library's search
+      and filters currently show, or the whole library. The loss settings
+      default to 0.30&nbsp;mm saw kerf, 0.20&nbsp;mm allowance per side of each
+      stone, 0&nbsp;mm rough skin and a 1.00&nbsp;mm minimum stone width, and
+      can be edited in the dialog. Each result row shows the total weight in
+      carats, the yield (finished stone volume as a share of the block's volume),
+      the stone count, and the designs used &mdash; one design repeated, or a mix.
+    </p>
+    <p>
+      Each layout also carries a <strong>cut plan</strong> written as sawing
+      instructions: the block is cut into slabs, each slab into bars, each bar
+      into pieces, with the kerf lost at every cut, and each piece names the
+      design cut from it, which rough face its table faces, and the finished
+      size and weight. Cuts run edge to edge across the whole part, and the
+      planner tries all 6 orders of the three axes. A design's finished size
+      (footprint, height and volume) is measured once by solving its facets, then
+      stored in the library database, so only the first run over a large library
+      is slow; the measurement is repeated automatically when a design's geometry
+      changes. Designs without a usable design file &mdash; catalogue entries
+      known only by an angle table, or schedules that rely on the preform to
+      close the stone &mdash; are skipped and counted in the results.
+    </p>
+    <div class="status">
+      <span class="status-label">READ THE NUMBERS AS AN ESTIMATE</span>
+      <p>
+        The results are an upper bound for a clean block. The planner assumes
+        rectangular rough without inclusions or cracks and stones that come out
+        exactly to their design's proportions, and it fits each stone to the
+        smallest rectangle around it, so a round stone is treated as needing a
+        square footprint. It works with the local library only; if a remote
+        catalogue is selected, the dialog asks you to switch back. Use the
+        ranking to compare options, and do the final marking-up on the rough
+        itself.
+      </p>
+    </div>
+    <p class="small">
+      Sources: <code>crates/indicatrix-cut-core/src/rough_plan/</code>,
+      <code>apps/indicatrix-cut/src/gui/rough_plan/</code>, and the manual
+      chapter <code>apps/indicatrix-cut/docs/manual/15-planning-a-rough.md</code>.
+      Fitting a design into scanned, irregular rough is a separate item on the
+      <a href="index.html#roadmap">roadmap</a>.
+    </p>
+  </section>
+
   <section id="inspection">
-    <h2><span class="sec-num">7</span>Solid inspection view</h2>
+    <h2><span class="sec-num">8</span>Solid inspection view</h2>
     <figure class="fig">
       <a href="assets/images/fig_solid_view.png">
         <img src="assets/images/fig_solid_view.png" width="1800" height="1059" alt="Solid inspection view with facet picking">
@@ -270,7 +339,7 @@
   </section>
 
   <section id="export">
-    <h2><span class="sec-num">8</span>Export</h2>
+    <h2><span class="sec-num">9</span>Export</h2>
     <figure class="fig">
       <a href="assets/images/fig_cutting_schedule.png">
         <img src="assets/images/fig_cutting_schedule.png" width="1396" height="1016" alt="Cutting instructions table">
@@ -305,7 +374,7 @@
 <footer>
   <div class="container">
     <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>
 

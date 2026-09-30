@@ -17,6 +17,7 @@
       <a href="index.html" aria-current="page">Overview</a>
       <a href="physics.html">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
+      <a href="web.html">Web app</a>
       <a href="materials.html">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -53,8 +54,15 @@
       </p>
       <p>
         <strong>Status:</strong> the renderer is usable today. The faceting CAD
-        (design editing, solving, optimizing) is beta and under active
+        (design editing, solving, optimizing) and the rough planner are beta and under active
         development — see section 5. Indicatrix is MIT licensed.
+      </p>
+      <p>
+        <strong>In the browser:</strong> a web version runs at
+        <a href="https://live.indicatrix-suite.com">live.indicatrix-suite.com</a>
+        with nothing to install — open or start a design, edit and solve it,
+        and render it on your own CPU cores. It is smaller than the desktop app;
+        the <a href="web.html">web app page</a> lists what it does and does not do yet.
       </p>
     </div>
     <figure class="fig">
@@ -188,7 +196,9 @@
       SQLite database (no account) searchable by shape, index gear, facet
       count, and length/width ratio; it can also switch to browsing the
       remote coordinator's design catalogue over the same network connection
-      used for render offload (see section 7).
+      used for render offload (see section 7). From the same library, the beta
+      Rough planner (Library &rarr; Plan Rough...) ranks up to 10 ways of cutting
+      a block of rough into stones (section 5).
     </p>
     <p>
       The viewport renders either a fast solid preview or the full path
@@ -305,7 +315,13 @@
       <code>design/targets.rs</code>). Every tier keeps a stable id across
       edits and file round trips, and the preform module reports volumetric
       yield and an estimated carat weight from the rough
-      (<code>yield_metrics/</code>). See the <a href="editor.html">studio page</a>
+      (<code>yield_metrics/</code>). Beyond a single design, the beta
+      <em>Rough planner</em> (Library &rarr; Plan Rough...) takes a rectangular
+      block of rough and plans across the whole design library, or the current
+      filter: it ranks up to 10 layouts of up to 99 stones by total carats, each
+      with a sawing plan of slabs, bars and pieces
+      (<code>rough_plan/</code>; see the
+      <a href="editor.html#rough-planner">studio page</a>). See the <a href="editor.html">studio page</a>
       for the guidance UI (empty-state cards, a template gallery, an in-app
       worked example, and a keyboard-shortcut overlay) built around this
       workflow.
@@ -493,8 +509,18 @@
         </tr>
         <tr>
           <td><code>indicatrix-web</code></td>
-          <td>app (browser, WebGPU)</td>
-          <td>Browser build of indicatrix: upload GemCAD .asc cutting instructions, get an interactive rendered stone. No design library, no remote worker, no database.</td>
+          <td>app (browser)</td>
+          <td>Browser build of indicatrix, served as static files: open or start a design (<code>.asc</code>, the native pair, <code>.gem</code>, <code>.gcs</code>), edit it in the same faceting CAD engine, and look at it as a solid, a faceting diagram and a spectral render traced on your CPU cores in Web Workers, with the brilliance, fire, windowing and extinction figures and the tilt curve. Files are read and saved as browser downloads; the design lives in the tab's session only. No design library, no remote rendering, no Deep Solve, no GPU renderer, no database.</td>
+        </tr>
+        <tr>
+          <td><code>indicatrix-web-core</code></td>
+          <td>library</td>
+          <td>The compute side of the browser build with no DOM and no GUI in it: the Web Worker protocol, the CPU chunk tracer and its bit-exact accumulation, the worker-side solve, Optimize, metrics and tilt sweeps. Tested natively.</td>
+        </tr>
+        <tr>
+          <td><code>indicatrix-web-compute</code></td>
+          <td>app (Web Worker)</td>
+          <td>The Web Worker entry point of the browser build: decodes a message, runs the <code>indicatrix-web-core</code> handler, posts the reply.</td>
         </tr>
       </tbody>
     </table>
@@ -502,6 +528,13 @@
 
   <section id="getting-started">
     <h2><span class="sec-num">9</span>Getting started</h2>
+    <p>
+      <strong>Nothing to install:</strong> the browser version is at
+      <a href="https://live.indicatrix-suite.com">live.indicatrix-suite.com</a>
+      (what it can and cannot do is on the <a href="web.html">web app page</a>).
+      For the design library, GPU and remote rendering, install the desktop
+      application as below.
+    </p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — install Rust</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># Linux/macOS</span>
@@ -599,8 +632,8 @@ cargo run -p indicatrix-worker --features worker -- render \
       <tbody>
         <tr>
           <td>Rough planner from 3D scans</td>
-          <td>Fit a design into a scanned piece of rough instead of an idealised outline: import a 3D scan of the rough, place and orient the design inside it, and compare yield and orientation options against the real shape, including inclusions the scan captures.</td>
-          <td>The existing solver and yield report (section 5), extended from a bounding outline to a scanned volume.</td>
+          <td>Extend the existing <a href="editor.html#rough-planner">Rough planner</a>, which today plans stones from a rectangular block of rough, to scanned rough and inclusions: import a 3D scan of the rough, place and orient the design inside it, and compare yield and orientation options against the real shape, including inclusions the scan captures. Scans are not implemented.</td>
+          <td>The beta Rough planner and the yield report (section 5), extended from a rectangular block to a scanned volume.</td>
         </tr>
         <tr>
           <td>Colour from a photograph of the rough</td>
@@ -608,9 +641,29 @@ cargo run -p indicatrix-worker --features worker -- render \
           <td>The spectral material model and the shared material catalogue (section 6).</td>
         </tr>
         <tr>
+          <td>Optical-effect overlays in the render</td>
+          <td>Highlight directly in the rendered image where windowing, extinction, brilliance and fire occur. Each effect can be shown as a coloured overlay on the stone, so a cutter sees at a glance which facets leak light straight through or go dark at the current viewing angle, instead of reading it only from a score or the tilt curve.</td>
+          <td>The optical metrics and the tilt performance sweep (section 4), which already measure these effects from the camera's point of view but report them only as numbers and curves.</td>
+        </tr>
+        <tr>
           <td>Mobile app</td>
           <td>A phone or tablet client for browsing the library and viewing designs in high-definition renders. The rendering itself happens on a coordinator or worker over the existing remote protocol, so a mobile device gets the same quality as the desktop without tracing anything locally.</td>
           <td>Distributed rendering and the coordinator model (section 7).</td>
+        </tr>
+        <tr>
+          <td>GPU rendering in the browser</td>
+          <td>Let the <a href="web.html">web app</a> trace on the GPU when the browser and graphics driver can take it, falling back to the CPU workers otherwise. Today the desktop's GPU kernel does not compile in browsers, so this needs a smaller, browser-sized kernel; it is being researched and is not promised.</td>
+          <td>The GPU compute path and its equivalence harness (section 2), and the browser build's CPU worker pool (section 8).</td>
+        </tr>
+        <tr>
+          <td>Multi-language support</td>
+          <td>The desktop studio and the web app in more languages than English: menus, dialogs, messages and the guided walkthrough, with a language picker, plus the printed cutting instructions and faceting diagram labels in the chosen language.</td>
+          <td>The Slint interface toolkit's built-in translation support, which both applications already use; today every text in them is English only and none of it is marked for translation yet.</td>
+        </tr>
+        <tr>
+          <td>More database adapters</td>
+          <td>Keep the design library in the database you already run: MySQL, PostgreSQL or another server, alongside the built-in SQLite file, so a workshop or club can share one library.</td>
+          <td>The library storage in <code>indicatrix-vault</code>, which today writes a local SQLite database.</td>
         </tr>
         <tr>
           <td>Concave designs</td>
@@ -625,7 +678,7 @@ cargo run -p indicatrix-worker --features worker -- render \
     <h2><span class="sec-num">11</span>Status and limitations</h2>
     <ul>
       <li>The faceting CAD (<code>indicatrix-cut-core</code> and the editor UI in <code>apps/indicatrix-cut</code>) is beta; its interaction model is still changing.</li>
-      <li><code>indicatrix-web</code> is an experimental WebGPU-only browser build with no CPU fallback and no design library — see its own <code>README.md</code>.</li>
+      <li><code>indicatrix-web</code> is the browser build (<a href="https://live.indicatrix-suite.com">live.indicatrix-suite.com</a>, described on the <a href="web.html">web app page</a>). It renders on the CPU in Web Workers (slower than the desktop's GPU path, so a few hundred samples take a while on a laptop), edits and solves designs with the same engine as the desktop, and keeps a design only for the life of the browser tab, so save your work as downloads. It has no design library, remote rendering, Deep Solve or GPU renderer — see its own <code>README.md</code> for the limits.</li>
       <li>The GPU compute path requires a wgpu-supported adapter with at least 11 storage buffers per shader stage (<code>MEGAKERNEL_STORAGE_BUFFERS</code>, <code>crates/indicatrix/src/renderer/gpu/context.rs</code>); without one, rendering falls back to the CPU tracer.</li>
       <li>macOS is not mentioned in the workspace README or build scripts and is not known to have been tested.</li>
     </ul>
@@ -636,7 +689,7 @@ cargo run -p indicatrix-worker --features worker -- render \
 <footer>
   <div class="container">
     <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
-    <p><a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+    <p><a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>
 

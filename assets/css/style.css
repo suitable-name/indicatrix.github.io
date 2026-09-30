@@ -467,6 +467,29 @@ dl.deflist dd {
 }
 
 /* -----------------------------------------------------------------------
+ * Call-to-action link (web app page, index)
+ * --------------------------------------------------------------------- */
+
+.cta {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  padding: 0.6rem 1.1rem;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.cta:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+/* -----------------------------------------------------------------------
  * Code blocks
  * --------------------------------------------------------------------- */
 
@@ -638,6 +661,12 @@ footer a:hover {
 
   table {
     font-size: 0.78rem;
+  }
+
+  /* Long file paths and identifiers in table cells wrap instead of widening the page. */
+  .matrix td, .matrix th { overflow-wrap: normal; }
+  td, th, td code, :not(pre) > code {
+    overflow-wrap: anywhere;
   }
 }
 

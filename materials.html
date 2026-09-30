@@ -17,6 +17,7 @@
       <a href="index.html">Overview</a>
       <a href="physics.html">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
+      <a href="web.html">Web app</a>
       <a href="materials.html" aria-current="page">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -36,9 +37,13 @@
   <section id="chart">
     <h2><span class="sec-num">1</span>Dispersion chart</h2>
     <p>
-      A live evaluation of n(λ) across the visible spectrum for a subset of
-      the built-in materials, drawn from the same coefficients as the table
-      below.
+      Each line is one material's refractive index n(λ) across the visible
+      spectrum, from violet (380 nm, left) to red (780 nm, right), drawn from
+      the same coefficients as the table below, and coloured by wavelength.
+      The index always falls toward the red, and the steeper the line, the
+      stronger the dispersion and the fire. The dot marks n<sub>D</sub> at
+      589 nm, the value usually quoted for a gem. All materials share one
+      scale, so switching between them shows where each one sits.
     </p>
     <div class="chart-box">
       <div class="chart-controls" id="materialChips">
@@ -46,11 +51,12 @@
         <button class="material-chip" data-material="sapphire">Sapphire</button>
         <button class="material-chip" data-material="alexandrite">Alexandrite</button>
         <button class="material-chip" data-material="emerald">Emerald</button>
-        <button class="material-chip" data-material="moissanite">Moissanite</button>
+        <button class="material-chip" data-material="peridot">Peridot</button>
         <button class="material-chip" data-material="zircon">Zircon</button>
         <button class="material-chip" data-material="tanzanite">Tanzanite</button>
         <button class="material-chip" data-material="demantoid">Demantoid</button>
-        <button class="material-chip" data-material="rutile">Rutile</button>
+        <button class="material-chip" data-material="cubicZirconia">Cubic zirconia</button>
+        <button class="material-chip" data-material="ggg">GGG</button>
       </div>
       <canvas id="dispersionCanvas"></canvas>
       <noscript><p class="noscript-note">JavaScript is required to draw this chart.</p></noscript>
@@ -222,7 +228,7 @@
 <footer>
   <div class="container">
     <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>
 

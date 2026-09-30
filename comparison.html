@@ -17,6 +17,7 @@
       <a href="index.html">Overview</a>
       <a href="physics.html">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
+      <a href="web.html">Web app</a>
       <a href="materials.html">Materials</a>
       <a href="comparison.html" aria-current="page">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -48,7 +49,7 @@
       <dt>GemCAD</dt>
       <dd>Robert Strickland's faceting-design program: the long-standing reference for authoring cutting instructions. Its <code>.asc</code> text export is the closest thing this field has to an interchange format, and <code>.gem</code> is its own binary save format. Strickland retired in 2023 and released GemCAD and GemRay free of charge — free to use, but not open source.</dd>
       <dt>GemRay</dt>
-      <dd>The ray-tracing companion to GemCAD: it renders a design and plots its brightness against tilt, and cannot author designs itself. Its own documentation is unusually explicit about its limits — it does not model birefringence, dichroism or polarized light, and follows three colour rays rather than a spectrum.</dd>
+      <dd>The ray-tracing companion to GemCAD: it renders a design, plots its brightness against tilt and can search the pavilion and crown angles for the best weighted brightness, but it cannot author designs itself. Its own documentation is unusually explicit about its limits — it does not model birefringence, dichroism or polarized light, and follows three colour rays rather than a spectrum.</dd>
       <dt>Gem Cut Studio</dt>
       <dd>A Windows faceting-design application, separate from GemCAD, with its own <code>.gcs</code> project format that stores a <em>solved</em> design (facets already closed into polygons) rather than a schedule to be solved.</dd>
       <dt>Gem Diagram</dt>
@@ -65,7 +66,9 @@
       <p>
         The Indicatrix column is checked against this repository's own source. Every
         other cell was read out of that tool's own vendor page or user manual on
-        2026-09-21 — the <a href="#sources">sources</a> are listed below. A <code>✗</code>
+        2026-09-21, and the cells marked <code>?</code>, plus the rough-planning row,
+        were checked again against those sources on 2026-09-30 — the
+        <a href="#sources">sources</a> are listed below. A <code>✗</code>
         means the documentation either states the limitation outright or describes the
         mechanism closely enough to settle it; where a manual is simply silent, the cell
         says <code>?</code> and this page asserts nothing either way. Nothing here is a
@@ -78,7 +81,7 @@
 
     <div class="table-scroll">
     <table class="matrix">
-      <caption>✓ yes &middot; ✗ no &middot; ? not verified by this page. Compiled from each tool's own documentation, read 2026-09-21 — see <a href="#sources">sources</a>.</caption>
+      <caption>✓ yes &middot; ✗ no &middot; ? not verified by this page. Compiled from each tool's own documentation, read 2026-09-21 and 2026-09-30 — see <a href="#sources">sources</a>.</caption>
       <thead>
         <tr>
           <th scope="col">&nbsp;</th>
@@ -102,7 +105,7 @@
         </tr>
         <tr>
           <th scope="row">Automatic search over angles against an optical objective</th>
-          <td>✓ <span class="qual">beta, cancellable</span></td><td>✗ <span class="qual">manual, via ray paths</span></td><td>✗</td><td>✗ <span class="qual">manual optimizer</span></td><td>✗ <span class="qual">yield search, not angle</span></td><td>✓ <span class="qual">Pro: cut proportions</span></td>
+          <td>✓ <span class="qual">beta, cancellable</span></td><td>✗ <span class="qual">manual, via ray paths</span></td><td>✓ <span class="qual">Nelder–Mead, pavilion and crown scale</span></td><td>✗ <span class="qual">manual optimizer</span></td><td>✗ <span class="qual">yield search, not angle</span></td><td>✓ <span class="qual">Pro: cut proportions</span></td>
         </tr>
         <tr>
           <th scope="row">Preform support</th>
@@ -110,7 +113,11 @@
         </tr>
         <tr>
           <th scope="row">Manufacturability checks (vanishing facets, gear quantization)</th>
-          <td>✓</td><td>?</td><td>✗</td><td>✓ <span class="qual">gear re-map report</span></td><td>?</td><td>?</td>
+          <td>✓</td><td>✓ <span class="qual">cut-off facet dialog, gear rounding error</span></td><td>✗</td><td>✓ <span class="qual">gear re-map report</span></td><td>?</td><td>?</td>
+        </tr>
+        <tr>
+          <th scope="row">Plans cuts from a block of rough (yield, placement in the rough)</th>
+          <td>✓ <span class="qual">beta, block rough, up to 99 stones</span></td><td>✗ <span class="qual">by hand: L/W, Vol./W³</span></td><td>✗ <span class="qual">optical merit only</span></td><td>✗ <span class="qual">single-design yield calculator</span></td><td>✓ <span class="qual">one design, orientation search</span></td><td>✗ <span class="qual">by hand: weight, locked limits</span></td>
         </tr>
         <tr class="group"><th colspan="7" scope="colgroup">Rendering</th></tr>
         <tr>
@@ -139,7 +146,7 @@
         </tr>
         <tr>
           <th scope="row">GPU compute path, verified against the CPU reference</th>
-          <td>✓ <span class="qual">tiered harness</span></td><td>✗</td><td>✗ <span class="qual">multicore CPU</span></td><td>✗</td><td>?</td><td>?</td>
+          <td>✓ <span class="qual">tiered harness</span></td><td>✗</td><td>✗ <span class="qual">multicore CPU</span></td><td>✗</td><td>? <span class="qual">WebGL2 shader; check not stated</span></td><td>? <span class="qual">HDR engine on GPU; check not stated</span></td>
         </tr>
         <tr>
           <th scope="row">Renders split across machines on a local network</th>
@@ -173,7 +180,7 @@
         </tr>
         <tr>
           <th scope="row">Runs in a browser</th>
-          <td>✓ <span class="qual">WebGPU, renderer only</span></td><td>✗</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td>
+          <td>✓ <span class="qual">editor, diagram, CPU render; no library</span></td><td>✗</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td>
         </tr>
       </tbody>
     </table>
@@ -266,6 +273,19 @@
       cheater (azimuth) offset column when a tier actually carries one.
     </p>
     <p>
+      Yield planning goes beyond the single-design preform figure. The beta
+      <a href="editor.html#rough-planner">Rough planner</a> takes a rectangular
+      block of rough and, from either the library filter or the whole library,
+      ranks up to 10 layouts of up to 99 stones by total carats, each with a
+      sawing plan (slabs, then bars, then pieces, over all 6 cut orders). It is
+      an upper bound for a clean block: it plans for block-shaped rough only,
+      not scanned or irregular rough and not inclusions, and it is desktop-only
+      for now. The one other rough planner in the matrix is Gem Diagram's, which
+      its documentation describes as an orientation search that starts from one
+      loaded design and reports yield and finished weight for each orientation;
+      it does not describe choosing among designs or stone counts.
+    </p>
+    <p>
       Two things are out of scope by design rather than by schedule, and knowing
       which is which matters when you are deciding what to use:
     </p>
@@ -315,16 +335,18 @@
     <h2><span class="sec-num">6</span>Sources</h2>
     <p class="small">
       Every non-Indicatrix cell in section 2 was taken from the tool's own vendor page
-      or user manual, read on 2026-09-21. Where a manual is silent on a capability this
+      or user manual, read on 2026-09-21; the rough-planning row and the re-check of
+      every <code>?</code> cell used the sources below again on 2026-09-30, and the
+      entries added then are marked. Where a manual is silent on a capability this
       page records <code>?</code> rather than inferring absence, except where the
       document explicitly states a limitation.
     </p>
     <ul class="small">
-      <li>GemCAD — <a href="https://www.gemcad.com/gemcad.html">gemcad.com/gemcad.html</a> and the <a href="https://www.gemcad.com/downloads/gemcadman.pdf"><cite>GemCad for Windows User's Guide</cite></a> (Strickland).</li>
-      <li>GemRay — <a href="https://www.gemcad.com/gemray.html">gemcad.com/gemray.html</a>, which states the non-modelling of birefringence, dichroism/trichroism and polarized light directly.</li>
-      <li>Gem Cut Studio — <a href="http://www.gemcutstudio.com/app_download/UserManual_v110.pdf"><cite>Gem Cut Studio User's Manual v1.1.0</cite></a>.</li>
-      <li>Gem Diagram — <a href="https://www.gemdiagram.com/">gemdiagram.com</a> and its documentation site, <a href="https://docs.gemdiagram.com/getting-started">docs.gemdiagram.com</a> (Faceting Workflow, The Index Wheel, Working with Tiers, Refractive Index &amp; Dispersion, Pleochroism, Ray Studio, Rough Planner, Materials, Presets, Saving &amp; Opening Designs, Reports &amp; Export, System Requirements, Troubleshooting &amp; FAQ, Reference: Glossary).</li>
-      <li>DiamCalc — <a href="https://www.octonus.com/3dcalc-software/diamcalc">octonus.com/3dcalc-software/diamcalc</a>, the <a href="http://legacy.octonus.com/oct/download/files/DiamondCalculator3_2beta.pdf"><cite>DiamCalc 3.2 beta Documentation</cite></a> PDF it links (Cut Designer's Custom Preform/Recut and facet-through-three-points tools, DETAS tilt sweep, inclusion rendering, DataVue2 library import), and the <a href="https://octonus.com/downloads/diamcalc-downloads">DiamCalc download page</a>, whose installer is Windows-only.</li>
+      <li>GemCAD — <a href="https://www.gemcad.com/gemcad.html">gemcad.com/gemcad.html</a> and the <a href="https://www.gemcad.com/downloads/gemcadman.pdf"><cite>GemCad for Windows User's Guide</cite></a> (Strickland). Read again 2026-09-30: the manufacturability cell cites &ldquo;Keeping Facets that are Cut Off&rdquo; (PDF p. 38) and the index-gear rounding under Edit / Scale (PDF p. 31); the rough-planning cell cites the dimension table&rsquo;s L/W and Vol./W³ figures and the carat-weight formula (PDF pp. 25&ndash;26).</li>
+      <li>GemRay — <a href="https://www.gemcad.com/gemray.html">gemcad.com/gemray.html</a>, which states the non-modelling of birefringence, dichroism/trichroism and polarized light directly. Read again 2026-09-30: the <a href="https://www.gemcad.com/downloads/gemrayman.pdf"><cite>GemRay for Windows User&rsquo;s Guide</cite></a> (Strickland), section &ldquo;Optimization&rdquo; (PDF pp. 10&ndash;12: automatic Downhill Simplex search over pavilion and crown scale factors, and &ldquo;the economics of yield&rdquo; on PDF p. 11).</li>
+      <li>Gem Cut Studio — <a href="http://www.gemcutstudio.com/app_download/UserManual_v110.pdf"><cite>Gem Cut Studio User's Manual v1.1.0</cite></a>. Read again 2026-09-30: &ldquo;Manual Optimizer&rdquo; (PDF p. 30) and &ldquo;Size / Yield Calculator&rdquo; (PDF p. 31).</li>
+      <li>Gem Diagram — <a href="https://www.gemdiagram.com/">gemdiagram.com</a> and its documentation site, <a href="https://docs.gemdiagram.com/getting-started">docs.gemdiagram.com</a> (Faceting Workflow, The Index Wheel, Working with Tiers, Refractive Index &amp; Dispersion, Pleochroism, Ray Studio, Rough Planner, Materials, Presets, Saving &amp; Opening Designs, Reports &amp; Export, System Requirements, Troubleshooting &amp; FAQ, Reference: Glossary). Read again 2026-09-30: <a href="https://docs.gemdiagram.com/rough-planner-overview">Rough Planner: Best-Yield Overview</a>, <a href="https://docs.gemdiagram.com/rough-planner-rough-dimensions">Rough Dimensions</a>, <a href="https://docs.gemdiagram.com/rough-planner-search-modes">Search Modes</a>, <a href="https://docs.gemdiagram.com/rough-planner-yield-handoff">Yield &amp; Handoff</a>, <a href="https://docs.gemdiagram.com/reports-export-size-yield-calculator">Size/Yield Calculator</a>, <a href="https://docs.gemdiagram.com/solid-vs-realistic">Solid vs. Realistic Render</a>, <a href="https://docs.gemdiagram.com/system-requirements">System Requirements</a>, plus <a href="https://www.gemdiagram.com/features/rough-planner.php">gemdiagram.com/features/rough-planner.php</a> and <a href="https://docs.gemdiagram.com/interface-tour">Interface Tour</a>; these are silent on preforms, cuttability checks, polarization, birefringence, inclusions, tilt sweeps and networked rendering, so those cells stay <code>?</code>.</li>
+      <li>DiamCalc — <a href="https://www.octonus.com/3dcalc-software/diamcalc">octonus.com/3dcalc-software/diamcalc</a>, the <a href="http://legacy.octonus.com/oct/download/files/DiamondCalculator3_2beta.pdf"><cite>DiamCalc 3.2 beta Documentation</cite></a> PDF it links (Cut Designer's Custom Preform/Recut and facet-through-three-points tools, DETAS tilt sweep, inclusion rendering, DataVue2 library import), and the <a href="https://octonus.com/downloads/diamcalc-downloads">DiamCalc download page</a>, whose installer is Windows-only. Read again 2026-09-30, in the same PDF: &ldquo;7 Estimating weight of diamonds&rdquo; and &ldquo;8.6 Fixing parameters&rdquo; (PDF pp. 139&ndash;146; the rough-planning cell) and &ldquo;16 System Requirements&rdquo; (PDF p. 220; the GPU cell). The manual has no entry for polarization, birefringence, pleochroism, manufacturability checks or networked rendering.</li>
     </ul>
   </section>
 
@@ -333,7 +355,7 @@
 <footer>
   <div class="container">
     <p>Indicatrix · MIT License · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="materials.html">Materials</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>
 
