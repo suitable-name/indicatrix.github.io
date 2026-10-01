@@ -38,7 +38,7 @@
     <h2><span class="sec-num">1</span>Preview-then-handoff</h2>
     <figure class="fig diagram-fig">
 <svg class="diagram" viewBox="0 0 900 300" role="img" aria-labelledby="handoff-title" xmlns="http://www.w3.org/2000/svg">
-  <title id="handoff-title">Preview-then-handoff: the desktop renders a local preview while the camera moves, then a remote worker traces sample-index ranges that are summed into the same accumulator.</title>
+  <title id="handoff-title">Preview-then-handoff: the desktop renders a local preview while the camera moves, then hands sample tracing to a coordinator, which traces sample-index ranges itself (with --render) and across the render workers that have joined it; every range is summed into the desktop's one accumulator.</title>
   <style>
     .diagram text { font-family: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace; font-size: 12.5px; fill: var(--ink); }
     .diagram .lbl { font-size: 11px; fill: var(--ink-2); letter-spacing: 0.06em; }
@@ -54,36 +54,52 @@
     </marker>
   </defs>
 
-  <rect class="box" x="20" y="34" width="300" height="168"/>
-  <text class="lbl" x="34" y="56">DESKTOP · indicatrix-cut</text>
-  <text x="34" y="86">camera moving</text>
-  <text class="muted" x="34" y="106">  local CPU / GPU preview,</text>
-  <text class="muted" x="34" y="124">  few samples, immediate</text>
-  <text x="34" y="154">camera settled</text>
-  <text class="muted" x="34" y="174">  hand sample tracing off</text>
-  <text class="muted" x="34" y="192">  to the worker</text>
+  <rect class="box" x="20" y="34" width="240" height="168"/>
+  <text class="lbl" x="32" y="56">DESKTOP · indicatrix-cut</text>
+  <text x="32" y="86">camera moving</text>
+  <text class="muted" x="32" y="106">  local CPU / GPU preview,</text>
+  <text class="muted" x="32" y="124">  few samples, immediate</text>
+  <text x="32" y="154">camera settled</text>
+  <text class="muted" x="32" y="174">  hand sample tracing off</text>
+  <text class="muted" x="32" y="192">  to the coordinator</text>
 
-  <rect class="box" x="580" y="34" width="300" height="168"/>
-  <text class="lbl" x="594" y="56">WORKER · indicatrix-worker</text>
-  <text x="594" y="86">GPU / CPU path tracer</text>
-  <text class="muted" x="594" y="106">  traces sample-index ranges</text>
-  <text class="muted" x="594" y="124">  [0, 4096)  [4096, 8192) …</text>
-  <text x="594" y="154">not screen tiles</text>
-  <text class="muted" x="594" y="174">  no seams, no per-tile load</text>
-  <text class="muted" x="594" y="192">  imbalance on a small stone</text>
+  <rect class="box" x="330" y="34" width="240" height="168"/>
+  <text class="lbl" x="342" y="56">COORDINATOR · worker serve</text>
+  <text x="342" y="86">splits the image into</text>
+  <text class="muted" x="342" y="106">  sample-index ranges,</text>
+  <text class="muted" x="342" y="124">  not screen tiles</text>
+  <text x="342" y="154">own lane with --render</text>
+  <text class="muted" x="342" y="174">  a lost worker's ranges</text>
+  <text class="muted" x="342" y="192">  go to the other lanes</text>
 
-  <path class="arrow" d="M 322 92 H 578" marker-end="url(#ah)"/>
-  <text class="lbl" x="450" y="82" text-anchor="middle">mTLS 1.3 · token enrolment</text>
-  <path class="arrow" d="M 578 152 H 322" marker-end="url(#ah)"/>
-  <text class="lbl" x="450" y="174" text-anchor="middle">finished sample ranges, any order</text>
+  <rect class="box" x="640" y="34" width="240" height="168"/>
+  <text class="lbl" x="652" y="56">WORKERS · worker join (×N)</text>
+  <text x="652" y="86">GPU / CPU path tracer</text>
+  <text class="muted" x="652" y="106">  claims chunks sized to</text>
+  <text class="muted" x="652" y="124">  its measured rate</text>
+  <text x="652" y="154">dials out to coordinator</text>
+  <text class="muted" x="652" y="174">  no inbound port needed,</text>
+  <text class="muted" x="652" y="192">  works behind NAT</text>
 
-  <rect class="bar" x="20" y="232" width="860" height="48"/>
-  <text class="lbl" x="34" y="252">ACCUMULATOR</text>
-  <text x="34" y="270">local and remote samples are summed per pixel; the image converges as ranges arrive, whichever side produced them</text>
-  <path class="arrow" d="M 170 204 V 230" marker-end="url(#ah)"/>
-  <path class="arrow" d="M 730 204 V 230" marker-end="url(#ah)"/>
+  <path class="arrow" d="M 262 92 H 328" marker-end="url(#ah)"/>
+  <text class="lbl" x="295" y="82" text-anchor="middle">scene</text>
+  <path class="arrow" d="M 328 152 H 262" marker-end="url(#ah)"/>
+  <text class="lbl" x="295" y="172" text-anchor="middle">samples</text>
+
+  <path class="arrow" d="M 572 92 H 638" marker-end="url(#ah)"/>
+  <text class="lbl" x="605" y="82" text-anchor="middle">chunks</text>
+  <path class="arrow" d="M 638 152 H 572" marker-end="url(#ah)"/>
+  <text class="lbl" x="605" y="172" text-anchor="middle">ranges</text>
+
+  <text class="lbl" x="295" y="222" text-anchor="middle">:7878 · mTLS 1.3</text>
+  <text class="lbl" x="605" y="222" text-anchor="middle">:7880 · worker dials in</text>
+
+  <rect class="bar" x="20" y="240" width="860" height="48"/>
+  <text class="lbl" x="34" y="260">ACCUMULATOR · ON THE DESKTOP</text>
+  <text x="34" y="278">local and remote samples are summed per pixel; the ranges are disjoint, so arrival order never matters</text>
+  <path class="arrow" d="M 140 204 V 238" marker-end="url(#ah)"/>
 </svg>
-<figcaption>Fig. 1 — Preview-then-handoff: local preview while the camera moves, remote sample-index ranges once it settles, one shared accumulator.</figcaption>
+<figcaption>Fig. 1 — Preview-then-handoff: local preview while the camera moves; once it settles, the coordinator traces sample-index ranges itself and across its joined workers, and every range lands in the desktop's one accumulator.</figcaption>
 </figure>
     <p>
       Spectral path tracing through a high-index gemstone with dozens of
@@ -183,9 +199,11 @@
       reports its render capability in its HELLO, and then serves the
       coordinator's requests on that connection. No inbound port is needed on
       the worker, so a machine behind NAT or a cloud VM can join.
-      <code>--slots K</code> opens K parallel connections (default 1, at most
+      <code>--slots K</code> opens K parallel connections (default 2, at most
       64), each serving one request stream at a time; every slot reconnects
-      forever with jittered backoff, 1&nbsp;s doubling to 60&nbsp;s.
+      forever with jittered backoff, 1&nbsp;s doubling to 60&nbsp;s. The second
+      slot is there for fast workers: it keeps a chunk in flight while the
+      first one's transfer and decode would otherwise leave the GPU idle.
     </p>
     <table>
       <thead>
@@ -321,7 +339,7 @@
       <li>Every client certificate carries a role: a worker certificate's Common Name is <code>worker:&lt;label&gt;</code>, a viewer's is the plain label (which may not start with <code>worker:</code>). Each listener checks the role and its own fingerprint allowlist — <code>allowlist-viewers.txt</code> and <code>allowlist-workers.txt</code> next to the CA, with a pre-role <code>allowlist.txt</code> still honoured as the viewers list while it is the only one — so a viewer certificate is never accepted on the worker port, nor a worker certificate on the viewer port. The HELLO carries the peer's role too, and a mismatch is refused with <code>ROLE_REFUSED</code>. <code>--trust-any-client-cert</code> skips both allowlists, never the role check.</li>
       <li>One-time token enrollment (the wire protocol and claim-side verification in <code>crates/indicatrix-net/src/enroll</code>; the server-side registry that mints and expires tokens in <code>apps/indicatrix-worker/src/enroll</code>): <code>indicatrix-worker cert issue-token</code> asks a running <code>serve</code> process's enrollment listener, from a loopback connection only, to mint a 180-second, single-use token for a viewer, or with <code>--role worker</code> for a worker. The desktop app's Redeem button, <code>cert claim</code>, or <code>join --token</code> redeems it — verifying the listener's certificate chain against the CA fingerprint carried inside the token itself, before sending the token's secret — and writes the same three-file certificate bundle <code>cert issue-client</code> would, without a manual copy. A listener refuses a token request for the other role.</li>
       <li>Plaintext serving (<code>--insecure-no-tls</code>) is available for local debugging, refused on any non-loopback bind address, and disables the worker port and both enrollment listeners.</li>
-      <li>Every connection negotiates a protocol version during its HELLO/WELCOME handshake (<code>PROTOCOL_VERSION</code>, currently 14, <code>crates/indicatrix-net/src/messages/mod.rs</code>), together with a build hash and, where both sides can establish it, a content hash of the <code>indicatrix</code> source tree; a mismatched peer is refused outright (<code>BUILD_MISMATCH</code>) rather than risking a misread frame or a merge of samples from different physics.</li>
+      <li>Every connection negotiates a protocol version during its HELLO/WELCOME handshake (<code>PROTOCOL_VERSION</code>, 16 at the time of writing; the constant in <code>crates/indicatrix-net/src/messages/mod.rs</code> is authoritative), together with a build hash and, where both sides can establish it, a content hash of the <code>indicatrix</code> source tree; a mismatched peer is refused outright (<code>BUILD_MISMATCH</code>) rather than risking a misread frame or a merge of samples from different physics.</li>
       <li>Every message is length-prefixed and bounded before a payload is even allocated (<code>framing::MAX_FRAME_LEN</code>, 512&nbsp;MiB; the enrollment listener caps its own request further, at 4&nbsp;KiB), and a just-accepted socket carries a 20-second read/write timeout through its TLS handshake until its first HELLO arrives (<code>HANDSHAKE_TIMEOUT</code>, <code>serve/socket.rs</code>) — an idle or slow-loris connection cannot pin a thread indefinitely. <code>--max-connections</code> (default 64) bounds authenticated connections, counted separately for viewers and joined workers, and a second limiter at four times that cap bounds connections still in their handshake.</li>
     </ul>
   </section>
@@ -371,7 +389,7 @@
     </p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — join (worker)</span><button class="copy-btn">Copy</button></div>
-      <pre><code>indicatrix-worker join coordinator.local:7880 --slots 2</code></pre>
+      <pre><code>indicatrix-worker join coordinator.local:7880</code></pre>
     </div>
     <p class="small">
       The address is the coordinator's worker port (also accepted as
@@ -380,8 +398,9 @@
       <code>client.key</code>; default <code>worker-cert</code> in the working
       directory); <code>--threads</code> and
       <code>--only-gpu</code>/<code>--only-cpu</code> work as for
-      <code>render</code>. With one GPU, more than one slot mainly helps
-      CPU-only machines.
+      <code>render</code>. <code>--slots</code> defaults to 2 (the second slot
+      keeps a fast GPU worker busy between chunks); raise it further mainly on
+      CPU-only machines that juggle many small chunks.
     </p>
   </section>
 
@@ -445,7 +464,7 @@ indicatrix-worker join coordinator.local:7880</code></pre>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>

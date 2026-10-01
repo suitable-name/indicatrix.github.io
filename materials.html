@@ -57,6 +57,8 @@
         <button class="material-chip" data-material="demantoid">Demantoid</button>
         <button class="material-chip" data-material="cubicZirconia">Cubic zirconia</button>
         <button class="material-chip" data-material="ggg">GGG</button>
+        <button class="material-chip" data-material="moissanite">Moissanite</button>
+        <button class="material-chip" data-material="rutile">Rutile</button>
       </div>
       <canvas id="dispersionCanvas"></canvas>
       <noscript><p class="noscript-note">JavaScript is required to draw this chart.</p></noscript>
@@ -77,7 +79,7 @@
   <section id="database-table">
     <h2><span class="sec-num">2</span>The 32 built-in materials</h2>
     <p>
-      All figures below are read from <code>crates/indicatrix/src/optics/materials.rs</code>.
+      All figures below are read from <code>crates/indicatrix/src/optics/materials/</code> (one file per group of species).
       n_D and dispersion (Δn, F−C) come from each material's own source
       comment: a primary Sellmeier/Cauchy fit where one exists in the optics
       literature, or a value derived from two or more corroborating
@@ -122,7 +124,7 @@
         <tr><td>Opal (body colour)</td><td>Amorphous<sup>*</sup></td><td>Isotropic</td><td>1.45</td><td>0.0010</td><td>0.0000</td></tr>
         <tr><td>Glass (Schott N-BK7)</td><td>—<sup>†</sup></td><td>Isotropic</td><td>1.51672</td><td>0.0081</td><td>0.0000</td></tr>
         <tr><td>Glass (Schott F2)</td><td>—<sup>†</sup></td><td>Isotropic</td><td>1.61989</td><td>0.0171</td><td>0.0000</td></tr>
-        <tr><td>Rutile</td><td>Tetragonal</td><td>Uniaxial +</td><td>2.616 (o) / 2.903 (e)</td><td>≈0.300</td><td>+0.2870</td></tr>
+        <tr><td>Rutile</td><td>Tetragonal</td><td>Uniaxial +</td><td>2.613 (o) / 2.909 (e)</td><td>0.164 (o) / 0.207 (e)</td><td>+0.2957</td></tr>
       </tbody>
     </table>
     <p class="small">
@@ -158,7 +160,7 @@
       and extraordinary rays carry distinct absorption bands — a real,
       measured shift (roughly 580 nm vs. 700 nm for the Fe²⁺–Ti⁴⁺
       charge-transfer band behind blue sapphire's colour; see the source
-      comment on the <code>Sapphire</code> entry in <code>materials.rs</code>
+      comment on the <code>Sapphire</code> entry in <code>materials/diamond_through_emerald.rs</code>
       for the citation). Cutters orient the table facet perpendicular to the
       c-axis specifically to show the more saturated ordinary-ray colour
       face-up.
@@ -170,13 +172,19 @@
     <p>
       Rutile and synthetic moissanite sit at the edges of what the renderer's
       Fresnel and dispersion code has been verified against. Rutile's
-      birefringence (+0.287) is the largest of any built-in material, high
-      enough that adding it required a dedicated exact closed-form uniaxial
-      Fresnel solve (<code>optics/raytracer/uniaxial_fresnel.rs</code>) rather
-      than the constant-offset approximation used for lower-birefringence
-      materials; it is also the Tier 3 image-comparison material used to
-      catch CPU/GPU divergence in that solve. Moissanite's dispersion (Δn ≈
-      0.064) is more than double diamond's.
+      birefringence (+0.296) is the largest of any built-in material, and its
+      dispersion (Δn of 0.164 for the ordinary ray and 0.207 for the
+      extraordinary ray, after DeVore 1951) is the largest too. Every uniaxial
+      material, not only rutile, goes through the exact closed-form uniaxial
+      Fresnel solve (<code>optics/raytracer/uniaxial_fresnel/</code>) at its
+      entry and internal interfaces, except where the wave normal lies within a
+      small angle of the optic axis and the general scalar Fresnel path takes
+      over. What sets rutile apart is how far that solve is stressed: it is the
+      Tier 3 image-comparison material used to catch CPU/GPU divergence in it.
+      Most uniaxial materials derive the extraordinary ray from the ordinary
+      curve plus a constant birefringence offset; quartz, amethyst, citrine and
+      rutile carry a separate extraordinary-ray curve. Moissanite's dispersion
+      (Δn ≈ 0.064) is more than double diamond's.
     </p>
   </section>
 
@@ -187,29 +195,34 @@
       pencil button next to the live viewport's Render Material dropdown)
       builds a custom material at runtime via
       <code>GemMaterial::new_custom</code>
-      (<code>crates/indicatrix/src/optics/materials.rs</code>), which takes a
+      (<code>crates/indicatrix/src/optics/materials/custom.rs</code>), which takes a
       name, mean refractive index, an F−C dispersion delta, a birefringence
       delta, and an RGB absorption tint, and fits a 2-parameter Cauchy curve
       to the requested dispersion at the sodium D and Fraunhofer F/C lines.
       Saved custom materials are persisted to a <code>custom_gem_materials</code>
       table in the same <code>facet_diagrams.sqlite</code> database the app
       already uses for designs, via <code>indicatrix-vault</code>'s
-      <code>CustomMaterialRow</code> and <code>Database::save_gem_material</code>
+      <code>CustomMaterialRow</code> and <code>Database::save_custom_material</code>
       — not embedded in the design/schedule file itself. This is a separate
       feature from <strong>Retarget</strong>, which proposes new facet angles
       for an existing design in a different material rather than authoring a
       new material (see the <a href="editor.html">studio page</a>).
     </p>
     <p>
-      Every material picker in the app — the studio's Design Settings
-      Material combo, the New Design dialog's Starting Material combo, and
-      the Live Render viewport's Render Material dropdown — reads from one
-      shared <code>MaterialCatalogue</code>
-      (<code>crates/indicatrix-cut-core/src/material.rs</code>): all 32
-      built-in materials above, in <code>GemMaterial::all_materials()</code>'s
-      own order, followed by every custom material you have saved, sorted
-      alphabetically. A species available to the renderer is therefore never
-      missing from the CAD editor's own pickers, or vice versa.
+      The app's material pickers are built in two places, both from
+      <code>GemMaterial::all_materials()</code>. The studio's Design Settings
+      Material combo and the New Design dialog's Starting Material combo start
+      from the <code>MaterialCatalogue</code>
+      (<code>crates/indicatrix-cut-core/src/material/catalogue.rs</code>):
+      &ldquo;(none)&rdquo;, then all 32 built-in materials above in
+      <code>all_materials()</code>'s own order; Design Settings then appends
+      the custom materials you have saved, and a &ldquo;Custom RI&hellip;&rdquo;
+      entry. The Live Render viewport's Render Material dropdown does not use
+      the catalogue: it is built in
+      <code>apps/indicatrix-cut/src/gui/startup_settings.rs</code> as the same
+      32 built-ins sorted alphabetically (case-insensitive), with your saved
+      custom materials appended after them. A built-in species offered by one
+      picker is therefore offered by the others, though the order differs.
     </p>
     <p>
       An imported <code>.asc</code> file carries only a bare refractive
@@ -227,7 +240,7 @@
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>

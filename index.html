@@ -69,7 +69,7 @@
       <a href="assets/images/fig_render_tanzanite.jpg">
         <img src="assets/images/fig_render_tanzanite.jpg" width="1800" height="1200" alt="Rendered tanzanite gemstone">
       </a>
-      <figcaption>Fig. 1 — Tanzanite, 1920 × 1080, 32 768 samples per pixel. Rendered by indicatrix-worker.</figcaption>
+      <figcaption>Fig. 1 — Tanzanite, 1920 × 1080, 32 768 samples per pixel. Rendered with Indicatrix.</figcaption>
     </figure>
   </section>
 
@@ -88,17 +88,17 @@
         <tr>
           <td>Dispersion</td>
           <td>Sellmeier / Cauchy dispersion per material</td>
-          <td>32 built-in materials, each with a cited or derived fit (<code>crates/indicatrix/src/optics/materials.rs</code>)</td>
+          <td>32 built-in materials, each with a cited or derived fit (<code>crates/indicatrix/src/optics/materials/</code>)</td>
         </tr>
         <tr>
           <td>Polarization</td>
           <td>Stokes vectors and Mueller matrices at every interface</td>
-          <td>Includes total-internal-reflection phase retardation (<code>optics/polarization.rs</code>, <code>optics/birefringence.rs</code>)</td>
+          <td>Includes total-internal-reflection phase retardation (<code>optics/polarization.rs</code>, <code>optics/birefringence/</code>)</td>
         </tr>
         <tr>
           <td>Anisotropy</td>
           <td>Uniaxial and biaxial crystal optics</td>
-          <td>Ordinary/extraordinary ray splitting and Poynting walk-off (<code>optics/birefringence.rs</code>, GPU port in <code>renderer/gpu/transport_check/eigenmodes_uniaxial.rs</code>)</td>
+          <td>Ordinary/extraordinary ray splitting and Poynting walk-off (<code>optics/birefringence/</code>, GPU port in <code>renderer/gpu/transport_check/eigenmodes_uniaxial.rs</code>)</td>
         </tr>
         <tr>
           <td>Absorption</td>
@@ -118,7 +118,7 @@
         <tr>
           <td>Inclusions</td>
           <td>Henyey–Greenstein volumetric scattering</td>
-          <td>Optional per-material silk/haze scattering parameters, defined in <code>optics/materials.rs</code> and consumed by the Henyey–Greenstein estimator in <code>optics/raytracer/scattering.rs</code></td>
+          <td>Optional per-material silk/haze scattering parameters, defined in <code>optics/materials/</code> and consumed by the Henyey–Greenstein estimator in <code>optics/raytracer/scattering/hg.rs</code></td>
         </tr>
       </tbody>
     </table>
@@ -157,22 +157,22 @@
         <a href="assets/images/fig_render_sapphire.jpg">
           <img src="assets/images/fig_render_sapphire.jpg" width="1800" height="1200" alt="Rendered sapphire gemstone" loading="lazy">
         </a>
-        <figcaption>Fig. 2 — Sapphire, 3840 × 2160, 8 192 samples per pixel. Rendered by indicatrix-worker.</figcaption>
+        <figcaption>Fig. 2 — Sapphire, 3840 × 2160, 8 192 samples per pixel. Rendered with Indicatrix.</figcaption>
         <p class="fig-note">Look at the dispersion fringes along the crown facet edges — continuous colour, not banded RGB.</p>
       </figure>
       <figure class="fig">
         <a href="assets/images/fig_render_emerald.jpg">
           <img src="assets/images/fig_render_emerald.jpg" width="1800" height="1200" alt="Rendered emerald gemstone" loading="lazy">
         </a>
-        <figcaption>Fig. 3 — Emerald, 1920 × 1080, 16 384 samples per pixel. Rendered by indicatrix-worker.</figcaption>
-        <p class="fig-note">Look at the extinction areas near the pavilion where pleochroic absorption darkens the stone.</p>
+        <figcaption>Fig. 3 — Emerald, 1920 × 1080, 16 384 samples per pixel. Rendered with Indicatrix.</figcaption>
+        <p class="fig-note">Look at the extinction areas near the pavilion, where the long path through the stone darkens it (Beer&ndash;Lambert absorption along the ray).</p>
       </figure>
     </div>
     <figure class="fig">
       <a href="assets/images/fig_render_detail.jpg">
         <img src="assets/images/fig_render_detail.jpg" width="1400" height="900" alt="1:1 pixel crop of the sapphire render" loading="lazy">
       </a>
-      <figcaption>Fig. 4 — 1:1 pixel crop of the sapphire render (fig. 2). Rendered by indicatrix-worker.</figcaption>
+      <figcaption>Fig. 4 — 1:1 pixel crop of the sapphire render (fig. 2). Rendered with Indicatrix.</figcaption>
       <p class="fig-note">Look at the per-pixel noise level at this sample count — no denoiser applied.</p>
     </figure>
     <figure class="fig">
@@ -184,7 +184,7 @@
         <a href="assets/images/fig_mat_rutile.jpg"><img src="assets/images/fig_mat_rutile.jpg" width="900" height="600" alt="The same step cut rendered as rutile" loading="lazy"></a>
       </div>
       <figcaption>Fig. 5 &mdash; One octagon step cut in five materials, left to right: diamond, sapphire, emerald, tanzanite, rutile. 1920 &times; 1080, 4 096 samples per pixel each.</figcaption>
-      <p class="fig-note">Identical geometry, camera, light tent and backdrop card &mdash; only the material changed. Diamond and rutile share a cut and differ almost entirely in dispersion (0.0256 against &asymp;0.300); sapphire and tanzanite differ in where their absorption bands sit, not in brightness.</p>
+      <p class="fig-note">Identical geometry, camera, light tent and backdrop card &mdash; only the material changed. Diamond and rutile share a cut and differ almost entirely in dispersion (0.0256 against 0.164 for rutile&rsquo;s ordinary ray and 0.207 for its extraordinary ray); sapphire and tanzanite differ in where their absorption bands sit, not in brightness.</p>
     </figure>
   </section>
 
@@ -198,13 +198,14 @@
       remote coordinator's design catalogue over the same network connection
       used for render offload (see section 7). From the same library, the beta
       Rough planner (Library &rarr; Plan Rough...) ranks up to 10 ways of cutting
-      a block of rough into stones (section 5).
+      a block, cylinder or pebble of rough, with edge, corner and face cuts, into
+      up to 99 stones (section 5).
     </p>
     <p>
       The viewport renders either a fast solid preview or the full path
       tracer, with orbit camera controls, material selection, lighting
       presets, and support for loading custom HDR environment maps. Seven
-      lighting presets span three environment models — an analytic studio rig,
+      lighting presets span four environment models — an analytic studio rig,
       an ISO hemisphere, a jewellery light tent and a daylight sky — and a
       backdrop card can be placed behind the stone without the stone's own
       optics ever seeing it (see the <a href="physics.html#environment">physics
@@ -219,27 +220,27 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_studio_main.jpg">
-        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1080" alt="Indicatrix studio main window: library and live viewport" loading="lazy">
+        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1081" alt="Indicatrix studio main window: design library and path-traced live render" loading="lazy">
       </a>
       <figcaption>Fig. 6 — The studio: design library and live spectral viewport.</figcaption>
     </figure>
     <div class="fig-grid">
       <figure class="fig">
         <a href="assets/images/fig_tilt_curve.png">
-          <img src="assets/images/fig_tilt_curve.png" width="1671" height="847" alt="Tilt performance curve graph" loading="lazy">
+          <img src="assets/images/fig_tilt_curve.png" width="1452" height="1096" alt="Tilt Performance Curve Analysis dialog" loading="lazy">
         </a>
         <figcaption>Fig. 7 — Tilt performance sweep: 181 points across 4 camera azimuths (0°, 45°, 90°, 135°).</figcaption>
       </figure>
       <figure class="fig">
         <a href="assets/images/fig_settings.png">
-          <img src="assets/images/fig_settings.png" width="1192" height="1400" alt="Render settings dialog" loading="lazy">
+          <img src="assets/images/fig_settings.png" width="1187" height="1428" alt="Render settings dialog" loading="lazy">
         </a>
         <figcaption>Fig. 8 — Render and optics settings.</figcaption>
       </figure>
     </div>
     <figure class="fig">
       <a href="assets/images/fig_solid_view.png">
-        <img src="assets/images/fig_solid_view.png" width="1800" height="1059" alt="Solid inspection view of a faceted stone" loading="lazy">
+        <img src="assets/images/fig_solid_view.png" width="1800" height="1126" alt="Solid inspection view of a faceted stone" loading="lazy">
       </a>
       <figcaption>Fig. 9 — Solid inspection view: facet picking against the cutting instructions.</figcaption>
     </figure>
@@ -261,21 +262,21 @@
     </div>
     <figure class="fig">
       <a href="assets/images/fig_cad_edit.png">
-        <img src="assets/images/fig_cad_edit.png" width="1800" height="1072" alt="Faceting tier editor" loading="lazy">
+        <img src="assets/images/fig_cad_edit.png" width="1800" height="1093" alt="Edit mode: solid view with a selected facet, tier table and tier inspector" loading="lazy">
       </a>
       <figcaption>Fig. 10 — Editing tier angles and constraints in the cutting instructions.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_cad_diagram.png">
-        <img src="assets/images/fig_cad_diagram.png" width="1800" height="1085" alt="Faceting diagram with meet points" loading="lazy">
+        <img src="assets/images/fig_cad_diagram.png" width="1800" height="988" alt="Diagram view: crown, pavilion and profile panels beside the tier table" loading="lazy">
       </a>
       <figcaption>Fig. 11 — The faceting diagram, with meet points resolved by the solver.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_cutting_schedule.png">
-        <img src="assets/images/fig_cutting_schedule.png" width="1396" height="1016" alt="Cutting instructions table" loading="lazy">
+        <img src="assets/images/fig_cutting_schedule.png" width="916" height="664" alt="Cutting instructions table" loading="lazy">
       </a>
-      <figcaption>Fig. 12 — The cutting instructions: index, angle, and mast per facet.</figcaption>
+      <figcaption>Fig. 12 — The cutting instructions: facet, angle and index-gear positions per step.</figcaption>
     </figure>
     <p>
       The cutting instructions are treated as a constraint graph rather than a static
@@ -311,39 +312,47 @@
       to the printed geometry so the sheet matches what the solid view and
       tracer show, and a facet can target a girdle thickness or table width in
       millimetres directly instead of a dimensionless mast
-      (<code>indicatrix-cut-core/src/cutting_sheet.rs</code>,
+      (<code>indicatrix-cut-core/src/cutting_sheet/</code>,
       <code>design/targets.rs</code>). Every tier keeps a stable id across
       edits and file round trips, and the preform module reports volumetric
       yield and an estimated carat weight from the rough
       (<code>yield_metrics/</code>). Beyond a single design, the beta
-      <em>Rough planner</em> (Library &rarr; Plan Rough...) takes a rectangular
-      block of rough and plans across the whole design library, or the current
-      filter: it ranks up to 10 layouts of up to 99 stones by total carats, each
-      with a sawing plan of slabs, bars and pieces
+      <em>Rough planner</em> (Library &rarr; Plan Rough...) takes a block,
+      cylinder or pebble of rough, with edge, corner and face cuts, in its own
+      window and plans across the whole design library, or the current
+      filter: it ranks up to 10 layouts of up to 99 stones by total carats, fitting
+      a single stone exactly with its real outline in any orientation and several
+      stones with a sawing plan of slabs, bars and pieces
       (<code>rough_plan/</code>; see the
       <a href="editor.html#rough-planner">studio page</a>). See the <a href="editor.html">studio page</a>
       for the guidance UI (empty-state cards, a template gallery, an in-app
       worked example, and a keyboard-shortcut overlay) built around this
       workflow.
     </p>
+    <figure class="fig">
+      <a href="assets/images/fig_rough_planner_result.jpg">
+        <img src="assets/images/fig_rough_planner_result.jpg" width="1800" height="1305" alt="Rough Planner result: eight stones drawn inside the rough and the result card" loading="lazy">
+      </a>
+      <figcaption>Fig. 13 — The Rough planner: the selected layout cuts eight stones of four designs from a 14 × 38 × 9 mm sapphire block, drawn in their saw pieces, with each design's weight, size and orientation in the card.</figcaption>
+    </figure>
   </section>
 
   <section id="materials">
     <h2><span class="sec-num">6</span>Materials</h2>
     <p>
       Indicatrix ships 32 built-in gem materials in
-      <code>crates/indicatrix/src/optics/materials.rs</code>, each with a
+      <code>crates/indicatrix/src/optics/materials/</code>, each with a
       dispersion fit either transcribed from a primary optical-constants
       paper or derived from corroborated gemological reference values (the
       source code documents which, per material). The same 32 materials,
-      plus any custom material you save in the desktop studio, back one
-      shared catalogue used by both the renderer's material picker and the
-      CAD editor's design settings, so a species available in one is
-      available in the other. The chart below evaluates a subset of these
-      dispersion curves live in your browser; the full table, the shared
-      catalogue, and how an imported design's material is inferred (and
-      flagged as a guess) are on the <a href="materials.html">materials
-      page</a>.
+      plus any custom material you save in the desktop studio, are offered
+      by both the renderer's material picker and the CAD editor's design
+      settings, so a species available in one is available in the other.
+      The chart below evaluates a subset of these dispersion curves live in
+      your browser (for a uniaxial material, the ordinary ray); the full
+      table, how the pickers are built, and how an imported design's
+      material is inferred (and flagged as a guess) are on the
+      <a href="materials.html">materials page</a>.
     </p>
 
     <div class="chart-box">
@@ -378,7 +387,7 @@
     <h2><span class="sec-num">7</span>Distributed rendering</h2>
     <figure class="fig diagram-fig">
 <svg class="diagram" viewBox="0 0 900 300" role="img" aria-labelledby="handoff-title" xmlns="http://www.w3.org/2000/svg">
-  <title id="handoff-title">Preview-then-handoff: the desktop renders a local preview while the camera moves, then a remote worker traces sample-index ranges that are summed into the same accumulator.</title>
+  <title id="handoff-title">Preview-then-handoff: the desktop renders a local preview while the camera moves, then hands sample tracing to a coordinator, which traces sample-index ranges itself (with --render) and across the render workers that have joined it; every range is summed into the desktop's one accumulator.</title>
   <style>
     .diagram text { font-family: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, "Liberation Mono", monospace; font-size: 12.5px; fill: var(--ink); }
     .diagram .lbl { font-size: 11px; fill: var(--ink-2); letter-spacing: 0.06em; }
@@ -394,43 +403,59 @@
     </marker>
   </defs>
 
-  <rect class="box" x="20" y="34" width="300" height="168"/>
-  <text class="lbl" x="34" y="56">DESKTOP · indicatrix-cut</text>
-  <text x="34" y="86">camera moving</text>
-  <text class="muted" x="34" y="106">  local CPU / GPU preview,</text>
-  <text class="muted" x="34" y="124">  few samples, immediate</text>
-  <text x="34" y="154">camera settled</text>
-  <text class="muted" x="34" y="174">  hand sample tracing off</text>
-  <text class="muted" x="34" y="192">  to the worker</text>
+  <rect class="box" x="20" y="34" width="240" height="168"/>
+  <text class="lbl" x="32" y="56">DESKTOP · indicatrix-cut</text>
+  <text x="32" y="86">camera moving</text>
+  <text class="muted" x="32" y="106">  local CPU / GPU preview,</text>
+  <text class="muted" x="32" y="124">  few samples, immediate</text>
+  <text x="32" y="154">camera settled</text>
+  <text class="muted" x="32" y="174">  hand sample tracing off</text>
+  <text class="muted" x="32" y="192">  to the coordinator</text>
 
-  <rect class="box" x="580" y="34" width="300" height="168"/>
-  <text class="lbl" x="594" y="56">WORKER · indicatrix-worker</text>
-  <text x="594" y="86">GPU / CPU path tracer</text>
-  <text class="muted" x="594" y="106">  traces sample-index ranges</text>
-  <text class="muted" x="594" y="124">  [0, 4096)  [4096, 8192) …</text>
-  <text x="594" y="154">not screen tiles</text>
-  <text class="muted" x="594" y="174">  no seams, no per-tile load</text>
-  <text class="muted" x="594" y="192">  imbalance on a small stone</text>
+  <rect class="box" x="330" y="34" width="240" height="168"/>
+  <text class="lbl" x="342" y="56">COORDINATOR · worker serve</text>
+  <text x="342" y="86">splits the image into</text>
+  <text class="muted" x="342" y="106">  sample-index ranges,</text>
+  <text class="muted" x="342" y="124">  not screen tiles</text>
+  <text x="342" y="154">own lane with --render</text>
+  <text class="muted" x="342" y="174">  a lost worker's ranges</text>
+  <text class="muted" x="342" y="192">  go to the other lanes</text>
 
-  <path class="arrow" d="M 322 92 H 578" marker-end="url(#ah)"/>
-  <text class="lbl" x="450" y="82" text-anchor="middle">mTLS 1.3 · token enrolment</text>
-  <path class="arrow" d="M 578 152 H 322" marker-end="url(#ah)"/>
-  <text class="lbl" x="450" y="174" text-anchor="middle">finished sample ranges, any order</text>
+  <rect class="box" x="640" y="34" width="240" height="168"/>
+  <text class="lbl" x="652" y="56">WORKERS · worker join (×N)</text>
+  <text x="652" y="86">GPU / CPU path tracer</text>
+  <text class="muted" x="652" y="106">  claims chunks sized to</text>
+  <text class="muted" x="652" y="124">  its measured rate</text>
+  <text x="652" y="154">dials out to coordinator</text>
+  <text class="muted" x="652" y="174">  no inbound port needed,</text>
+  <text class="muted" x="652" y="192">  works behind NAT</text>
 
-  <rect class="bar" x="20" y="232" width="860" height="48"/>
-  <text class="lbl" x="34" y="252">ACCUMULATOR</text>
-  <text x="34" y="270">local and remote samples are summed per pixel; the image converges as ranges arrive, whichever side produced them</text>
-  <path class="arrow" d="M 170 204 V 230" marker-end="url(#ah)"/>
-  <path class="arrow" d="M 730 204 V 230" marker-end="url(#ah)"/>
+  <path class="arrow" d="M 262 92 H 328" marker-end="url(#ah)"/>
+  <text class="lbl" x="295" y="82" text-anchor="middle">scene</text>
+  <path class="arrow" d="M 328 152 H 262" marker-end="url(#ah)"/>
+  <text class="lbl" x="295" y="172" text-anchor="middle">samples</text>
+
+  <path class="arrow" d="M 572 92 H 638" marker-end="url(#ah)"/>
+  <text class="lbl" x="605" y="82" text-anchor="middle">chunks</text>
+  <path class="arrow" d="M 638 152 H 572" marker-end="url(#ah)"/>
+  <text class="lbl" x="605" y="172" text-anchor="middle">ranges</text>
+
+  <text class="lbl" x="295" y="222" text-anchor="middle">:7878 · mTLS 1.3</text>
+  <text class="lbl" x="605" y="222" text-anchor="middle">:7880 · worker dials in</text>
+
+  <rect class="bar" x="20" y="240" width="860" height="48"/>
+  <text class="lbl" x="34" y="260">ACCUMULATOR · ON THE DESKTOP</text>
+  <text x="34" y="278">local and remote samples are summed per pixel; the ranges are disjoint, so arrival order never matters</text>
+  <path class="arrow" d="M 140 204 V 238" marker-end="url(#ah)"/>
 </svg>
-<figcaption>Fig. 13 — Preview-then-handoff: local preview while the camera moves, remote sample-index ranges once it settles, one shared accumulator.</figcaption>
+<figcaption>Fig. 14 — Preview-then-handoff: local preview while the camera moves; once it settles, the coordinator traces sample-index ranges itself and across its joined workers, and every range lands in the desktop's one accumulator.</figcaption>
 </figure>
     <figure class="fig">
       <a href="assets/images/fig_distributed_live.jpg">
         <img src="assets/images/fig_distributed_live.jpg" width="1800" height="1187" alt="A distributed export in progress: worker GPU load, link throughput, and the desktop export dialog" loading="lazy">
       </a>
-      <figcaption>Fig. 14 &mdash; The same handoff in flight: the worker's GPU at 85&nbsp;%, the link carrying finished sample ranges back at 158&nbsp;Mbps against 368&nbsp;Kbps outbound, and the desktop's export dialog 1 493 samples into a 32 768-sample master still.</figcaption>
-      <p class="fig-note">The asymmetry is the design: the desktop sends a scene description and sample-range requests, the worker sends back accumulated radiance. Network identifiers are blurred.</p>
+      <figcaption>Fig. 15 &mdash; The same handoff in flight: the remote machine's GPU at 85&nbsp;%, the link carrying finished sample ranges back at 158&nbsp;Mbps against 368&nbsp;Kbps outbound, and the desktop's export dialog 1 493 samples into a 32 768-sample master still.</figcaption>
+      <p class="fig-note">The asymmetry is the design: the desktop sends a scene description and sample-range requests, the remote side sends back accumulated radiance. Network identifiers are blurred.</p>
     </figure>
     <p>
       The viewport renders locally while the camera moves, then hands off
@@ -464,63 +489,86 @@
     <h2><span class="sec-num">8</span>Workspace</h2>
     <table>
       <thead>
-        <tr><th>Crate</th><th>Kind</th><th>Description</th></tr>
+        <tr><th>Crate</th><th>Kind</th><th>Description</th><th>Published</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><code>indicatrix</code></td>
           <td>library</td>
           <td>A physically-based spectral gemstone renderer that turns GemCAD-style cutting instructions into rendered output.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-cut-core</code></td>
           <td>library</td>
           <td>Editor-core library for faceting cutting instructions: preform, tiers, undo/redo, and live solid validation.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-cut-core">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-cut-core">docs.rs</a></td>
+        </tr>
+        <tr>
+          <td><code>indicatrix-solid</code></td>
+          <td>library</td>
+          <td>Pure-CPU solid rasterizer and 2D faceting diagram for a design's solid mesh, plus the pure replan planner. No GUI toolkit, no threads, no filesystem. Shared by the desktop editor and the web app.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-solid">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-solid">docs.rs</a></td>
+        </tr>
+        <tr>
+          <td><code>indicatrix-editor</code></td>
+          <td>library</td>
+          <td>GUI-free faceting-design editor logic shared by the desktop editor and the web app: the editor session (design, undo/redo, selection, dirty tracking), tier, preform and material form parsing, plain-struct view models, the cutting sheet, Retarget, the guided walkthrough and the solve policy. No GUI toolkit, no threads, no clock, no filesystem.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-editor">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-editor">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-formats</code></td>
           <td>library</td>
           <td>Readers and writers for gemstone faceting design file formats.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-formats">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-formats">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-vault</code></td>
           <td>library</td>
           <td>SQLite-backed storage, data models, and local import/export for gemstone faceting design libraries.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-vault">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-vault">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-net</code></td>
           <td>library</td>
           <td>Wire protocol for offloading indicatrix spectral ray samples to a remote render worker.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-net">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-net">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-dispatch</code></td>
           <td>library</td>
           <td>Sample-range scheduling for render lanes: a shared disjoint sample cursor, per-lane rate models, a lane pool that merges chunk sums deterministically, and a whole-item batch queue. No networking and no GUI types.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-dispatch">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-dispatch">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-cut</code></td>
           <td>app (desktop)</td>
           <td>Desktop faceting-design editor: library browsing, spectral 3D rendering, material retargeting, and a solid inspection view.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-cut">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-cut">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-worker</code></td>
           <td>app (CLI / server)</td>
           <td>The coordinator (<code>serve</code>): serves an indicatrix-backed design catalogue over mutual TLS and accepts joining render workers. The optional <code>worker</code> feature adds render capacity — <code>serve --render</code>, <code>join</code> to work for a coordinator, and <code>render</code>, a one-shot scene-to-PNG CLI.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-worker">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-worker">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-web</code></td>
           <td>app (browser)</td>
           <td>Browser build of indicatrix, served as static files: open or start a design (<code>.asc</code>, the native pair, <code>.gem</code>, <code>.gcs</code>), edit it in the same faceting CAD engine, and look at it as a solid, a faceting diagram and a spectral render traced on your CPU cores in Web Workers, with the brilliance, fire, windowing and extinction figures and the tilt curve. Files are read and saved as browser downloads; the design lives in the tab's session only. No design library, no remote rendering, no Deep Solve, no GPU renderer, no database.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-web">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-web">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-web-core</code></td>
           <td>library</td>
           <td>The compute side of the browser build with no DOM and no GUI in it: the Web Worker protocol, the CPU chunk tracer and its bit-exact accumulation, the worker-side solve, Optimize, metrics and tilt sweeps. Tested natively.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-web-core">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-web-core">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-web-compute</code></td>
           <td>app (Web Worker)</td>
           <td>The Web Worker entry point of the browser build: decodes a message, runs the <code>indicatrix-web-core</code> handler, posts the reply.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-web-compute">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-web-compute">docs.rs</a></td>
         </tr>
       </tbody>
     </table>
@@ -564,6 +612,11 @@ indicatrix-cut
 <span class="cmt"># optional: the coordinator / remote render worker (add --features gpu for the GPU tracer)</span>
 cargo install indicatrix-worker --features worker</code></pre>
     </div>
+    <p class="small">
+      Every crate's crates.io and docs.rs pages are listed in the
+      <a href="#workspace">workspace table</a>; the renderer library's API
+      reference is <a href="https://docs.rs/indicatrix">docs.rs/indicatrix</a>.
+    </p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — remote rendering quick start</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># on the coordinator: serve the library and render with this machine's own CPU/GPU</span>
@@ -632,8 +685,8 @@ cargo run -p indicatrix-worker --features worker -- render \
       <tbody>
         <tr>
           <td>Rough planner from 3D scans</td>
-          <td>Extend the existing <a href="editor.html#rough-planner">Rough planner</a>, which today plans stones from a rectangular block of rough, to scanned rough and inclusions: import a 3D scan of the rough, place and orient the design inside it, and compare yield and orientation options against the real shape, including inclusions the scan captures. Scans are not implemented.</td>
-          <td>The beta Rough planner and the yield report (section 5), extended from a rectangular block to a scanned volume.</td>
+          <td>Extend the existing <a href="editor.html#rough-planner">Rough planner</a>, which today plans stones from a modelled block, cylinder or pebble of rough with flat cuts, to scanned rough and inclusions: import a 3D scan of the rough, place and orient the design inside it, and compare yield and orientation options against the real shape, including inclusions the scan captures. Scans are not implemented.</td>
+          <td>The beta Rough planner and the yield report (section 5), extended from a modelled convex rough to a scanned volume.</td>
         </tr>
         <tr>
           <td>Colour from a photograph of the rough</td>
@@ -688,7 +741,7 @@ cargo run -p indicatrix-worker --features worker -- render \
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
     <p><a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>

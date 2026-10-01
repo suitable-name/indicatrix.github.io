@@ -117,7 +117,7 @@
         </tr>
         <tr>
           <th scope="row">Plans cuts from a block of rough (yield, placement in the rough)</th>
-          <td>✓ <span class="qual">beta, block rough, up to 99 stones</span></td><td>✗ <span class="qual">by hand: L/W, Vol./W³</span></td><td>✗ <span class="qual">optical merit only</span></td><td>✗ <span class="qual">single-design yield calculator</span></td><td>✓ <span class="qual">one design, orientation search</span></td><td>✗ <span class="qual">by hand: weight, locked limits</span></td>
+          <td>✓ <span class="qual">beta, block/cylinder/pebble with cuts, up to 99 stones</span></td><td>✗ <span class="qual">by hand: L/W, Vol./W³</span></td><td>✗ <span class="qual">optical merit only</span></td><td>✗ <span class="qual">single-design yield calculator</span></td><td>✓ <span class="qual">one design, orientation search</span></td><td>✗ <span class="qual">by hand: weight, locked limits</span></td>
         </tr>
         <tr class="group"><th colspan="7" scope="colgroup">Rendering</th></tr>
         <tr>
@@ -274,13 +274,15 @@
     </p>
     <p>
       Yield planning goes beyond the single-design preform figure. The beta
-      <a href="editor.html#rough-planner">Rough planner</a> takes a rectangular
-      block of rough and, from either the library filter or the whole library,
-      ranks up to 10 layouts of up to 99 stones by total carats, each with a
-      sawing plan (slabs, then bars, then pieces, over all 6 cut orders). It is
-      an upper bound for a clean block: it plans for block-shaped rough only,
-      not scanned or irregular rough and not inclusions, and it is desktop-only
-      for now. The one other rough planner in the matrix is Gem Diagram's, which
+      <a href="editor.html#rough-planner">Rough planner</a> takes a block,
+      cylinder or pebble of rough, modelled with flat edge, corner and face cuts,
+      and, from either the library filter or the whole library, ranks up to 10
+      layouts of up to 99 stones by total carats: a single stone is fitted exactly
+      with its real outline in any orientation, and several stones get a sawing
+      plan (slabs, then bars, then pieces, over all 6 cut orders). It is an
+      estimate for clean, inclusion-free rough after your kerf and allowance: it
+      plans for convex modelled rough only, not scanned or irregular rough and not
+      inclusions, and it is desktop-only for now. The one other rough planner in the matrix is Gem Diagram's, which
       its documentation describes as an orientation search that starts from one
       loaded design and reports yield and finished weight for each orientation;
       it does not describe choosing among designs or stone counts.
@@ -354,7 +356,7 @@
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>

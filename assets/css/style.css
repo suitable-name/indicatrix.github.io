@@ -423,6 +423,11 @@ tbody tr:nth-child(even) {
   background: var(--paper-2);
 }
 
+/* The crates.io / docs.rs pair of the workspace table never breaks inside a word. */
+td.pub {
+  white-space: nowrap;
+}
+
 /* Definition lists, used instead of a table where a table would be silly. */
 dl.deflist {
   display: grid;
@@ -667,6 +672,14 @@ footer a:hover {
   .matrix td, .matrix th { overflow-wrap: normal; }
   td, th, td code, :not(pre) > code {
     overflow-wrap: anywhere;
+  }
+
+  /* On a phone the two registry links stack instead of squeezing the description. */
+  td.pub a {
+    display: block;
+  }
+  td.pub .sep {
+    display: none;
   }
 }
 

@@ -59,9 +59,9 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_studio_main.jpg">
-        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1080" alt="Studio main window: library and viewport">
+        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1081" alt="Studio main window: design library on the left, path-traced live render on the right">
       </a>
-      <figcaption>Fig. 1 — Design library on the left, live spectral viewport on the right.</figcaption>
+      <figcaption>Fig. 1 — Design library on the left, live spectral viewport on the right: the 45.148 SplitChecker 12 design rendered in grossular garnet under the ring-light preset, with the optical readout above the stone.</figcaption>
     </figure>
   </section>
 
@@ -113,21 +113,35 @@
       tracer for the rest of the session with a visible status message,
       rather than freezing.
     </p>
+    <figure class="fig">
+      <a href="assets/images/fig_tilt_in_editor.png">
+        <img src="assets/images/fig_tilt_in_editor.png" width="1800" height="1070" alt="The editor's view bar with the tilt dialog open over the Diagram view" loading="lazy">
+      </a>
+      <figcaption>Fig. 2 — The view bar in Edit mode: solid, path-traced or both, the faceting diagram, fixed directions, Fit and Reset, and Tilt Curve, here opened over the Diagram view.</figcaption>
+    </figure>
   </section>
 
   <section id="tilt-analytics">
     <h2><span class="sec-num">4</span>Tilt performance sweeps</h2>
-    <figure class="fig">
-      <a href="assets/images/fig_tilt_curve.png">
-        <img src="assets/images/fig_tilt_curve.png" width="1671" height="847" alt="Tilt performance curve graph">
-      </a>
-      <figcaption>Fig. 2 — Brilliance, windowing, and extinction across a tilt sweep.</figcaption>
-    </figure>
+    <div class="fig-grid">
+      <figure class="fig">
+        <a href="assets/images/fig_tilt_curve.png">
+          <img src="assets/images/fig_tilt_curve.png" width="1452" height="1096" alt="Tilt Performance Curve Analysis dialog" loading="lazy">
+        </a>
+        <figcaption>Fig. 3 — Brilliance, windowing and extinction across a tilt sweep: 181 points from −90° to +90° on one of four camera azimuths, with the face-up figures above the chart.</figcaption>
+      </figure>
+      <figure class="fig">
+        <a href="assets/images/fig_tilt_video_export.png">
+          <img src="assets/images/fig_tilt_video_export.png" width="1456" height="1098" alt="Export Tilt Video panel of the tilt dialog" loading="lazy">
+        </a>
+        <figcaption>Fig. 4 — Export Tilt Video, unfolded below the chart: angle range and step, frame rate, resolution, samples per pixel, bounces, colour space and transfer.</figcaption>
+      </figure>
+    </div>
     <p>
       A cut that looks brilliant face-up can black out or window heavily at a
       few degrees of tilt. Indicatrix sweeps a 181-point tilt profile
       (<code>±90°</code>) at each of 4 fixed camera azimuths — 0°, 45°, 90°,
-      135° (<code>PROFILE_AZIMUTHS_DEG</code>, <code>crates/indicatrix/src/color/metrics.rs</code>)
+      135° (<code>PROFILE_AZIMUTHS_DEG</code>, <code>crates/indicatrix/src/color/metrics/profile.rs</code>)
       — and plots brilliance, windowing, and extinction together so a design's
       behaviour in the hand, not just face-up, is visible.
     </p>
@@ -161,16 +175,30 @@
     <h2><span class="sec-num">5</span>Constraint solver and tier editor <span class="tag">beta</span></h2>
     <figure class="fig">
       <a href="assets/images/fig_cad_edit.png">
-        <img src="assets/images/fig_cad_edit.png" width="1800" height="1072" alt="Faceting tier editor">
+        <img src="assets/images/fig_cad_edit.png" width="1800" height="1093" alt="Edit mode: solid view with a selected facet, tier table and tier inspector" loading="lazy">
       </a>
-      <figcaption>Fig. 3 — Editing tier angles and meet constraints.</figcaption>
+      <figcaption>Fig. 5 — Edit mode: the solid view with a selected crown facet and its drag handles, the tier table and the tier inspector.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_cad_diagram.png">
-        <img src="assets/images/fig_cad_diagram.png" width="1800" height="1085" alt="Faceting diagram with resolved meet points">
+        <img src="assets/images/fig_cad_diagram.png" width="1800" height="988" alt="Diagram view: crown, pavilion and profile panels beside the tier table" loading="lazy">
       </a>
-      <figcaption>Fig. 4 — The faceting diagram after the meet-point solver runs.</figcaption>
+      <figcaption>Fig. 6 — The Diagram view: crown, pavilion and profile on the index-gear scale, with the solved tier table beside them.</figcaption>
     </figure>
+    <div class="fig-grid">
+      <figure class="fig">
+        <a href="assets/images/fig_diagram_crown.png">
+          <img src="assets/images/fig_diagram_crown.png" width="1800" height="983" alt="Crown panel of the faceting diagram with facet labels" loading="lazy">
+        </a>
+        <figcaption>Fig. 7 — The crown panel alone (Crown in the view bar), every facet labelled with its tier letter and index position.</figcaption>
+      </figure>
+      <figure class="fig">
+        <a href="assets/images/fig_retarget.png">
+          <img src="assets/images/fig_retarget.png" width="879" height="1065" alt="Retarget for Material dialog" loading="lazy">
+        </a>
+        <figcaption>Fig. 8 — Retarget for Material: choose a target material, Shift or Optimize the angles, and read each tier's old and new angle with its margin to the critical angle and a Safe or Windows verdict before applying.</figcaption>
+      </figure>
+    </div>
     <p>
       Cutting instructions are a geometric constraint graph, not a static list of
       numbers. A meet-point instruction ("cut tier P2 until it meets P1 and G1
@@ -270,46 +298,102 @@
     <h2><span class="sec-num">7</span>Rough planner <span class="tag">beta</span></h2>
     <p>
       <strong>Library &rarr; Plan Rough...</strong> answers a question the
-      preform's single-design yield figure cannot: given a block of rough and
+      preform's single-design yield figure cannot: given a piece of rough and
       the designs in the library, what is the heaviest set of stones that can be
-      sawn out of it? You enter the block's X, Y and Z in millimetres, a
-      <em>Stones (up to)</em> limit from 1 to 99 (a maximum, not a target: a layout may
-      cut fewer), and a material. Only materials with a known specific gravity
-      are offered, because the specific gravity turns volume into carats. The
-      planner returns up to 10 layouts, heaviest first.
+      cut out of it? The planner opens in <strong>its own window</strong>, not a
+      modal dialog, so you can keep browsing the library, click designs and move it
+      to a second screen; closing it only hides it, and the model and results are
+      there when you open it again. A plan that is running keeps running.
     </p>
+    <p>
+      You model the rough on the left: a <strong>block</strong> (X, Y and Z in
+      millimetres), a <strong>cylinder</strong> (diameter, length and axis) or a
+      water-worn <strong>pebble</strong> (the ellipsoid inscribed in a box), and
+      then take flat <strong>cuts</strong> off it &mdash; an <em>edge</em> cut or a
+      <em>corner</em> cut on a block, or a <em>face</em> cut in any direction on any
+      shape. Cuts can be typed in as setbacks and angles, or made by clicking an
+      edge, a corner or a face in the 3D view, with undo and redo for every step.
+      The readout shows the model's volume and its weight in the chosen material
+      (only materials with a known specific gravity are offered, because the
+      specific gravity turns volume into carats), and if you type the weight you
+      measured on a scale it checks the model against it and tells you when the two
+      disagree. The <em>Stones (up to)</em> limit runs from 1 to 99 (a maximum, not a
+      target: a layout may cut fewer). The planner returns up to 10 layouts,
+      heaviest first.
+    </p>
+    <figure class="fig">
+      <a href="assets/images/fig_rough_planner.png">
+        <img src="assets/images/fig_rough_planner.png" width="1800" height="1299" alt="Rough Planner window: the modelled rough and the plan controls" loading="lazy">
+      </a>
+      <figcaption>Fig. 9 — Modelling the rough: a 14 × 38 × 9 mm sapphire block with five edge cuts, the selected cut highlighted in the 3D view, and the Plan controls below.</figcaption>
+    </figure>
     <p>
       The <em>candidate designs</em> are either the designs the library's search
-      and filters currently show, or the whole library. The loss settings
+      and filters currently show, or the whole library. A single design can be
+      <strong>excluded from planning</strong> &mdash; a plain cube that keeps
+      winning, say &mdash; from a button on its result row or from the library's
+      context menu; it stays in the library and is only left out of the
+      candidates. The loss settings
       default to 0.30&nbsp;mm saw kerf, 0.20&nbsp;mm allowance per side of each
       stone, 0&nbsp;mm rough skin and a 1.00&nbsp;mm minimum stone width, and
-      can be edited in the dialog. Each result row shows the total weight in
-      carats, the yield (finished stone volume as a share of the block's volume),
-      the stone count, and the designs used &mdash; one design repeated, or a mix.
-    </p>
-    <p>
-      Each layout also carries a <strong>cut plan</strong> written as sawing
-      instructions: the block is cut into slabs, each slab into bars, each bar
-      into pieces, with the kerf lost at every cut, and each piece names the
-      design cut from it, which rough face its table faces, and the finished
-      size and weight. Cuts run edge to edge across the whole part, and the
-      planner tries all 6 orders of the three axes. A design's finished size
-      (footprint, height and volume) is measured once by solving its facets, then
+      can be edited in the window. A design's finished size (footprint, height,
+      volume and convex outline) is measured once by solving its facets, then
       stored in the library database, so only the first run over a large library
       is slow; the measurement is repeated automatically when a design's geometry
       changes. Designs without a usable design file &mdash; catalogue entries
       known only by an angle table, or schedules that rely on the preform to
       close the stone &mdash; are skipped and counted in the results.
     </p>
+    <p>
+      Two kinds of layout are ranked together. A <strong>single stone</strong> is
+      fitted <strong>exactly</strong>: the planner uses the design's real outline,
+      turns it freely in every direction and scales it to a very good fit inside the
+      rough, so the table can end up tilted against every rough face. <strong>Several
+      stones</strong> use the <strong>box model</strong>: the rough is sawn edge to
+      edge in three stages (slabs, then bars, then pieces, with the kerf lost at
+      every cut; the planner tries all 6 orders of the three axes), and each piece
+      holds one stone treated as the smallest box around it, so a round stone is
+      treated as needing a square footprint. Stones of different designs can be
+      mixed. The <strong>cut plan</strong> of a sawn layout is written as sawing
+      instructions, and each piece names the design cut from it, which rough face
+      its table faces, and the finished size and weight; an exact single stone is not
+      sawn and has no saw stages.
+    </p>
+    <p>
+      Every result is also shown in a <strong>3D view</strong>: the stones are drawn
+      as their real designs, each design in its own colour, inside the rough and the
+      saw pieces, and hovering a stone tells you its design, weight and place in the
+      plan. Each design in a result carries its own <strong>metrics</strong>: its
+      share of the layout's weight, its finished size and proportions, its volume,
+      how the table is oriented in the rough, how much of its piece it fills, and its
+      brilliance, extinction and windowing from the tilt curves already stored for
+      the design.
+    </p>
+    <figure class="fig">
+      <a href="assets/images/fig_rough_planner_result.jpg">
+        <img src="assets/images/fig_rough_planner_result.jpg" width="1800" height="1305" alt="Rough Planner result: eight stones drawn inside the rough and the result card" loading="lazy">
+      </a>
+      <figcaption>Fig. 10 — A result: 10 layouts from 318 designs in a second; the selected layout cuts eight stones of four designs (17.06 ct, 25.9 % yield), drawn in their saw pieces, with each design's weight, size, ratios, orientation and fill in the card.</figcaption>
+    </figure>
+    <p>
+      A design's name in a result is a <strong>link into the library</strong>; a
+      button on each result narrows the library list to the designs of that result,
+      and another to the designs of all of them. Results can be <strong>saved</strong>
+      in the library database, <strong>exported</strong> to a plain-text plan file and
+      <strong>imported</strong> again, for example on another machine. When a saved
+      plan is opened, every design is checked against the library, and the plan says
+      which designs were deleted, changed since, or found again by title.
+    </p>
     <div class="status">
       <span class="status-label">READ THE NUMBERS AS AN ESTIMATE</span>
       <p>
-        The results are an upper bound for a clean block. The planner assumes
-        rectangular rough without inclusions or cracks and stones that come out
-        exactly to their design's proportions, and it fits each stone to the
-        smallest rectangle around it, so a round stone is treated as needing a
-        square footprint. It works with the local library only; if a remote
-        catalogue is selected, the dialog asks you to switch back. Use the
+        The results are an estimate for clean, inclusion-free rough after your kerf
+        and allowance; real yield also depends on inclusions and on how closely you
+        follow the plan. The planner assumes a convex rough without inclusions or
+        cracks and stones that come out exactly to their design's proportions; a
+        cylinder and a pebble are approximated by polyhedra slightly inside the true
+        shape. It works with the local library only; if a remote
+        catalogue is selected, the window asks you to switch back. Use the
         ranking to compare options, and do the final marking-up on the rough
         itself.
       </p>
@@ -318,8 +402,9 @@
       Sources: <code>crates/indicatrix-cut-core/src/rough_plan/</code>,
       <code>apps/indicatrix-cut/src/gui/rough_plan/</code>, and the manual
       chapter <code>apps/indicatrix-cut/docs/manual/15-planning-a-rough.md</code>.
-      Fitting a design into scanned, irregular rough is a separate item on the
-      <a href="index.html#roadmap">roadmap</a>.
+      Fitting a design into scanned rough, and keeping clear of inclusions, is a
+      separate item on the <a href="index.html#roadmap">roadmap</a>; neither is
+      implemented.
     </p>
   </section>
 
@@ -327,9 +412,9 @@
     <h2><span class="sec-num">8</span>Solid inspection view</h2>
     <figure class="fig">
       <a href="assets/images/fig_solid_view.png">
-        <img src="assets/images/fig_solid_view.png" width="1800" height="1059" alt="Solid inspection view with facet picking">
+        <img src="assets/images/fig_solid_view.png" width="1800" height="1126" alt="Solid inspection view with facet picking" loading="lazy">
       </a>
-      <figcaption>Fig. 5 — Solid inspection: click a facet to jump to its row in the schedule.</figcaption>
+      <figcaption>Fig. 11 — Solid inspection: click a facet to jump to its row in the schedule.</figcaption>
     </figure>
     <p>
       A secondary 3D view shows the exact polyhedral solid (facet edges and
@@ -342,9 +427,9 @@
     <h2><span class="sec-num">9</span>Export</h2>
     <figure class="fig">
       <a href="assets/images/fig_cutting_schedule.png">
-        <img src="assets/images/fig_cutting_schedule.png" width="1396" height="1016" alt="Cutting instructions table">
+        <img src="assets/images/fig_cutting_schedule.png" width="916" height="664" alt="Cutting instructions table" loading="lazy">
       </a>
-      <figcaption>Fig. 6 — The cutting instructions table: index, angle, mast per facet.</figcaption>
+      <figcaption>Fig. 12 — The cutting instructions: one row per step with facet, angle and index-gear positions, split into All Steps, Pavilion and Crown.</figcaption>
     </figure>
     <p>
       A split button in the command bar groups the master-still render
@@ -359,6 +444,12 @@
       angle of elevation for a machine's dial, alongside the dimensionless
       mast.
     </p>
+    <figure class="fig">
+      <a href="assets/images/fig_export_dialog.jpg">
+        <img src="assets/images/fig_export_dialog.jpg" width="1800" height="1759" alt="Export High-Resolution Render dialog during an export" loading="lazy">
+      </a>
+      <figcaption>Fig. 13 — Export High-Resolution Render mid-export: 4K, Rec.2020, local and remote compute with final-picture transfer, 128 bounces and 16 384 samples per pixel, 73 % done. The output folder is blurred.</figcaption>
+    </figure>
     <dl class="deflist">
       <dt>Max resolution</dt><dd>8192 × 8192 px (<code>MAX_EXPORT_DIM</code>)</dd>
       <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>
@@ -373,7 +464,7 @@
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
   </div>
 </footer>

@@ -40,11 +40,16 @@ function initCopyButtons() {
  * Interactive gemstone dispersion explorer.
  *
  * Sellmeier/Cauchy coefficients and evaluate() functions are transcribed
- * directly from crates/indicatrix/src/optics/materials.rs's DispersionModel
- * values for each material (see optics/dispersion.rs for the exact
- * Sellmeier3/Cauchy evaluation form these mirror). The drawing code is
- * restyled to the datasheet palette (read from the page's own CSS custom
- * properties, so it follows the light/dark theme automatically).
+ * directly from the DispersionModel values of the built-in materials in
+ * crates/indicatrix/src/optics/materials/ (one file per group of species;
+ * see optics/dispersion.rs for the exact Sellmeier3/Cauchy evaluation form
+ * these mirror). For a uniaxial material the curve drawn is the ordinary
+ * ray. Specific gravity is the figure in
+ * crates/indicatrix-cut-core/src/material/specific_gravity.rs where that
+ * table has a row; a value with no row there is labelled as a reference
+ * value. The drawing code is restyled to the datasheet palette (read from
+ * the page's own CSS custom properties, so it follows the light/dark theme
+ * automatically).
  * ----------------------------------------------------------- */
 const GEM_MATERIALS = {
   diamond: {
@@ -98,7 +103,8 @@ const GEM_MATERIALS = {
     description: "Daylight (green) to incandescent (red) colour shift from directional absorption.",
     evaluate: (lambdaUm) => {
       // Walling et al. 1980, n(alpha)-direction Sellmeier, encoded as three
-      // poles (materials.rs: b=[0.78522, 1.21202, 16.81], c=[0.0, 0.01262, 1000.0]).
+      // poles (materials/zircon_through_topaz.rs: b=[0.78522, 1.21202, 16.81],
+      // c=[0.0, 0.01262, 1000.0]).
       const l2 = lambdaUm * lambdaUm;
       const term0 = 0.78522 * l2 / (l2 - 0.0);
       const term1 = 1.21202 * l2 / (l2 - 0.01262);
@@ -114,12 +120,12 @@ const GEM_MATERIALS = {
     dispersion: "0.0082",
     abbe: "70.9",
     birefringence: "-0.0060",
-    sg: "2.72",
+    sg: "2.76",
     formula: "Cauchy fit",
     description: "Vitreous luster with a two-window green transmission band; sensitive to inclusion scattering.",
     evaluate: (lambdaUm) => {
-      // No primary Sellmeier fit exists for beryl; materials.rs uses a
-      // 2-parameter Cauchy fit (a=1.566794, b=0.004273, c=0).
+      // No primary Sellmeier fit exists for beryl; materials/diamond_through_emerald.rs
+      // uses a 2-parameter Cauchy fit (a=1.566794, b=0.004273, c=0).
       const invL2 = 1.0 / (lambdaUm * lambdaUm);
       return 1.566794 + 0.004273 * invL2;
     }
@@ -132,12 +138,12 @@ const GEM_MATERIALS = {
     dispersion: "0.0116",
     abbe: "56.5",
     birefringence: "+0.0360",
-    sg: "3.34",
+    sg: "3.34 (reference value, not in the app)",
     formula: "Cauchy fit",
     description: "Olive to lime green from iron; a strong birefringence doubles the back facets.",
     evaluate: (lambdaUm) => {
-      // No primary fit exists for olivine; materials.rs uses a 2-parameter
-      // Cauchy fit (a=1.636549, b=0.006062, c=0).
+      // No primary fit exists for olivine; materials/peridot_through_benitoite.rs
+      // uses a 2-parameter Cauchy fit (a=1.636549, b=0.006062, c=0).
       const invL2 = 1.0 / (lambdaUm * lambdaUm);
       return 1.636549 + 0.006062 * invL2;
     }
@@ -150,12 +156,12 @@ const GEM_MATERIALS = {
     dispersion: "0.0226",
     abbe: "41.0",
     birefringence: "+0.0590",
-    sg: "4.70",
+    sg: "4.65",
     formula: "Cauchy fit",
     description: "High refractive index and heavy birefringence producing visible facet doubling.",
     evaluate: (lambdaUm) => {
-      // No primary fit exists for zircon; materials.rs uses a 2-parameter
-      // Cauchy fit (a=1.890963, b=0.011820, c=0).
+      // No primary fit exists for zircon; materials/zircon_through_topaz.rs uses
+      // a 2-parameter Cauchy fit (a=1.890963, b=0.011820, c=0).
       const invL2 = 1.0 / (lambdaUm * lambdaUm);
       return 1.890963 + 0.011820 * invL2;
     }
@@ -172,8 +178,9 @@ const GEM_MATERIALS = {
     formula: "Cauchy fit",
     description: "Unheated trichroism spanning red, blue, and yellow-green by orientation.",
     evaluate: (lambdaUm) => {
-      // No primary fit exists for zoisite/tanzanite; materials.rs uses a
-      // 2-parameter Cauchy fit (a=1.674589, b=0.009123, c=0).
+      // No primary fit exists for zoisite/tanzanite;
+      // materials/tanzanite_through_cubic_zirconia.rs uses a 2-parameter Cauchy
+      // fit (a=1.674589, b=0.009123, c=0).
       const invL2 = 1.0 / (lambdaUm * lambdaUm);
       return 1.674589 + 0.009123 * invL2;
     }
@@ -186,12 +193,13 @@ const GEM_MATERIALS = {
     dispersion: "0.0330",
     abbe: "26.9",
     birefringence: "0.0000",
-    sg: "3.84",
+    sg: "3.84 (reference value, not in the app)",
     formula: "Cauchy fit",
     description: "Dispersion exceeding diamond; vivid green, prized for horsetail inclusions.",
     evaluate: (lambdaUm) => {
-      // No primary fit exists for andradite garnet; materials.rs uses a
-      // 2-parameter Cauchy fit (a=1.837264, b=0.017276, c=0).
+      // No primary fit exists for andradite garnet;
+      // materials/garnets_grossular_and_andradite.rs uses a 2-parameter Cauchy
+      // fit (a=1.837264, b=0.017276, c=0).
       const invL2 = 1.0 / (lambdaUm * lambdaUm);
       return 1.837264 + 0.017276 * invL2;
     }
@@ -208,8 +216,9 @@ const GEM_MATERIALS = {
     formula: "Sellmeier 3-pole (Wood & Nassau 1982)",
     description: "The common diamond simulant: an index between the garnets and diamond, with more fire than diamond.",
     evaluate: (lambdaUm) => {
-      // Wood & Nassau (1982), materials.rs: b=[1.347091, 2.117788, 9.452943],
-      // c=[0.003912, 0.027802, 591.489] (the pole wavelengths squared).
+      // Wood & Nassau (1982), materials/tanzanite_through_cubic_zirconia.rs:
+      // b=[1.347091, 2.117788, 9.452943], c=[0.003912, 0.027802, 591.489] (the
+      // pole wavelengths squared).
       const l2 = lambdaUm * lambdaUm;
       const term0 = 1.347091 * l2 / (l2 - 0.003912);
       const term1 = 2.117788 * l2 / (l2 - 0.027802);
@@ -225,17 +234,67 @@ const GEM_MATERIALS = {
     dispersion: "0.0450",
     abbe: "21.6",
     birefringence: "0.0000 (none)",
-    sg: "7.05",
+    sg: "7.05 (reference value, not in the app)",
     formula: "Cauchy fit",
     description: "A synthetic diamond simulant from before cubic zirconia: a moderate index with more fire than diamond.",
     evaluate: (lambdaUm) => {
-      // materials.rs: a lower-confidence 2-parameter Cauchy fit solved from
-      // n_d=1.970 and Delta n(F-C)=0.045 (a=1.902186, b=0.023556, c=0).
+      // materials/peridot_through_benitoite.rs: a lower-confidence 2-parameter
+      // Cauchy fit solved from n_d=1.970 and Delta n(F-C)=0.045 (a=1.902186,
+      // b=0.023556, c=0).
       const invL2 = 1.0 / (lambdaUm * lambdaUm);
       return 1.902186 + 0.023556 * invL2;
     }
+  },
+  moissanite: {
+    name: "Synthetic moissanite (SiC, 6H)",
+    crystal: "Hexagonal",
+    character: "Uniaxial positive",
+    ri_d: "2.6474 (no)",
+    dispersion: "0.0635",
+    abbe: "25.9",
+    birefringence: "+0.0415",
+    sg: "3.22",
+    formula: "Sellmeier 3-pole (Wang et al. 2013, 6H-SiC ordinary ray)",
+    description: "More than twice diamond's dispersion at a higher index, and colourless. The curve is the ordinary ray; the extraordinary ray sits about 0.04 higher.",
+    evaluate: (lambdaUm) => {
+      // Wang et al. (2013), 6H-SiC ordinary ray, n^2 = 6.57232 + 0.1401/(l^2 - 0.03178)
+      // - 0.02153*l^2, encoded as three poles in
+      // materials/tanzanite_through_cubic_zirconia.rs: b=[1.163887, 4.408433, 21.53],
+      // c=[0.0, 0.03178, 1000.0] (the constant is a pole at c=0).
+      const l2 = lambdaUm * lambdaUm;
+      const term0 = 1.163887 * l2 / (l2 - 0.0);
+      const term1 = 4.408433 * l2 / (l2 - 0.03178);
+      const term2 = 21.53 * l2 / (l2 - 1000.0);
+      return Math.sqrt(1.0 + term0 + term1 + term2);
+    }
+  },
+  rutile: {
+    name: "Rutile (TiO2)",
+    crystal: "Tetragonal",
+    character: "Uniaxial positive",
+    ri_d: "2.6129 (no) / 2.9086 (ne)",
+    dispersion: "0.1636 (o) / 0.2072 (e)",
+    abbe: "9.9 (o) / 9.2 (e)",
+    birefringence: "+0.2957",
+    sg: "4.25 (reference value, not in the app)",
+    formula: "Sellmeier 3-pole with a constant term (DeVore 1951, ordinary ray)",
+    description: "The strongest birefringence and dispersion of any built-in material. The curve is the ordinary ray; the extraordinary ray sits about 0.30 higher.",
+    evaluate: (lambdaUm) => {
+      // DeVore (1951), ordinary ray, n^2 = 5.913 + 0.2441/(l^2 - 0.0803), encoded as
+      // Sellmeier3 in materials/rutile.rs: b=[3.039851, 1.873149, 0], c=[0.0803, 0, 0]
+      // (the constant is a pole at c=0).
+      const l2 = lambdaUm * lambdaUm;
+      const term0 = 3.039851 * l2 / (l2 - 0.0803);
+      const term1 = 1.873149 * l2 / (l2 - 0.0);
+      return Math.sqrt(1.0 + term0 + term1);
+    }
   }
 };
+
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
 
 function initMaterialExplorer() {
   const chips = document.querySelectorAll('.material-chip');
@@ -243,27 +302,40 @@ function initMaterialExplorer() {
   if (!chips.length || !canvas) return;
   const ctx = canvas.getContext('2d');
 
-  function selectMaterial(matKey) {
-    const data = GEM_MATERIALS[matKey] || GEM_MATERIALS.diamond;
+  // A chip whose material has no entry in GEM_MATERIALS stays pressed, but the
+  // readout and the plot say plainly that there is no data rather than showing
+  // another material's numbers and curve.
+  function showNoData(matKey) {
+    const chip = Array.from(chips).find(c => c.dataset.material === matKey);
+    const label = (chip && chip.textContent.trim()) || matKey;
+    setText('matName', `${label} (no data)`);
+    ['matCrystal', 'matCharacter', 'matRi', 'matDispersion', 'matAbbe',
+      'matBirefringence', 'matSg'].forEach(id => setText(id, 'no data'));
+    setText('matDesc', `This chart has no dispersion data for ${label}, so no curve is drawn.`);
+    drawNoData(ctx, canvas, `no dispersion data for ${label}`);
+  }
 
+  function selectMaterial(matKey) {
     chips.forEach(chip => {
       const active = chip.dataset.material === matKey;
       chip.setAttribute('aria-pressed', String(active));
     });
 
-    const set = (id, value) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = value;
-    };
-    set('matName', data.name);
-    set('matCrystal', data.crystal);
-    set('matCharacter', data.character);
-    set('matRi', data.ri_d);
-    set('matDispersion', data.dispersion);
-    set('matAbbe', data.abbe);
-    set('matBirefringence', data.birefringence);
-    set('matSg', data.sg);
-    set('matDesc', data.description);
+    const data = GEM_MATERIALS[matKey];
+    if (!data) {
+      showNoData(matKey);
+      return;
+    }
+
+    setText('matName', data.name);
+    setText('matCrystal', data.crystal);
+    setText('matCharacter', data.character);
+    setText('matRi', data.ri_d);
+    setText('matDispersion', data.dispersion);
+    setText('matAbbe', data.abbe);
+    setText('matBirefringence', data.birefringence);
+    setText('matSg', data.sg);
+    setText('matDesc', data.description);
 
     drawDispersionCurve(ctx, canvas, data);
   }
@@ -334,20 +406,33 @@ function spectralColor(nm) {
   return `rgb(${channel(r)}, ${channel(g)}, ${channel(b)})`;
 }
 
-function drawDispersionCurve(ctx, canvas, material) {
-  const colors = readPaletteColors();
+// Sizes the canvas backing store to its CSS box at the device pixel ratio, resets the
+// transform to CSS pixels and clears it; returns the CSS-pixel width and height.
+function prepareCanvas(ctx, canvas) {
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
   canvas.width = rect.width * dpr;
   canvas.height = rect.height * dpr;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, rect.width, rect.height);
+  return { width: rect.width, height: rect.height };
+}
 
-  const width = rect.width;
-  const height = rect.height;
+// An empty plot with one centred line of text, for a material without dispersion data.
+function drawNoData(ctx, canvas, message) {
+  const colors = readPaletteColors();
+  const { width, height } = prepareCanvas(ctx, canvas);
+  ctx.fillStyle = colors.ink2;
+  ctx.font = '12px ui-monospace, monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(message, width / 2, height / 2);
+}
+
+function drawDispersionCurve(ctx, canvas, material) {
+  const colors = readPaletteColors();
+  const { width, height } = prepareCanvas(ctx, canvas);
   const padding = { top: 20, right: 20, bottom: 34, left: 52 };
-
-  ctx.clearRect(0, 0, width, height);
 
   const lambdaMin = 0.38;
   const lambdaMax = 0.78;
