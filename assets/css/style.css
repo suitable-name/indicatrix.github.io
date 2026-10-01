@@ -290,10 +290,22 @@ figcaption {
   margin-top: 0.4rem;
 }
 
+/* Two figures side by side. A pair of different shapes sets --fig-cols on the div
+   (the ratio of the two aspect ratios, corrected for the frame padding) so both
+   images come out the same height; the phone layout below stacks them anyway. */
 .fig-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: var(--fig-cols, 1fr 1fr);
   gap: 1.75rem;
+}
+
+/* A portrait image (a phone screen, a tall dialog) stands alone, centred, at a
+   width that suits it (--fig-max) instead of stretching across the column or
+   sitting beside a landscape image half its height. */
+.fig-portrait {
+  max-width: var(--fig-max, 520px);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* A responsive strip for a multi-panel figure (e.g. one cut in five materials):
