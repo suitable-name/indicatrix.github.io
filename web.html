@@ -79,7 +79,7 @@
     <h2><span class="sec-num">2</span>What it can do</h2>
     <dl class="deflist">
       <dt>Designs</dt>
-      <dd>Start a new design from the template gallery (an empty design plus five built-in templates). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own <code>.indicatrix.toml</code> (alone, or together with its <code>.asc</code>), by file picker or by dragging files onto the page. Save <code>.asc</code>, the native pair, or the native file alone. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG.</dd>
+      <dd>Start a new design from the template gallery (an empty design plus five built-in templates). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own self-contained <code>.indicatrix</code> design file (and the older <code>.indicatrix.toml</code> sidecar, alone or together with its <code>.asc</code>), by file picker or by dragging files onto the page. Save the design as <code>.indicatrix</code>, save <code>.asc</code>, or save an <code>.asc</code> with its older sidecar. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG.</dd>
 
       <dt>CAD editor</dt>
       <dd>The tier table with inline angle editing, keyboard and Ctrl+wheel nudging, undo and redo; the four-tab inspector (Tier, Preform, Optimize, Schedule); design settings, including a compact custom-material editor; and the guided walkthrough, the same ten-step worked example as the desktop.</dd>
@@ -162,8 +162,13 @@
         </tr>
         <tr>
           <td>Full custom-material editor</td>
-          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and colour (saved with the design in the native file); one custom material travels with the design.</td>
+          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and colour (saved with the design in the <code>.indicatrix</code> file); one custom material travels with the design.</td>
           <td>The full editor and the saved custom-material store.</td>
+        </tr>
+        <tr>
+          <td>Design metadata and attachments in the <code>.indicatrix</code> file</td>
+          <td>Kept, not edited. Opening a design file keeps its metadata (title, designer, source, notes, tags, licence, dates, id) and attachments (PDF, original <code>.gem</code>/<code>.asc</code>, diagram image), and Save design writes them back unchanged with a new modification time. The Design panel shows the title, designer, source, notes, tags and licence read-only.</td>
+          <td>The same file format carries them (<a href="comparison.html#interop">file formats</a>).</td>
         </tr>
         <tr>
           <td>Large master stills</td>

@@ -104,7 +104,9 @@
       an analytic studio rig in four moods, an ISO hemisphere, a jewellery
       light tent and a daylight sky (see the
       <a href="physics.html#environment">physics page</a>) — plus an optional
-      grey or white backdrop card behind the stone, and
+      grey or white backdrop card behind the stone, a surface-glare slider
+      that fades the white mirror image of the light on the table (the
+      cross-polarised look; built-in presets only, never the readouts), and
       custom HDR equirectangular environment maps, are all supported, along
       with live readouts of brilliance, fire, scintillation, windowing, and
       extinction as the stone is orbited. If the optional GPU compute path
@@ -285,8 +287,8 @@
       (<code>TierTarget::DepthMm</code>/<code>GirdleThicknessMm</code>/<code>
       TableWidthMm</code>, <code>indicatrix-cut-core/src/design/targets.rs</code>).
       Every tier also keeps a stable id (<code>tier_id</code>) that survives
-      reordering, duplication, and a Save Native/reopen round trip through
-      the native <code>.indicatrix.toml</code> sidecar, so a manufacturability
+      reordering, duplication, and a save/reopen round trip through
+      the native <code>.indicatrix</code> design file, so a manufacturability
       warning or an authored target keeps pointing at the same tier across
       edits rather than a table row position.
     </p>
@@ -453,7 +455,7 @@
       <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>
       <dt>Max bounces</dt><dd>128 (<code>MAX_EXPORT_BOUNCES</code>)</dd>
       <dt>Colour spaces</dt><dd>sRGB, Display P3, Rec. 2020 (Display P3/Rec. 2020 exports embed an ICC profile so they aren't misread as sRGB)</dd>
-      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, native <code>.indicatrix.toml</code> sidecar, 8-bit PNG renders. Read, import and open: <code>.gem</code> (GemCAD's binary save format, geometry decoded) and <code>.gcs</code> (Gem Cut Studio), both converted to <code>.asc</code> cutting instructions. Write, experimental: <code>.gcs</code></dd>
+      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, native <code>.indicatrix</code> design file (self-contained text in TOML syntax with a versioned header; it carries descriptive metadata and non-derivable attachments such as a PDF or the original <code>.gem</code>, and derived values are recomputed on import; the older <code>.indicatrix.toml</code> sidecar still opens), 8-bit PNG renders. Read, import and open: <code>.gem</code> (GemCAD's binary save format, geometry decoded) and <code>.gcs</code> (Gem Cut Studio), both converted to <code>.asc</code> cutting instructions. Write, experimental: <code>.gcs</code></dd>
     </dl>
     <p class="small">Constants from <code>apps/indicatrix-cut/src/bridge/export_thread/params.rs</code>.</p>
   </section>

@@ -222,11 +222,18 @@
           <td>Binary, with no published specification. The geometry is now decoded from the binary: every facet plane, tier, name and cutting note, plus gear, symmetry, refractive index, headings and footnotes. Verified against a corpus of 254 files, all of which decode byte-exactly end to end; where a design also exists as an <code>.asc</code>, every tier's angle, mast and index set matches it. An embedded CAM preform is read but not converted.</td>
         </tr>
         <tr>
+          <td><code>.indicatrix</code></td>
+          <td>Indicatrix native design</td>
+          <td>✓</td>
+          <td>✓</td>
+          <td>Self-contained: every tier with its angle, index set, name, note and authored target, plus the preform, material, schedule metadata and edit history, in one file with no <code>.asc</code> beside it. Plain text in TOML syntax, with a versioned header; a file from a newer version is refused with a message instead of being misread. The file also carries what cannot be worked out again from the geometry: descriptive metadata (title, designer, source, notes, tags, licence, dates and an id) and attachments (a PDF, the original <code>.gem</code> or <code>.asc</code>, a diagram image), each attachment stored byte for byte with its size and checksum. Derived values (ratios, volume, facet counts, the angle table, previews and tilt curves) are not stored; an importer recomputes them. The web app keeps the metadata and attachments of a file it opens and writes them back unchanged, with a new modification time.</td>
+        </tr>
+        <tr>
           <td><code>.indicatrix.toml</code></td>
-          <td>Indicatrix</td>
+          <td>Indicatrix, older sidecar</td>
           <td>✓</td>
-          <td>✓</td>
-          <td>A sidecar beside the <code>.asc</code>, carrying the constraints and preform an <code>.asc</code> cannot express. Plain text, versioned, and losing it costs you only the extra metadata.</td>
+          <td>✓ legacy</td>
+          <td>The earlier native form: a sidecar beside the <code>.asc</code>, carrying the constraints and preform an <code>.asc</code> cannot express. It still opens (as does the <code>.gemcut.toml</code> name), and the web app can still write it on request; new designs are saved as <code>.indicatrix</code>.</td>
         </tr>
       </tbody>
     </table>

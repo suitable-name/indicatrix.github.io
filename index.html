@@ -291,10 +291,15 @@
       undersized facets, gear-quantization errors, out-of-order meets
       (<code>manufacturability/</code>). Designs round-trip through GemCAD
       <code>.asc</code> import/export and Indicatrix's own
-      <code>.indicatrix.toml</code> sidecar format
+      self-contained <code>.indicatrix</code> design file (text in TOML syntax with a
+      versioned header; the older <code>.indicatrix.toml</code> sidecar still opens)
       (<code>crates/indicatrix-formats/src/native</code>), which preserves
       constraints and preforms that a plain <code>.asc</code> file cannot
-      express. Two further formats import and open directly, converted to
+      express. The file also carries descriptive metadata (title, designer,
+      source, notes, tags, licence, dates, an id) and attachments that cannot be
+      recomputed (a PDF, the original <code>.gem</code> or <code>.asc</code>, a
+      diagram image); derived values such as ratios, volume, facet counts, the
+      angle table, previews and tilt curves are recomputed on import. Two further formats import and open directly, converted to
       <code>.asc</code> cutting instructions: <code>.gcs</code> (Gem Cut Studio),
       read per the file description in that program's 1.1 manual and checked
       against 59 real files, with an experimental writer; and <code>.gem</code>
@@ -555,7 +560,7 @@
         <tr>
           <td><code>indicatrix-web</code></td>
           <td>app (browser)</td>
-          <td>Browser build of indicatrix, served as static files: open or start a design (<code>.asc</code>, the native pair, <code>.gem</code>, <code>.gcs</code>), edit it in the same faceting CAD engine, and look at it as a solid, a faceting diagram and a spectral render traced on your CPU cores in Web Workers, with the brilliance, fire, windowing and extinction figures and the tilt curve. Files are read and saved as browser downloads; the design lives in the tab's session only. No design library, no remote rendering, no Deep Solve, no GPU renderer, no database.</td>
+          <td>Browser build of indicatrix, served as static files: open or start a design (<code>.indicatrix</code>, <code>.asc</code>, <code>.gem</code>, <code>.gcs</code>), edit it in the same faceting CAD engine, and look at it as a solid, a faceting diagram and a spectral render traced on your CPU cores in Web Workers, with the brilliance, fire, windowing and extinction figures and the tilt curve. Files are read and saved as browser downloads; the design lives in the tab's session only. No design library, no remote rendering, no Deep Solve, no GPU renderer, no database.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-web">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-web">docs.rs</a></td>
         </tr>
         <tr>

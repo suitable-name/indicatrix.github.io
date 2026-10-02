@@ -232,9 +232,10 @@
       over the request's sample range, with one lane for every idle joined
       worker whose pixel cap accepts the image plus the coordinator's own lane,
       each claiming chunks from the shared sample cursor sized to its measured
-      rate. A live-view request stays on the own lane alone, the lowest-latency
-      path; a coordinator without <code>--render</code> gives it the single
-      fastest idle worker instead. If a worker dies mid-job, the samples it had
+      rate. A live-view request takes the own lane plus every idle joined worker,
+      fastest first (<code>--interactive-workers all</code>, the default); a
+      coordinator without <code>--render</code> serves it from the joined
+      workers alone. If a worker dies mid-job, the samples it had
       not finished go back to the cursor and the remaining lanes trace them, so
       the viewer still receives every sample of the request exactly once. Only
       when no lane at all is left does the viewer get
@@ -247,12 +248,17 @@
     </p>
     <p>
       Two advanced flags change the live-view rule:
-      <code>--interactive-workers N</code> also gives each live-view request up
-      to N of the fastest idle joined workers (default 0), and
+      <code>--interactive-workers N</code> caps the joined workers a live-view
+      request may take (<code>0</code> keeps it on the own lane alone, the
+      lowest-latency choice on a slow link; the default is <code>all</code>), and
       <code>--pin-interactive-worker &lt;label&gt;</code> prefers one named
       worker while it is connected, idle and accepts the image. Throughput jobs —
       an export streamed final-only, or any final-picture request — wait in a
-      per-viewer queue, one active job per viewer certificate, and all
+      per-viewer queue, one active job per viewer certificate. A small picture
+      (its estimated time on the fastest worker under
+      <code>--whole-image-secs</code>, default 2&nbsp;s) goes whole to that one
+      worker instead, and up to <code>--jobs-per-viewer</code> of them (default
+      8) run at once, so a catalogue batch keeps a fast worker busy. All
       in-flight jobs share one memory budget, <code>--max-job-memory-mib</code>
       (default 2048; each job is charged width × height × 48 bytes, and a job
       past the cap is refused, not queued).
@@ -283,7 +289,12 @@
         decoded, the output buffer is exactly that size, and output that is
         short or would overflow it is rejected
         (<code>radiance/payload.rs</code>). Both hops negotiate it: viewer to
-        coordinator, and coordinator to each joined worker.
+        coordinator, and coordinator to each joined worker. The negotiated
+        encoding is only a connection's starting point: every connection also
+        measures how fast its frame writes drain and compresses frames
+        adaptively to that measured link speed (Zstandard or LZ4 on slow links,
+        raw on fast ones and on loopback), switching on the fly when the link
+        changes.
       </li>
       <li>
         <strong>Final picture only.</strong> The export dialog and the tilt-video
