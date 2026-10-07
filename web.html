@@ -42,8 +42,10 @@
       The web app shares its faceting engine with the desktop studio, so it
       shares the desktop editor's beta status: check results against a
       conventional CAD before cutting. It is also a smaller program than the
-      desktop app. Section 3 lists exactly what is missing today; several of
-      those items are current limits of this first browser build, not decisions.
+      desktop app, and it lacks most of the newer studio features, such as
+      tutorials, cutting mode and concave tools. Section 3 lists exactly what
+      is missing today; several of those items are current limits of this
+      first browser build, not decisions.
     </p>
   </div>
 
@@ -79,10 +81,10 @@
     <h2><span class="sec-num">2</span>What it can do</h2>
     <dl class="deflist">
       <dt>Designs</dt>
-      <dd>Start a new design from the template gallery (an empty design plus five built-in templates). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own self-contained <code>.indicatrix</code> design file (and the older <code>.indicatrix.toml</code> sidecar, alone or together with its <code>.asc</code>), by file picker or by dragging files onto the page. Save the design as <code>.indicatrix</code>, save <code>.asc</code>, or save an <code>.asc</code> with its older sidecar. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG.</dd>
+      <dd>Start a new design from the template gallery (an empty design plus nine built-in templates, in one list). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own self-contained <code>.indicatrix</code> design file (and the older <code>.indicatrix.toml</code> sidecar, alone or together with its <code>.asc</code>), by file picker or by dragging files onto the page. The file reader is the desktop's, so a design file with concave tiers or tier relations (format versions 2 and 3) opens too; section 3 says what the web app does with them. Save the design as <code>.indicatrix</code>, save <code>.asc</code>, or save an <code>.asc</code> with its older sidecar. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG.</dd>
 
       <dt>CAD editor</dt>
-      <dd>The tier table with inline angle editing, keyboard and Ctrl+wheel nudging, undo and redo; the four-tab inspector (Tier, Preform, Optimize, Schedule); design settings, including a compact custom-material editor; and the guided walkthrough, the same ten-step worked example as the desktop.</dd>
+      <dd>The tier table with inline angle editing, keyboard and Ctrl+wheel nudging, undo and redo; the four-tab inspector (Tier, Preform, Optimize, Schedule); design settings, including a compact custom-material editor; and the guided walkthrough, the same ten-step worked example as the desktop. The angle and exact-scale fields of the tier form take plain arithmetic such as <code>41.5+0.3</code>.</dd>
 
       <dt>Mouse manipulation</dt>
       <dd>In the Solid view, drag the angle, depth and index handles of a selected facet, or switch to Slice mode and cut a new facet by dragging a line across the stone. One drag is one undo step, and the design solves itself when you let go.</dd>
@@ -123,7 +125,7 @@
         <tr>
           <td>Rough planner</td>
           <td>No. It plans across the design library, which the browser app does not have.</td>
-          <td>Library &rarr; Plan Rough...: ranks up to 10 layouts of up to 99 stones from a block of rough (beta; <a href="editor.html#rough-planner">studio page</a>). Desktop-only for now.</td>
+          <td>Library &rarr; Plan Rough...: ranks up to 10 layouts of up to 99 stones from a block, cylinder, pebble or scanned mesh of rough (beta; <a href="editor.html#rough-planner">studio page</a>). Desktop-only for now.</td>
         </tr>
         <tr>
           <td>Remote and distributed rendering</td>
@@ -161,9 +163,64 @@
           <td>Viewport preview and the before/after Compare window in the desktop editor.</td>
         </tr>
         <tr>
+          <td>Optimize objectives, angle ranges and candidates</td>
+          <td>No. The Optimize tab has weights, a yield weight, a budget and seed, Polish and Only selected tiers. It runs a single starting arrangement. It has no objective presets, no per-tier angle ranges and no list of ranked candidates.</td>
+          <td>Five objectives (Balanced, Brilliance, Low windowing, Low extinction, Keep weight), per-tier angle ranges, a girdle guard, several starting arrangements (8 by default, up to 32), and up to five ranked candidates, each with a preview (<a href="editor.html#preforms-optimizer">studio page</a>).</td>
+        </tr>
+        <tr>
+          <td>Retarget validity check</td>
+          <td>No. The proposal leaves the table, culet and girdle alone, and Apply changes the angles and the material together in one undo step. It does not turn facets about the girdle, and it does not check the result for a closed stone, a surviving girdle or vanished facets.</td>
+          <td>Facets turn about their girdle-side edge, and every result is checked against the original stone: a closed stone, the girdle's thickness including its thinnest corner, the table and culet, and facets that vanish. Apply is disabled for a result that is not valid.</td>
+        </tr>
+        <tr>
+          <td>Tier relations</td>
+          <td>Plain arithmetic only. The angle field takes <code>41.5+0.3</code> but not a relation that starts with <code>=</code>. A design file with relations opens, but the web app has no way to type one, and nothing marks a tier that follows one.</td>
+          <td>A tier's angle can follow other tiers, for example <code>=P1 - 2</code>; the tier shows a link icon and the file is written as format version 3.</td>
+        </tr>
+        <tr>
+          <td>Concave facets</td>
+          <td>No tool form and no concave rows. A design file with concave tiers opens. The browser's render traces the flat planes only, so it does not show the tool cuts. Apply Gear in the design settings is refused when a concave tier would not be valid on the new gear.</td>
+          <td>Cylinder, cone, circle, disc and sphere tools in the tier table and the inspector, drawn in the solid view and the diagram, counted in the optical metrics, and traced by the render on the CPU (<a href="editor.html">studio page</a>).</td>
+        </tr>
+        <tr>
+          <td>Good / Check / Problem badge, angle sweep, Edit as Text</td>
+          <td>No. The status panel lists the warnings, each one a click-through to its tier, but there is no overall badge and no fix buttons. There is no angle sweep and no Edit as Text view.</td>
+          <td>An overall badge with a one-click fix where a safe one exists, Edit &rarr; Angle Sweep (a table, a chart and CSV for one tier's angle), and Edit &rarr; Edit as Text.</td>
+        </tr>
+        <tr>
+          <td>History and variants</td>
+          <td>No. Undo and Redo only.</td>
+          <td>A History tab with a picture of every step and a jump to any of them, and named variants of a design kept in the library.</td>
+        </tr>
+        <tr>
+          <td>Tutorials and welcome tour</td>
+          <td>No. The ten-step guided walkthrough is the only guide.</td>
+          <td>68 short tutorials, one for each CAD function, a welcome tour on first run, and Build this Design, which turns a library design into a lesson.</td>
+        </tr>
+        <tr>
+          <td>Cutting mode</td>
+          <td>No.</td>
+          <td>The cutting instructions one step per page for the bench, with done marks kept in the library (Edit &rarr; Cutting Mode...). Desktop-only for now.</td>
+        </tr>
+        <tr>
+          <td>Interface choices and help</td>
+          <td>A short User guide and the keyboard shortcut list (Help, or <code>?</code>). There is no Simple / Advanced switch, no Preferences dialog, no high-contrast theme, no command palette and no context help buttons.</td>
+          <td>One Simple / Advanced switch, Preferences (interface scale, high contrast, larger drag handles), the manual built into the program with <strong>?</strong> buttons and a glossary, and a command palette on Ctrl+K.</td>
+        </tr>
+        <tr>
+          <td>Quick colour in the render</td>
+          <td>No. The body colour is an override in the design settings.</td>
+          <td>A Color control next to Render Material: nine ready-made colours or any colour, for the open design or as a view-only choice.</td>
+        </tr>
+        <tr>
+          <td>Command-line tool</td>
+          <td>No. It is a separate program.</td>
+          <td><code>indicatrix-cli</code> runs the solver, optimizer, retarget gate and sweep without a window (<a href="index.html#getting-started">getting started</a>).</td>
+        </tr>
+        <tr>
           <td>Full custom-material editor</td>
-          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and colour (saved with the design in the <code>.indicatrix</code> file); one custom material travels with the design.</td>
-          <td>The full editor and the saved custom-material store.</td>
+          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and colour (saved with the design in the <code>.indicatrix</code> file); one custom material travels with the design. There is no entry of Sellmeier or Cauchy coefficients: a material typed that way on the desktop is drawn here with a Cauchy curve built from its n<sub>D</sub> and F&minus;C figure, which is close but not the same curve.</td>
+          <td>The full editor, including Sellmeier and Cauchy coefficients with validation (<a href="materials.html#custom-materials">materials page</a>), and the saved custom-material store.</td>
         </tr>
         <tr>
           <td>Design metadata and attachments in the <code>.indicatrix</code> file</td>
@@ -241,7 +298,10 @@
     <h2><span class="sec-num">7</span>Get the desktop app</h2>
     <p>
       For the design library, the Rough planner, GPU rendering, remote rendering, Deep Solve, tilt
-      video export and full-size master stills, use the desktop application. It
+      video export, full-size master stills, the newer studio features (tutorials, cutting mode,
+      concave tiers, history and variants) and the command-line tool, use the desktop application. It
+      is a ready-built download for Windows and Linux (see the
+      <a href="index.html#downloads">downloads section</a>), and it also
       installs from crates.io or builds from source; the commands are in the
       <a href="index.html#getting-started">getting started section</a> of the
       overview, and the application itself is described on the

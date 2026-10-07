@@ -151,6 +151,21 @@
       per direction: three independent absorption spectra along its α, β, γ
       axes.
     </p>
+    <div class="fig-grid">
+      <figure class="fig">
+        <a href="assets/images/fig_fvs_alexandrite_day.jpg">
+          <img src="assets/images/fig_fvs_alexandrite_day.jpg" width="900" height="600" alt="Alexandrite rendered in daylight: the faceted stone reads green-yellow" loading="lazy">
+        </a>
+        <figcaption>Fig. 1 — Alexandrite in daylight, which favours the blue-green transmission window: the stone comes out green-yellow.</figcaption>
+      </figure>
+      <figure class="fig">
+        <a href="assets/images/fig_fvs_alexandrite_warm.jpg">
+          <img src="assets/images/fig_fvs_alexandrite_warm.jpg" width="900" height="600" alt="The same alexandrite rendered in a warmer light: the stone reads pink" loading="lazy">
+        </a>
+        <figcaption>Fig. 2 — The same stone under a warmer light, richer in red, which favours the red window: it comes out pink.</figcaption>
+      </figure>
+    </div>
+    <p class="fig-note">Both renders: 41.029B FVS-65 (Long Octagon), 1920 × 1080, 32&nbsp;768 samples per pixel, grey backdrop card. The second uses a different, warmer light (the export file does not record which); the stone and the sample count are the same.</p>
   </section>
 
   <section id="corundum-case">
@@ -203,10 +218,56 @@
       table in the same <code>facet_diagrams.sqlite</code> database the app
       already uses for designs, via <code>indicatrix-vault</code>'s
       <code>CustomMaterialRow</code> and <code>Database::save_custom_material</code>
-      — not embedded in the design/schedule file itself. This is a separate
+      — and, when a design uses the material, a snapshot of its numbers is
+      also written into that design's <code>.indicatrix</code> file, so the
+      design still opens with its real optics on a machine whose library has
+      no such material. This is a separate
       feature from <strong>Retarget</strong>, which proposes new facet angles
       for an existing design in a different material rather than authoring a
       new material (see the <a href="editor.html">studio page</a>).
+    </p>
+    <p>
+      The editor offers two ways to describe the refractive-index curve. In
+      <strong>Simple</strong> mode two sliders set the index at the sodium D
+      line (1.30 to 3.20) and the F&minus;C dispersion (0.000 to 0.210), and
+      the editor builds the 2-parameter Cauchy curve described above. In
+      <strong>Coefficients</strong> mode you type a published fit instead: a
+      3-term Sellmeier, a 1-term Sellmeier, or a Cauchy fit with A, B and C
+      (<code>GemMaterial::new_custom_with_dispersion</code>). A
+      <strong>Copy from</strong> list fills the fields of the 3-term Sellmeier
+      and Cauchy models from a built-in material as a starting point. The stone is then traced
+      with exactly that curve, on the GPU and the CPU alike, and a remote
+      worker receives the whole material, coefficients included.
+    </p>
+    <p>
+      A live readout shows n<sub>D</sub>, n<sub>F</sub>, n<sub>C</sub>, the
+      F&minus;C dispersion and the Abbe number, with a plot of the index
+      against wavelength from 380 to 780&nbsp;nm. The curve is validated
+      before it can be saved: finite coefficients, no Sellmeier resonance
+      between 300 and 800&nbsp;nm, and an index above 1 across the visible
+      band (the checks are listed in
+      <a href="physics.html#dispersion">section 2 of the physics page</a>).
+      Amber warnings, which leave Save available, mark an index that rises
+      with wavelength, an Abbe number outside 5&ndash;120, or no dispersion at
+      all. The coefficients are stored with the material in the library and,
+      when a design uses it, in the design file. An RI override on a design
+      replaces the whole curve with a single-index curve at the typed number,
+      for that design only. The browser app and older versions of the desktop
+      studio do not know the coefficients: they show the material with a
+      Cauchy curve built from n<sub>D</sub> and the F&minus;C figure, which is
+      close but not identical.
+    </p>
+    <p>
+      The Material Editor is not the only way to change a stone's colour. A
+      <strong>Color</strong> control in the Live Render toolbar, next to
+      Render Material, shows the stone in another colour without making a
+      custom material. It offers the material's own colour, nine ready-made
+      colours and any colour from a picker. For the design open in the editor,
+      with the render linked to it, a pick becomes that design's own colour
+      (one undo step); for anything else it changes the view only, and the app
+      remembers it. A colour is a what-if: the stone keeps its refractive
+      index and dispersion, but its own absorption is replaced by an even one
+      in every direction, so pleochroism is not shown while a colour is set.
     </p>
     <p>
       The app's material pickers are built in two places, both from

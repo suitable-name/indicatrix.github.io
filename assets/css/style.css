@@ -271,6 +271,16 @@ section {
   line-height: 0;
 }
 
+/* Text links inside a caption or note stay ordinary inline links; only the image
+   link above gets the frame. */
+.fig figcaption a,
+.fig .fig-note a {
+  display: inline;
+  background: none;
+  padding: 0;
+  line-height: inherit;
+}
+
 .fig img {
   width: 100%;
   height: auto;
@@ -501,6 +511,18 @@ dl.deflist dd {
   overflow-wrap: anywhere;
 }
 
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+}
+
+.cta-secondary {
+  color: var(--accent);
+  background: transparent;
+}
+
 .cta:hover {
   text-decoration: underline;
   text-decoration-thickness: 2px;
@@ -696,11 +718,152 @@ footer a:hover {
 }
 
 /* -----------------------------------------------------------------------
+ * "On this page" (built by main.js from the page's numbered sections)
+ * --------------------------------------------------------------------- */
+
+section[id] {
+  scroll-margin-top: 1rem;
+}
+
+.toc-side,
+.toc-back {
+  display: none;
+}
+
+.toc-head {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin: 0 0 0.5rem;
+}
+
+.toc-side ol,
+.toc-inline ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-side a,
+.toc-inline a {
+  display: flex;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--ink-2);
+  line-height: 1.35;
+}
+
+.toc-num {
+  flex: 0 0 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  color: var(--accent);
+  text-align: right;
+  padding-top: 0.15em;
+}
+
+.toc-side a:hover,
+.toc-inline a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.toc-inline {
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  margin: 0 0 1.5rem;
+}
+
+.toc-inline summary {
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+
+.toc-inline nav {
+  padding: 0 1rem 0.8rem;
+}
+
+.toc-inline li {
+  padding: 0.25rem 0;
+}
+
+/* Narrow screens: a small button back to the list once it has scrolled away. */
+@media (max-width: 1199px) {
+  .toc-back.is-visible {
+    display: block;
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 10;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--paper);
+    background: var(--accent);
+    border-radius: 2px;
+    padding: 0.45rem 0.8rem;
+    text-decoration: none;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Wide screens: the list becomes a sticky sidebar left of the text. The text
+   column keeps its usual width; the page only grows by the sidebar. */
+@media (min-width: 1200px) {
+  main.with-toc {
+    max-width: calc(var(--content-width) + 16rem);
+    display: grid;
+    grid-template-columns: 13.5rem minmax(0, 1fr);
+    column-gap: 2.5rem;
+  }
+
+  main.with-toc > * {
+    grid-column: 2;
+  }
+
+  main.with-toc > .toc-side {
+    display: block;
+    grid-column: 1;
+    align-self: start;
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    margin-top: 2.2rem;
+    padding-right: 0.25rem;
+    font-size: 0.88rem;
+  }
+
+  .toc-side li {
+    padding: 0.2rem 0;
+  }
+
+  .toc-side a[aria-current="location"] {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  main.with-toc > .toc-inline {
+    display: none;
+  }
+
+  /* The header and footer line up with the wider page. */
+  body.has-toc .masthead .container,
+  body.has-toc footer .container {
+    max-width: calc(var(--content-width) + 16rem);
+  }
+}
+
+/* -----------------------------------------------------------------------
  * Print
  * --------------------------------------------------------------------- */
 
 @media print {
-  .masthead, footer, .copy-btn {
+  .masthead, footer, .copy-btn, .toc-side, .toc-inline, .toc-back {
     display: none;
   }
 

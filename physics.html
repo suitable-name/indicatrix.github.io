@@ -91,7 +91,7 @@ delta = (lambda_max - lambda_min) / 8</code></pre></div>
     <h3>3-term Sellmeier</h3>
     <div class="code-block"><pre><code>n^2(lambda) = 1 + sum_i [ B_i * lambda^2 / (lambda^2 - C_i) ]   for i in {1, 2, 3}
 (lambda in micrometres)</code></pre></div>
-    <p>Used where a primary fit exists — Diamond (Peter 1923), Sapphire/Ruby (Malitson &amp; Dodge 1972), Quartz (Ghosh 1999), Spinel, Cubic Zirconia, Moissanite, YAG, and the two reference optical glasses, among others. A fit with fewer than three poles (e.g. Diamond's original 2-term literature form) is stored in the same form by zeroing the unused pole(s), and a constant term is a pole at C = 0 (Moissanite, Rutile). <code>DispersionModel::Sellmeier1</code>, the single-pole variant, exists in <code>optics/dispersion.rs</code> but no built-in material uses it.</p>
+    <p>Used where a primary fit exists — Diamond (Peter 1923), Sapphire/Ruby (Malitson &amp; Dodge 1972), Quartz (Ghosh 1999), Spinel, Cubic Zirconia, Moissanite, YAG, and the two reference optical glasses, among others. A fit with fewer than three poles (e.g. Diamond's original 2-term literature form) is stored in the same form by zeroing the unused pole(s), and a constant term is a pole at C = 0 (Moissanite, Rutile). <code>DispersionModel::Sellmeier1</code>, the single-pole variant, exists in <code>optics/dispersion.rs</code>; no built-in material uses it, but a custom material can (see below).</p>
     <h3>2-parameter Cauchy</h3>
     <div class="code-block"><pre><code>n(lambda) = A + B / lambda^2   (lambda in micrometres)</code></pre></div>
     <p>
@@ -104,6 +104,31 @@ delta = (lambda_max - lambda_min) / 8</code></pre></div>
       <code>C/lambda^4</code> term; every built-in material sets C&nbsp;=&nbsp;0,
       reducing it to the 2-parameter form above. Each material's source code
       comments cite the specific reference and confidence tier used.
+    </p>
+    <h3>Custom coefficients and their validation</h3>
+    <p>
+      A custom material made in the desktop studio can carry its own curve
+      instead of a mean index and an F&minus;C figure: a 1-term or 3-term
+      Sellmeier fit, or a Cauchy fit with the <code>C/lambda^4</code> term
+      (<code>GemMaterial::new_custom_with_dispersion</code>,
+      <code>optics/materials/custom.rs</code>). The evaluator floors any index
+      below 1 at 1, so a bad curve would render a clear block without a hint
+      why. The curve is therefore checked before it is used
+      (<code>DispersionModel::validate</code>, <code>optics/dispersion.rs</code>):
+    </p>
+    <ul>
+      <li>every coefficient is a finite number;</li>
+      <li>no Sellmeier term has its resonance, the square root of C in micrometres, between 300 and 800&nbsp;nm, where the index would blow up (C is a wavelength squared, so 0.01 puts a resonance at 100&nbsp;nm);</li>
+      <li>the index is finite and above 1 at every 5&nbsp;nm step from 380 to 780&nbsp;nm.</li>
+    </ul>
+    <p>
+      A curve that fails cannot be saved. Three softer checks only warn
+      (<code>DispersionModel::warnings</code>): the index rises with
+      wavelength somewhere in the visible band, the Abbe number
+      V<sub>d</sub> = (n<sub>D</sub> &minus; 1) / (n<sub>F</sub> &minus; n<sub>C</sub>)
+      lies outside 5&ndash;120, or the index is the same at the F and C lines,
+      so the stone would show no fire. n<sub>D</sub>, n<sub>F</sub> and
+      n<sub>C</sub> are read at 589.3, 486.1 and 656.3&nbsp;nm.
     </p>
   </section>
 
@@ -182,7 +207,7 @@ delta = delta_p - delta_s</code></pre></div>
   </section>
 
   <section id="polyhedral">
-    <h2><span class="sec-num">6</span>Half-space polyhedral geometry</h2>
+    <h2><span class="sec-num">6</span>Half-space geometry and concave tools</h2>
     <p>
       Instead of tessellating a gemstone into a triangle mesh, Indicatrix
       represents each facet as an infinite planar half-space with outward
@@ -190,7 +215,39 @@ delta = delta_p - delta_s</code></pre></div>
       (<code>geometry/plane.rs</code>):
     </p>
     <div class="code-block"><pre><code>H_i = { x in R^3 | n_i . x + d_i &lt;= 0 }</code></pre></div>
-    <p>The gemstone is the intersection of M half-spaces, P = ∩ H_i. Ray intersection is an analytical slab test over all M planes (<code>simd/slab.rs</code>), with no bounding-volume hierarchy and no mesh-junction rounding error.</p>
+    <p>The gemstone is the intersection of M half-spaces, P = ∩ H_i. Ray intersection is an analytical slab test over all M planes (<code>simd/slab.rs</code>), with no bounding-volume hierarchy and no mesh-junction rounding error. That is the whole stone for a design with flat facets only; concave facets add the tools described next.</p>
+    <h3>Concave facets: tools subtracted from the stone</h3>
+    <p>
+      A concave facet is the surface a shaped tool leaves, so it is not a
+      plane. Indicatrix keeps the planes and subtracts the tools: the stone is
+      P minus the union of the tool volumes T<sub>k</sub>
+      (<code>geometry/tool.rs</code>). Each T<sub>k</sub> is convex: a ball (a
+      sphere or dimple), a capped cylinder (a cylinder, or a circle as a short
+      one), a cone frustum, or a bicone (a disc, two frusta sharing a rim). A
+      tool can also be swept along or across its axis, which models a tool that
+      reciprocates; the swept volume is what is subtracted. One stone holds at
+      most 128 tool placements (<code>MAX_TOOL_PRIMITIVES</code>).
+    </p>
+    <p>
+      Because each tool is convex, a ray's interval inside it has a closed
+      form and no iterative solver is needed. For one ray the slab test gives
+      the interval [a, b] inside the planes, and each tool gives its own
+      interval [c, d]. The hit is the first change of "inside the stone" along
+      the ray, past a small distance floor, where inside means inside the
+      planes and outside every tool interval
+      (<code>optics/raytracer/intersect_stone.rs</code>). A tool hit has its
+      own facet id, numbered after the planes, and its normal points into the
+      cavity. With no tools the result is bit for bit the plane-only result, so
+      a design without concave tiers renders as before.
+    </p>
+    <p>
+      The WGSL kernels know nothing about tools, so a stone with tools is
+      traced on the CPU whatever the compute setting
+      (<code>scene_routes_to_gpu</code> in <code>renderer/gpu_backend/</code>).
+      A remote render carries the tool volumes in the scene
+      (<code>SceneState::tools</code>, wire protocol version 19), so local,
+      remote and combined renders trace the same stone.
+    </p>
   </section>
 
   <section id="colormetrics">
@@ -207,20 +264,27 @@ delta = delta_p - delta_s</code></pre></div>
     <h2><span class="sec-num">8</span>Environment and lighting models</h2>
     <p>
       A ray that misses the stone, or exits it, samples an environment rather than a
-      light list. Seven presets span four analytic models, and a real HDR panorama can
+      light list. Fifteen presets span six analytic models, and a real HDR panorama can
       be loaded in their place
       (<code>optics/raytracer/environment/</code>):
     </p>
     <ul>
-      <li><strong>Studio</strong> (<code>Daylight</code>, <code>Incandescent</code>, <code>RingLights</code>, <code>DarkSpotlight</code>) — a charcoal backdrop, one key softbox, one fill, and sixteen ring pinpoints. Its arithmetic is pinned bit for bit by tables in <code>crates/indicatrix/tests/raytracer_tests/golden_regression.rs</code> (which are re-pinned whenever a deliberate physics change moves them).</li>
-      <li><strong>ISO hemisphere</strong> — the whole upper hemisphere at radiance 1 and nothing below the girdle plane: the reference case, with no directional structure to flatter a cut.</li>
+      <li><strong>Studio</strong> (<code>Daylight</code>, <code>Incandescent</code>, <code>IlluminantA</code> at 2856&nbsp;K, <code>RingLights</code>, <code>DarkSpotlight</code>) — a charcoal backdrop, one key softbox, one fill, and sixteen ring pinpoints. Its arithmetic is pinned bit for bit by tables in <code>crates/indicatrix/tests/raytracer_tests/golden_regression.rs</code> (which are re-pinned whenever a deliberate physics change moves them).</li>
+      <li><strong>UV lamps</strong> (<code>UvLamp365</code>, <code>UvLamp395</code>, on the studio model) — the studio rig's geometry lit by a narrow Gaussian line instead of white light: 365&nbsp;nm and 10&nbsp;nm wide, or 395&nbsp;nm and 12&nbsp;nm wide, with no ambient backdrop and no white balance. A non-fluorescent stone stays nearly dark, and the 395&nbsp;nm lamp's tail reaches into the violet, so such a stone looks faintly violet under it. Both are traced on the CPU only.</li>
+      <li><strong>Grading tray</strong> (<code>IsoHemisphere</code>, formerly &ldquo;ISO hemisphere&rdquo;) — the whole upper hemisphere at radiance 1 and nothing below the girdle plane: the reference case, with no directional structure to flatter a cut. It is the light the optimizer and Retarget score under by default.</li>
       <li><strong>Light tent</strong> — dim tent walls, one broad overhead softbox, three black cards on the ring positions away from the key, one small hard spark light, black velvet below the girdle. The black cards are the contrast a jewellery photographer adds so a bright stone reads as a facet pattern instead of a white blur.</li>
-      <li><strong>Daylight sky and sun</strong> — a clear sky brighter at the horizon than at the zenith, a 2° sun disc with an aureole around it, dark ground.</li>
+      <li><strong>Light-tent variants</strong> (<code>WhiteTray</code>, <code>ShopLights</code>, <code>WindowDaylight</code>) — the same model with other parameters, all lit by a D65 spectrum: a white tray lit from below with bright, perfectly even walls and no cards or spark; a bright diffuse jewellery-shop ceiling with small pinpoint spots; and a dim room lit by one broad window, a single soft key with no cards or spark. The built-in <em>Window daylight</em> view places that key at 30&deg; elevation.</li>
+      <li><strong>Daylight sky (no sun)</strong> (<code>DaylightDome</code>) — a clear sky only, brighter at the horizon than at the zenith, with dark ground and no sun disc.</li>
+      <li><strong>Daylight sky and direct sun</strong> (<code>DaylightSun</code>) — the same sky plus a real sun, a hard-edged disc 0.27&deg; across that supplies about 82&nbsp;% of the light at the default key height. It is sampled directly, and a stone flashes with fire whenever a facet catches it.</li>
+      <li><strong>Contrast view</strong> (<code>Aset</code>) — an ASET-style diagnostic view that colours the sky by elevation &mdash; green from 0&deg; to 45&deg;, red from 45&deg; to 75&deg;, blue from 75&deg; to 90&deg; overhead, and black below the horizon &mdash; with no white balance, for seeing where in the stone the light returns from. Its figures are scored as the Grading tray.</li>
     </ul>
     <p>
-      The three lit models also darken every exit direction that falls inside the
+      The lit models also darken every exit direction that falls inside the
       observer's own head-shadow cone — the term that gives a face-up stone its dark
-      table reflections. The Studio rig ignores the observer. Radiances are chosen so
+      table reflections; the readouts follow the same head-shadow cone and count
+      every lit direction under a lit model, whereas under a Studio rig brilliance
+      is measured against that rig's own lamps. The Studio rig ignores the
+      observer. Radiances are chosen so
       that at exposure 1 the ambient terms land near middle grey after the ACES curve
       and only a direct reflection of a light source clips to white.
     </p>

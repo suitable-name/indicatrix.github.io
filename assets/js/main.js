@@ -8,9 +8,138 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initPageToc();
   initCopyButtons();
   initMaterialExplorer();
 });
+
+/* -------------------------------------------------------------
+ * "On this page": navigation within a long page.
+ *
+ * Built from the page's own numbered sections (`main > section[id]` with an
+ * <h2>), so it never drifts from the headings. Wide screens get a sticky
+ * sidebar beside the text, with the section in view highlighted; narrower
+ * screens get a collapsible list under the page title and a small
+ * "Contents" button that returns to it. Without the script the page reads
+ * as before, top to bottom.
+ * ----------------------------------------------------------- */
+
+const TOC_MIN_SECTIONS = 5;
+
+function tocEntries(main) {
+  return [...main.querySelectorAll(':scope > section[id]')]
+    .map((section) => {
+      const h2 = section.querySelector(':scope > h2');
+      if (!h2) return null;
+      const num = h2.querySelector('.sec-num');
+      const label = [...h2.childNodes]
+        .filter((n) => !(n.nodeType === 1 && (n.classList.contains('sec-num') || n.classList.contains('tag'))))
+        .map((n) => n.textContent)
+        .join('')
+        .trim();
+      return { id: section.id, num: num ? num.textContent.trim() : '', label, section };
+    })
+    .filter(Boolean);
+}
+
+function tocList(entries) {
+  const ol = document.createElement('ol');
+  for (const e of entries) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#' + e.id;
+    a.dataset.target = e.id;
+    if (e.num) {
+      const n = document.createElement('span');
+      n.className = 'toc-num';
+      n.textContent = e.num;
+      a.append(n);
+    }
+    const text = document.createElement('span');
+    text.textContent = e.label;
+    a.append(text);
+    li.append(a);
+    ol.append(li);
+  }
+  return ol;
+}
+
+function initPageToc() {
+  const main = document.querySelector('main.container');
+  if (!main) return;
+  const entries = tocEntries(main);
+  if (entries.length < TOC_MIN_SECTIONS) return;
+
+  // Sidebar (wide screens).
+  const side = document.createElement('nav');
+  side.className = 'toc-side';
+  side.setAttribute('aria-label', 'On this page');
+  const sideHead = document.createElement('p');
+  sideHead.className = 'toc-head';
+  sideHead.textContent = 'On this page';
+  side.append(sideHead, tocList(entries));
+
+  // Collapsible list (narrow screens), placed after the page title block.
+  const inline = document.createElement('details');
+  inline.className = 'toc-inline';
+  inline.id = 'contents';
+  const summary = document.createElement('summary');
+  summary.textContent = 'On this page \u00b7 ' + entries.length + ' sections';
+  const inlineNav = document.createElement('nav');
+  inlineNav.setAttribute('aria-label', 'On this page');
+  inlineNav.append(tocList(entries));
+  inline.append(summary, inlineNav);
+  const head = main.querySelector(':scope > .page-head');
+  if (head) head.after(inline); else main.prepend(inline);
+
+  // "Contents" button (narrow screens), shown once the list is out of view.
+  const back = document.createElement('a');
+  back.className = 'toc-back';
+  back.href = '#contents';
+  back.textContent = 'Contents';
+  back.addEventListener('click', () => { inline.open = true; });
+  document.body.append(back);
+
+  main.prepend(side);
+  main.classList.add('with-toc');
+  document.body.classList.add('has-toc');
+  side.style.gridRow = '1 / span ' + main.children.length;
+
+  // Picking a section on a phone closes the list again.
+  inlineNav.addEventListener('click', (ev) => {
+    if (ev.target.closest('a')) inline.open = false;
+  });
+
+  if (!('IntersectionObserver' in window)) return;
+
+  new IntersectionObserver((records) => {
+    for (const r of records) {
+      back.classList.toggle('is-visible', !r.isIntersecting && r.boundingClientRect.top < 0);
+    }
+  }).observe(inline);
+
+  // Highlight the last section whose top has passed the upper third of the window.
+  const links = [...side.querySelectorAll('a')];
+  const setCurrent = () => {
+    let current = entries[0].id;
+    const line = window.innerHeight / 3;
+    for (const e of entries) {
+      if (e.section.getBoundingClientRect().top <= line) current = e.id;
+    }
+    for (const a of links) {
+      if (a.dataset.target === current) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
+    }
+  };
+  let pending = false;
+  window.addEventListener('scroll', () => {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => { pending = false; setCurrent(); });
+  }, { passive: true });
+  window.addEventListener('resize', setCurrent);
+  setCurrent();
+}
 
 /* -------------------------------------------------------------
  * Copy-to-clipboard for code blocks.

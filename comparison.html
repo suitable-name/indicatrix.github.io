@@ -117,7 +117,7 @@
         </tr>
         <tr>
           <th scope="row">Plans cuts from a block of rough (yield, placement in the rough)</th>
-          <td>✓ <span class="qual">beta, block/cylinder/pebble with cuts, up to 99 stones</span></td><td>✗ <span class="qual">by hand: L/W, Vol./W³</span></td><td>✗ <span class="qual">optical merit only</span></td><td>✗ <span class="qual">single-design yield calculator</span></td><td>✓ <span class="qual">one design, orientation search</span></td><td>✗ <span class="qual">by hand: weight, locked limits</span></td>
+          <td>✓ <span class="qual">beta, block/cylinder/pebble/OBJ mesh with cuts, up to 99 stones</span></td><td>✗ <span class="qual">by hand: L/W, Vol./W³</span></td><td>✗ <span class="qual">optical merit only</span></td><td>✗ <span class="qual">single-design yield calculator</span></td><td>✓ <span class="qual">one design, orientation search</span></td><td>✗ <span class="qual">by hand: weight, locked limits</span></td>
         </tr>
         <tr class="group"><th colspan="7" scope="colgroup">Rendering</th></tr>
         <tr>
@@ -205,7 +205,7 @@
           <td>GemCAD text export</td>
           <td>✓</td>
           <td>✓</td>
-          <td>Cutting <em>instructions</em>: angle, mast and index positions, per-facet names, plus meet instructions. The field's de facto interchange format, verified against a real-world corpus of 5,759 files: Windows-1252 files, both line endings, GemCAD's culet convention (angle 0 with a negative distance) and names bound to their index are all read and written back as GemCAD does.</td>
+          <td>Cutting <em>instructions</em>: angle, mast and index positions, per-facet names, plus meet instructions. The field's de facto interchange format, verified against a real-world corpus of 5,759 files: Windows-1252 files, both line endings, GemCAD's culet convention (angle 0 with a negative distance) and names bound to their index are all read and written back as GemCAD does. A concave tier is written as two footnotes and a tier relation as its current angle.</td>
         </tr>
         <tr>
           <td><code>.gcs</code></td>
@@ -226,7 +226,7 @@
           <td>Indicatrix native design</td>
           <td>✓</td>
           <td>✓</td>
-          <td>Self-contained: every tier with its angle, index set, name, note and authored target, plus the preform, material, schedule metadata and edit history, in one file with no <code>.asc</code> beside it. Plain text in TOML syntax, with a versioned header; a file from a newer version is refused with a message instead of being misread. The file also carries what cannot be worked out again from the geometry: descriptive metadata (title, designer, source, notes, tags, licence, dates and an id) and attachments (a PDF, the original <code>.gem</code> or <code>.asc</code>, a diagram image), each attachment stored byte for byte with its size and checksum. Derived values (ratios, volume, facet counts, the angle table, previews and tilt curves) are not stored; an importer recomputes them. The web app keeps the metadata and attachments of a file it opens and writes them back unchanged, with a new modification time.</td>
+          <td>Self-contained: every tier with its angle (or the relation it follows), index set, name, note and authored target, the concave tiers with their tool lines, plus the preform, material, schedule metadata and edit history, in one file with no <code>.asc</code> beside it. Plain text in TOML syntax, with a versioned header; a file from a newer version is refused with a message instead of being misread. A file is written as format version 2 only when it has concave tiers and as version 3 only when a tier has a relation; every other file is unchanged. The file also carries what cannot be worked out again from the geometry: descriptive metadata (title, designer, source, notes, tags, licence, dates and an id) and attachments (a PDF, the original <code>.gem</code> or <code>.asc</code>, a diagram image), each attachment stored byte for byte with its size and checksum. Derived values (ratios, volume, facet counts, the angle table, previews and tilt curves) are not stored; an importer recomputes them. The web app keeps the metadata and attachments of a file it opens and writes them back unchanged, with a new modification time.</td>
         </tr>
         <tr>
           <td><code>.indicatrix.toml</code></td>
@@ -270,8 +270,10 @@
     </div>
     <p>
       Concretely, what "in beta" already covers: a new design starts from a template
-      gallery (five built-in starting shapes plus a blank design) or a step-by-step
-      guided walkthrough that highlights the relevant panel at each stage; Solve and
+      gallery (five shape families, four round variants and teaching designs, and a
+      blank design) or a step-by-step guided walkthrough that highlights the
+      relevant panel at each stage, with 68 short tutorials for the individual
+      functions; Solve and
       the angle-search Optimize pass both run off the UI thread and can be cancelled
       mid-search — a real checkpoint the search itself observes, not just a UI
       dismissal — rather than blocking the editor until a multi-minute run finishes;
@@ -280,16 +282,26 @@
       cheater (azimuth) offset column when a tier actually carries one.
     </p>
     <p>
+      The editor also covers things the matrix has no row for: concave facets
+      cut with cylinder, cone, circle, disc or sphere tools; tier angles that
+      follow relations such as <code>=P1 - 2</code>; a cutting mode that shows
+      the instructions one step per page; and <code>indicatrix-cli</code>, a
+      command-line tool that runs the solver, optimizer, retarget gate and
+      angle sweep without a window and prints deterministic text, JSON or CSV.
+      None of the other tools' pages was read for these, so this page asserts
+      nothing about whether they have them.
+    </p>
+    <p>
       Yield planning goes beyond the single-design preform figure. The beta
       <a href="editor.html#rough-planner">Rough planner</a> takes a block,
       cylinder or pebble of rough, modelled with flat edge, corner and face cuts,
+      or an OBJ mesh of a scanned or irregular rough,
       and, from either the library filter or the whole library, ranks up to 10
       layouts of up to 99 stones by total carats: a single stone is fitted exactly
       with its real outline in any orientation, and several stones get a sawing
       plan (slabs, then bars, then pieces, over all 6 cut orders). It is an
       estimate for clean, inclusion-free rough after your kerf and allowance: it
-      plans for convex modelled rough only, not scanned or irregular rough and not
-      inclusions, and it is desktop-only for now. The one other rough planner in the matrix is Gem Diagram's, which
+      plans around the notches and hollows of a closed mesh and places no stone in air, but it knows nothing about inclusions, and it is desktop-only for now. The one other rough planner in the matrix is Gem Diagram's, which
       its documentation describes as an orientation search that starts from one
       loaded design and reports yield and finished weight for each orientation;
       it does not describe choosing among designs or stone counts.
@@ -300,7 +312,7 @@
     </p>
     <ul>
       <li><strong>Not a jewellery CAD.</strong> Settings, prongs, shanks and casting — the stone is the whole model.</li>
-      <li><strong>Not a general 3D renderer.</strong> Geometry is convex half-space intersection, not triangle meshes; there is no scene graph, no import of arbitrary models, and no animation. That constraint is what makes the optics tractable.</li>
+      <li><strong>Not a general 3D renderer.</strong> Geometry is the intersection of flat half-spaces, less convex tool volumes for concave facets, not triangle meshes; there is no scene graph, no import of arbitrary models into the renderer, and no animation. That constraint is what makes the optics tractable.</li>
     </ul>
   </section>
 
@@ -333,8 +345,8 @@
       schedule and getting it cut, an established authoring tool plus a quick preview
       is a perfectly sound workflow. The case for Indicatrix is when you want to see
       what a cut will actually look like in a specific material before committing rough
-      to it — figure 5 on the <a href="index.html#renders">overview</a> is one cut in
-      five materials with nothing else changed — or when you want the source of the
+      to it — figure 5 on the <a href="index.html#renders">overview</a> is one design in
+      six materials — or when you want the source of the
       thing making that claim.
     </p>
   </section>

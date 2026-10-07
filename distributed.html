@@ -260,8 +260,11 @@
       worker instead, and up to <code>--jobs-per-viewer</code> of them (default
       8) run at once, so a catalogue batch keeps a fast worker busy. All
       in-flight jobs share one memory budget, <code>--max-job-memory-mib</code>
-      (default 2048; each job is charged width × height × 48 bytes, and a job
-      past the cap is refused, not queued).
+      (default 2048; a job is charged width × height × 48 bytes, plus
+      width × height × 36 bytes for every lane that works on it, plus its HDR
+      map and any share the viewer renders itself; a job whose lanes do not all
+      fit runs on fewer, and one past the cap even with a single lane is
+      refused, not queued).
     </p>
   </section>
 
@@ -294,7 +297,11 @@
         measures how fast its frame writes drain and compresses frames
         adaptively to that measured link speed (Zstandard or LZ4 on slow links,
         raw on fast ones and on loopback), switching on the fly when the link
-        changes.
+        changes. <code>--payload-encoding</code> on <code>serve</code> and
+        <code>join</code> (<code>auto</code> by default) pins one encoding
+        instead (<code>raw</code>, <code>lz4</code>, <code>zstd</code> or
+        <code>zstd:LEVEL</code> with a level from 1 to 22) on every link,
+        loopback included, when the other side accepts it.
       </li>
       <li>
         <strong>Final picture only.</strong> The export dialog and the tilt-video
@@ -303,8 +310,16 @@
         with the local lanes; <em>Final picture only</em> has the coordinator
         render, tone-map with the desktop export's own function
         (<code>tonemap_accumulation</code>) and send one PNG per image, the same
-        PNG the desktop would have written from the same samples, while the local
-        lanes stay idle. The <strong>Live Transfer</strong> setting offers the
+        PNG the desktop would have written from the same samples. With Compute set
+        to <em>Local + Remote</em>, the setting <em>Final-picture exports: this
+        machine renders a share too</em> (on by default) keeps the local lanes
+        busy: the desktop reserves a tail of the sample budget
+        (<code>viewer_samples</code>), traces it itself, and uploads the float
+        sum as one <code>CONTRIBUTION</code> message (protocol version 16) for
+        the coordinator to fold in before it tone-maps. If that share does not
+        arrive in time the coordinator traces the tail itself, so a slow local
+        machine never stalls the export. With the setting off, or with
+        <em>Remote only</em>, the local lanes stay idle. The <strong>Live Transfer</strong> setting offers the
         same trade for the viewport: <em>Final picture</em> streams finished,
         denoised 8-bit display frames (denoised on the coordinator with the
         desktop's own À-Trous denoiser, its guides from the coordinator's own
@@ -333,6 +348,16 @@
         from a file, or over the size limit), HDR scenes render locally, with
         one status note.
       </li>
+      <li>
+        <strong>Concave tools.</strong> A scene carries the stone's tool volumes
+        beside its planes (<code>SceneState::tools</code>, protocol version 19;
+        empty for a convex stone), at most 128 of them, and the worker side
+        validates each one before tracing. The GPU kernels do not know about
+        tools, so a coordinator or worker traces a stone with tools on the CPU
+        only, and local, remote and combined renders trace the same stone. A
+        scene lit by one of the two UV lamp presets is also traced on the CPU
+        only (protocol version 20).
+      </li>
     </ul>
   </section>
 
@@ -350,8 +375,8 @@
       <li>Every client certificate carries a role: a worker certificate's Common Name is <code>worker:&lt;label&gt;</code>, a viewer's is the plain label (which may not start with <code>worker:</code>). Each listener checks the role and its own fingerprint allowlist — <code>allowlist-viewers.txt</code> and <code>allowlist-workers.txt</code> next to the CA, with a pre-role <code>allowlist.txt</code> still honoured as the viewers list while it is the only one — so a viewer certificate is never accepted on the worker port, nor a worker certificate on the viewer port. The HELLO carries the peer's role too, and a mismatch is refused with <code>ROLE_REFUSED</code>. <code>--trust-any-client-cert</code> skips both allowlists, never the role check.</li>
       <li>One-time token enrollment (the wire protocol and claim-side verification in <code>crates/indicatrix-net/src/enroll</code>; the server-side registry that mints and expires tokens in <code>apps/indicatrix-worker/src/enroll</code>): <code>indicatrix-worker cert issue-token</code> asks a running <code>serve</code> process's enrollment listener, from a loopback connection only, to mint a 180-second, single-use token for a viewer, or with <code>--role worker</code> for a worker. The desktop app's Redeem button, <code>cert claim</code>, or <code>join --token</code> redeems it — verifying the listener's certificate chain against the CA fingerprint carried inside the token itself, before sending the token's secret — and writes the same three-file certificate bundle <code>cert issue-client</code> would, without a manual copy. A listener refuses a token request for the other role.</li>
       <li>Plaintext serving (<code>--insecure-no-tls</code>) is available for local debugging, refused on any non-loopback bind address, and disables the worker port and both enrollment listeners.</li>
-      <li>Every connection negotiates a protocol version during its HELLO/WELCOME handshake (<code>PROTOCOL_VERSION</code>, 16 at the time of writing; the constant in <code>crates/indicatrix-net/src/messages/mod.rs</code> is authoritative), together with a build hash and, where both sides can establish it, a content hash of the <code>indicatrix</code> source tree; a mismatched peer is refused outright (<code>BUILD_MISMATCH</code>) rather than risking a misread frame or a merge of samples from different physics.</li>
-      <li>Every message is length-prefixed and bounded before a payload is even allocated (<code>framing::MAX_FRAME_LEN</code>, 512&nbsp;MiB; the enrollment listener caps its own request further, at 4&nbsp;KiB), and a just-accepted socket carries a 20-second read/write timeout through its TLS handshake until its first HELLO arrives (<code>HANDSHAKE_TIMEOUT</code>, <code>serve/socket.rs</code>) — an idle or slow-loris connection cannot pin a thread indefinitely. <code>--max-connections</code> (default 64) bounds authenticated connections, counted separately for viewers and joined workers, and a second limiter at four times that cap bounds connections still in their handshake.</li>
+      <li>Every connection negotiates a protocol version during its HELLO/WELCOME handshake (<code>PROTOCOL_VERSION</code>, 20 at the time of writing; the constant in <code>crates/indicatrix-net/src/messages/mod.rs</code> is authoritative), together with a build hash and, where both sides can establish it, a content hash of the <code>indicatrix</code> source tree; a mismatched peer is refused outright (<code>BUILD_MISMATCH</code>) rather than risking a misread frame or a merge of samples from different physics.</li>
+      <li>Every message is length-prefixed and bounded before a payload is even allocated (<code>framing::MAX_FRAME_LEN</code>, 512&nbsp;MiB; the enrollment listener caps its own request further, at 4&nbsp;KiB), and a just-accepted socket carries a 20-second read/write timeout through its TLS handshake until its first HELLO arrives (<code>HANDSHAKE_TIMEOUT</code>, <code>serve/socket.rs</code>) — an idle or slow-loris connection cannot pin a thread indefinitely. <code>--max-connections</code> (default 64) bounds authenticated connections, counted separately for viewers and joined workers, and a second limiter at four times that cap bounds connections still in their handshake. A per-address cap on the viewer port, <code>--max-preauth-per-ip</code> (default 8), closes a connection from an address that already has that many unauthenticated ones open.</li>
     </ul>
   </section>
 

@@ -32,6 +32,10 @@
   <div class="page-head">
     <h1>Indicatrix</h1>
     <p class="subtitle">Spectral path tracer and faceting-design CAD for cut gemstones</p>
+    <p class="cta-row">
+      <a class="cta" href="#downloads">Download for Windows or Linux</a>
+      <a class="cta cta-secondary" href="https://github.com/suitable-name/indicatrix/tree/main/apps/indicatrix-cut/docs/manual">Read the user manual</a>
+    </p>
   </div>
 
   <section class="abstract-grid">
@@ -56,6 +60,14 @@
         <strong>Status:</strong> the renderer is usable today. The faceting CAD
         (design editing, solving, optimizing) and the rough planner are beta and under active
         development — see section 5. Indicatrix is MIT licensed.
+      </p>
+      <p>
+        <strong>Also in the desktop studio:</strong> concave facets cut with
+        tools, tier angles that follow relations such as <code>=P1 - 2</code>,
+        a step-by-step cutting mode, and guided tutorials for each CAD
+        function. A command-line tool, <code>indicatrix-cli</code>, runs the
+        same solver and optimizer without a window. Section 5 describes them
+        and the <a href="editor.html">studio page</a> goes into detail.
       </p>
       <p>
         <strong>In the browser:</strong> a web version runs at
@@ -88,7 +100,7 @@
         <tr>
           <td>Dispersion</td>
           <td>Sellmeier / Cauchy dispersion per material</td>
-          <td>32 built-in materials, each with a cited or derived fit (<code>crates/indicatrix/src/optics/materials/</code>)</td>
+          <td>32 built-in materials, each with a cited or derived fit (<code>crates/indicatrix/src/optics/materials/</code>). A custom material can carry its own Sellmeier or Cauchy coefficients, which are validated before use (<code>optics/dispersion.rs</code>)</td>
         </tr>
         <tr>
           <td>Polarization</td>
@@ -107,8 +119,8 @@
         </tr>
         <tr>
           <td>Geometry</td>
-          <td>Convex half-space intersection</td>
-          <td>No triangle mesh; facets are planes (<code>geometry/plane.rs</code>, <code>simd/slab.rs</code>)</td>
+          <td>Half-space intersection, less convex tool volumes</td>
+          <td>No triangle mesh. Flat facets are planes; a concave facet is a cylinder, cone, sphere or disc tool subtracted from the stone (<code>geometry/plane.rs</code>, <code>simd/slab.rs</code>, <code>geometry/tool.rs</code>, <code>optics/raytracer/intersect_stone.rs</code>)</td>
         </tr>
         <tr>
           <td>Colour</td>
@@ -176,15 +188,16 @@
       <p class="fig-note">Look at the per-pixel noise level at this sample count — no denoiser applied.</p>
     </figure>
     <figure class="fig">
-      <div class="fig-grid-auto">
-        <a href="assets/images/fig_mat_diamond.jpg"><img src="assets/images/fig_mat_diamond.jpg" width="900" height="600" alt="The step cut rendered as diamond" loading="lazy"></a>
-        <a href="assets/images/fig_mat_sapphire.jpg"><img src="assets/images/fig_mat_sapphire.jpg" width="900" height="600" alt="The same step cut rendered as sapphire" loading="lazy"></a>
-        <a href="assets/images/fig_mat_emerald.jpg"><img src="assets/images/fig_mat_emerald.jpg" width="900" height="600" alt="The same step cut rendered as emerald" loading="lazy"></a>
-        <a href="assets/images/fig_mat_tanzanite.jpg"><img src="assets/images/fig_mat_tanzanite.jpg" width="900" height="600" alt="The same step cut rendered as tanzanite" loading="lazy"></a>
-        <a href="assets/images/fig_mat_rutile.jpg"><img src="assets/images/fig_mat_rutile.jpg" width="900" height="600" alt="The same step cut rendered as rutile" loading="lazy"></a>
+      <div class="fig-grid-auto" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))">
+        <a href="assets/images/fig_fvs_diamond.jpg"><img src="assets/images/fig_fvs_diamond.jpg" width="900" height="600" alt="41.029B FVS-65 (Long Octagon) rendered as diamond" loading="lazy"></a>
+        <a href="assets/images/fig_fvs_sapphire.jpg"><img src="assets/images/fig_fvs_sapphire.jpg" width="900" height="600" alt="The same design rendered as sapphire" loading="lazy"></a>
+        <a href="assets/images/fig_fvs_emerald.jpg"><img src="assets/images/fig_fvs_emerald.jpg" width="900" height="600" alt="The same design rendered as emerald" loading="lazy"></a>
+        <a href="assets/images/fig_fvs_tanzanite.jpg"><img src="assets/images/fig_fvs_tanzanite.jpg" width="900" height="600" alt="The same design rendered as tanzanite" loading="lazy"></a>
+        <a href="assets/images/fig_fvs_rutile.jpg"><img src="assets/images/fig_fvs_rutile.jpg" width="900" height="600" alt="The same design rendered as rutile" loading="lazy"></a>
+        <a href="assets/images/fig_fvs_alexandrite_day.jpg"><img src="assets/images/fig_fvs_alexandrite_day.jpg" width="900" height="600" alt="The same design rendered as alexandrite in daylight" loading="lazy"></a>
       </div>
-      <figcaption>Fig. 5 &mdash; One octagon step cut in five materials, left to right: diamond, sapphire, emerald, tanzanite, rutile. 1920 &times; 1080, 4 096 samples per pixel each.</figcaption>
-      <p class="fig-note">Identical geometry, camera, light tent and backdrop card &mdash; only the material changed. Diamond and rutile share a cut and differ almost entirely in dispersion (0.0256 against 0.164 for rutile&rsquo;s ordinary ray and 0.207 for its extraordinary ray); sapphire and tanzanite differ in where their absorption bands sit, not in brightness.</p>
+      <figcaption>Fig. 5 &mdash; One design, 41.029B FVS-65 (Long Octagon), in six materials, in reading order: diamond, sapphire, emerald, tanzanite, rutile and alexandrite in daylight. 1920 &times; 1080 renders on the grey backdrop card at 32&nbsp;768 samples per pixel (rutile 16&nbsp;384), each cropped around its own stone.</figcaption>
+      <p class="fig-note">Each tile is cropped around its own stone, so sizes are not comparable from tile to tile. Diamond and rutile differ mainly in dispersion (0.0256 against 0.164 for rutile&rsquo;s ordinary ray and 0.207 for its extraordinary ray). The alexandrite is shown again in a warmer light on the <a href="materials.html#alexandrite-case">materials page</a>.</p>
     </figure>
   </section>
 
@@ -198,15 +211,18 @@
       remote coordinator's design catalogue over the same network connection
       used for render offload (see section 7). From the same library, the beta
       Rough planner (Library &rarr; Plan Rough...) ranks up to 10 ways of cutting
-      a block, cylinder or pebble of rough, with edge, corner and face cuts, into
-      up to 99 stones (section 5).
+      a block, cylinder, pebble or scanned mesh of rough, with edge, corner and face
+      cuts, into up to 99 stones (section 5).
     </p>
     <p>
       The viewport renders either a fast solid preview or the full path
       tracer, with orbit camera controls, material selection, lighting
-      presets, and support for loading custom HDR environment maps. Seven
-      lighting presets span four environment models — an analytic studio rig,
-      an ISO hemisphere, a jewellery light tent and a daylight sky — and a
+      presets, and support for loading custom HDR environment maps. Fifteen
+      lighting presets span six environment models — an analytic studio rig
+      (in five moods, and carrying two ultraviolet lamps), a grading tray, a
+      jewellery light tent (with shop, window and white-tray variants), a
+      daylight sky with and without a real 0.27° sun, and a green/red/blue
+      contrast view in the style of an ASET scope — and a
       backdrop card can be placed behind the stone without the stone's own
       optics ever seeing it (see the <a href="physics.html#environment">physics
       page</a>). Master
@@ -216,7 +232,21 @@
       If the GPU compute path loses its device mid-session, the viewport
       re-acquires it once and retries the same frame; if that also fails it
       falls back to the CPU tracer for the rest of the session with a
-      visible status message, rather than freezing.
+      visible status message, rather than freezing. A Color control in the
+      Live Render toolbar shows the stone in another colour without making a
+      custom material; its Custom colour entry opens an editor with Tone,
+      Saturation and Hue sliders (lightness, chroma and hue in the L*C*h
+      colour space).
+    </p>
+    <p>
+      The interface has one global Simple / Advanced switch that hides or
+      shows controls without changing any design, and a Preferences dialog
+      for the interface scale, a high-contrast theme and larger drag handles.
+      The user manual is built into the program (Help &rarr; User Manual),
+      many panels have a <strong>?</strong> button that opens the matching
+      section, and a command palette on Ctrl+K reaches most actions by name.
+      A fresh installation starts in Simple (see the
+      <a href="editor.html#interface">studio page</a>).
     </p>
     <figure class="fig">
       <a href="assets/images/fig_studio_main.jpg">
@@ -253,11 +283,12 @@
       <p>
         The faceting CAD is in beta. Solving runs on a background solve
         service with real mid-solve cancellation and a progress-tracked
-        activity list, new designs are guided by a template gallery and an
-        in-app worked example, and results carry stale badges when they no
-        longer match the current design — but the editor's interaction
-        model is still evolving, and results should be checked against a
-        conventional CAD before cutting.
+        activity list, new designs are guided by a template gallery, an
+        in-app worked example and 68 short tutorials, and results carry
+        stale badges when they no longer match the current design — but
+        the editor's interaction model is still evolving, and while it is in
+        beta results should be checked against a conventional CAD before
+        cutting.
       </p>
     </div>
     <figure class="fig">
@@ -284,18 +315,27 @@
       resolves each facet's cutting depth from its meet constraints in
       dependency order, and can anchor an otherwise-unconstrained schedule
       against a design's own printed <code>C/W</code>/<code>P/W</code>
-      proportions (<code>meet_solver/anchors.rs</code>). On top of the solver,
+      proportions (<code>meet_solver/anchors.rs</code>). A tier's angle can
+      also follow other tiers' angles through a
+      <a href="editor.html#relations">relation</a> such as
+      <code>=P1 - 2</code>, stored in the design and kept true when the tiers
+      it reads change (<code>design/relation.rs</code>). On top of the solver,
       <code>indicatrix-cut-core</code> provides rough preforms
       (<code>preform.rs</code>), a coordinate-search angle optimizer
-      (<code>optimize/</code>), and manufacturability checks — vanishing or
+      (<code>optimize/</code>) with objective presets, per-tier angle ranges
+      and ranked candidates, and manufacturability checks — vanishing or
       undersized facets, gear-quantization errors, out-of-order meets
       (<code>manufacturability/</code>). Designs round-trip through GemCAD
       <code>.asc</code> import/export and Indicatrix's own
       self-contained <code>.indicatrix</code> design file (text in TOML syntax with a
       versioned header; the older <code>.indicatrix.toml</code> sidecar still opens)
       (<code>crates/indicatrix-formats/src/native</code>), which preserves
-      constraints and preforms that a plain <code>.asc</code> file cannot
-      express. The file also carries descriptive metadata (title, designer,
+      constraints, preforms, tier relations and concave tiers that a plain
+      <code>.asc</code> file cannot express. A file is written as format
+      version 2 only when it has concave tiers and as version 3 only when a
+      tier has a relation, so every other file is unchanged; an
+      <code>.asc</code> export writes a relation as its current angle and a
+      concave tier as two footnotes. The file also carries descriptive metadata (title, designer,
       source, notes, tags, licence, dates, an id) and attachments that cannot be
       recomputed (a PDF, the original <code>.gem</code> or <code>.asc</code>, a
       diagram image); derived values such as ratios, volume, facet counts, the
@@ -323,15 +363,20 @@
       yield and an estimated carat weight from the rough
       (<code>yield_metrics/</code>). Beyond a single design, the beta
       <em>Rough planner</em> (Library &rarr; Plan Rough...) takes a block,
-      cylinder or pebble of rough, with edge, corner and face cuts, in its own
-      window and plans across the whole design library, or the current
+      cylinder, pebble or scanned mesh of rough, with edge, corner and face cuts,
+      in its own window and plans across the whole design library, or the current
       filter: it ranks up to 10 layouts of up to 99 stones by total carats, fitting
       a single stone exactly with its real outline in any orientation and several
       stones with a sawing plan of slabs, bars and pieces
       (<code>rough_plan/</code>; see the
-      <a href="editor.html#rough-planner">studio page</a>). See the <a href="editor.html">studio page</a>
+      <a href="editor.html#rough-planner">studio page</a>). A scanned or
+      irregular rough can be imported as an OBJ, STL or PLY mesh in the unit
+      you choose. A closed mesh may be non-convex, with notches and hollows: no
+      stone is placed in air, and the mesh volume is the rough's volume. Stones
+      keep clear of the inclusions you add as closed meshes. A design's concave cuts count in its volume, carat and yield.
+      See the <a href="editor.html">studio page</a>
       for the guidance UI (empty-state cards, a template gallery, an in-app
-      worked example, and a keyboard-shortcut overlay) built around this
+      worked example, tutorials, and a keyboard-shortcut overlay) built around this
       workflow.
     </p>
     <figure class="fig">
@@ -340,6 +385,17 @@
       </a>
       <figcaption>Fig. 13 — The Rough planner: the selected layout cuts eight stones of four designs from a 14 × 38 × 9 mm sapphire block, drawn in their saw pieces, with each design's weight, size and orientation in the card.</figcaption>
     </figure>
+    <p>
+      The desktop studio has several more parts built for people who cut at
+      the bench. The <a href="editor.html">studio page</a> describes each one.
+    </p>
+    <ul>
+      <li><strong><a href="editor.html#concave">Concave facets</a>.</strong> A concave tier is cut with a tool instead of a flat lap: a cylinder, cone, circle, disc or sphere (<code>CYL</code>, <code>CON</code>, <code>CIR</code>, <code>DSC</code>, <code>SPH</code>). It is written on two lines of the cutting sheet, one for the facet and one for the tool. The solid view, the diagram, the optical metrics and the render show the stone with every tool's cut removed. The tools are convex volumes subtracted from the flat stone (<code>geometry/tool.rs</code>). The path tracer runs such a stone on the CPU, because the GPU kernels do not know about tools.</li>
+      <li><strong><a href="editor.html#cutting-mode">Cutting mode</a>.</strong> The cutting instructions shown one step per page for the bench: the angle in large figures, the indices on an index wheel and the stone as it looks after that step. Steps and single indices are ticked off. The marks are kept in the library, filed under the design, and are not written into the design file.</li>
+      <li><strong><a href="editor.html#tutorials">Guided tutorials</a>.</strong> 68 short tutorials, one for each CAD function, plus the worked example and a welcome tour. A tutorial outlines the control each step is about and moves on when the goal is reached. <em>Build this Design</em> turns a library design into a lesson that rebuilds it step by step.</li>
+      <li><strong>Checks, <a href="editor.html#history-variants">history</a> and sweeps.</strong> A Good / Check / Problem badge in the status strip, with a plain sentence for each reason and a one-click fix where a safe one exists. A History tab with a picture of every step and named variants of a design. An angle sweep that tries one tier over a range of angles and tabulates the figures. An Edit as Text view of the design as <code>.asc</code> text.</li>
+      <li><strong>Command line.</strong> <code>indicatrix-cli</code> runs the same solver, optimizer, retarget gate and sweep without a window or a GPU (section 9).</li>
+    </ul>
   </section>
 
   <section id="materials">
@@ -457,10 +513,10 @@
 </figure>
     <figure class="fig">
       <a href="assets/images/fig_distributed_live.jpg">
-        <img src="assets/images/fig_distributed_live.jpg" width="1800" height="1187" alt="A distributed export in progress: worker GPU load, link throughput, and the desktop export dialog" loading="lazy">
+        <img src="assets/images/fig_distributed_live.jpg" width="1800" height="1002" alt="A distributed export in progress: a cloud notebook's metrics pane, nvtop and Windows Task Manager beside the Export High-Resolution Render dialog with Final picture only selected" loading="lazy">
       </a>
-      <figcaption>Fig. 15 &mdash; The same handoff in flight: the remote machine's GPU at 85&nbsp;%, the link carrying finished sample ranges back at 158&nbsp;Mbps against 368&nbsp;Kbps outbound, and the desktop's export dialog 1 493 samples into a 32 768-sample master still.</figcaption>
-      <p class="fig-note">The asymmetry is the design: the desktop sends a scene description and sample-range requests, the remote side sends back accumulated radiance. Network identifiers are blurred.</p>
+      <figcaption>Fig. 15 &mdash; A distributed export in flight with the Transfer choice on <em>Final picture only</em>. Left: a cloud notebook&rsquo;s metrics pane (CPU, memory, GPU power draw, temperature and utilisation). Top: <code>nvtop</code> on a machine with an AMD Radeon 780M. Right: Windows Task Manager, GPU (AMD Radeon Graphics) at 94&nbsp;%. Centre: Indicatrix Cut&rsquo;s Export High-Resolution Render dialog, 128 bounces, 32&nbsp;768 samples per pixel, the design 41.029B FVS-65 in alexandrite under D65 daylight, 5&nbsp;530 of 32&nbsp;768 samples done (17&nbsp;%, about 35&nbsp;min left).</figcaption>
+      <p class="fig-note">In <em>Final picture only</em> mode the remote side renders and tone-maps the whole image and sends back one PNG, so the desktop&rsquo;s own CPU and GPU do not contribute; <em>Full data</em> instead sends float radiance that is merged with the local lanes (see the <a href="distributed.html">distributed page</a>).</p>
     </figure>
     <p>
       The viewport renders locally while the camera moves, then hands off
@@ -478,8 +534,9 @@
       <em>Local + Remote</em> mode the desktop and the coordinator share one
       sample budget, so their samples are combined, never duplicated. Results
       travel losslessly compressed (35–50&nbsp;% smaller on measured frames),
-      or as a finished picture only when bandwidth matters more than combining
-      with local samples, and HDR environment maps travel by content hash so
+      or as a finished picture only when bandwidth matters more than float
+      data (a still export can still fold in a share that this machine traces
+      itself), and HDR environment maps travel by content hash so
       HDR-lit scenes can render remotely too, wherever the remote advertises
       HDR support. Every connection is mutual
       TLS 1.3 (<code>rustls</code>, TLS 1.2 compiled out) with one-time token
@@ -506,7 +563,7 @@
         <tr>
           <td><code>indicatrix-cut-core</code></td>
           <td>library</td>
-          <td>Editor-core library for faceting cutting instructions: preform, tiers, undo/redo, and live solid validation.</td>
+          <td>Editor-core library for faceting cutting instructions: preform, tiers (including concave tiers and angle relations), undo/redo, and live solid validation.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-cut-core">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-cut-core">docs.rs</a></td>
         </tr>
         <tr>
@@ -518,7 +575,7 @@
         <tr>
           <td><code>indicatrix-editor</code></td>
           <td>library</td>
-          <td>GUI-free faceting-design editor logic shared by the desktop editor and the web app: the editor session (design, undo/redo, selection, dirty tracking), tier, preform and material form parsing, plain-struct view models, the cutting sheet, Retarget, the guided walkthrough and the solve policy. No GUI toolkit, no threads, no clock, no filesystem.</td>
+          <td>GUI-free faceting-design editor logic shared by the desktop editor and the web app: the editor session (design, undo/redo, selection, dirty tracking), tier, preform and material form parsing, plain-struct view models, the cutting sheet, Retarget, the guided walkthrough and tutorials, cutting mode, the angle sweep, the overall verdict and the solve policy. No GUI toolkit, no threads, no clock, no filesystem.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-editor">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-editor">docs.rs</a></td>
         </tr>
         <tr>
@@ -558,6 +615,12 @@
           <td class="pub"><a href="https://crates.io/crates/indicatrix-worker">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-worker">docs.rs</a></td>
         </tr>
         <tr>
+          <td><code>indicatrix-cli</code></td>
+          <td>app (CLI)</td>
+          <td>Headless command-line tool for faceting designs: <code>info</code>, <code>solve</code>, <code>metrics</code>, <code>validate</code>, <code>optimize</code>, <code>retarget</code>, <code>sweep</code> and <code>export</code>, from scripts, with no window and no GPU. Reads <code>.indicatrix</code>, <code>.asc</code>, <code>.gem</code> and <code>.gcs</code> and uses the same solver, retarget gate and optimizer as the desktop editor.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-cli">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-cli">docs.rs</a></td>
+        </tr>
+        <tr>
           <td><code>indicatrix-web</code></td>
           <td>app (browser)</td>
           <td>Browser build of indicatrix, served as static files: open or start a design (<code>.indicatrix</code>, <code>.asc</code>, <code>.gem</code>, <code>.gcs</code>), edit it in the same faceting CAD engine, and look at it as a solid, a faceting diagram and a spectral render traced on your CPU cores in Web Workers, with the brilliance, fire, windowing and extinction figures and the tilt curve. Files are read and saved as browser downloads; the design lives in the tab's session only. No design library, no remote rendering, no Deep Solve, no GPU renderer, no database.</td>
@@ -579,14 +642,88 @@
     </table>
   </section>
 
+  <section id="downloads">
+    <h2><span class="sec-num">9</span>Downloads</h2>
+    <p>
+      Indicatrix comes as ready-built programs for Windows and Linux. To start
+      straight away, take one of the builds below. They are the scalar builds:
+      made for the x86-64-v2 level, they run on any 64-bit Intel or AMD
+      processor with SSE4.2, so there is nothing to choose. The GPU builds add
+      the GPU path tracer; the CPU builds render on the processor only.
+    </p>
+    <h3>Windows</h3>
+    <table>
+      <thead>
+        <tr><th>Program</th><th>CPU only</th><th>With the GPU path tracer</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>indicatrix-cut</code>: the desktop studio and faceting CAD</td>
+          <td><a href="https://github.com/suitable-name/indicatrix/releases/latest/download/indicatrix-cut-windows-scalar-cpu.exe"><code>indicatrix-cut-windows-scalar-cpu.exe</code></a></td>
+          <td><a href="https://github.com/suitable-name/indicatrix/releases/latest/download/indicatrix-cut-windows-scalar-gpu.exe"><code>indicatrix-cut-windows-scalar-gpu.exe</code></a></td>
+        </tr>
+        <tr>
+          <td><code>indicatrix-worker</code>: the coordinator and render worker for <a href="distributed.html">distributed rendering</a>, run from a terminal</td>
+          <td><a href="https://github.com/suitable-name/indicatrix/releases/latest/download/indicatrix-worker-windows-scalar-cpu.exe"><code>indicatrix-worker-windows-scalar-cpu.exe</code></a></td>
+          <td><a href="https://github.com/suitable-name/indicatrix/releases/latest/download/indicatrix-worker-windows-scalar-gpu.exe"><code>indicatrix-worker-windows-scalar-gpu.exe</code></a></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Linux</h3>
+    <table>
+      <thead>
+        <tr><th>Program</th><th>CPU only</th><th>With the GPU path tracer</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>indicatrix-cut</code>: the desktop studio and faceting CAD</td>
+          <td><a href="https://github.com/suitable-name/indicatrix/releases/latest/download/indicatrix-cut-linux-scalar-cpu"><code>indicatrix-cut-linux-scalar-cpu</code></a></td>
+          <td><a href="https://github.com/suitable-name/indicatrix/releases/latest/download/indicatrix-cut-linux-scalar-gpu"><code>indicatrix-cut-linux-scalar-gpu</code></a></td>
+        </tr>
+        <tr>
+          <td><code>indicatrix-worker</code>: the coordinator and render worker for <a href="distributed.html">distributed rendering</a>, run from a terminal</td>
+          <td><a href="https://github.com/suitable-name/indicatrix/releases/latest/download/indicatrix-worker-linux-scalar-cpu"><code>indicatrix-worker-linux-scalar-cpu</code></a></td>
+          <td><a href="https://github.com/suitable-name/indicatrix/releases/latest/download/indicatrix-worker-linux-scalar-gpu"><code>indicatrix-worker-linux-scalar-gpu</code></a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="small">
+      On Linux, mark the file as executable once before the first start, for
+      example <code>chmod +x indicatrix-cut-linux-scalar-gpu</code>, then run
+      <code>./indicatrix-cut-linux-scalar-gpu</code>.
+    </p>
+    <div class="status">
+      <span class="status-label">START HERE</span>
+      <p>
+        The <a href="https://github.com/suitable-name/indicatrix/tree/main/apps/indicatrix-cut/docs/manual">user manual</a> is the documentation for the
+        desktop application. Begin with
+        <a href="https://github.com/suitable-name/indicatrix/blob/main/apps/indicatrix-cut/docs/manual/01-getting-started.md">Chapter 1, Getting Started</a>,
+        which walks through the main window; the manual's contents page lists
+        all 22 chapters and the appendices. The same manual opens inside the
+        program from <strong>Help &rarr; User Manual</strong>, and F1 opens the
+        page for whatever is on screen.
+      </p>
+    </div>
+    <p>
+      Every release, with its notes and all of its builds, is on the
+      <a href="https://github.com/suitable-name/indicatrix/releases">releases page</a>.
+      Go there for the builds optimised for newer processors, or to see what
+      changed. There are no ready-built programs for macOS: on a Mac, or to
+      install with Cargo or build from source on any system, see
+      <a href="#getting-started">getting started</a>.
+    </p>
+  </section>
+
   <section id="getting-started">
-    <h2><span class="sec-num">9</span>Getting started</h2>
+    <h2><span class="sec-num">10</span>Getting started</h2>
     <p>
       <strong>Nothing to install:</strong> the browser version is at
       <a href="https://live.indicatrix-suite.com">live.indicatrix-suite.com</a>
       (what it can and cannot do is on the <a href="web.html">web app page</a>).
-      For the design library, GPU and remote rendering, install the desktop
-      application as below.
+      For the design library, GPU and remote rendering, download the desktop
+      application from the <a href="#downloads">downloads</a> section, or
+      install it with Cargo as below. Then start with the
+      <a href="https://github.com/suitable-name/indicatrix/tree/main/apps/indicatrix-cut/docs/manual">user manual</a>.
     </p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — install Rust</span><button class="copy-btn">Copy</button></div>
@@ -658,12 +795,38 @@ cargo run -p indicatrix-worker --features worker -- render \
   --height 2160 \
   --samples 8192</code></pre>
     </div>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal — command-line tool (no window)</span><button class="copy-btn">Copy</button></div>
+      <pre><code><span class="cmt"># from a clone of the repository; a design is a .indicatrix, .asc, .gem or .gcs file</span>
+cargo run -p indicatrix-cli --release -- info round.asc
+cargo run -p indicatrix-cli --release -- solve round.asc --out round.indicatrix
+cargo run -p indicatrix-cli --release -- metrics round.indicatrix --material Sapphire --json
+cargo run -p indicatrix-cli --release -- validate round.asc --json
+cargo run -p indicatrix-cli --release -- optimize round.indicatrix --preset brilliance --budget 400 --seed 7 --out better.indicatrix
+cargo run -p indicatrix-cli --release -- retarget round.indicatrix --material Sapphire --crown-fraction 0.33 --out sapphire.indicatrix
+cargo run -p indicatrix-cli --release -- sweep round.indicatrix --tier "Pavilion Main" --from -43 --to -39 --step 0.5 --csv sweep.csv
+cargo run -p indicatrix-cli --release -- export round.indicatrix --format html --out sheet.html
+
+<span class="cmt"># every command has its own help page</span>
+cargo run -p indicatrix-cli --release -- retarget --help</code></pre>
+    </div>
+    <p class="small">
+      Pavilion angles are signed like the tier table, so they are negative.
+      Exit code 0 means done, 1 a wrong command line, 2 a design that cannot
+      be used or a result that was refused (nothing is written), 3 a
+      file that could not be read or written, and 4 a <code>validate</code>
+      verdict of Problem. A file named by <code>--out</code> is written only
+      when the command succeeds. Text, JSON and CSV output are deterministic:
+      the same command on the same files prints the same bytes. A design
+      library given with <code>--db</code> is opened read-only, for its custom
+      materials.
+    </p>
     <p>
       Rust edition 2024, <code>rust-version = "1.95"</code> (workspace
-      <code>Cargo.toml</code>). Windows and Linux are the platforms exercised
-      by this repository's own build scripts
-      (<code>scripts/pgo-build.ps1</code>, <code>scripts/pgo-bolt-build.sh</code>);
-      macOS is not currently tested. The desktop app writes a log file
+      <code>Cargo.toml</code>). Windows, Linux and macOS are tested. The
+      repository's own build scripts (<code>scripts/pgo-build.ps1</code>,
+      <code>scripts/pgo-bolt-build.sh</code>) make the Windows and Linux
+      builds; on macOS, install with Cargo as above. The desktop app writes a log file
       (<code>indicatrix-cut.log</code>, next to the executable, falling back
       to the temp directory) for diagnosing a background-thread failure;
       verbosity follows <code>RUST_LOG</code>, defaulting to <code>warn</code>
@@ -673,7 +836,7 @@ cargo run -p indicatrix-worker --features worker -- render \
   </section>
 
   <section id="roadmap">
-    <h2><span class="sec-num">10</span>Roadmap</h2>
+    <h2><span class="sec-num">11</span>Roadmap</h2>
     <div class="status">
       <span class="status-label">PLANNED, NOT IMPLEMENTED</span>
       <p>
@@ -688,11 +851,6 @@ cargo run -p indicatrix-worker --features worker -- render \
         <tr><th>Planned feature</th><th>What it will do</th><th>Builds on</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Rough planner from 3D scans</td>
-          <td>Extend the existing <a href="editor.html#rough-planner">Rough planner</a>, which today plans stones from a modelled block, cylinder or pebble of rough with flat cuts, to scanned rough and inclusions: import a 3D scan of the rough, place and orient the design inside it, and compare yield and orientation options against the real shape, including inclusions the scan captures. Scans are not implemented.</td>
-          <td>The beta Rough planner and the yield report (section 5), extended from a modelled convex rough to a scanned volume.</td>
-        </tr>
         <tr>
           <td>Colour from a photograph of the rough</td>
           <td>Pick the render colour from a photo of the actual rough rather than from a catalogue preset: sample the stone's colour in the picture and derive an absorption spectrum that reproduces it, so the preview shows the stone you have, not a generic one.</td>
@@ -723,22 +881,19 @@ cargo run -p indicatrix-worker --features worker -- render \
           <td>Keep the design library in the database you already run: MySQL, PostgreSQL or another server, alongside the built-in SQLite file, so a workshop or club can share one library.</td>
           <td>The library storage in <code>indicatrix-vault</code>, which today writes a local SQLite database.</td>
         </tr>
-        <tr>
-          <td>Concave designs</td>
-          <td>Facets cut with a cylindrical or spherical tool rather than a flat lap, in both the tracer and the CAD: curved facet geometry, its optical behaviour, and cutting instructions that carry the tool radius.</td>
-          <td>Today the geometry is strictly half-space planes (section 1); this is the one item that changes the geometric model.</td>
-        </tr>
       </tbody>
     </table>
   </section>
 
   <section id="status">
-    <h2><span class="sec-num">11</span>Status and limitations</h2>
+    <h2><span class="sec-num">12</span>Status and limitations</h2>
     <ul>
       <li>The faceting CAD (<code>indicatrix-cut-core</code> and the editor UI in <code>apps/indicatrix-cut</code>) is beta; its interaction model is still changing.</li>
-      <li><code>indicatrix-web</code> is the browser build (<a href="https://live.indicatrix-suite.com">live.indicatrix-suite.com</a>, described on the <a href="web.html">web app page</a>). It renders on the CPU in Web Workers (slower than the desktop's GPU path, so a few hundred samples take a while on a laptop), edits and solves designs with the same engine as the desktop, and keeps a design only for the life of the browser tab, so save your work as downloads. It has no design library, remote rendering, Deep Solve or GPU renderer — see its own <code>README.md</code> for the limits.</li>
-      <li>The GPU compute path requires a wgpu-supported adapter with at least 11 storage buffers per shader stage (<code>MEGAKERNEL_STORAGE_BUFFERS</code>, <code>crates/indicatrix/src/renderer/gpu/context.rs</code>); without one, rendering falls back to the CPU tracer.</li>
-      <li>macOS is not mentioned in the workspace README or build scripts and is not known to have been tested.</li>
+      <li><code>indicatrix-web</code> is the browser build (<a href="https://live.indicatrix-suite.com">live.indicatrix-suite.com</a>, described on the <a href="web.html">web app page</a>). It renders on the CPU in Web Workers (slower than the desktop's GPU path, so a few hundred samples take a while on a laptop), edits and solves designs with the same engine as the desktop, and keeps a design only for the life of the browser tab, so save your work as downloads. It has no design library, remote rendering, Deep Solve or GPU renderer, and it has no tutorials, cutting mode, history and variants, concave tools or command palette — see the web app page and its own <code>README.md</code> for the limits.</li>
+      <li>The GPU compute path requires a wgpu-supported adapter with at least 11 storage buffers per shader stage (<code>MEGAKERNEL_STORAGE_BUFFERS</code>, <code>crates/indicatrix/src/renderer/gpu/context.rs</code>); without one, rendering falls back to the CPU tracer. A concave stone, and a scene lit by one of the two UV lamp presets, is always traced on the CPU, locally and on a remote worker, and renders slower than the same design without its tools.</li>
+      <li>Concave tiers have limits. Each tool placement is taken from the flat stone's measured width, the optimizer and the angle sweep score the flat stone, and the GPU does not trace tools. Clicking a groove or dimple selects its concave tier, Compare draws, traces and measures the stone with its tools, and the Rough planner places a concave design on its carved outline.</li>
+      <li>The Rough planner reads rough meshes as OBJ, STL (ASCII or binary) or PLY (ASCII or binary), up to 64 MiB, in a unit you choose (it suggests one when the size looks wrong but never applies it). Small scan defects are repaired on import: hair-wide gaps, faces turned the wrong way and holes up to 5 % of the bounding-box diagonal. A smooth scan is planned from the scan itself, with a simplified outline only for the grid. A mesh with more than 200,000 triangles, an open scan with bigger holes, or a mesh that crosses itself falls back to its convex outline with a note, except a smooth scan, which is refused (decimate it first). Inclusions can be added as closed meshes (or located from photos on a fixed camera rig); stones keep clear of them with a margin, while the weight and the yield count them as material. An inclusion that reaches the surface is refused, and inclusions on a block, cylinder or pebble rough are not available yet.</li>
+      <li><code>indicatrix-cli</code> takes one design file per command. Its <code>retarget</code> accepts only a result the validity gate marks valid, where the desktop dialog also lets an unchecked change through, and its <code>.gcs</code> export is experimental, as in the editor.</li>
     </ul>
   </section>
 
