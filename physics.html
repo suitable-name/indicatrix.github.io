@@ -22,6 +22,7 @@
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
       <a href="gallery.html">Figures</a>
+      <a href="project.html">Project</a>
     </nav>
     <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
   </div>
@@ -34,8 +35,63 @@
     <p class="subtitle">What Indicatrix actually computes, and where it lives in the source tree.</p>
   </div>
 
+  <section id="glance">
+    <h2><span class="sec-num">1</span>What is modelled</h2>
+    <p>
+      The summary below is the whole model in one table; the sections after it
+      take each row in turn.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Aspect</th><th>Method</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sampling</td>
+          <td>Hero-wavelength spectral sampling, 8 channels per path</td>
+          <td>One hero wavelength plus 7 rotated companions per ray (<code>NUM_CHANNELS</code>, <code>crates/indicatrix/src/optics/raytracer/mod.rs</code>)</td>
+        </tr>
+        <tr>
+          <td>Dispersion</td>
+          <td>Sellmeier / Cauchy dispersion per material</td>
+          <td>32 built-in materials, each with a cited or derived fit (<code>crates/indicatrix/src/optics/materials/</code>, see the <a href="materials.html">materials page</a>). A custom material can carry its own Sellmeier or Cauchy coefficients, which are validated before use (<code>optics/dispersion.rs</code>)</td>
+        </tr>
+        <tr>
+          <td>Polarization</td>
+          <td>Stokes vectors and Mueller matrices at every interface</td>
+          <td>Includes total-internal-reflection phase retardation (<code>optics/polarization.rs</code>, <code>optics/birefringence/</code>)</td>
+        </tr>
+        <tr>
+          <td>Anisotropy</td>
+          <td>Uniaxial and biaxial crystal optics</td>
+          <td>Ordinary/extraordinary ray splitting and Poynting walk-off (<code>optics/birefringence/</code>, GPU port in <code>renderer/gpu/transport_check/eigenmodes_uniaxial.rs</code>)</td>
+        </tr>
+        <tr>
+          <td>Absorption</td>
+          <td>Pleochroic, per-direction absorption tensors</td>
+          <td>Beer&ndash;Lambert law along the ray chord (<code>optics/raytracer/absorption.rs</code>)</td>
+        </tr>
+        <tr>
+          <td>Geometry</td>
+          <td>Half-space intersection, less convex tool volumes</td>
+          <td>No triangle mesh. Flat facets are planes; a concave facet is a cylinder, cone, sphere or disc tool subtracted from the stone (<code>geometry/plane.rs</code>, <code>simd/slab.rs</code>, <code>geometry/tool.rs</code>, <code>optics/raytracer/intersect_stone.rs</code>)</td>
+        </tr>
+        <tr>
+          <td>Colour</td>
+          <td>CIE 1931 tabulated colour-matching functions to XYZ, then tone mapped</td>
+          <td><code>color/mod.rs</code>, <code>color/gamut.rs</code></td>
+        </tr>
+        <tr>
+          <td>Inclusions</td>
+          <td>Henyey&ndash;Greenstein volumetric scattering</td>
+          <td>Optional per-material silk/haze scattering parameters, defined in <code>optics/materials/</code> and consumed by the Henyey&ndash;Greenstein estimator in <code>optics/raytracer/scattering/hg.rs</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
   <section id="hwss">
-    <h2><span class="sec-num">1</span>Hero-wavelength spectral sampling</h2>
+    <h2><span class="sec-num">2</span>Hero-wavelength spectral sampling</h2>
     <p>
       RGB rendering assigns each ray one of three fixed colour channels, which
       cannot represent a continuously varying refractive index and produces
@@ -81,7 +137,7 @@ delta = (lambda_max - lambda_min) / 8</code></pre></div>
   </section>
 
   <section id="dispersion">
-    <h2><span class="sec-num">2</span>Sellmeier and Cauchy dispersion</h2>
+    <h2><span class="sec-num">3</span>Sellmeier and Cauchy dispersion</h2>
     <p>
       Rather than three fixed indices for red, green, and blue, each built-in
       material carries a dispersion model evaluated at the ray's actual
@@ -133,7 +189,7 @@ delta = (lambda_max - lambda_min) / 8</code></pre></div>
   </section>
 
   <section id="polarization">
-    <h2><span class="sec-num">3</span>Stokes–Mueller polarized transport</h2>
+    <h2><span class="sec-num">4</span>Stokes–Mueller polarized transport</h2>
     <p>
       Light inside a cut gemstone can undergo dozens of internal reflections
       before it exits. Treating reflectance as an unpolarized scalar
@@ -160,7 +216,7 @@ delta = delta_p - delta_s</code></pre></div>
   </section>
 
   <section id="birefringence">
-    <h2><span class="sec-num">4</span>Uniaxial and biaxial crystal optics</h2>
+    <h2><span class="sec-num">5</span>Uniaxial and biaxial crystal optics</h2>
     <p>
       Non-cubic gemstones have an optical indicatrix: the refractive index
       depends on the propagation direction relative to the crystal's own
@@ -190,7 +246,7 @@ delta = delta_p - delta_s</code></pre></div>
   </section>
 
   <section id="pleochroism">
-    <h2><span class="sec-num">5</span>Directional pleochroic absorption</h2>
+    <h2><span class="sec-num">6</span>Directional pleochroic absorption</h2>
     <p>
       Pleochroic gemstones show different colour along different
       crystallographic directions because absorption depends on the electric
@@ -207,7 +263,7 @@ delta = delta_p - delta_s</code></pre></div>
   </section>
 
   <section id="polyhedral">
-    <h2><span class="sec-num">6</span>Half-space geometry and concave tools</h2>
+    <h2><span class="sec-num">7</span>Half-space geometry and concave tools</h2>
     <p>
       Instead of tessellating a gemstone into a triangle mesh, Indicatrix
       represents each facet as an infinite planar half-space with outward
@@ -250,8 +306,23 @@ delta = delta_p - delta_s</code></pre></div>
     </p>
   </section>
 
+  <section id="inclusions">
+    <h2><span class="sec-num">8</span>Inclusions and scattering</h2>
+    <p>
+      A stone is not always clear. A material can carry optional silk or haze
+      parameters (a scattering coefficient and a phase asymmetry) that the
+      tracer treats as homogeneous Henyey&ndash;Greenstein volumetric scattering
+      (<code>optics/raytracer/scattering/hg.rs</code>). At each bounce the path is
+      either extinguished or scattered inside the stone, decided once for the
+      shared path and reweighted per channel. A scattering point samples the
+      environment directly and combines that with the phase-sampled
+      continuation by a balance-heuristic weight (see the HDR paragraph in the
+      lighting section below), and a frosted facet&rsquo;s diffuse exit does the same.
+    </p>
+  </section>
+
   <section id="colormetrics">
-    <h2><span class="sec-num">7</span>Colour and tone mapping</h2>
+    <h2><span class="sec-num">9</span>Colour and tone mapping</h2>
     <ul>
       <li>Spectral radiance in each of the 8 channels is integrated against the tabulated CIE 1931 2° colour-matching functions (380–780&nbsp;nm, 5&nbsp;nm steps, <code>color/cie1931.rs</code>) to obtain CIE XYZ (<code>optics/raytracer/color.rs</code>).</li>
       <li>An ACES filmic tone-mapping curve (Narkowicz 2015 fit) is applied to the luminance channel before the vector is scaled back into RGB, avoiding hue shift on saturated dispersion fire (<code>color/space.rs</code>).</li>
@@ -261,18 +332,19 @@ delta = delta_p - delta_s</code></pre></div>
   </section>
 
   <section id="environment">
-    <h2><span class="sec-num">8</span>Environment and lighting models</h2>
+    <h2><span class="sec-num">10</span>Environment and lighting models</h2>
     <p>
       A ray that misses the stone, or exits it, samples an environment rather than a
-      light list. Fifteen presets span six analytic models, and a real HDR panorama can
-      be loaded in their place
+      light list. Thirteen presets (fifteen in builds with the physical-colour feature,
+      which add the two UV lamps) cover the analytic models below, and a real HDR
+      panorama can be loaded in their place
       (<code>optics/raytracer/environment/</code>):
     </p>
     <ul>
       <li><strong>Studio</strong> (<code>Daylight</code>, <code>Incandescent</code>, <code>IlluminantA</code> at 2856&nbsp;K, <code>RingLights</code>, <code>DarkSpotlight</code>) — a charcoal backdrop, one key softbox, one fill, and sixteen ring pinpoints. Its arithmetic is pinned bit for bit by tables in <code>crates/indicatrix/tests/raytracer_tests/golden_regression.rs</code> (which are re-pinned whenever a deliberate physics change moves them).</li>
-      <li><strong>UV lamps</strong> (<code>UvLamp365</code>, <code>UvLamp395</code>, on the studio model) — the studio rig's geometry lit by a narrow Gaussian line instead of white light: 365&nbsp;nm and 10&nbsp;nm wide, or 395&nbsp;nm and 12&nbsp;nm wide, with no ambient backdrop and no white balance. A non-fluorescent stone stays nearly dark, and the 395&nbsp;nm lamp's tail reaches into the violet, so such a stone looks faintly violet under it. Both are traced on the CPU only.</li>
-      <li><strong>Grading tray</strong> (<code>IsoHemisphere</code>, formerly &ldquo;ISO hemisphere&rdquo;) — the whole upper hemisphere at radiance 1 and nothing below the girdle plane: the reference case, with no directional structure to flatter a cut. It is the light the optimizer and Retarget score under by default.</li>
-      <li><strong>Light tent</strong> — dim tent walls, one broad overhead softbox, three black cards on the ring positions away from the key, one small hard spark light, black velvet below the girdle. The black cards are the contrast a jewellery photographer adds so a bright stone reads as a facet pattern instead of a white blur.</li>
+      <li><strong>UV lamps</strong> (only in builds with the physical-colour feature; <code>UvLamp365</code>, <code>UvLamp395</code>, on the studio model) — the studio rig's geometry lit by a narrow Gaussian line instead of white light: 365&nbsp;nm and 10&nbsp;nm wide, or 395&nbsp;nm and 12&nbsp;nm wide, with no ambient backdrop and no white balance. A non-fluorescent stone stays nearly dark, and the 395&nbsp;nm lamp's tail reaches into the violet, so such a stone looks faintly violet under it. Both are traced on the CPU only.</li>
+      <li><strong>Grading tray</strong> (<code>IsoHemisphere</code>, formerly &ldquo;ISO hemisphere&rdquo;; the preset is labelled D65 hemisphere + head shadow) — the whole upper hemisphere at radiance 1 and nothing below the girdle plane: the reference case, with no directional structure to flatter a cut. It is the scoring light: Optimize and Retarget score every design under it, and it is flat by design, so a tilt video under it shows no sparkle.</li>
+      <li><strong>Light tent</strong>, the default preset &mdash; dim tent walls, one broad overhead softbox, three black cards on the ring positions away from the key, one small hard spark light, black velvet below the girdle. The black cards are the contrast a jewellery photographer adds so a bright stone reads as a facet pattern instead of a white blur.</li>
       <li><strong>Light-tent variants</strong> (<code>WhiteTray</code>, <code>ShopLights</code>, <code>WindowDaylight</code>) — the same model with other parameters, all lit by a D65 spectrum: a white tray lit from below with bright, perfectly even walls and no cards or spark; a bright diffuse jewellery-shop ceiling with small pinpoint spots; and a dim room lit by one broad window, a single soft key with no cards or spark. The built-in <em>Window daylight</em> view places that key at 30&deg; elevation.</li>
       <li><strong>Daylight sky (no sun)</strong> (<code>DaylightDome</code>) — a clear sky only, brighter at the horizon than at the zenith, with dark ground and no sun disc.</li>
       <li><strong>Daylight sky and direct sun</strong> (<code>DaylightSun</code>) — the same sky plus a real sun, a hard-edged disc 0.27&deg; across that supplies about 82&nbsp;% of the light at the default key height. It is sampled directly, and a stone flashes with fire whenever a facet catches it.</li>
@@ -284,7 +356,11 @@ delta = delta_p - delta_s</code></pre></div>
       table reflections; the readouts follow the same head-shadow cone and count
       every lit direction under a lit model, whereas under a Studio rig brilliance
       is measured against that rig's own lamps. The Studio rig ignores the
-      observer. Radiances are chosen so
+      observer. The size of the head shadow is the <strong>Head shadow</strong> setting,
+      0&ndash;30&deg; (default 16&deg;, about a head at arm&rsquo;s length; 0 switches it off).
+      It changes the brilliance, windowing and extinction figures as well as the
+      picture, so a wider shadow lowers face-up brilliance; the Studio rigs, the UV
+      lamps, the contrast view and an HDR map ignore it. Radiances are chosen so
       that at exposure 1 the ambient terms land near middle grey after the ACES curve
       and only a direct reflection of a light source clips to white.
     </p>
@@ -304,18 +380,36 @@ delta = delta_p - delta_s</code></pre></div>
       weight, rather than waiting for a bounce to randomly find a bright pixel.
     </p>
     <p>
+      The main light is set by two angles. <strong>Light azimuth</strong> runs 0&ndash;360&deg;
+      (default 48&deg;) and <strong>light elevation</strong> 10&ndash;90&deg; (default 72&deg;).
+      They move the light tent&rsquo;s softbox (its black cards turn with it), the sun of the
+      direct-sun preset, the glow of the sky-only preset, the window of Window daylight and the
+      Studio key softbox. The Grading tray does not depend on them, since the whole hemisphere is
+      lit evenly, and an HDR map ignores them. <strong>Studio exposure</strong> scales the light
+      of every built-in preset from 0.4&times; to 2.5&times; (default 1&times;) and is likewise
+      not applied to an HDR map.
+    </p>
+    <p>
+      A <em>view</em> stores a lighting preset together with the light direction, the exposure and
+      the camera distance, and for some also the camera pose. Seven ship with the app: Studio
+      Softbox, Daylight Bright, Dramatic Spotlight, Light Tent, Grading tray (the camera looks
+      almost straight down, as a grader would), Daylight Sun and Window daylight (the window at
+      30&deg; elevation). Your own views are saved beside them, and each can be marked for the
+      export dialog so that one export renders the stone under several lightings.
+    </p>
+    <p>
       Separately from the environment, a <em>backdrop card</em> can be placed behind
       the stone: <code>BACKDROP_GREY</code> (0.23, tone-mapping to roughly sRGB 160) or
       <code>BACKDROP_WHITE</code> (8.0, a light box). Only the primary camera ray sees
       it — the stone's own optics never do — so light leaking through a window or a
       poorly-angled pavilion stays as dark as the real ground behind it instead of
-      picking up a glow the card would otherwise cast. Every render in figure 5 of the
-      <a href="index.html#renders">overview</a> sits on the grey card.
+      picking up a glow the card would otherwise cast. The six-material comparison in the
+      <a href="index.html#renders">overview&rsquo;s renders section</a> sits on the grey card.
     </p>
   </section>
 
   <section id="gpu-harness">
-    <h2><span class="sec-num">9</span>GPU equivalence harness</h2>
+    <h2><span class="sec-num">11</span>GPU equivalence harness</h2>
     <p>
       The optional GPU backend (<code>crates/indicatrix/src/renderer/gpu</code>) runs a hand-maintained
       WGSL port of the transport physics, not a compiled translation: the shader units under
@@ -351,7 +445,11 @@ delta = delta_p - delta_s</code></pre></div>
     <p>
       Every WGSL shader unit is also parsed with <code>naga</code> in
       <code>renderer/gpu/shader_validation_tests.rs</code>, independently of
-      the numerical comparisons above. The example harness can be run
+      the numerical comparisons above. A cross-backend merge test renders one
+      sample range on the CPU and the next on the GPU, merges them the
+      production way and checks the result statistically against an independent
+      CPU reference (<code>renderer/gpu/merge_tests.rs</code>; every backend drops
+      a non-finite sample but still counts it, under one shared rule). The example harness can be run
       locally against your own GPU adapter:
     </p>
     <div class="code-block"><pre><code>cargo run --profile probe -p indicatrix --features gpu --example gpu_equivalence_harness</code></pre></div>
@@ -362,7 +460,7 @@ delta = delta_p - delta_s</code></pre></div>
 <footer>
   <div class="container">
     <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
-    <p><a href="index.html">Overview</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+    <p><a href="index.html">Overview</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
   </div>
 </footer>
 

@@ -22,6 +22,7 @@
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
       <a href="gallery.html">Figures</a>
+      <a href="project.html">Project</a>
     </nav>
     <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
   </div>
@@ -80,7 +81,9 @@
       The sections follow the window. Sections 2 to 4 cover the library, the
       viewport and the tilt sweeps. Sections 5 to 10 cover the faceting CAD.
       Section 11 is the rough planner, sections 12 and 13 are the solid view and
-      export, and sections 14 and 15 cover the tutorials and the interface.
+      export, section 14 is the render queue, sections 15 and 16 cover the
+      tutorials and the interface, and section 17 covers installing the program
+      and the command-line tool.
     </p>
     <ul>
       <li><strong>Library and viewport</strong> (sections 2–4): a searchable
@@ -99,12 +102,18 @@
         stones from a modelled block, cylinder or pebble, or from an OBJ, STL or
         PLY mesh of a non-convex rough, keeping clear of its inclusions.</li>
       <li><strong>Solid view and export</strong> (sections 12–13): the Cut slider,
-        drag handles, Slice, the faceting diagram, finished-stone exports and the
-        file formats.</li>
-      <li><strong>Learning and interface</strong> (sections 14–15): 68 short
+        drag handles, Slice, the faceting diagram, the printable cutting sheet,
+        finished-stone exports and the file formats.</li>
+      <li><strong>Render jobs</strong> (section 14): a queue of still exports and
+        tilt videos that renders one job at a time while you work, with a script
+        export for rendering on another computer.</li>
+      <li><strong>Learning and interface</strong> (sections 15–16): 68 short
         tutorials, a &ldquo;Build this design&rdquo; lesson for any library
         design, a Simple and Advanced switch, preferences, a built-in manual and a
         command palette.</li>
+      <li><strong>Install and command line</strong> (section 17): installing with
+        Cargo, building from source, the log file, and the windowless
+        <code>indicatrix-cli</code>.</li>
     </ul>
     <p>
       The native design file keeps all of this. A design with parametric relations
@@ -117,9 +126,9 @@
       what the browser version has. The same engines also run without a window in
       the command-line tool <code>indicatrix-cli</code>
       (<code>apps/indicatrix-cli</code>), with the commands info, solve, metrics,
-      validate, optimize, retarget, sweep and export; see the
-      <a href="index.html#getting-started">overview page</a>. Some controls named
-      below are hidden in the Simple interface; section 15 says which.
+      validate, optimize, retarget, sweep, export, render and tilt-video; see
+      <a href="#install-cli">section 17</a>. Some controls named
+      below are hidden in the Simple interface; section 16 says which.
     </p>
   </section>
 
@@ -136,8 +145,16 @@
       confident round, triangle, square, hexagon, or octagon outline;
       elongated shapes such as oval, cushion, and emerald are not
       auto-detected and keep whatever label the source data or a manual edit
-      gives them. Import brings in single <code>.asc</code> files or entire
-      folders; the original file is preserved alongside the parsed schedule.
+      gives them. Import brings in single <code>.asc</code>, <code>.gem</code>
+      or <code>.gcs</code> files or entire folders (subfolders only when
+      <em>Include subfolders</em> is ticked before you choose the folder); the
+      original file is preserved alongside the parsed schedule. The import runs
+      in the background with a progress bar, a file that cannot be read is skipped
+      with the reader's own explanation while the rest of the folder still
+      imports, and a summary lists what was imported, skipped, replaced or
+      converted with notes. A <code>.gem</code> or <code>.gcs</code> is stored
+      with a generated <code>.asc</code> and the original attached (see
+      <a href="#export">section 13</a> for the formats).
     </p>
     <p>
       The <strong>Library</strong> menu holds the whole-library actions.
@@ -155,7 +172,7 @@
       button and in <strong>Library &rarr; Selected Design</strong>. They include
       generating previews and tilt curves, ignoring a design, excluding it from
       the Rough planner, and <strong>Build this design</strong>, which turns the
-      design into a step-by-step tutorial (<a href="#tutorials">section 14</a>).
+      design into a step-by-step tutorial (<a href="#tutorials">section 15</a>).
     </p>
     <p>
       Some things you make around a design are kept in the library, not in the
@@ -190,9 +207,11 @@
       cross-polarised look; built-in presets only, never the readouts), and
       custom HDR equirectangular environment maps, are all supported, along
       with live readouts of brilliance, fire, scintillation, windowing, and
-      extinction as the stone is orbited. The head-shadow slider, which darkens
-      the facets that would reflect the observer's own head, changes those
-      readouts as well as the picture under the lit models. If the optional GPU compute path
+      extinction as the stone is orbited. The head-shadow slider (0&ndash;30&deg;,
+      default 16&deg;, 0 is off), which darkens the facets that would reflect the
+      observer's own head, changes those readouts as well as the picture under the
+      lit models; the studio rigs, the UV lamps and an HDR map ignore it. The
+      Grading tray is the light the optimizer and Retarget score under. If the optional GPU compute path
       loses its device mid-session, the viewport re-acquires it once and
       retries the same frame; if that also fails it falls back to the CPU
       tracer for the rest of the session with a visible status message,
@@ -242,6 +261,22 @@
       colour of the metrics, the tilt curves, high-resolution exports, the tilt
       video and renders done by remote workers. A material that defines its own
       colour disables the button.
+    </p>
+    <p>
+      The same colour editor opens from two more places: <strong>Custom...</strong>
+      in the <em>Body Color</em> box of Design settings (the design's own colour,
+      applied in one undo step) and <strong>Pick...</strong> in the Material
+      Editor, where <em>Save</em> keeps the colour in a custom material. The
+      colour of a gem depends on the length of the light path, so the editor shows
+      what you chose as four swatches, at 3 mm, 5 mm, 10 mm and <em>This
+      stone</em> (the design's own size, 5 mm while no girdle diameter is set), and
+      the design keeps it as an absorption spectrum per millimetre: a larger stone
+      renders deeper and a smaller one lighter. A badge says
+      <em>Reachable</em> with the colour difference (Delta E) from your request, or
+      in amber that the colour is not fully reachable at this size and how far the
+      closest reachable colour is; very rich colours are not all reachable. A
+      custom material keeps its seven-band colour, and the web app has the same
+      editor.
     </p>
     <p>
       A design can also remember its lighting. <em>Use this lighting for this
@@ -521,10 +556,25 @@
       move every crown and pavilion angle by up to 3°, 6°, 10° or 15° from its
       Shift angle, tries 100, 300 or 800 trial stones (Quick, Normal or Thorough),
       and offers up to three valid options, scored under the Grading tray
-      whatever lighting the viewport shows. A crown handling control sets how much
-      of the pavilion shift the crown follows: a fraction, which is 0 % by default
-      and leaves the crown alone, or a scale by the ratio of the two critical
-      angles.
+      whatever lighting the viewport shows. The Crown Handling control (Advanced)
+      says how the crown follows the pavilion. By default <em>Crown follows the
+      pavilion</em>: a steeper or shallower pavilion makes the stone deeper or
+      shallower, and every crown angle is scaled by the same vertical stretch, so
+      the stone keeps its silhouette (crown height against pavilion depth) and its
+      table size. Switch that off to use a <em>Fraction of shift</em> slider
+      instead (0 % leaves the crown alone), or tick <em>Scale crown by ratio
+      instead</em> to scale every crown angle by the ratio of the two critical
+      angles, which wins over the other two.
+    </p>
+    <p>
+      <em>Keep the design's look</em> (Advanced, on by default) scores every
+      option, and the Shift start it is compared with, with a penalty for drifting
+      from the design's table size and its crown-to-pavilion ratio, so the search
+      prefers options that look like your stone; the verdict quotes the depth and
+      the ratio next to the old ones. Switched off, options are ranked by the
+      optical score and the yield alone. The search never lets a pavilion angle
+      fall below the target's critical angle plus the margin the design has now (at
+      most 2&deg;), so brilliance cannot be bought with a window.
     </p>
     <p>
       The table, the culet and the girdle never move. The table and culet are
@@ -830,10 +880,25 @@
       rig's own lamps and a small note says so.
     </p>
     <ul>
-      <li><strong>Objective.</strong> Five presets set four weights (windowing,
-        extinction, tilt brilliance and yield): Balanced, Brilliance, Low
-        windowing, Low extinction and Keep weight. Custom shows the weight
-        fields.</li>
+      <li><strong>Objective.</strong> Seven presets set the weights of windowing,
+        extinction, tilt brilliance, yield and tone: Balanced (1, 1, 1), Brilliance
+        (tilt brilliance 4), Low windowing (windowing 4), Low extinction
+        (extinction 4), Keep weight (yield 3), and the two tone goals below.
+        Custom shows the weight fields, the Yield weight slider (0 to 3) and the
+        Tone slider (&minus;3 to 3).</li>
+      <li><strong>Tone goals.</strong> <em>Lighten dark rough</em> looks for the
+        angles that return the lightest face-up colour (higher L*), for rough so
+        dark that the stone looks black. <em>Intensify pale rough</em> looks for
+        the strongest colour (higher C*), for pale material such as aquamarine.
+        The face-up tone is the colour of the light that comes back out of the
+        table, worked out from the body colour in Design settings and the light
+        path through it, under the lighting the Live Render shows when you press
+        Optimize; the UV presets use daylight. Set the girdle diameter so the colour
+        is sized as in the Live Render. The candidate list gains a Tone column (a
+        dot in the predicted colour and L*), the picked candidate shows before and
+        after swatches, and green marks the figure the chosen goal pulls on. A
+        material with no body colour gives the goal nothing to do, and a line
+        under the objective says so. The tone is measured table-up only.</li>
       <li><strong>What may change.</strong> A tier pinned to an exact scale value
         stays put unless <em>Vary anchored tiers</em> is ticked. Then the search
         may turn it about the edge where it meets the girdle, so the girdle
@@ -1264,7 +1329,7 @@
       and the Snap pill turns the snapping off. One drag is one undo step, and Esc
       during a drag puts the design back. The Diagram view has the same handles on
       its flat panels. A tier whose angle follows a relation has no angle handle.
-      The Larger handles preference (<a href="#interface">section 15</a>) makes the
+      The Larger handles preference (<a href="#interface">section 16</a>) makes the
       handles about 60 % bigger for touch screens and pens.
     </p>
     <p>
@@ -1323,13 +1388,223 @@
       <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>
       <dt>Max bounces</dt><dd>128 (<code>MAX_EXPORT_BOUNCES</code>)</dd>
       <dt>Colour spaces</dt><dd>sRGB, Display P3, Rec. 2020 (Display P3/Rec. 2020 exports embed an ICC profile so they aren't misread as sRGB)</dd>
-      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, native <code>.indicatrix</code> design file (self-contained text in TOML syntax with a versioned header; it carries descriptive metadata and non-derivable attachments such as a PDF or the original <code>.gem</code>, and derived values are recomputed on import; the file is version 1, or version 2 when the design has concave tiers (<a href="#concave">section 7</a>), or version 3 when it has parametric relations (<a href="#relations">section 6</a>); the older <code>.indicatrix.toml</code> sidecar still opens), 8-bit PNG renders. An <code>.asc</code> keeps a concave tier as two footnotes and writes a relation as the tier's current angle. Read, import and open: <code>.gem</code> (GemCAD's binary save format, geometry decoded) and <code>.gcs</code> (Gem Cut Studio), both converted to <code>.asc</code> cutting instructions. Write, experimental: <code>.gcs</code></dd>
+      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, the native <code>.indicatrix</code> design file, 8-bit PNG renders. Read and import: <code>.gem</code> and <code>.gcs</code>. Write, experimental: <code>.gcs</code>. <a href="#design-file-formats">Details below</a>.</dd>
     </dl>
     <p class="small">Constants from <code>apps/indicatrix-cut/src/bridge/export_thread/params.rs</code>.</p>
+    <p>
+      The master still is an 8-bit PNG. The export dialog can also render the stone
+      under several saved views in one export (<em>Also Render With These
+      Presets</em>), and an export can be added to the
+      <a href="#render-jobs">render queue</a> instead of starting at once.
+    </p>
+    <h3>The cutting sheet</h3>
+    <p>
+      The sheet follows the layout of a printed fantasy-cut page. From top to
+      bottom, a block with nothing to print is left out rather than filled with a
+      guess:
+    </p>
+    <ul>
+      <li><strong>Header.</strong> The title (or &ldquo;Cutting instructions&rdquo;),
+        an optional subtitle, &ldquo;by&rdquo; and the designer, and the month and
+        year of the export. The title comes from the file details stored in the
+        <code>.indicatrix</code> file, falling back to the <code>.asc</code> header
+        lines.</li>
+      <li><strong>Facet Data.</strong> Tiers and facets in the pavilion, girdle and
+        crown, and the totals. A tier without an index list is one facet, otherwise
+        one per index; a concave tier counts one per place the tool is used; the
+        culet counts as a pavilion facet, and a crown with a table reads
+        &ldquo;32+1&rdquo;.</li>
+      <li><strong>Size Data.</strong> L/W, H/W, V/W&sup3;, P/W, C/W and P/C to three
+        decimals, the same figures as the status bar and the yield report. A dash
+        means the design does not measure.</li>
+      <li><strong>Design Data.</strong> The refractive index with its material (a
+        question mark means the material is a guess from the index), or the RI
+        range and size range when the design gives one; then the symmetry
+        (&ldquo;8-fold, mirror&rdquo;), the gear (&ldquo;96 index&rdquo;) and the
+        shape, and the girdle diameter and carat estimate once a girdle diameter is
+        set.</li>
+      <li><strong>Views.</strong> Four drawings in two rows, labelled by viewing
+        direction: down +Z (the crown from above), down &minus;Z (the pavilion from
+        below), down +X (the profile) and down &minus;Y (the end).</li>
+      <li><strong>Comments.</strong> The design's notes and its <code>.asc</code>
+        footnotes.</li>
+      <li><strong>Pavilion and Crown tables.</strong> Step number, code, angle,
+        indices and instruction, then the mast, the mast in millimetres and the
+        cheater offset when the sheet carries them. Step numbers run on from the
+        Pavilion table into the Crown table, so they are the order you cut in.</li>
+    </ul>
+    <p>
+      The order and the labels are the same everywhere in the app (the sheet,
+      Cutting mode, the Cut slider and a Build this design lesson). Pavilion and
+      girdle tiers come first, then the crown, and the table is always last; a
+      concave tier is cut after the flat tiers of its side. A tier that meets a
+      facet cut later moves to just after the last facet it meets. Codes are
+      numbered separately for each letter in cutting order (P1, P2, &hellip; G1,
+      &hellip; C1, &hellip; T and Culet), angles are printed unsigned, and
+      positions are written with dashes and two digits (<code>96-08-16-24</code>,
+      <code>03.50</code> for a position between two teeth). The plain-text version
+      has the same blocks without the four drawings. The sheet always re-solves the
+      design fresh, because the masts it prints are what you set a mast gauge to.
+      <strong>Export Diagram (PNG)</strong> is one wide picture of the crown,
+      pavilion and profile panels, about 1800 &times; 720 pixels.
+    </p>
+    <h3 id="design-file-formats">Design file formats</h3>
+    <ul>
+      <li><strong>GemCAD <code>.asc</code></strong>: read and written, with CRLF line
+        ends as GemCAD writes them. A relation is exported as its current angle
+        and a concave tier as two footnotes in cutting order.</li>
+      <li><strong>Native <code>.indicatrix</code></strong>
+        (<code>crates/indicatrix-formats/src/native</code>): a self-contained text
+        file in TOML syntax with a versioned header, which still opens the older
+        <code>.indicatrix.toml</code> sidecar. It keeps constraints, preforms, tier
+        relations, concave tiers and a snapshot of a custom material, which a plain
+        <code>.asc</code> cannot hold. A file is written as version 2 only when it
+        has concave tiers and as version 3 only when a tier has a relation, so every
+        other file is unchanged and an older build refuses a version 3 file rather
+        than dropping the relations. It also carries descriptive metadata (title,
+        designer, source, notes, tags, licence, dates, an id) and attachments that
+        cannot be recomputed (a PDF, the original <code>.gem</code> or
+        <code>.asc</code>, a diagram image); derived values such as ratios, volume,
+        facet counts, the angle table, previews and tilt curves are recomputed on
+        import. Variants, cutting marks and per-design lighting are not in the file
+        (section 2).</li>
+      <li><strong>Gem Cut Studio <code>.gcs</code></strong>: opens and imports,
+        converted to <code>.asc</code> cutting instructions. The reader follows the
+        file description in that program's 1.1 manual (pp. 58&ndash;61) and reads
+        all 59 real files of its test corpus. Gem Cut Studio rescales its designs
+        to fill its workspace, so the converted masts are about 0.9 of what GemCAD
+        writes for the same design; the shape is identical. Anything the reader
+        does not recognise is listed in the import summary. The writer is
+        experimental: it follows the published description, has not been checked in
+        Gem Cut Studio itself, and chiral designs are untested.</li>
+      <li><strong>GemCAD <code>.gem</code></strong>: opens and imports, converted to
+        <code>.asc</code> cutting instructions. GemCAD's binary save format has no
+        published specification; the geometry (every facet plane, tier, name and
+        cutting note, plus gear, symmetry and refractive index) is decoded from the
+        binary and verified against a corpus of 254 files. A CAM preform in the file
+        is read but not converted, and the import summary says so.</li>
+    </ul>
+    <p>
+      Neither reader is affiliated with or endorsed by those tools' authors. The
+      <a href="comparison.html#interop">file-format table</a> sets the formats
+      side by side.
+    </p>
+  </section>
+
+  <section id="render-jobs">
+    <h2><span class="sec-num">14</span>Render jobs</h2>
+    <p>
+      Collect still pictures and tilt videos as render jobs, then let the program
+      render them one after another while you keep working, or overnight.
+      <strong>Add to Queue</strong> sits next to <em>Start Export</em> in the export
+      dialog and next to <em>Start Video Export</em> in the tilt dialog; it saves a
+      job and renders nothing yet, and the two buttons do not replace each other.
+    </p>
+    <h3>What a job keeps</h3>
+    <p>
+      A job keeps a frozen copy of everything it needs: the finished stone, the
+      material and its colour, the lighting, the camera, the size, the samples and
+      the other export settings, so changing the design afterwards does not change
+      what it renders. It does not freeze the remote worker: the address and
+      certificates are read from Settings when the job runs, and a job whose remote
+      is gone renders on this computer with a note. It does remember where to
+      render (local only, local and remote, or remote only) and the transfer. With
+      presets ticked under <em>Also Render With These Presets</em>, each picture is
+      its own job. The file name is fixed when you add the job, and &ldquo; (2)&rdquo;
+      is added if the name is taken by then; a date or time in the template is the
+      time of Add to Queue.
+    </p>
+    <h3>The Render Jobs window</h3>
+    <p>
+      Open it from <strong>File &rarr; Render Jobs...</strong> or from the
+      <strong>Jobs</strong> button at the top of the main window, which appears
+      while a job waits or runs (&ldquo;Jobs: 3 waiting&rdquo;, or &ldquo;Rendering
+      2 of 5 &middot; 42%&rdquo; with a progress bar). A row shows the number, name,
+      state (Queued, Running, Paused, Done, Failed, Cancelled), what it renders and
+      its progress. The list is kept in the library, so it survives a restart, and
+      closing the window does not stop a render.
+    </p>
+    <p>
+      <strong>Start Queue</strong> renders the waiting jobs from the top down, one
+      job at a time, and turns into <strong>Pause Queue</strong>. The queue never
+      starts by itself, not even when the program starts, and it stops when the last
+      waiting job is done. A row offers only the buttons that make sense for its
+      state: Run Next (moves it to the top without interrupting the running job),
+      Up and Down, Pause, Resume, Restart, Cancel, Show (opens the folder) and
+      Delete. <em>Clear Finished</em> removes Done and Cancelled jobs. Delete and
+      Clear Finished never delete pictures, videos or frames, only the list entry.
+    </p>
+    <h3>Pausing works frame by frame</h3>
+    <p>
+      A paused <em>still</em> starts again from the beginning when resumed. A
+      paused <em>tilt video</em> keeps every finished frame and resumes at its first
+      unfinished frame in the same folder; the video file is made once all frames
+      exist, and the frames stay on disk (at large sizes, many gigabytes) until the
+      job is finished or you delete the folder. <em>Restart</em> throws the frames
+      away and starts at frame one. If you close the program while a job renders, it
+      asks first and the job waits as Paused; after a crash or power cut the job is
+      found as Paused with a note, and at most one frame is rendered twice. Only one
+      job renders at a time, though a picture exported directly from the dialog can
+      render alongside it, with both slower. An HDR map must stay where it was and
+      unchanged until its job has rendered.
+    </p>
+    <h3>Exporting a script</h3>
+    <p>
+      <strong>Export Script...</strong> writes the unfinished jobs, in queue order,
+      to a new folder named <code>render-jobs-</code> with the date and time, so
+      nothing is overwritten. You choose PowerShell (<code>.ps1</code>), shell
+      (<code>.sh</code>) or both, whether to render on this computer or on this
+      computer and the remote worker, and whether the finished files go into the
+      script folder. The folder holds <code>run-render-jobs.ps1</code> and
+      <code>run-render-jobs.sh</code>, a <code>jobs/</code> folder with one job file
+      per job (and <code>assets/</code> with any HDR maps) and, if chosen,
+      <code>renders/</code>. Copy it to the computer that should render and run
+      <code>powershell -ExecutionPolicy Bypass -File run-render-jobs.ps1</code> or
+      <code>sh run-render-jobs.sh</code>. The script calls
+      <code>indicatrix-cli</code> once per job (set <code>INDICATRIX_CLI</code> to
+      its full path if it is not on the PATH), the engines, remote address and
+      certificate folder can be changed at the top of the script, and a tilt video
+      that stopped part way continues where it stopped.
+    </p>
+    <h3>Running a job file by hand</h3>
+    <p>
+      A job is a <code>*.job.json</code> file. <code>indicatrix-cli render
+      FILE.job.json</code> renders a still and <code>indicatrix-cli tilt-video
+      FILE.job.json</code> renders a tilt video; a file of the other kind is
+      refused. Both use the program's own render engine, so the picture is the one
+      the program would have made.
+    </p>
+    <table>
+      <thead><tr><th>Option</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>--local cpu|gpu|cpu+gpu</code></td><td>Engines of this computer; the default is <code>cpu+gpu</code>. Without GPU support in the build everything renders on the processor and a note says so.</td></tr>
+        <tr><td><code>--remote HOST:PORT</code> with <code>--cert-dir FOLDER</code></td><td>Also use a remote worker; the two go together.</td></tr>
+        <tr><td><code>--compute local|remote|both</code></td><td>Replace the job's own choice; <code>remote</code> and <code>both</code> need <code>--remote</code>.</td></tr>
+        <tr><td><code>--transfer full|final</code>, <code>--contribute-local</code></td><td>Replace the transfer choice; with <code>final</code>, this computer renders a share too.</td></tr>
+        <tr><td><code>--out FILE.png</code> / <code>--out-dir FOLDER</code></td><td><code>render</code> only: another picture path. <code>tilt-video</code> only: another frame folder.</td></tr>
+        <tr><td><code>--restart</code>, <code>--quiet</code></td><td><code>tilt-video</code> only: start again from the first frame (a video resumes by default). No progress lines; notes and errors still print.</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Standard output is one line, the path of the finished file (for a video the MP4
+      or GIF, or the frame folder when no video could be made); progress, notes and
+      <code>wrote PATH</code> go to standard error. Exit codes: 0 done, 1 wrong
+      command line or the other kind of job file, 2 a job file that cannot be used
+      (not a job file, a newer version, an invalid value, an HDR map that is missing
+      or changed, a frame folder that belongs to another job), 3 a file could not be
+      read or written, 5 the render failed or was stopped.
+    </p>
+    <p>
+      A render done only on the CPU, or only on the GPU of one computer, gives the
+      same picture every time. One that splits its work between the CPU and the
+      GPU, or uses a remote worker, is the same only statistically: the samples are
+      shared by measured speed, so the noise differs a little between runs, and both
+      pictures are equally correct.
+    </p>
   </section>
 
   <section id="tutorials">
-    <h2><span class="sec-num">14</span>Tutorials and guided lessons</h2>
+    <h2><span class="sec-num">15</span>Tutorials and guided lessons</h2>
     <p>
       <strong>Help &rarr; Tutorials...</strong> opens the tutorial browser.
       Tutorials are grouped in sections (Getting started, Tiers, Solving,
@@ -1396,7 +1671,7 @@
   </section>
 
   <section id="interface">
-    <h2><span class="sec-num">15</span>Interface: Simple and Advanced, preferences, help</h2>
+    <h2><span class="sec-num">16</span>Interface: Simple and Advanced, preferences, help</h2>
     <h3>Simple and Advanced</h3>
     <p>
       One switch, the <strong>Simple | Advanced</strong> pill at the top left of
@@ -1469,12 +1744,144 @@
       showing its reason; the Preferences dialog. -->
   </section>
 
+  <section id="install-cli">
+    <h2><span class="sec-num">17</span>Install, build and the command line</h2>
+    <p>
+      The browser version needs no installation (see the
+      <a href="web.html">web app page</a>). For the design library, GPU and remote
+      rendering, download the desktop application from the
+      <a href="index.html#downloads">downloads</a> section of the overview, or
+      install or build it with Cargo as below. Then start with the
+      <a href="https://github.com/suitable-name/indicatrix/tree/main/apps/indicatrix-cut/docs/manual">user manual</a>.
+      Windows, Linux and macOS are tested.
+    </p>
+    <h3>Install with Cargo</h3>
+    <p>
+      The workspace uses Rust edition 2024 and needs <code>rust-version = "1.95"</code>
+      or newer (workspace <code>Cargo.toml</code>), so install Rust with rustup and
+      run <code>rustup update stable</code>. On Linux and macOS the installer is
+      <code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh</code>; on
+      Windows use <code>winget install --id Rustlang.Rustup</code> or
+      <code>rustup-init.exe</code> from rustup.rs, whose installer also offers to set
+      up the MSVC C++ build tools.
+    </p>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal — install from crates.io</span><button class="copy-btn">Copy</button></div>
+      <pre><code><span class="cmt"># CPU-only build</span>
+cargo install indicatrix-cut
+
+<span class="cmt"># with the GPU path-tracing backend</span>
+cargo install indicatrix-cut --features gpu
+
+<span class="cmt"># then start it (HDR environment-map loading is always included)</span>
+indicatrix-cut
+
+<span class="cmt"># optional: the coordinator / remote render worker</span>
+cargo install indicatrix-worker --features worker</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal — build from source</span><button class="copy-btn">Copy</button></div>
+      <pre><code>git clone https://github.com/suitable-name/indicatrix.git
+cd indicatrix
+cargo run -p indicatrix-cut --release
+
+<span class="cmt"># with the GPU compute kernel</span>
+cargo run -p indicatrix-cut --release --features gpu</code></pre>
+    </div>
+    <p>
+      The repository's own build scripts (<code>scripts/pgo-build.ps1</code>,
+      <code>scripts/pgo-bolt-build.sh</code>) make the Windows and Linux builds; on
+      macOS, install with Cargo. Every crate's crates.io and docs.rs pages are
+      listed in the <a href="index.html#workspace">workspace table</a>, and the
+      renderer library's API reference is
+      <a href="https://docs.rs/indicatrix">docs.rs/indicatrix</a>. The remote worker
+      quick start and the headless <code>indicatrix-worker render</code> command are
+      on the <a href="distributed.html#cluster-setup">distributed rendering page</a>.
+    </p>
+    <p>
+      The desktop app writes a log file (<code>indicatrix-cut.log</code>, next to the
+      executable, falling back to the temp directory) for diagnosing a
+      background-thread failure. Verbosity follows <code>RUST_LOG</code>, defaulting
+      to <code>warn</code> everywhere and <code>info</code> for
+      <code>indicatrix</code> and <code>indicatrix_cut</code>
+      (<code>apps/indicatrix-cut/src/main.rs</code>). The library is a local
+      database file, <code>facet_diagrams.sqlite</code>, opened relative to the folder
+      the program is started from: starting it from another folder opens (or creates)
+      a different, empty-looking library. Settings are saved automatically to
+      <code>settings.toml</code> (in <code>%APPDATA%\indicatrix-cut</code> on Windows,
+      <code>~/Library/Application Support/indicatrix-cut</code> on macOS, and
+      <code>$XDG_CONFIG_HOME/indicatrix-cut</code> or <code>~/.config/indicatrix-cut</code>
+      on Linux); a damaged file is renamed aside and the defaults are used.
+    </p>
+    <h3>The command-line tool</h3>
+    <p>
+      <code>indicatrix-cli</code> runs the same solver, optimizer, retarget gate and
+      sweep as the editor without a window or a GPU, so a number printed there is
+      the number the editor shows. A design is a <code>.indicatrix</code>,
+      <code>.asc</code>, <code>.gem</code> or <code>.gcs</code> file, read from its
+      extension.
+    </p>
+    <table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>info</code></td><td>Name, gear, symmetry, preform, material and the tier list, with each tier's standard code. Does not solve.</td></tr>
+        <tr><td><code>solve</code></td><td>Solves every tier, checks that the facets enclose a stone and lists the manufacturability warnings; <code>--out</code> saves a <code>.indicatrix</code>, which also converts an <code>.asc</code>, <code>.gem</code> or <code>.gcs</code>.</td></tr>
+        <tr><td><code>metrics</code></td><td>Table-up windowing, brilliance, extinction, fire and scintillation, the proportions and the yield; <code>--tilt</code> adds the tilt averages.</td></tr>
+        <tr><td><code>validate</code></td><td>The warnings and the Good, Check or Problem verdict of the status strip.</td></tr>
+        <tr><td><code>optimize</code></td><td>The Optimize tab's search, with ranked candidates; <code>--budget</code> (default 800), <code>--starts</code> (1 to 32, default 8), <code>--seed</code>, <code>--preset</code>; <code>--out</code> saves the best.</td></tr>
+        <tr><td><code>retarget</code></td><td>The Retarget dialog's engine and validity gate for another material (<code>--mode shift|optimize</code>, <code>--crown-fraction</code>, <code>--crown-ratio</code>, <code>--no-keep-look</code>).</td></tr>
+        <tr><td><code>sweep</code></td><td>Sets one tier to every angle of a range and scores each one (<code>--csv</code>).</td></tr>
+        <tr><td><code>export</code></td><td>Writes <code>.asc</code>, <code>.indicatrix</code>, <code>.gcs</code> or the cutting sheet as <code>.html</code>.</td></tr>
+        <tr><td><code>render</code>, <code>tilt-video</code></td><td>Render a job file made by the render queue (<a href="#render-jobs">section 14</a>).</td></tr>
+      </tbody>
+    </table>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal — command-line tool (no window)</span><button class="copy-btn">Copy</button></div>
+      <pre><code><span class="cmt"># from a clone of the repository (an installed binary is just: indicatrix-cli info round.asc)</span>
+cargo run -p indicatrix-cli --release -- info round.asc
+cargo run -p indicatrix-cli --release -- solve round.asc --out round.indicatrix
+cargo run -p indicatrix-cli --release -- metrics round.indicatrix --material Sapphire --json
+cargo run -p indicatrix-cli --release -- validate round.asc --json
+cargo run -p indicatrix-cli --release -- optimize round.indicatrix --preset brilliance --budget 400 --starts 4 --seed 7 --out better.indicatrix
+cargo run -p indicatrix-cli --release -- retarget round.indicatrix --material Sapphire --crown-fraction 0.33 --out sapphire.indicatrix
+cargo run -p indicatrix-cli --release -- sweep round.indicatrix --tier "Pavilion Main" --from 39 --to 43 --step 0.5 --csv sweep.csv
+cargo run -p indicatrix-cli --release -- export round.indicatrix --format html --out sheet.html
+
+<span class="cmt"># every command has its own help page</span>
+cargo run -p indicatrix-cli --release -- retarget --help</code></pre>
+    </div>
+    <p>
+      Angles are positive numbers, as the tier table shows them: the tier says which
+      side of the girdle it is on, and a sign in front is ignored. Text reports and
+      CSV print every angle unsigned, whereas <code>--json</code> keeps the signed
+      convention of the design files, in which a pavilion angle is negative. A tier is
+      named by its name (<code>P1</code>, <code>G1/G2</code>) or by <code>#N</code>,
+      the Nth row of the tier list. <code>--material NAME</code> is a built-in or a
+      custom material (from <code>--db FILE</code>, a design library that is opened
+      read-only, or carried by the design file), <code>--ri N</code> a bare flat
+      refractive index, and <code>--lighting NAME</code> chooses the light the score
+      is taken under (the Grading tray by default).
+    </p>
+    <p>
+      Exit code 0 means done, 1 a wrong command line, 2 a design that cannot be used
+      or a result that was refused (nothing is written), 3 a file that could not be
+      read or written, 4 a <code>validate</code> verdict of Problem and 5 a failed or
+      stopped render. A file named by <code>--out</code> is written only when the
+      command succeeds. Text, JSON and CSV output are deterministic: the same command
+      on the same files prints the same bytes, and the result of <code>optimize</code>
+      does not depend on the number of processor cores. <code>retarget</code> accepts
+      only a Valid result, since a command line has nobody to look at the stone.
+      <code>.gcs</code> export is experimental, as in the editor.
+      The tool lives in <code>apps/indicatrix-cli</code>.
+    </p>
+  </section>
+
 </main>
 
 <footer>
   <div class="container">
     <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
   </div>
 </footer>
 
