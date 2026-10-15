@@ -18,6 +18,7 @@
       <a href="physics.html">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
       <a href="web.html">Web app</a>
+      <a href="mobile.html">Mobile app</a>
       <a href="materials.html">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -54,7 +55,9 @@
         different gem materials render the same cut, and to produce
         reference-quality still renders. Designs come from GemCAD-style
         <code>.asc</code> cutting instructions or from Indicatrix's own faceting
-        editor.
+        editor. Besides the desktop studio there is a <a href="web.html">web app</a>
+        for the browser and an <a href="mobile.html">Android app</a> for phones and
+        tablets (not in an app store yet; built from source for now).
       </p>
       <p>
         <strong>Status:</strong> the renderer is usable today. The faceting CAD
@@ -87,7 +90,7 @@
       </a>
       <a class="card" href="materials.html">
         <h3>Materials</h3>
-        <p>32 built-in gem materials with dispersion data, plus custom materials and custom colours.</p>
+        <p>34 built-in gem materials with dispersion data, one of them color zoned, plus custom materials and custom colours.</p>
       </a>
       <a class="card" href="distributed.html">
         <h3>Distributed rendering</h3>
@@ -96,6 +99,18 @@
       <a class="card" href="web.html">
         <h3>Web app</h3>
         <p>Open, edit and render a design in the browser with nothing to install.</p>
+      </a>
+      <a class="card" href="mobile.html">
+        <h3>Mobile app</h3>
+        <p>A touch-first Android app for phones and tablets. Not in an app store yet; build it and try it today.</p>
+      </a>
+      <a class="card" href="editor.html#rough-color">
+        <h3>Rough color and zoning</h3>
+        <p>Take the color of a piece of rough, and its color zones, from backlit photos, and carry it into the planner and the render.</p>
+      </a>
+      <a class="card" href="editor.html#cutting-mode">
+        <h3>Cutting mode and tutorials</h3>
+        <p>The cutting instructions one step per page for the bench, and 68 short tutorials, one for each CAD function.</p>
       </a>
     </div>
   </section>
@@ -180,7 +195,7 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_studio_main.jpg">
-        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1081" alt="Indicatrix studio main window: design library and path-traced live render" loading="lazy">
+        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1080" alt="Indicatrix studio main window: design library and path-traced live render" loading="lazy">
       </a>
       <figcaption>Fig. 5 — The studio: design library and live spectral viewport.</figcaption>
     </figure>
@@ -208,7 +223,7 @@
       step-by-step cutting mode for the bench and 68 short tutorials are built
       around it. The printable cutting sheet lists the facets in cutting order
       with positive angles, and a design can be exchanged as GemCAD
-      <code>.asc</code>, Indicatrix's own <code>.indicatrix</code>, and
+      <code>.asc</code>, Indicatrix's own <code>.isdd</code>, and
       <code>.gem</code> or <code>.gcs</code> files from GemCAD and Gem Cut Studio.
     </p>
     <p>
@@ -218,8 +233,8 @@
       without a window in <code>indicatrix-cli</code>.
     </p>
     <figure class="fig">
-      <a href="assets/images/fig_cad_edit.png">
-        <img src="assets/images/fig_cad_edit.png" width="1800" height="1191" alt="Edit mode: solid view with a selected facet, tier table and tier inspector" loading="lazy">
+      <a href="assets/images/fig_cad_edit.jpg">
+        <img src="assets/images/fig_cad_edit.jpg" width="1800" height="1080" alt="Edit mode: solid view with a selected facet, tier table and tier inspector" loading="lazy">
       </a>
       <figcaption>Fig. 6 — Editing tier angles and constraints in the cutting instructions.</figcaption>
     </figure>
@@ -229,12 +244,13 @@
   <section id="materials">
     <h2><span class="sec-num">6</span>Materials</h2>
     <p>
-      32 built-in gem materials, each with a dispersion fit either taken from
+      34 built-in gem materials, each with a dispersion fit either taken from
       the optics literature or derived from corroborating gemological
-      references. You can add your own, with Sellmeier or Cauchy coefficients
-      that are validated before use, and give any stone a custom colour by
-      tone, saturation and hue. The same list is offered by the renderer and the
-      CAD editor.
+      references. One of them, Ametrine, is color zoned: an amethyst half and a
+      citrine half in one stone. You can add your own, with Sellmeier or Cauchy
+      coefficients that are validated before use, and give any stone a custom
+      colour by tone, saturation and hue. The same list is offered by the
+      renderer and the CAD editor.
     </p>
     <p class="more"><a href="materials.html">The dispersion chart, the full table and custom materials</a></p>
   </section>
@@ -383,6 +399,11 @@
       </p>
     </div>
     <p>
+      There is no download for the <a href="mobile.html">Android app</a> yet:
+      it is not in an app store, and you build it from source and install it
+      on your own device (or run it in a desktop window).
+    </p>
+    <p>
       Every release, with its notes and all of its builds, is on the
       <a href="https://github.com/suitable-name/indicatrix/releases">releases page</a>.
       Go there for the builds optimised for newer processors, or to see what
@@ -400,7 +421,10 @@
       (see the <a href="web.html">web app page</a> for what it can do). For the
       design library, the GPU and remote rendering, download the desktop
       application from the <a href="#downloads">downloads</a> section, or install
-      it with Cargo.
+      it with Cargo. On an Android phone or tablet, the
+      <a href="mobile.html">mobile app</a> is built from source for now:
+      the page lists the steps, and a one-line command runs the same interface
+      in a desktop window.
     </p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — install from crates.io</span><button class="copy-btn">Copy</button></div>
@@ -425,7 +449,8 @@ indicatrix-cut</code></pre>
       licensed. The renderer (<code>indicatrix</code>), the editor core, the file
       formats, the design library and the network protocol are published
       libraries on crates.io; the desktop studio, the coordinator and worker,
-      the command-line tool and the browser build are the applications on top.
+      the command-line tool, the browser build and the Android app (built from
+      source, not published) are the applications on top.
     </p>
     <p class="more"><a href="project.html#workspace">Every crate, with its description and registry links</a></p>
   </section>
@@ -434,10 +459,9 @@ indicatrix-cut</code></pre>
     <h2><span class="sec-num">11</span>Roadmap</h2>
     <p>Planned, not implemented, and with no dates:</p>
     <ul>
-      <li>Colour of the render taken from a photograph of the rough.</li>
       <li>Overlays in the render that mark windowing, extinction, brilliance and fire.</li>
       <li>GPU rendering in the browser, if a browser-sized kernel proves possible.</li>
-      <li>A phone and tablet client, with rendering on a coordinator.</li>
+      <li>Rendering on a coordinator from the phone and tablet app, and an app-store release of it.</li>
       <li>More interface languages, and design libraries in MySQL or PostgreSQL.</li>
     </ul>
     <p class="more"><a href="project.html#roadmap">The roadmap in full, with what each item builds on</a></p>
@@ -448,8 +472,9 @@ indicatrix-cut</code></pre>
     <ul>
       <li>The faceting CAD is beta and its interaction model is still changing: check a design against an established CAD before you cut it.</li>
       <li>The browser build renders on the CPU, keeps a design only for the life of the tab, and has no design library, remote rendering, Deep Solve, tutorials, cutting mode or concave tools.</li>
+      <li>The Android app is built from source and is not in an app store. It traces on the device's processor only, with no remote or GPU rendering, and it lacks the optimizer, Retarget, the Rough planner, history and variants, concave editing, tutorials and help.</li>
       <li>The GPU path needs a wgpu adapter with enough storage buffers; otherwise rendering falls back to the CPU.</li>
-      <li>Concave stones, and scenes lit by a UV lamp preset, are always traced on the CPU, so they render slower.</li>
+      <li>Concave stones are always traced on the CPU, so they render slower.</li>
       <li>For concave tiers the optimizer and the angle sweep score the flat stone.</li>
       <li>The Rough planner reads OBJ, STL and PLY meshes up to 64 MiB, repairs small defects, and falls back to a convex outline for very heavy, open or self-crossing meshes; a smooth scan that is too heavy is refused.</li>
       <li>Inclusions are not yet available on block, cylinder or pebble roughs.</li>
@@ -463,7 +488,7 @@ indicatrix-cut</code></pre>
 <footer>
   <div class="container">
     <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
-    <p><a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
+    <p><a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>
 

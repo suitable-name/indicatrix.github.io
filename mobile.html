@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile app — Indicatrix</title>
+<meta name="description" content="Indicatrix for Android: a touch-first phone and tablet app with a design library, a faceting editor, solid, diagram and CPU-traced render views and a cutting mode. Not in an app store yet, but you can build it and try it today.">
+<link rel="icon" type="image/png" href="assets/images/icon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="physics.html">Physics</a>
+      <a href="editor.html">Studio &amp; CAD</a>
+      <a href="web.html">Web app</a>
+      <a href="mobile.html" aria-current="page">Mobile app</a>
+      <a href="materials.html">Materials</a>
+      <a href="comparison.html">Comparison</a>
+      <a href="distributed.html">Distributed</a>
+      <a href="gallery.html">Figures</a>
+      <a href="project.html">Project</a>
+    </nav>
+    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="page-head">
+    <span class="tag">Android application</span>
+    <h1>Indicatrix on a phone or tablet</h1>
+    <p class="subtitle">Browse a design library, edit and solve a faceting design, look at it as a solid, a diagram and a render, and follow the cutting instructions at the machine, all with touch.</p>
+  </div>
+
+  <div class="status">
+    <span class="status-label">NOT IN THE APP STORES YET</span>
+    <p>
+      The Android app is not in an app store yet: there is no Google Play
+      listing. You can try it today all the same. Build it and install it on
+      your own Android phone or tablet (section 5), or run the same interface
+      in a desktop window with one command, no device needed. It is built from
+      source for now, and it is a smaller program than the desktop studio:
+      section 3 lists what only the desktop does.
+    </p>
+  </div>
+
+  <section id="what">
+    <h2><span class="sec-num">1</span>What it is</h2>
+    <p>
+      The mobile app is Indicatrix with an interface made for fingers. It is a
+      <a href="https://slint.dev">Slint</a> user interface
+      (<code>apps/indicatrix-mobile-android</code>) over
+      <code>indicatrix-mobile-core</code>, a core with no interface toolkit and
+      no Android code in it. That core uses the same editor session, meet-point
+      solver and spectral path tracer as the desktop studio and the
+      <a href="web.html">web app</a>, so a design solves and renders the same
+      way on all three, and the apps open the same files.
+    </p>
+    <p>
+      The app has four places, in a bar at the bottom of a phone (a rail at the
+      side of a tablet): <strong>Library</strong>, <strong>Design</strong>,
+      <strong>Cut</strong> and <strong>More</strong>. It works on your own
+      device. The designs, the library and the settings stay on it, and
+      the render is traced on its processor.
+    </p>
+    <figure class="fig">
+      <div class="fig-grid-auto" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))">
+        <a href="assets/images/fig_mobile_phone_library.png"><img src="assets/images/fig_mobile_phone_library.png" width="780" height="1600" alt="The Library page on a phone: search field, filter chips and design cards" loading="lazy"></a>
+        <a href="assets/images/fig_mobile_phone_design_solid.png"><img src="assets/images/fig_mobile_phone_design_solid.png" width="780" height="1600" alt="The Design page on a phone, Solid view" loading="lazy"></a>
+        <a href="assets/images/fig_mobile_phone_design_diagram.png"><img src="assets/images/fig_mobile_phone_design_diagram.png" width="780" height="1600" alt="The Design page on a phone, Diagram view" loading="lazy"></a>
+        <a href="assets/images/fig_mobile_phone_design_render.png"><img src="assets/images/fig_mobile_phone_design_render.png" width="780" height="1600" alt="The Design page on a phone, Render view" loading="lazy"></a>
+        <a href="assets/images/fig_mobile_phone_tiers_sheet.png"><img src="assets/images/fig_mobile_phone_tiers_sheet.png" width="780" height="1600" alt="The Design page on a phone with the Tiers tab open under the Solid view" loading="lazy"></a>
+      </div>
+      <figcaption>Fig. 1 &mdash; The phone app, in reading order: the Library, the Design page in its Solid, Diagram and Render views, and the Tiers tab under the Solid view. Screenshots of the desktop preview at 390 &times; 800.</figcaption>
+    </figure>
+  </section>
+
+  <section id="can">
+    <h2><span class="sec-num">2</span>What it can do</h2>
+    <dl class="deflist">
+      <dt>Library</dt>
+      <dd>A searchable local library of designs, as a grid of cards or a list, with filters for shape, index gear, refractive index, your own designs and tags, a sort order, and an option to show the designs you ignored. Import <code>.isdd</code>, <code>.asc</code>, <code>.gem</code> and <code>.gcs</code> files (single files or a folder), tag, share or delete several at once.</dd>
+
+      <dt>Designs</dt>
+      <dd>Start a new design from a template or a blank preform (round, oval, square or rectangle, with a gear, a symmetry order, a material and a stone width). Open an <code>.isdd</code>, <code>.indicatrix</code>, <code>.asc</code>, <code>.gem</code> or <code>.gcs</code> file. Save to the library or to a file, save a copy, share the design, and export or share the cutting schedule as a GemCAD <code>.asc</code> file. Undo and redo are in the top bar.</dd>
+
+      <dt>Editing tiers</dt>
+      <dd>The Tiers tab lists every tier with its angle, name, indices and its margin over the critical angle. Add a tier or use Quick Add for a table, girdle or culet; change an angle with a keypad, a slider or small steps from 0.01&deg; to 1&deg;; edit the name and the indices (add an index, turn all of them by one tooth, mirror them, complete an orbit); see what a tier meets and adopt a meet that an imported file stated; duplicate, reorder or delete a tier; select several tiers and nudge them together. Designs solve in the background, and the status chip shows the result.</dd>
+
+      <dt>Handles and Slice</dt>
+      <dd>In the Solid view, drag the angle and index handles of a selected facet, or switch to Slice and cut a new facet by dragging a line across the stone (Keep, Flip, Discard and Symmetric choose what happens to the cut). A Snap switch, also in Preferences, snaps a dragged angle to the index gear. Preset views (Front, Top, Bottom, Left, Right), Fit and Reset move the camera.</dd>
+
+      <dt>Views</dt>
+      <dd>The Solid view, the Diagram view (crown, pavilion and profile panels) and the Render view, a progressive path-traced picture on the device's processor, with Pause, a Light switch that makes a drag move the light, a quality step (Draft, Normal or Fine), Denoise and Export. Export Picture saves or shares a PNG at a size, a sample count and a color space (sRGB or Display P3) that you pick, up to limits set in the app's settings (1024 pixels on the long edge and 256 samples per pixel by default).</dd>
+
+      <dt>Stone and light</dt>
+      <dd>The Stone tab picks the material from the built-in list, sets a refractive-index override, a body color and the stone width, the inclusion haze, a frosted girdle, edge rounding and the crystal axis, and makes a custom material of your own. The Light tab picks a lighting rig, loads an HDR environment map, sets the light azimuth and elevation, the exposure, the backdrop, the surface glare and the head shadow.</dd>
+
+      <dt>Checks</dt>
+      <dd>The Checks tab gives the verdict (Good, Check or Problem), lists the warnings with a Show button and, where the shared code has a safe one, a Fix button; it shows the proportions, the preform fields and the yield figures, measures brilliance, fire, scintillation, windowing and extinction on demand, and opens the tilt curves (brilliance, windowing and extinction as the stone tips, on four axes, with Copy Data).</dd>
+
+      <dt>Cutting</dt>
+      <dd>The Cut page lists the cutting instructions in cutting order, with a progress card, the faceting diagram, and buttons to share or print the cutting sheet and to share the diagram. Start Cutting opens cutting mode, one step per page with the angle in large figures, the index chips, the stone after the step and the index wheel; the done marks are kept on the device and Reset Progress clears them.</dd>
+
+      <dt>Preferences</dt>
+      <dd>A theme, larger drag handles, snapping to the gear, and a battery saver that renders at Draft quality with two worker threads. The render also watches the device's thermal state and the battery and lowers its work when needed.</dd>
+    </dl>
+    <figure class="fig">
+      <div class="fig-grid-auto" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))">
+        <a href="assets/images/fig_mobile_phone_stone.png"><img src="assets/images/fig_mobile_phone_stone.png" width="780" height="1600" alt="The Stone tab on a phone" loading="lazy"></a>
+        <a href="assets/images/fig_mobile_phone_light.png"><img src="assets/images/fig_mobile_phone_light.png" width="780" height="1600" alt="The Light tab on a phone" loading="lazy"></a>
+        <a href="assets/images/fig_mobile_phone_checks.png"><img src="assets/images/fig_mobile_phone_checks.png" width="780" height="1600" alt="The Checks tab on a phone with a verdict and a warning" loading="lazy"></a>
+        <a href="assets/images/fig_mobile_phone_cut.png"><img src="assets/images/fig_mobile_phone_cut.png" width="780" height="1600" alt="The Cut page on a phone" loading="lazy"></a>
+        <a href="assets/images/fig_mobile_phone_more.png"><img src="assets/images/fig_mobile_phone_more.png" width="780" height="1600" alt="The More page on a phone" loading="lazy"></a>
+      </div>
+      <figcaption>Fig. 2 &mdash; The Stone, Light and Checks tabs of the Design page, then the Cut page and the More page, which holds file actions and Preferences.</figcaption>
+    </figure>
+  </section>
+
+  <section id="cannot">
+    <h2><span class="sec-num">3</span>What only the desktop does</h2>
+    <p>
+      The mobile app is a smaller program than the desktop studio. These are the
+      differences as of today; each one was checked against the mobile crates.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Feature</th><th>Mobile app</th><th>Desktop app</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Remote rendering and a remote library</td>
+          <td>No. More &rarr; Remote is a placeholder page that says it arrives in a later version. The render is traced on the device only.</td>
+          <td>Hand sample tracing to a coordinator or render worker, and browse its catalogue (<a href="distributed.html">distributed page</a>).</td>
+        </tr>
+        <tr>
+          <td>GPU rendering</td>
+          <td>No. The render runs on the device's processor, on up to six worker threads (two in battery saver).</td>
+          <td>The GPU compute path, when the machine has a suitable adapter.</td>
+        </tr>
+        <tr>
+          <td>Optimize, Retarget, Deep Solve and angle sweeps</td>
+          <td>No.</td>
+          <td>The optimizer with ranked candidates, Retarget for another material, Deep Solve and Angle Sweep (<a href="editor.html#preforms-optimizer">studio page</a>).</td>
+        </tr>
+        <tr>
+          <td>Rough planner and rough color</td>
+          <td>No.</td>
+          <td>Plan stones from a block, pebble or scanned rough, and take the color of the rough from photos (<a href="editor.html#rough-planner">studio page</a>).</td>
+        </tr>
+        <tr>
+          <td>Concave tiers</td>
+          <td>Listed with their tool line and shown in the cutting rows, but edited only on the desktop.</td>
+          <td>Cylinder, cone, circle, disc and sphere tools (<a href="editor.html#concave">studio page</a>).</td>
+        </tr>
+        <tr>
+          <td>History, variants and snapshots</td>
+          <td>No. Undo and redo only.</td>
+          <td>A History tab with a picture of every step, named variants and a compare window (<a href="editor.html#history-variants">studio page</a>).</td>
+        </tr>
+        <tr>
+          <td>Tutorials, manual and help</td>
+          <td>No. More &rarr; Help is a placeholder page for a later version.</td>
+          <td>68 short tutorials, Build this Design, the manual built into the program, and a command palette.</td>
+        </tr>
+        <tr>
+          <td>Tilt video, render jobs and large stills</td>
+          <td>No. One still at a time, as a PNG, up to the limits in the app's settings. The tilt curves themselves are there.</td>
+          <td>Tilt video export, a queue of render jobs, and stills up to 8192 &times; 8192 pixels.</td>
+        </tr>
+        <tr>
+          <td>Command-line tool</td>
+          <td>No. It is a separate program.</td>
+          <td><code>indicatrix-cli</code> (<a href="index.html#getting-started">getting started</a>).</td>
+        </tr>
+        <tr>
+          <td>Screen reader</td>
+          <td>No. The toolkit exposes no accessibility tree on Android yet (no TalkBack).</td>
+          <td>Keyboard reach and screen-reader names for the controls (<a href="editor.html#interface">studio page</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="tablet">
+    <h2><span class="sec-num">4</span>On a tablet</h2>
+    <p>
+      On a wide screen the same pages use the room. The bottom bar becomes a
+      rail at the left, the Library shows more cards, and the Design page puts
+      the picture beside the tier list and its tabs. The Cut page puts the
+      instructions beside the progress card and the faceting diagram.
+    </p>
+    <figure class="fig">
+      <a href="assets/images/fig_mobile_tablet_library.png">
+        <img src="assets/images/fig_mobile_tablet_library.png" width="1800" height="1125" alt="The Library on a tablet in landscape" loading="lazy">
+      </a>
+      <figcaption>Fig. 3 &mdash; The Library on a tablet in landscape (1280 &times; 800): navigation rail on the left, four cards across.</figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="assets/images/fig_mobile_tablet_design_render.jpg">
+        <img src="assets/images/fig_mobile_tablet_design_render.jpg" width="1800" height="1125" alt="The Design page on a tablet, Render view beside the tier list" loading="lazy">
+      </a>
+      <figcaption>Fig. 4 &mdash; The Design page in the Render view: the picture on the left, the Tiers tab on the right with the verdict chip and Solve.</figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="assets/images/fig_mobile_tablet_cut.png">
+        <img src="assets/images/fig_mobile_tablet_cut.png" width="1800" height="1125" alt="The Cut page on a tablet" loading="lazy">
+      </a>
+      <figcaption>Fig. 5 &mdash; The Cut page: the cutting rows in cutting order, and beside them the progress card with Start Cutting and the faceting diagram.</figcaption>
+    </figure>
+  </section>
+
+  <section id="try">
+    <h2><span class="sec-num">5</span>Try it</h2>
+    <h3>On the desktop, in a window</h3>
+    <p>
+      The quickest way is to run the same interface in a desktop window at a
+      phone or tablet size, from a checkout of the
+      <a href="https://github.com/suitable-name/indicatrix">source</a> (you need a
+      Rust toolchain). File pickers come from the desktop. It exercises the
+      interface and the shared core, not the Android services such as sharing
+      and printing.
+    </p>
+    <div class="code-block">
+      <div class="code-block-head"><span>terminal &mdash; desktop preview, from the repository root</span><button class="copy-btn">Copy</button></div>
+      <pre><code>cargo run -p indicatrix-mobile-android --features desktop-preview --bin indicatrix-mobile-preview -- --size phone</code></pre>
+    </div>
+    <p>
+      <code>--size</code> takes <code>phone</code> (390 &times; 800, the default),
+      <code>phone-land</code>, <code>tablet</code>, <code>tablet-land</code> or
+      your own <code>WIDTHxHEIGHT</code>, such as <code>412x915</code>.
+    </p>
+    <h3>On your own Android device</h3>
+    <p>
+      There is no installer yet. You build a debug APK from the source and
+      install it on your own phone or tablet. The app targets Android 9 or newer
+      (minSdk 28, targetSdk 36) on 64-bit ARM (<code>arm64-v8a</code>), and its
+      application id is <code>com.indicatrixsuite.mobile</code>. Condensed from
+      the <code>README.md</code> in <code>apps/indicatrix-mobile-android</code>, which has the full
+      steps:
+    </p>
+    <ol>
+      <li>Install <strong>Android Studio</strong> and, from its SDK Manager, Android SDK Platform 37, the current Build-Tools and <strong>NDK r30</strong>. A JDK 17 is the one bundled with Android Studio.</li>
+      <li>Add the Rust target and the build helper:
+        <div class="code-block">
+          <div class="code-block-head"><span>terminal</span><button class="copy-btn">Copy</button></div>
+          <pre><code>rustup target add aarch64-linux-android
+cargo install cargo-ndk --version 4.1.2 --locked</code></pre>
+        </div>
+      </li>
+      <li>Set <code>ANDROID_HOME</code>, <code>ANDROID_NDK_HOME</code> and <code>JAVA_HOME</code> (the README also names <code>ANDROID_JAR</code>, which cargo commands you run yourself need), then restart Android Studio and your shells.</li>
+      <li>Open <code>apps/indicatrix-mobile-android/android</code> in Android Studio once and let it sync: that creates the Gradle wrapper.</li>
+      <li>Pick a device with USB debugging on and press <strong>Run</strong>. Android Studio builds the Rust library for you before every build. Or build from a terminal in that folder and install with <code>adb</code>:
+        <div class="code-block">
+          <div class="code-block-head"><span>terminal &mdash; from apps/indicatrix-mobile-android/android</span><button class="copy-btn">Copy</button></div>
+          <pre><code>gradlew assembleDebug
+adb install -r app\build\outputs\apk\debug\app-debug.apk</code></pre>
+        </div>
+      </li>
+    </ol>
+    <p>
+      The first Rust build is slow, tens of minutes, because the drawing library
+      (Skia) is compiled from source, and it needs <code>clang</code>, Python
+      and <code>ninja</code> on your <code>PATH</code>. Later builds are
+      incremental. For an emulator, add the <code>x86_64-linux-android</code>
+      target and <code>-PrustAbis=arm64-v8a,x86_64</code> to the Gradle command.
+    </p>
+  </section>
+
+  <section id="limits">
+    <h2><span class="sec-num">6</span>Known limitations</h2>
+    <ul>
+      <li><strong>Not released.</strong> There is no store listing, no signed release and no automatic update. You build the app yourself.</li>
+      <li><strong>Local rendering only.</strong> The render is traced on the device, so a few hundred samples per pixel take a while on a phone, and the render lowers its work when the device runs hot or the battery saver is on. There is no remote rendering yet.</li>
+      <li><strong>No TalkBack.</strong> The interface toolkit exposes no accessibility tree on Android.</li>
+      <li><strong>External mouse wheel.</strong> The toolkit's Android adapter has no handling for scroll events, so a tablet with an attached mouse may crash when the wheel turns. This is unverified; the README names a workaround.</li>
+      <li><strong>Back gesture.</strong> The app asks Android to keep sending the Back key to the toolkit. On some Android 16 (API 36) devices Back may do nothing or fire twice; the README says which manifest flag to flip.</li>
+      <li><strong>Keyboard.</strong> The toolkit drives the soft keyboard through its own helper, and numbers are typed on the app's own keypad, not the system numeric keyboard.</li>
+      <li><strong>Printing.</strong> The cutting sheet is printed from an off-screen web view; check the system print preview that it came out right.</li>
+      <li><strong>Files from other apps.</strong> Reading is limited to 64 MiB per file, 256 MiB per request and 2,000 design files per picked folder.</li>
+    </ul>
+  </section>
+
+  <section id="desktop">
+    <h2><span class="sec-num">7</span>Get the desktop app</h2>
+    <p>
+      For remote and GPU rendering, the optimizer, Retarget, the Rough planner,
+      history and variants, the tutorials and the command-line tool, use the
+      desktop application. It is a ready-built download for Windows and Linux
+      (see the <a href="index.html#downloads">downloads section</a>), described
+      on the <a href="editor.html">studio and CAD page</a>. The browser version
+      needs nothing installed (<a href="web.html">web app page</a>). All three
+      open the same design files.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

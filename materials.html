@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Materials — Indicatrix</title>
-<meta name="description" content="The 32 built-in gem materials in Indicatrix: refractive index, dispersion, birefringence, and crystal system, sourced from the optics literature or corroborated gemological references.">
+<meta name="description" content="The 34 built-in gem materials in Indicatrix, one of them color zoned: refractive index, dispersion, birefringence, and crystal system, sourced from the optics literature or corroborated gemological references.">
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -18,6 +18,7 @@
       <a href="physics.html">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
       <a href="web.html">Web app</a>
+      <a href="mobile.html">Mobile app</a>
       <a href="materials.html" aria-current="page">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -78,7 +79,7 @@
   </section>
 
   <section id="database-table">
-    <h2><span class="sec-num">2</span>The 32 built-in materials</h2>
+    <h2><span class="sec-num">2</span>The 34 built-in materials</h2>
     <p>
       All figures below are read from <code>crates/indicatrix/src/optics/materials/</code> (one file per group of species).
       n_D and dispersion (Δn, F−C) come from each material's own source
@@ -112,9 +113,11 @@
         <tr><td>Chrysoberyl (yellow)</td><td>Orthorhombic</td><td>Biaxial +</td><td>1.746</td><td>0.0100</td><td>+0.0090</td></tr>
         <tr><td>Amethyst</td><td>Trigonal</td><td>Uniaxial +</td><td>1.54421</td><td>0.0078</td><td>+0.0091</td></tr>
         <tr><td>Citrine</td><td>Trigonal</td><td>Uniaxial +</td><td>1.54421</td><td>0.0078</td><td>+0.0091</td></tr>
+        <tr><td>Ametrine (color zoned)</td><td>Trigonal</td><td>Uniaxial +</td><td>1.54421</td><td>0.0078</td><td>+0.0091</td></tr>
         <tr><td>Pyrope garnet</td><td>Cubic</td><td>Isotropic</td><td>1.714</td><td>0.0127</td><td>0.0000</td></tr>
         <tr><td>Almandine garnet</td><td>Cubic</td><td>Isotropic</td><td>1.790</td><td>0.0139</td><td>0.0000</td></tr>
         <tr><td>Spessartine garnet</td><td>Cubic</td><td>Isotropic</td><td>1.800</td><td>0.0156</td><td>0.0000</td></tr>
+        <tr><td>Color-change garnet (pyrope-spessartine)</td><td>Cubic</td><td>Isotropic</td><td>1.760</td><td>0.0145</td><td>0.0000</td></tr>
         <tr><td>Grossular garnet (tsavorite)</td><td>Cubic</td><td>Isotropic</td><td>1.734</td><td>0.0162</td><td>0.0000</td></tr>
         <tr><td>Andradite garnet (demantoid)</td><td>Cubic</td><td>Isotropic</td><td>1.887</td><td>0.0330</td><td>0.0000</td></tr>
         <tr><td>Peridot</td><td>Orthorhombic</td><td>Biaxial +</td><td>1.654</td><td>0.0116</td><td>+0.0360</td></tr>
@@ -135,6 +138,39 @@
       <sup>†</sup>The two reference optical glasses are amorphous, included as
       isotropic calibration materials rather than gemstones. Precious opal's
       play-of-colour (structural diffraction, not absorption) is not modelled.
+    </p>
+    <h3 id="ametrine">Ametrine, a color-zoned built-in</h3>
+    <p>
+      Ametrine is the one built-in material whose color changes across the stone.
+      It models the bicolor quartz of the Anah&iacute; type, where amethyst and
+      citrine grow side by side and a cut stone usually shows one straight boundary
+      between a purple half and a yellow-orange half. The built-in material has
+      exactly that: amethyst on one side of the plane through the stone&rsquo;s
+      centre that contains the table normal, citrine on the other, with a sharp
+      boundary. Its optics (index, dispersion, birefringence) are those of quartz
+      and citrine, in the table above. Pick it as the design&rsquo;s Material on
+      the Stone tab, or in the Live Render. The boundary is fixed in the
+      design&rsquo;s frame, so seen face-up the line runs through the centre along
+      the design&rsquo;s Z axis, and the facets decide what the two halves do.
+    </p>
+    <figure class="fig">
+      <a href="assets/images/fig_material_zones.png">
+        <img src="assets/images/fig_material_zones.png" width="880" height="300" alt="The Zones list of the Material Editor for Ametrine: the base zone and one half-space zone" loading="lazy">
+      </a>
+      <figcaption>Fig. 1 &mdash; The Zones list in the Material Editor for a zoned material such as Ametrine: the base zone (the amethyst half, everywhere no zone covers) and Zone 1, a half space with offset 0 (the citrine half), and the Zone Geometry Relative to Stone Size box.</figcaption>
+    </figure>
+    <p>
+      In the Material Editor, a <em>Zones</em> list shows both halves with their
+      colors, and saving Ametrine under a new name makes a custom material that
+      keeps both zones. A zoned material&rsquo;s color is its zones, so a
+      design&rsquo;s Body Color and the Live Render Color control are greyed out
+      for it. The GPU renders Ametrine when the stone has no inclusions; with
+      inclusions it is traced on the processor. A remote worker of an older
+      version that does not know zones draws the stone on this computer instead.
+      Not modelled are the six-sector pinwheel of a whole crystal section and the
+      slightly diffuse boundary of natural material. Color zones in general, and
+      how to fit them to a piece of rough from photos, are described in the
+      <a href="editor.html#rough-color">rough color section of the studio page</a>.
     </p>
   </section>
 
@@ -157,13 +193,13 @@
         <a href="assets/images/fig_fvs_alexandrite_day.jpg">
           <img src="assets/images/fig_fvs_alexandrite_day.jpg" width="900" height="600" alt="Alexandrite rendered in daylight: the faceted stone reads green-yellow" loading="lazy">
         </a>
-        <figcaption>Fig. 1 — Alexandrite in daylight, which favours the blue-green transmission window: the stone comes out green-yellow.</figcaption>
+        <figcaption>Fig. 2 — Alexandrite in daylight, which favours the blue-green transmission window: the stone comes out green-yellow.</figcaption>
       </figure>
       <figure class="fig">
         <a href="assets/images/fig_fvs_alexandrite_warm.jpg">
           <img src="assets/images/fig_fvs_alexandrite_warm.jpg" width="900" height="600" alt="The same alexandrite rendered in a warmer light: the stone reads pink" loading="lazy">
         </a>
-        <figcaption>Fig. 2 — The same stone under a warmer light, richer in red, which favours the red window: it comes out pink.</figcaption>
+        <figcaption>Fig. 3 — The same stone under a warmer light, richer in red, which favours the red window: it comes out pink.</figcaption>
       </figure>
     </div>
     <p class="fig-note">Both renders: 41.029B FVS-65 (Long Octagon), 1920 × 1080, 32&nbsp;768 samples per pixel, grey backdrop card. The second uses a different, warmer light (the export file does not record which); the stone and the sample count are the same.</p>
@@ -198,8 +234,8 @@
       over. What sets rutile apart is how far that solve is stressed: it is the
       Tier 3 image-comparison material used to catch CPU/GPU divergence in it.
       Most uniaxial materials derive the extraordinary ray from the ordinary
-      curve plus a constant birefringence offset; quartz, amethyst, citrine and
-      rutile carry a separate extraordinary-ray curve. Moissanite's dispersion
+      curve plus a constant birefringence offset; quartz, amethyst, citrine,
+      ametrine and rutile carry a separate extraordinary-ray curve. Moissanite's dispersion
       (Δn ≈ 0.064) is more than double diamond's.
     </p>
   </section>
@@ -220,7 +256,7 @@
       already uses for designs, via <code>indicatrix-vault</code>'s
       <code>CustomMaterialRow</code> and <code>Database::save_custom_material</code>
       — and, when a design uses the material, a snapshot of its numbers is
-      also written into that design's <code>.indicatrix</code> file, so the
+      also written into that design's <code>.isdd</code> file, so the
       design still opens with its real optics on a machine whose library has
       no such material. This is a separate
       feature from <strong>Retarget</strong>, which proposes new facet angles
@@ -296,13 +332,13 @@
       Material combo and the New Design dialog's Starting Material combo start
       from the <code>MaterialCatalogue</code>
       (<code>crates/indicatrix-cut-core/src/material/catalogue.rs</code>):
-      &ldquo;(none)&rdquo;, then all 32 built-in materials above in
+      &ldquo;(none)&rdquo;, then all 34 built-in materials above in
       <code>all_materials()</code>'s own order; Design Settings then appends
       the custom materials you have saved, and a &ldquo;Custom RI&hellip;&rdquo;
       entry. The Live Render viewport's Render Material dropdown does not use
       the catalogue: it is built in
       <code>apps/indicatrix-cut/src/gui/startup_settings.rs</code> as the same
-      32 built-ins sorted alphabetically (case-insensitive), with your saved
+      34 built-ins sorted alphabetically (case-insensitive), with your saved
       custom materials appended after them. A built-in species offered by one
       picker is therefore offered by the others, though the order differs.
     </p>
@@ -323,7 +359,7 @@
 <footer>
   <div class="container">
     <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>
 

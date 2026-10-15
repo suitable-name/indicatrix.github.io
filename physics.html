@@ -18,6 +18,7 @@
       <a href="physics.html" aria-current="page">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
       <a href="web.html">Web app</a>
+      <a href="mobile.html">Mobile app</a>
       <a href="materials.html">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -54,7 +55,7 @@
         <tr>
           <td>Dispersion</td>
           <td>Sellmeier / Cauchy dispersion per material</td>
-          <td>32 built-in materials, each with a cited or derived fit (<code>crates/indicatrix/src/optics/materials/</code>, see the <a href="materials.html">materials page</a>). A custom material can carry its own Sellmeier or Cauchy coefficients, which are validated before use (<code>optics/dispersion.rs</code>)</td>
+          <td>34 built-in materials, each with a cited or derived fit (<code>crates/indicatrix/src/optics/materials/</code>, see the <a href="materials.html">materials page</a>). A custom material can carry its own Sellmeier or Cauchy coefficients, which are validated before use (<code>optics/dispersion.rs</code>)</td>
         </tr>
         <tr>
           <td>Polarization</td>
@@ -335,14 +336,12 @@ delta = delta_p - delta_s</code></pre></div>
     <h2><span class="sec-num">10</span>Environment and lighting models</h2>
     <p>
       A ray that misses the stone, or exits it, samples an environment rather than a
-      light list. Thirteen presets (fifteen in builds with the physical-colour feature,
-      which add the two UV lamps) cover the analytic models below, and a real HDR
+      light list. Thirteen presets cover the analytic models, and a real HDR
       panorama can be loaded in their place
       (<code>optics/raytracer/environment/</code>):
     </p>
     <ul>
       <li><strong>Studio</strong> (<code>Daylight</code>, <code>Incandescent</code>, <code>IlluminantA</code> at 2856&nbsp;K, <code>RingLights</code>, <code>DarkSpotlight</code>) — a charcoal backdrop, one key softbox, one fill, and sixteen ring pinpoints. Its arithmetic is pinned bit for bit by tables in <code>crates/indicatrix/tests/raytracer_tests/golden_regression.rs</code> (which are re-pinned whenever a deliberate physics change moves them).</li>
-      <li><strong>UV lamps</strong> (only in builds with the physical-colour feature; <code>UvLamp365</code>, <code>UvLamp395</code>, on the studio model) — the studio rig's geometry lit by a narrow Gaussian line instead of white light: 365&nbsp;nm and 10&nbsp;nm wide, or 395&nbsp;nm and 12&nbsp;nm wide, with no ambient backdrop and no white balance. A non-fluorescent stone stays nearly dark, and the 395&nbsp;nm lamp's tail reaches into the violet, so such a stone looks faintly violet under it. Both are traced on the CPU only.</li>
       <li><strong>Grading tray</strong> (<code>IsoHemisphere</code>, formerly &ldquo;ISO hemisphere&rdquo;; the preset is labelled D65 hemisphere + head shadow) — the whole upper hemisphere at radiance 1 and nothing below the girdle plane: the reference case, with no directional structure to flatter a cut. It is the scoring light: Optimize and Retarget score every design under it, and it is flat by design, so a tilt video under it shows no sparkle.</li>
       <li><strong>Light tent</strong>, the default preset &mdash; dim tent walls, one broad overhead softbox, three black cards on the ring positions away from the key, one small hard spark light, black velvet below the girdle. The black cards are the contrast a jewellery photographer adds so a bright stone reads as a facet pattern instead of a white blur.</li>
       <li><strong>Light-tent variants</strong> (<code>WhiteTray</code>, <code>ShopLights</code>, <code>WindowDaylight</code>) — the same model with other parameters, all lit by a D65 spectrum: a white tray lit from below with bright, perfectly even walls and no cards or spark; a bright diffuse jewellery-shop ceiling with small pinpoint spots; and a dim room lit by one broad window, a single soft key with no cards or spark. The built-in <em>Window daylight</em> view places that key at 30&deg; elevation.</li>
@@ -432,7 +431,7 @@ delta = delta_p - delta_s</code></pre></div>
         </tr>
         <tr>
           <td>Tier 3</td>
-          <td>Full rendered images, CPU vs. GPU, for a representative subset of the built-in materials, about 9 of the 32 (Spinel, Zircon, Tourmaline, Quartz, Rutile, Synthetic Moissanite, Alexandrite, Topaz, Tanzanite; <code>renderer/gpu/estimator_check/image_comparison.rs</code>)</td>
+          <td>Full rendered images, CPU vs. GPU, for a representative subset of the built-in materials, about 9 of the 34 (Spinel, Zircon, Tourmaline, Quartz, Rutile, Synthetic Moissanite, Alexandrite, Topaz, Tanzanite; <code>renderer/gpu/estimator_check/image_comparison.rs</code>)</td>
           <td>Statistical (Welford mean/variance) equivalence</td>
         </tr>
         <tr>
@@ -460,7 +459,7 @@ delta = delta_p - delta_s</code></pre></div>
 <footer>
   <div class="container">
     <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
-    <p><a href="index.html">Overview</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
+    <p><a href="index.html">Overview</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>
 

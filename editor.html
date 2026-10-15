@@ -18,6 +18,7 @@
       <a href="physics.html">Physics</a>
       <a href="editor.html" aria-current="page">Studio &amp; CAD</a>
       <a href="web.html">Web app</a>
+      <a href="mobile.html">Mobile app</a>
       <a href="materials.html">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -73,7 +74,7 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_studio_main.jpg">
-        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1081" alt="Studio main window: design library on the left, path-traced live render on the right">
+        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1080" alt="Studio main window: design library on the left, path-traced live render on the right">
       </a>
       <figcaption>Fig. 1 — Design library on the left, live spectral viewport on the right: the 45.148 SplitChecker 12 design rendered in grossular garnet under the ring-light preset, with the optical readout above the stone.</figcaption>
     </figure>
@@ -100,7 +101,9 @@
         <a href="#cutting-mode">cutting mode</a>.</li>
       <li><strong>Rough planner, beta</strong> (section 11): ranks layouts of
         stones from a modelled block, cylinder or pebble, or from an OBJ, STL or
-        PLY mesh of a non-convex rough, keeping clear of its inclusions.</li>
+        PLY mesh of a non-convex rough, keeping clear of its inclusions. It can
+        also take the <a href="#rough-color">color and color zones of the
+        rough</a> from backlit photos.</li>
       <li><strong>Solid view and export</strong> (sections 12–13): the Cut slider,
         drag handles, Slice, the faceting diagram, the printable cutting sheet,
         finished-stone exports and the file formats.</li>
@@ -180,7 +183,7 @@
       9</a>), the cutting steps you mark done (<a href="#cutting-mode">section
       10</a>) and the lighting you save for the design
       (<a href="#viewport">section 3</a>). The library finds them by the design's
-      id, which the <code>.indicatrix</code> file keeps in its metadata. Copying
+      id, which the <code>.isdd</code> file keeps in its metadata. Copying
       the file to another computer copies the design and not this data.
     </p>
   </section>
@@ -200,8 +203,7 @@
       daylight sky without a sun, a daylight sky with a real 0.27&deg; sun, and
       a green/red/blue contrast view in the style of an ASET scope, scored as
       the Grading tray; see the
-      <a href="physics.html#environment">physics page</a>) and two UV lamps at 365 nm and
-      395 nm, traced on the CPU only — plus an optional
+      <a href="physics.html#environment">physics page</a>) — plus an optional
       grey or white backdrop card behind the stone, a surface-glare slider
       that fades the white mirror image of the light on the table (the
       cross-polarised look; built-in presets only, never the readouts), and
@@ -210,7 +212,7 @@
       extinction as the stone is orbited. The head-shadow slider (0&ndash;30&deg;,
       default 16&deg;, 0 is off), which darkens the facets that would reflect the
       observer's own head, changes those readouts as well as the picture under the
-      lit models; the studio rigs, the UV lamps and an HDR map ignore it. The
+      lit models; the studio rigs and an HDR map ignore it. The
       Grading tray is the light the optimizer and Retarget score under. If the optional GPU compute path
       loses its device mid-session, the viewport re-acquires it once and
       retries the same frame; if that also fails it falls back to the CPU
@@ -242,8 +244,8 @@
       </tbody>
     </table>
     <figure class="fig">
-      <a href="assets/images/fig_tilt_in_editor.png">
-        <img src="assets/images/fig_tilt_in_editor.png" width="1800" height="1070" alt="The editor's view bar with the tilt dialog open over the Diagram view" loading="lazy">
+      <a href="assets/images/fig_tilt_in_editor.jpg">
+        <img src="assets/images/fig_tilt_in_editor.jpg" width="1800" height="1080" alt="The editor's view bar with the tilt dialog open over the Diagram view" loading="lazy">
       </a>
       <figcaption>Fig. 2 — The view bar in Edit mode: solid, path-traced or both, the faceting diagram, fixed directions, Fit and Reset, and Tilt Curve, here opened over the Diagram view.</figcaption>
     </figure>
@@ -297,6 +299,12 @@
       CPU and on remote workers (see the
       <a href="materials.html#custom-materials">materials page</a>).
     </p>
+    <figure class="fig fig-portrait" style="--fig-max: 480px">
+      <a href="assets/images/fig_material_editor.png">
+        <img src="assets/images/fig_material_editor.png" width="880" height="1218" alt="The Gem Material Editor with the Simple curve sliders and the body color swatches" loading="lazy">
+      </a>
+      <figcaption>Fig. 3 &mdash; The Gem Material Editor in Simple mode: the preset template and the material name, the refractive index, dispersion, specific gravity and birefringence sliders, the crystal system and optical character, and the body color swatches with Pick, then Delete, Cancel, Save and Save &amp; Apply.</figcaption>
+    </figure>
     <p>
       The Live Render picture follows the Edit tab's Cut slider
       (<a href="#inspection">section 12</a>) and shows a badge with a <em>Show
@@ -312,15 +320,15 @@
     <div class="fig-grid">
       <figure class="fig">
         <a href="assets/images/fig_tilt_curve.png">
-          <img src="assets/images/fig_tilt_curve.png" width="1452" height="1096" alt="Tilt Performance Curve Analysis dialog" loading="lazy">
+          <img src="assets/images/fig_tilt_curve.png" width="1800" height="1350" alt="Tilt Performance Curve Analysis dialog" loading="lazy">
         </a>
-        <figcaption>Fig. 3 — Brilliance, windowing and extinction across a tilt sweep: 181 points from −90° to +90° on one of four camera azimuths, with the face-up figures above the chart.</figcaption>
+        <figcaption>Fig. 4 — Brilliance, windowing and extinction across a tilt sweep: 181 points from −90° to +90° on one of four camera azimuths, with the face-up figures above the chart.</figcaption>
       </figure>
       <figure class="fig">
         <a href="assets/images/fig_tilt_video_export.png">
-          <img src="assets/images/fig_tilt_video_export.png" width="1456" height="1098" alt="Export Tilt Video panel of the tilt dialog" loading="lazy">
+          <img src="assets/images/fig_tilt_video_export.png" width="1800" height="1350" alt="Export Tilt Video panel of the tilt dialog" loading="lazy">
         </a>
-        <figcaption>Fig. 4 — Export Tilt Video, unfolded below the chart: angle range and step, frame rate, resolution, samples per pixel, bounces, colour space and transfer.</figcaption>
+        <figcaption>Fig. 5 — Export Tilt Video, unfolded below the chart (the panel scrolls): the material, then the angle range and step, here &minus;90&deg; to 90&deg; in steps of 1&deg;. The frame rate, resolution, samples per pixel, bounces, colour space and transfer follow below.</figcaption>
       </figure>
     </div>
     <p>
@@ -360,22 +368,22 @@
   <section id="cad-solver">
     <h2><span class="sec-num">5</span>Constraint solver and tier editor <span class="tag">beta</span></h2>
     <figure class="fig">
-      <a href="assets/images/fig_cad_edit.png">
-        <img src="assets/images/fig_cad_edit.png" width="1800" height="1191" alt="Edit mode on 41.029B FVS-65: solid view with a selected crown tier, tier table and tier inspector" loading="lazy">
+      <a href="assets/images/fig_cad_edit.jpg">
+        <img src="assets/images/fig_cad_edit.jpg" width="1800" height="1080" alt="Edit mode on 41.029B FVS-65: solid view with a selected crown tier, tier table and tier inspector" loading="lazy">
       </a>
-      <figcaption>Fig. 5 — Edit mode on 41.029B FVS-65 (Long Octagon): the solid view with the crown tier C3 selected and its angle and index handles, the tier table beside it and the Tier inspector editing C3.</figcaption>
+      <figcaption>Fig. 6 — Edit mode on 41.029B FVS-65 (Long Octagon): the solid view with the crown tier C3 selected and its angle and index handles, the tier table beside it and the Tier inspector editing C3.</figcaption>
     </figure>
     <figure class="fig">
-      <a href="assets/images/fig_cad_diagram.png">
-        <img src="assets/images/fig_cad_diagram.png" width="1800" height="1186" alt="Diagram view: crown, pavilion and profile panels beside the tier table and the Schedule tab" loading="lazy">
+      <a href="assets/images/fig_cad_diagram.jpg">
+        <img src="assets/images/fig_cad_diagram.jpg" width="1800" height="1080" alt="Diagram view: crown, pavilion and profile panels beside the tier table and the Schedule tab" loading="lazy">
       </a>
-      <figcaption>Fig. 6 — The Diagram view of the same design: crown, pavilion and profile on the index-gear scale, with the tier table and the inspector's Schedule tab (facet, angle, indices) beside them.</figcaption>
+      <figcaption>Fig. 7 — The Diagram view of the same design: crown, pavilion and profile on the index-gear scale, with the tier table and the inspector's Schedule tab (facet, angle, indices) beside them.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_diagram_crown.png">
-        <img src="assets/images/fig_diagram_crown.png" width="1800" height="1197" alt="Crown panel of the faceting diagram with facet labels" loading="lazy">
+        <img src="assets/images/fig_diagram_crown.png" width="1400" height="1563" alt="Crown panel of the faceting diagram with facet labels" loading="lazy">
       </a>
-      <figcaption>Fig. 7 — The crown panel alone (Crown in the view bar): every facet labelled with its tier code and index position, here with tier C5 selected.</figcaption>
+      <figcaption>Fig. 8 — The crown panel alone (Crown in the view bar): every crown facet labelled with its tier code and index position on the index-gear scale.</figcaption>
     </figure>
     <p>
       Cutting instructions are a geometric constraint graph, not a static list of
@@ -447,6 +455,12 @@
       field that starts with <code>=</code> is not worked out once but kept as a
       relation (<a href="#relations">section 6</a>).
     </p>
+    <figure class="fig fig-portrait" style="--fig-max: 560px">
+      <a href="assets/images/fig_tier_form.png">
+        <img src="assets/images/fig_tier_form.png" width="1232" height="1256" alt="The Tier tab of the inspector editing tier C3: angle with slider and Typical menu, Meets, name, indices, facet chips and the Save Tier button" loading="lazy">
+      </a>
+      <figcaption>Fig. 9 &mdash; The Tier tab of the inspector editing tier C3 of 41.029B FVS-65: the angle (37) with its slider and Typical menu, Meets set to Exact Scale Value, the name, the indices, a chip for each facet, the position box with Add, Mirror and Rotate, and Save Tier and New Tier at the bottom.</figcaption>
+    </figure>
     <p>
       The <strong>Indices</strong> field takes values from <code>0</code> up to
       and including the gear's tooth count, because the index wheel is a ring. On
@@ -497,6 +511,12 @@
       Retarget's validity check; otherwise the template's own angles stay and a
       warning says why.
     </p>
+    <figure class="fig fig-portrait" style="--fig-max: 560px">
+      <a href="assets/images/fig_new_design.png">
+        <img src="assets/images/fig_new_design.png" width="1200" height="1440" alt="The New Design dialog: a gallery of shapes, round variants and teaching designs, and a blank design, with material, index gear and stone width" loading="lazy">
+      </a>
+      <figcaption>Fig. 10 &mdash; The New Design dialog: five everyday shapes (Standard Round Brilliant selected), the round variants and teaching designs, the Empty design, and below them the Material (Diamond), the Index Gear (96) and the Stone Width in millimetres (6.5), with Cancel and Create.</figcaption>
+    </figure>
     <h3>The overall verdict</h3>
     <p>
       A badge in the status strip sums the design up in one word:
@@ -562,9 +582,9 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_retarget.jpg">
-        <img src="assets/images/fig_retarget.jpg" width="1947" height="1254" alt="Retarget for Material dialog, sapphire to emerald in Shift mode, before and after side by side" loading="lazy">
+        <img src="assets/images/fig_retarget.jpg" width="1800" height="1153" alt="Retarget for Material dialog, sapphire to emerald in Shift mode, before and after side by side" loading="lazy">
       </a>
-      <figcaption>Fig. 8 — Retarget for Material: the sapphire 41.029B FVS-65 retargeted to emerald (n_D 1.5791, critical angle 39.29°) in Shift mode. On the left the crown handling options, each tier's old and new angle with its margin and a Safe or Windows verdict (P1 from 64.44° to 69.10°), the Valid line and the optical comparison; on the right the stone before and after, path traced.</figcaption>
+      <figcaption>Fig. 11 — Retarget for Material: the sapphire 41.029B FVS-65 retargeted to emerald (n_D 1.5791, critical angle 39.29°) in Shift mode. On the left the crown handling options, each tier's old and new angle with its margin and a Safe or Windows verdict (P1 from 64.44° to 69.10°), the Valid line and the optical comparison; on the right the stone before and after, path traced.</figcaption>
     </figure>
     <p>
       <em>Keep the design's look</em> (Advanced, on by default) scores every
@@ -610,9 +630,9 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_retarget_overlay.png">
-        <img src="assets/images/fig_retarget_overlay.png" width="1923" height="1239" alt="Retarget for Material dialog with the Overlay view: red outline before, green outline after" loading="lazy">
+        <img src="assets/images/fig_retarget_overlay.png" width="1800" height="1153" alt="Retarget for Material dialog with the Overlay view: red outline before, green outline after" loading="lazy">
       </a>
-      <figcaption>Fig. 9 — The same retarget in the Overlay view, solid: the stone before and after drawn on top of each other, red for the outline before and green for the outline after.</figcaption>
+      <figcaption>Fig. 12 — The same retarget in the Overlay view, solid: the stone before and after drawn on top of each other, red for the outline before and green for the outline after.</figcaption>
     </figure>
     <p>
       The Risk column depends on the block. A pavilion row shows its margin over
@@ -642,15 +662,15 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 700px">
       <a href="assets/images/fig_gear_remap.png">
-        <img src="assets/images/fig_gear_remap.png" width="820" height="460" alt="Confirm Index Remap dialog listing each tier's old and new indices" loading="lazy">
+        <img src="assets/images/fig_gear_remap.png" width="920" height="594" alt="Confirm Index Remap dialog listing each tier's old and new indices" loading="lazy">
       </a>
-      <figcaption>Fig. 10 — The Confirm Index Remap dialog after picking 64 teeth for a 96-tooth design: one row per tier with its old and new indices, the rows with a position that does not land on a whole tooth in red, and Confirm Remap and Cancel.</figcaption>
+      <figcaption>Fig. 13 &mdash; The Confirm Index Remap dialog after picking 64 teeth for a 96-tooth design: the Rounding list (Nearest), one row per tier with its old and new indices, the rows that changed in red, and Confirm Remap and Cancel.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_gear_before_after.jpg">
-        <img src="assets/images/fig_gear_before_after.jpg" width="1800" height="886" alt="The 45.148 SplitChecker 12 design before (96 teeth, left) and after (64 teeth, right) a gear change, with the stone and the tier table of each side by side" loading="lazy">
+        <img src="assets/images/fig_gear_before_after.jpg" width="1800" height="1326" alt="The 45.148 SplitChecker 12 design before (96 teeth, left) and after (64 teeth, right) a gear change, with the solid view and the tier table of each side by side" loading="lazy">
       </a>
-      <figcaption>Fig. 11 — A gear change from 96 to 64 teeth on 45.148 SplitChecker 12 in spinel, before (left) and after (right): the live render above and the tier table below, where the angles and meets stay the same and every tier's indices are recomputed.</figcaption>
+      <figcaption>Fig. 14 — A gear change from 96 to 64 teeth on 45.148 SplitChecker 12, before (left) and after (right): the solid view above and the tier table below, where the angles and meets stay the same and every tier&rsquo;s indices are recomputed.</figcaption>
     </figure>
   </section>
 
@@ -821,7 +841,7 @@
       drawn as its flat stone alone, and the tier table's warning badge says why.
     </p>
     <p>
-      The native <code>.indicatrix</code> file keeps concave tiers exactly (design
+      The native <code>.isdd</code> file keeps concave tiers exactly (design
       file version 2). An <code>.asc</code> file keeps two footnotes per tier in
       cutting order and never writes a concave tier as an <code>.asc</code> tier.
       A <code>.gcs</code> export keeps the same footnotes in its footer fields.
@@ -848,8 +868,12 @@
       width, length or height; library previews of a design that has only an angle
       table leave its concave rows out; and the GPU does not trace tools.
     </p>
-    <!-- FIGURE WANTED: the concave form in the Tier tab next to a tier table with
-      a Tool badge, and the solid view of a stone with a groove or dimple. -->
+    <figure class="fig fig-portrait" style="--fig-max: 560px">
+      <a href="assets/images/fig_concave_tier_form.png">
+        <img src="assets/images/fig_concave_tier_form.png" width="1232" height="1256" alt="The Tier tab in Add Concave Tier mode: the facet fields, the tool choice with its theta, X, Y, Z, D/W and tool angle, and Reciprocating" loading="lazy">
+      </a>
+      <figcaption>Fig. 15 &mdash; The Tier tab in Add Concave Tier mode: the facet on line 1 (name, angle, indices, instructions) and the tool on line 2 (Cylinder (CYL) here, with its theta, X, Y and Z, D/W and tool angle, and the Reciprocating box), then Add Concave Tier.</figcaption>
+    </figure>
   </section>
 
   <section id="preforms-optimizer">
@@ -884,7 +908,7 @@
       TableWidthMm</code>, <code>indicatrix-cut-core/src/design/targets.rs</code>).
       Every tier also keeps a stable id (<code>tier_id</code>) that survives
       reordering, duplication, and a save/reopen round trip through
-      the native <code>.indicatrix</code> design file, so a manufacturability
+      the native <code>.isdd</code> design file, so a manufacturability
       warning or an authored target keeps pointing at the same tier across
       edits rather than a table row position.
     </p>
@@ -912,11 +936,11 @@
       lit direction; under a Studio rig, brilliance is measured against that
       rig's own lamps and a small note says so.
     </p>
-    <figure class="fig fig-portrait" style="--fig-max: 760px">
-      <a href="assets/images/fig_optimizer_setup.png">
-        <img src="assets/images/fig_optimizer_setup.png" width="1206" height="865" alt="Optimize tab with the Objective list open and the Starts, Seed and Candidates fields" loading="lazy">
+    <figure class="fig">
+      <a href="assets/images/fig_optimizer_setup.jpg">
+        <img src="assets/images/fig_optimizer_setup.jpg" width="1800" height="1070" alt="The editor with the Objective list of the Optimize tab open over the tier table" loading="lazy">
       </a>
-      <figcaption>Fig. 12 — The Optimize tab with the Objective list open (Balanced, Brilliance, Low windowing, Low extinction, Keep weight, Lighten dark rough, and more below the fold) above the Starts, Seed and Candidates fields: here 16 starts, seed 0, 5 candidates, Polish on and an estimated time of about 20 seconds.</figcaption>
+      <figcaption>Fig. 16 &mdash; The Optimize tab&rsquo;s Objective list open over the tier table of 41.029B FVS-65: Balanced, Brilliance, Low Windowing, Low Extinction and Keep Weight (the list scrolls, and holds the tone goals further down).</figcaption>
     </figure>
     <ul>
       <li><strong>Objective.</strong> Seven presets set the weights of windowing,
@@ -972,11 +996,11 @@
       design. Apply commits it as one undo step, including the followers of any
       tier it moves, and is refused when the design has changed since the run.
     </p>
-    <figure class="fig fig-portrait" style="--fig-max: 820px">
+    <figure class="fig fig-portrait" style="--fig-max: 700px">
       <a href="assets/images/fig_optimizer_result.png">
-        <img src="assets/images/fig_optimizer_result.png" width="1180" height="973" alt="Optimize tab after a run: the Start row, five candidates and the Tiers this would change list" loading="lazy">
+        <img src="assets/images/fig_optimizer_result.png" width="1232" height="1256" alt="The Optimize tab after a run: the candidate list, the before and after figures of candidate 1 and the tiers it would change" loading="lazy">
       </a>
-      <figcaption>Fig. 13 — The Optimize tab after a run: the Start row (score 51.62) and five candidates with score, windowing, brilliance, extinction, yield and tone (L*), green where a figure beats the start and red where it is worse. Candidate 1 is picked: its face-up colour moves from L* 35.4 to 37.1 under the Grading tray, and the list below shows each tier it would change, from P1 at 69.10° to 65.47° downwards.</figcaption>
+      <figcaption>Fig. 17 &mdash; The Optimize tab after a run, scrolled to the results: the starting stone and five candidates (green beats the start, red is worse), candidate 1 selected with its before and after figures (tilt brilliance 30.68 % to 33.02 %, windowing 48.19 % to 46.73 %), the tiers it would change with their old and new angles, and Preview and Compare.</figcaption>
     </figure>
     <h3>Angle sweeps</h3>
     <p>
@@ -999,8 +1023,12 @@
       CSV...</em> export the rows. A table, a culet, a girdle tier and a tier that
       follows a relation cannot be swept, and the figures leave out concave tools.
     </p>
-    <!-- FIGURE WANTED: the Angle Sweep dialog with the table, the chart and the
-      Use this angle button. -->
+    <figure class="fig">
+      <a href="assets/images/fig_angle_sweep.png">
+        <img src="assets/images/fig_angle_sweep.png" width="1800" height="1440" alt="The Angle Sweep dialog: the tier and range fields, the chart, the selected angle and the table" loading="lazy">
+      </a>
+      <figcaption>Fig. 18 &mdash; The Angle Sweep dialog for tier C3: from 32&deg; to 42&deg; in steps of 0.5&deg; (21 angles, all valid), the brilliance, windowing and extinction lines with the current angle marked, the selected angle with its figures and the note that one facet vanishes there, the table below, and Use 32.00&deg;, Copy CSV, Save CSV and Close.</figcaption>
+    </figure>
     <h3>Snapshot and the compare window</h3>
     <p>
       <strong>Snapshot Design</strong> keeps the current design and its solved
@@ -1032,15 +1060,15 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 860px">
       <a href="assets/images/fig_compare_overlay.png">
-        <img src="assets/images/fig_compare_overlay.png" width="1656" height="1221" alt="Compare window opened from Optimize, overlay view with the Compare against list" loading="lazy">
+        <img src="assets/images/fig_compare_overlay.png" width="1800" height="1276" alt="Compare window opened from Optimize, overlay view with the before and after table" loading="lazy">
       </a>
-      <figcaption>Fig. 14 — The compare window opened from the Optimize tab, in the Overlay view with the solid stone: red marks what the optimized stone removes and green what it adds. The Compare against list at the top reads Current design; the table gives before, after and change for brilliance (21.5 % to 55.3 %), windowing (48.9 % to 14.2 %), extinction, fire and scintillation.</figcaption>
+      <figcaption>Fig. 19 &mdash; The compare window opened from the Optimize tab, in the Overlay view with the solid stone: red marks what the optimized stone removes and green what it adds. The table gives before, after and change for brilliance (42.5 % to 66.1 %), windowing (12.3 % to 10.0 %), extinction (45.2 % to 23.9 %), fire and scintillation, with a sentence in words and the Tilt Average button; Close, Discard and Keep After are below.</figcaption>
     </figure>
     <figure class="fig fig-portrait" style="--fig-max: 860px">
       <a href="assets/images/fig_compare_traced.jpg">
-        <img src="assets/images/fig_compare_traced.jpg" width="1653" height="1218" alt="Compare window, side by side and path traced, with the tilt-average rows" loading="lazy">
+        <img src="assets/images/fig_compare_traced.jpg" width="1800" height="1276" alt="Compare window, side by side and path traced, with the tilt-average rows" loading="lazy">
       </a>
-      <figcaption>Fig. 15 — The same window side by side and path traced on the emerald stone, after the tilt-average button: the table gains the tilt brilliance (22.6 % to 29.7 %), tilt windowing (66.5 % to 60.2 %) and tilt extinction (11.0 % to 10.1 %) rows and a sentence on the average over all tilts.</figcaption>
+      <figcaption>Fig. 20 &mdash; The same window side by side and path traced, after the Tilt Average button: the table gains the tilt brilliance (30.7 % to 33.0 %), tilt windowing (48.2 % to 46.7 %) and tilt extinction (21.1 % to 20.2 %) rows and a sentence on the average over all tilts.</figcaption>
     </figure>
   </section>
 
@@ -1073,8 +1101,12 @@
       with Up, Down, Home, End and Enter. The history starts again at New, Open
       and Load, and it is not saved with the design file.
     </p>
-    <!-- FIGURE WANTED: the History tab, Steps view, with thumbnails, one undone
-      step and the Now mark. -->
+    <figure class="fig fig-portrait" style="--fig-max: 560px">
+      <a href="assets/images/fig_history_steps.png">
+        <img src="assets/images/fig_history_steps.png" width="1232" height="1256" alt="The History tab, Steps view: three steps and the start, with the current step marked Now" loading="lazy">
+      </a>
+      <figcaption>Fig. 21 &mdash; The History tab, Steps view: Set P3 angle to 47.4 degrees (step 3, marked Now), Set P2 angle to 51.3, Set P1 angle to 64.9, and Start. Each step has a small picture of the stone at that point.</figcaption>
+    </figure>
     <h3>Variants</h3>
     <p>
       A <strong>variant</strong> is a named copy of the whole design: the cutting
@@ -1108,8 +1140,12 @@
       (open it, change the design and save a new one), and the list has no search
       or filter.
     </p>
-    <!-- FIGURE WANTED: the Variants view with two saved variants, the Working
-      from mark and the Compare two designs boxes. -->
+    <figure class="fig fig-portrait" style="--fig-max: 560px">
+      <a href="assets/images/fig_history_variants.png">
+        <img src="assets/images/fig_history_variants.png" width="1232" height="1256" alt="The History tab, Variants view: two saved variants and the Compare Two Designs box" loading="lazy">
+      </a>
+      <figcaption>Fig. 22 &mdash; The Variants view: Save as Variant, the Compare Two Designs box (Current Design and Shorter Crown, with Compare Pictures and Compare Text), and two saved variants, Steeper Pavilion (marked Working From, from: Shorter Crown) and Shorter Crown, each with Open, Rename, Note and Delete.</figcaption>
+    </figure>
   </section>
 
   <section id="cutting-mode">
@@ -1158,8 +1194,12 @@
       <strong>Reset progress</strong> removes every mark of the open design, after
       a question.
     </p>
-    <!-- FIGURE WANTED: one cutting-mode page with the large angle, the index
-      chips, the stone after the step and the index wheel. -->
+    <figure class="fig">
+      <a href="assets/images/fig_cutting_mode.png">
+        <img src="assets/images/fig_cutting_mode.png" width="1800" height="1080" alt="Cutting mode on step 3 of 15: the large angle, the index chips, the stone after the step and the index wheel" loading="lazy">
+      </a>
+      <figcaption>Fig. 23 &mdash; Cutting mode on step 3 of 15 of 41.029B FVS-65, tier P1 on the pavilion: the angle in large figures, one chip for each index, the instruction &ldquo;Set to mast depth 0.7313&rdquo;, the schedule, the stone after the step with P1 highlighted, and the 120-tooth index wheel with the four indices marked. Previous, Mark Step Done, Next and Reset Progress are below.</figcaption>
+    </figure>
   </section>
 
   <section id="rough-planner">
@@ -1235,9 +1275,9 @@
       3D view, with the readout showing the mesh volume. -->
     <figure class="fig">
       <a href="assets/images/fig_rough_planner.png">
-        <img src="assets/images/fig_rough_planner.png" width="1800" height="1299" alt="Rough Planner window: the modelled rough and the plan controls" loading="lazy">
+        <img src="assets/images/fig_rough_planner.png" width="1800" height="1153" alt="Rough Planner window: the modelled rough and the plan controls" loading="lazy">
       </a>
-      <figcaption>Fig. 16 — Modelling the rough: a 14 × 38 × 9 mm sapphire block with five edge cuts, the selected cut highlighted in the 3D view, and the Plan controls below.</figcaption>
+      <figcaption>Fig. 24 — Modelling the rough: a block with five edge cuts (each with its two setbacks), the selected cut face highlighted in the 3D view, and the Plan controls below: how many stones, which designs to try (here the current library filter, the 321 oval designs), and the losses for kerf and allowance.</figcaption>
     </figure>
     <p>
       The <em>candidate designs</em> are either the designs the library's search
@@ -1289,9 +1329,9 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_rough_planner_result.jpg">
-        <img src="assets/images/fig_rough_planner_result.jpg" width="1800" height="1305" alt="Rough Planner result: eight stones drawn inside the rough and the result card" loading="lazy">
+        <img src="assets/images/fig_rough_planner_result.jpg" width="1800" height="1153" alt="Rough Planner result: six stones drawn inside the rough and the result card" loading="lazy">
       </a>
-      <figcaption>Fig. 17 — A result: 10 layouts from 318 designs in a second; the selected layout cuts eight stones of four designs (17.06 ct, 25.9 % yield), drawn in their saw pieces, with each design's weight, size, ratios, orientation and fill in the card.</figcaption>
+      <figcaption>Fig. 25 — A result with the library filtered to ovals: 10 layouts from 318 designs in 1.9 s; the selected layout, 29.34 ct at 31.1 % yield, cuts six ovals (two large, four small) from a rough that weighs 94.40 ct, drawn in their saw pieces, with each design&rsquo;s weight, size, ratios, volume, orientation, fill and optics in the card.</figcaption>
     </figure>
     <p>
       A design's name in a result is a <strong>link into the library</strong>; a
@@ -1317,6 +1357,63 @@
         final marking-up on the rough itself.
       </p>
     </div>
+    <h3 id="rough-color">Rough color and color zoning</h3>
+    <p>
+      The planner can also take the <strong>color of the rough</strong> from
+      photographs, so that the stones it plans are drawn, and rendered when you
+      adopt a design, in the color of the piece they would be cut from. It is part of
+      every build of the program: the <strong>Rough Color...</strong> button sits
+      next to <em>Locate Inclusion from Photos...</em> in the rough&rsquo;s form, and
+      is available when the rough is a mesh and no plan is running. No special build
+      or setting is needed.
+    </p>
+    <p>
+      The button opens a window of eight steps: Checklist, Photos, Calibration,
+      Masks, Surfaces, Fit, Compare and Accept. It uses the same eight-view camera
+      rig with a backlight as Locate Inclusion from Photos. For each view you give
+      a photo of the stone and a photo of the empty rig with the backlight on (the
+      white frame), and ideally one with the backlight off (the dark frame); RAW
+      files are best, because they are linear. The program divides the stone
+      photo by the white frame, so the lamp and the lens cancel, and fits a real
+      <strong>absorption spectrum per millimetre</strong> of path, not a texture,
+      so a stone of any size and orientation can be predicted. The result shows
+      the predicted color under D65 daylight and a warm lamp, with an uncertainty
+      next to every color, and a leave-one-view-out check: the fit is repeated
+      without each view and asked to predict it.
+    </p>
+    <p>
+      A <strong>color-zoned</strong> rough (a watermelon or bicolor tourmaline,
+      banded amethyst, an ametrine, a zoned sapphire) is described with up to four
+      zones besides the base color. Each zone is a half space, a slab, a cylinder,
+      a prism or a sector. You add a zone and type its numbers, drag its handles in
+      the planner&rsquo;s 3D view, fit it from boundary points you click in at
+      least two photos, or accept a zone suggested from the photos; the program
+      then fits one color for each zone.
+    </p>
+    <p>
+      Once the result is accepted against a saved plan, the stones in the result
+      scenes and thumbnails are drawn in their own color, and <em>Stone
+      Orientation</em> offers <em>Keep Planner Pose</em> or <em>Best Color</em>,
+      which turns each stone so that as much as possible of the last zone is under
+      the table. <em>Use Color</em> on a design row opens the design in the editor
+      and saves the color as a custom material named after the plan and the design.
+      It carries real millimetres, so the color scales physically with the stone
+      width. A zoned material&rsquo;s color is its zones, so the design&rsquo;s Body
+      Color and the Live Render Color control are greyed out for it. Ametrine, a
+      zoned material that is built in, is described on the
+      <a href="materials.html#ametrine">materials page</a>.
+    </p>
+    <p>
+      Limits: one backlight gives one color, so the program cannot recover a color
+      change (alexandrite, a color-change garnet), pleochroism or scattering. A
+      frosted or uneven skin hides the body color, and immersion in a liquid of
+      about the stone&rsquo;s index helps most. The method has been tested against
+      synthetic photos and has not yet been measured against real stones, so
+      treat a predicted color as an estimate and read its uncertainty. The manual
+      chapter
+      <a href="https://github.com/suitable-name/indicatrix/blob/main/apps/indicatrix-cut/docs/manual/24-rough-colour-and-zoning.md"><code>apps/indicatrix-cut/docs/manual/24-rough-colour-and-zoning.md</code></a>
+      has the capture protocol and every step.
+    </p>
     <p class="small">
       Sources: <code>crates/indicatrix-cut-core/src/rough_plan/</code>,
       <code>apps/indicatrix-cut/src/gui/rough_plan/</code>, and the manual chapter
@@ -1330,9 +1427,9 @@
     <h2><span class="sec-num">12</span>Solid inspection view</h2>
     <figure class="fig">
       <a href="assets/images/fig_solid_view.png">
-        <img src="assets/images/fig_solid_view.png" width="1800" height="1126" alt="Solid inspection view with facet picking" loading="lazy">
+        <img src="assets/images/fig_solid_view.png" width="1800" height="1157" alt="Solid inspection view with facet picking" loading="lazy">
       </a>
-      <figcaption>Fig. 18 — Solid inspection: click a facet to jump to its row in the schedule.</figcaption>
+      <figcaption>Fig. 26 — Solid shading in the Live Render panel: the stone drawn flat and untextured, here the dodecagon fitted to the view. The Edit tab&rsquo;s solid view, described below, adds facet picking: click a facet to jump to its row in the schedule.</figcaption>
     </figure>
     <p>
       The Edit tab's second viewport shows the exact polyhedral solid (facet edges
@@ -1404,9 +1501,9 @@
     <h2><span class="sec-num">13</span>Export</h2>
     <figure class="fig">
       <a href="assets/images/fig_cutting_schedule.png">
-        <img src="assets/images/fig_cutting_schedule.png" width="916" height="664" alt="Cutting instructions table" loading="lazy">
+        <img src="assets/images/fig_cutting_schedule.png" width="1800" height="510" alt="Cutting instructions table" loading="lazy">
       </a>
-      <figcaption>Fig. 19 — The cutting instructions: one row per step with facet, angle and index-gear positions, split into All Steps, Pavilion and Crown.</figcaption>
+      <figcaption>Fig. 27 — The cutting instructions of 45.148 SplitChecker 12: one row per step with facet (and its earlier number), angle and index-gear positions, split into All Steps, Pavilion and Crown, with a Copy Instructions button.</figcaption>
     </figure>
     <p>
       A split button in the command bar groups the master-still render
@@ -1432,18 +1529,18 @@
       exported: the design does not solve&rdquo; with the solver's reason
       (<code>apps/indicatrix-cut/src/gui/editor/finished_stone.rs</code>).
     </p>
-    <figure class="fig">
-      <a href="assets/images/fig_export_dialog.jpg">
-        <img src="assets/images/fig_export_dialog.jpg" width="1800" height="1759" alt="Export High-Resolution Render dialog during an export" loading="lazy">
+    <figure class="fig fig-portrait" style="--fig-max: 460px">
+      <a href="assets/images/fig_export_dialog.png">
+        <img src="assets/images/fig_export_dialog.png" width="840" height="1578" alt="Export High-Resolution Render dialog before an export" loading="lazy">
       </a>
-      <figcaption>Fig. 20 — Export High-Resolution Render mid-export: 4K, Rec.2020, local and remote compute with final-picture transfer, 128 bounces and 16 384 samples per pixel, 73 % done. The output folder is blurred.</figcaption>
+      <figcaption>Fig. 28 &mdash; Export High-Resolution Render before an export: the output folder and file name template, 4K output size, Rec.2020, Local Only (no remote coordinator is configured, so the remote choices are dimmed), 12 bounces and 1024 samples per pixel, with Close, Add to Queue and Start Export.</figcaption>
     </figure>
     <dl class="deflist">
       <dt>Max resolution</dt><dd>8192 × 8192 px (<code>MAX_EXPORT_DIM</code>)</dd>
       <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>
       <dt>Max bounces</dt><dd>128 (<code>MAX_EXPORT_BOUNCES</code>)</dd>
       <dt>Colour spaces</dt><dd>sRGB, Display P3, Rec. 2020 (Display P3/Rec. 2020 exports embed an ICC profile so they aren't misread as sRGB)</dd>
-      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, the native <code>.indicatrix</code> design file, 8-bit PNG renders. Read and import: <code>.gem</code> and <code>.gcs</code>. Write, experimental: <code>.gcs</code>. <a href="#design-file-formats">Details below</a>.</dd>
+      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, the native <code>.isdd</code> design file, 8-bit PNG renders. Read and import: <code>.gem</code> and <code>.gcs</code>. Write, experimental: <code>.gcs</code>. <a href="#design-file-formats">Details below</a>.</dd>
     </dl>
     <p class="small">Constants from <code>apps/indicatrix-cut/src/bridge/export_thread/params.rs</code>.</p>
     <p>
@@ -1462,7 +1559,7 @@
       <li><strong>Header.</strong> The title (or &ldquo;Cutting instructions&rdquo;),
         an optional subtitle, &ldquo;by&rdquo; and the designer, and the month and
         year of the export. The title comes from the file details stored in the
-        <code>.indicatrix</code> file, falling back to the <code>.asc</code> header
+        <code>.isdd</code> file, falling back to the <code>.asc</code> header
         lines.</li>
       <li><strong>Facet Data.</strong> Tiers and facets in the pavilion, girdle and
         crown, and the totals. A tier without an index list is one facet, otherwise
@@ -1508,15 +1605,16 @@
       <li><strong>GemCAD <code>.asc</code></strong>: read and written, with CRLF line
         ends as GemCAD writes them. A relation is exported as its current angle
         and a concave tier as two footnotes in cutting order.</li>
-      <li><strong>Native <code>.indicatrix</code></strong>
+      <li><strong>Native <code>.isdd</code></strong>
         (<code>crates/indicatrix-formats/src/native</code>): a self-contained text
-        file in TOML syntax with a versioned header, which still opens the older
-        <code>.indicatrix.toml</code> sidecar. It keeps constraints, preforms, tier
+        file in TOML syntax with a versioned header; files saved as <code>.isdd</code>
+        by earlier versions still open. It keeps constraints, preforms, tier
         relations, concave tiers and a snapshot of a custom material, which a plain
         <code>.asc</code> cannot hold. A file is written as version 2 only when it
-        has concave tiers and as version 3 only when a tier has a relation, so every
-        other file is unchanged and an older build refuses a version 3 file rather
-        than dropping the relations. It also carries descriptive metadata (title,
+        has concave tiers, as version 3 only when a tier has a relation and as version 4
+        only when its rough is a planned piece from the Rough planner, so every
+        other file is unchanged and an older build refuses a version 3 or 4 file rather
+        than dropping the relations or the rough. It also carries descriptive metadata (title,
         designer, source, notes, tags, licence, dates, an id) and attachments that
         cannot be recomputed (a PDF, the original <code>.gem</code> or
         <code>.asc</code>, a diagram image); derived values such as ratios, volume,
@@ -1579,6 +1677,12 @@
       its progress. The list is kept in the library, so it survives a restart, and
       closing the window does not stop a render.
     </p>
+    <figure class="fig">
+      <a href="assets/images/fig_render_jobs.png">
+        <img src="assets/images/fig_render_jobs.png" width="1520" height="712" alt="The Render Jobs window with two queued still-image jobs" loading="lazy">
+      </a>
+      <figcaption>Fig. 29 &mdash; The Render Jobs window with two queued stills (1920 &times; 1080 at 64 samples and 1280 &times; 720 at 32 samples, both in the Light tent): Start Queue, the number waiting, Clear Finished and Export Script, and on each row Run Next, Up or Down, Pause, Cancel and Delete.</figcaption>
+    </figure>
     <p>
       <strong>Start Queue</strong> renders the waiting jobs from the top down, one
       job at a time, and turns into <strong>Pause Queue</strong>. The queue never
@@ -1721,23 +1825,23 @@
       that has only an angle table, or one that does not solve. A finished
       lesson's Done mark is saved under the library design's id.
     </p>
-    <figure class="fig fig-portrait" style="--fig-max: 700px">
+    <figure class="fig fig-portrait" style="--fig-max: 672px">
       <a href="assets/images/fig_build_menu.png">
-        <img src="assets/images/fig_build_menu.png" width="835" height="490" alt="Library card menu with the Build this design entry" loading="lazy">
+        <img src="assets/images/fig_build_menu.png" width="672" height="368" alt="Library card menu with the Build this design entry" loading="lazy">
       </a>
-      <figcaption>Fig. 21 — The card menu of a library design: Generate Previews, Compute Tilt Curves, Ignore, Exclude from planner, Build this design and Add tag.</figcaption>
+      <figcaption>Fig. 30 — The card menu of a library design: Generate Previews, Compute Tilt Curves, Ignore, Exclude from Planner, Build This Design and Add Tag.</figcaption>
     </figure>
     <figure class="fig fig-portrait" style="--fig-max: 440px">
       <a href="assets/images/fig_build_step1.png">
-        <img src="assets/images/fig_build_step1.png" width="664" height="742" alt="Guide panel on step 1 of 19, Start a new design" loading="lazy">
+        <img src="assets/images/fig_build_step1.png" width="520" height="960" alt="Guide panel on step 1 of 19, Start a new design" loading="lazy">
       </a>
-      <figcaption>Fig. 22 — The guide panel on step 1 of 19 of a lesson for 41.029B FVS-65, Start a new design: New Design, start from Empty, a cylinder preform, index gear 120, symmetry order 2 with mirror on, no material yet, then Create, and a line saying what to look for.</figcaption>
+      <figcaption>Fig. 31 — The guide panel on step 1 of 19 of a lesson for 41.029B FVS-65, Start a new design: New Design, start from Empty, a cylinder preform, index gear 120, symmetry order 2 with mirror on, no material yet, then Create, a line saying what to look for, and the Waiting for chip.</figcaption>
     </figure>
-    <figure class="fig fig-portrait" style="--fig-max: 1100px">
+    <figure class="fig fig-portrait" style="--fig-max: 440px">
       <a href="assets/images/fig_build_step2.png">
-        <img src="assets/images/fig_build_step2.png" width="1612" height="616" alt="Guide panel on step 2 of 19, Add G1 (girdle), beside the dimmed command bar" loading="lazy">
+        <img src="assets/images/fig_build_step2.png" width="520" height="960" alt="Guide panel on step 2 of 19, Add G1 (girdle)" loading="lazy">
       </a>
-      <figcaption>Fig. 23 — Step 2 of 19, Add G1 (girdle), tier 1 of 15: angle -90.0, Meets Exact scale value 0.8695, name 1 and its indices, with the controls the step does not use dimmed and the empty tier table beside the panel.</figcaption>
+      <figcaption>Fig. 32 — Step 2 of 19, Add G1 (girdle), tier 1 of 15: angle -90.0, Meets Exact scale value 0.8695, name 1 and its indices, with the Waiting for chip below the actions and Back and Next at the bottom.</figcaption>
     </figure>
     <!-- FIGURE WANTED: the tutorial browser with sections and Done marks, and the
       guide panel on a step with its Waiting for chip. -->
@@ -1765,8 +1869,8 @@
     </p>
     <h3>Preferences</h3>
     <p>
-      <strong>Edit &rarr; Preferences...</strong> (Ctrl+,) has four sections:
-      Interface, Appearance, Direct manipulation and Tutorials. <em>Interface
+      <strong>Edit &rarr; Preferences...</strong> (Ctrl+,) has these sections:
+      Interface, Appearance, Direct manipulation, Updates and Tutorials. <em>Interface
       scale</em> offers Automatic and eight fixed scales from 75 % to 200 %, and
       applies at the next start. <em>High contrast</em> switches to near-black
       backgrounds, white text, visible borders and bright accents. It applies at
@@ -1776,7 +1880,10 @@
       handles</em> makes the angle, depth and index handles about 60 % bigger.
       <em>Snap to gear steps</em> is the setting of the Snap button, and the app
       also remembers the Slice tool's Symmetric button. The Slice tool itself
-      starts off in every session. Every choice is saved automatically.
+      starts off in every session. <em>Check for new versions</em> is off until you
+      allow it; when it is on, the program asks GitHub once a day whether a newer
+      release exists, and <em>Check Now</em> asks at once. Every choice is saved
+      automatically.
     </p>
     <h3>Keyboard and screen readers</h3>
     <p>
@@ -1813,8 +1920,18 @@
       same rules as the matching button, including a tutorial's locks. It lists
       actions, not data: it does not search designs, tiers or files.
     </p>
-    <!-- FIGURE WANTED: the command palette with a search typed and one dimmed row
-      showing its reason; the Preferences dialog. -->
+    <figure class="fig fig-portrait" style="--fig-max: 760px">
+      <a href="assets/images/fig_command_palette.png">
+        <img src="assets/images/fig_command_palette.png" width="1120" height="696" alt="The command palette with the word export typed and the matching commands listed" loading="lazy">
+      </a>
+      <figcaption>Fig. 33 &mdash; The command palette with &ldquo;export&rdquo; typed: the matching actions with their categories and shortcuts, and one dimmed row, Show Last Saved File in Folder, with its reason (&ldquo;Nothing has been saved yet&rdquo;).</figcaption>
+    </figure>
+    <figure class="fig fig-portrait" style="--fig-max: 480px">
+      <a href="assets/images/fig_preferences.png">
+        <img src="assets/images/fig_preferences.png" width="960" height="1200" alt="The Preferences dialog: Interface, Appearance, Direct manipulation and Updates" loading="lazy">
+      </a>
+      <figcaption>Fig. 34 &mdash; The Preferences dialog: the Simple and Advanced choice, Interface Scale and High Contrast, Larger Handles and Snap to Gear Steps When Dragging, and the update check (off).</figcaption>
+    </figure>
   </section>
 
   <section id="install-cli">
@@ -1890,7 +2007,7 @@ cargo run -p indicatrix-cut --release --features gpu</code></pre>
     <p>
       <code>indicatrix-cli</code> runs the same solver, optimizer, retarget gate and
       sweep as the editor without a window or a GPU, so a number printed there is
-      the number the editor shows. A design is a <code>.indicatrix</code>,
+      the number the editor shows. A design is an <code>.isdd</code> (or an older <code>.isdd</code>),
       <code>.asc</code>, <code>.gem</code> or <code>.gcs</code> file, read from its
       extension.
     </p>
@@ -1898,13 +2015,13 @@ cargo run -p indicatrix-cut --release --features gpu</code></pre>
       <thead><tr><th>Command</th><th>What it does</th></tr></thead>
       <tbody>
         <tr><td><code>info</code></td><td>Name, gear, symmetry, preform, material and the tier list, with each tier's standard code. Does not solve.</td></tr>
-        <tr><td><code>solve</code></td><td>Solves every tier, checks that the facets enclose a stone and lists the manufacturability warnings; <code>--out</code> saves a <code>.indicatrix</code>, which also converts an <code>.asc</code>, <code>.gem</code> or <code>.gcs</code>.</td></tr>
+        <tr><td><code>solve</code></td><td>Solves every tier, checks that the facets enclose a stone and lists the manufacturability warnings; <code>--out</code> saves an <code>.isdd</code>, which also converts an <code>.asc</code>, <code>.gem</code> or <code>.gcs</code>.</td></tr>
         <tr><td><code>metrics</code></td><td>Table-up windowing, brilliance, extinction, fire and scintillation, the proportions and the yield; <code>--tilt</code> adds the tilt averages.</td></tr>
         <tr><td><code>validate</code></td><td>The warnings and the Good, Check or Problem verdict of the status strip.</td></tr>
         <tr><td><code>optimize</code></td><td>The Optimize tab's search, with ranked candidates; <code>--budget</code> (default 800), <code>--starts</code> (1 to 32, default 8), <code>--seed</code>, <code>--preset</code>; <code>--out</code> saves the best.</td></tr>
         <tr><td><code>retarget</code></td><td>The Retarget dialog's engine and validity gate for another material (<code>--mode shift|optimize</code>, <code>--crown-fraction</code>, <code>--crown-ratio</code>, <code>--no-keep-look</code>).</td></tr>
         <tr><td><code>sweep</code></td><td>Sets one tier to every angle of a range and scores each one (<code>--csv</code>).</td></tr>
-        <tr><td><code>export</code></td><td>Writes <code>.asc</code>, <code>.indicatrix</code>, <code>.gcs</code> or the cutting sheet as <code>.html</code>.</td></tr>
+        <tr><td><code>export</code></td><td>Writes <code>.asc</code>, <code>.isdd</code>, <code>.gcs</code> or the cutting sheet as <code>.html</code>.</td></tr>
         <tr><td><code>render</code>, <code>tilt-video</code></td><td>Render a job file made by the render queue (<a href="#render-jobs">section 14</a>).</td></tr>
       </tbody>
     </table>
@@ -1912,13 +2029,13 @@ cargo run -p indicatrix-cut --release --features gpu</code></pre>
       <div class="code-block-head"><span>terminal — command-line tool (no window)</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># from a clone of the repository (an installed binary is just: indicatrix-cli info round.asc)</span>
 cargo run -p indicatrix-cli --release -- info round.asc
-cargo run -p indicatrix-cli --release -- solve round.asc --out round.indicatrix
-cargo run -p indicatrix-cli --release -- metrics round.indicatrix --material Sapphire --json
+cargo run -p indicatrix-cli --release -- solve round.asc --out round.isdd
+cargo run -p indicatrix-cli --release -- metrics round.isdd --material Sapphire --json
 cargo run -p indicatrix-cli --release -- validate round.asc --json
-cargo run -p indicatrix-cli --release -- optimize round.indicatrix --preset brilliance --budget 400 --starts 4 --seed 7 --out better.indicatrix
-cargo run -p indicatrix-cli --release -- retarget round.indicatrix --material Sapphire --crown-fraction 0.33 --out sapphire.indicatrix
-cargo run -p indicatrix-cli --release -- sweep round.indicatrix --tier "Pavilion Main" --from 39 --to 43 --step 0.5 --csv sweep.csv
-cargo run -p indicatrix-cli --release -- export round.indicatrix --format html --out sheet.html
+cargo run -p indicatrix-cli --release -- optimize round.isdd --preset brilliance --budget 400 --starts 4 --seed 7 --out better.isdd
+cargo run -p indicatrix-cli --release -- retarget round.isdd --material Sapphire --crown-fraction 0.33 --out sapphire.isdd
+cargo run -p indicatrix-cli --release -- sweep round.isdd --tier "Pavilion Main" --from 39 --to 43 --step 0.5 --csv sweep.csv
+cargo run -p indicatrix-cli --release -- export round.isdd --format html --out sheet.html
 
 <span class="cmt"># every command has its own help page</span>
 cargo run -p indicatrix-cli --release -- retarget --help</code></pre>
@@ -1954,7 +2071,7 @@ cargo run -p indicatrix-cli --release -- retarget --help</code></pre>
 <footer>
   <div class="container">
     <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>
 

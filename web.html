@@ -18,6 +18,7 @@
       <a href="physics.html">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
       <a href="web.html" aria-current="page">Web app</a>
+      <a href="mobile.html">Mobile app</a>
       <a href="materials.html">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -82,7 +83,7 @@
     <h2><span class="sec-num">2</span>What it can do</h2>
     <dl class="deflist">
       <dt>Designs</dt>
-      <dd>Start a new design from the template gallery (an empty design plus nine built-in templates, in one list). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own self-contained <code>.indicatrix</code> design file (and the older <code>.indicatrix.toml</code> sidecar, alone or together with its <code>.asc</code>), by file picker or by dragging files onto the page. The file reader is the desktop's, so a design file with concave tiers or tier relations (format versions 2 and 3) opens too; section 3 says what the web app does with them. Save the design as <code>.indicatrix</code>, save <code>.asc</code>, or save an <code>.asc</code> with its older sidecar. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG.</dd>
+      <dd>Start a new design from the template gallery (an empty design plus nine built-in templates, in one list). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own self-contained <code>.isdd</code> design file (and the older <code>.indicatrix</code> design files), by file picker or by dragging files onto the page. The file reader is the desktop's, so a design file with concave tiers or tier relations (format versions 2 and 3) opens too; section 3 says what the web app does with them. Save the design as <code>.isdd</code>, or save <code>.asc</code>. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG.</dd>
 
       <dt>CAD editor</dt>
       <dd>The tier table with inline angle editing, keyboard and Ctrl+wheel nudging, undo and redo; the four-tab inspector (Tier, Preform, Optimize, Schedule); design settings, including a compact custom-material editor; and the guided walkthrough, the same ten-step worked example as the desktop. The angle and exact-scale fields of the tier form take plain arithmetic such as <code>41.5+0.3</code>.</dd>
@@ -220,11 +221,11 @@
         </tr>
         <tr>
           <td>Full custom-material editor</td>
-          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and colour (saved with the design in the <code>.indicatrix</code> file); one custom material travels with the design. There is no entry of Sellmeier or Cauchy coefficients: a material typed that way on the desktop is drawn here with a Cauchy curve built from its n<sub>D</sub> and F&minus;C figure, which is close but not the same curve.</td>
+          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and colour (saved with the design in the <code>.isdd</code> file); one custom material travels with the design. There is no entry of Sellmeier or Cauchy coefficients: a material typed that way on the desktop is drawn here with a Cauchy curve built from its n<sub>D</sub> and F&minus;C figure, which is close but not the same curve.</td>
           <td>The full editor, including Sellmeier and Cauchy coefficients with validation (<a href="materials.html#custom-materials">materials page</a>), and the saved custom-material store.</td>
         </tr>
         <tr>
-          <td>Design metadata and attachments in the <code>.indicatrix</code> file</td>
+          <td>Design metadata and attachments in the <code>.isdd</code> file</td>
           <td>Kept, not edited. Opening a design file keeps its metadata (title, designer, source, notes, tags, licence, dates, id) and attachments (PDF, original <code>.gem</code>/<code>.asc</code>, diagram image), and Save design writes them back unchanged with a new modification time. The Design panel shows the title, designer, source, notes, tags and licence read-only.</td>
           <td>The same file format carries them (<a href="comparison.html#interop">file formats</a>).</td>
         </tr>
@@ -316,7 +317,7 @@
 <footer>
   <div class="container">
     <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>
 

@@ -18,6 +18,7 @@
       <a href="physics.html">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
       <a href="web.html">Web app</a>
+      <a href="mobile.html">Mobile app</a>
       <a href="materials.html">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html">Distributed</a>
@@ -116,13 +117,13 @@
         <tr>
           <td><code>indicatrix-cli</code></td>
           <td>app (CLI)</td>
-          <td>Headless command-line tool for faceting designs: <code>info</code>, <code>solve</code>, <code>metrics</code>, <code>validate</code>, <code>optimize</code>, <code>retarget</code>, <code>sweep</code> and <code>export</code>, from scripts, with no window and no GPU. Reads <code>.indicatrix</code>, <code>.asc</code>, <code>.gem</code> and <code>.gcs</code> and uses the same solver, retarget gate and optimizer as the desktop editor. Its <code>render</code> and <code>tilt-video</code> commands run saved render job files.</td>
+          <td>Headless command-line tool for faceting designs: <code>info</code>, <code>solve</code>, <code>metrics</code>, <code>validate</code>, <code>optimize</code>, <code>retarget</code>, <code>sweep</code> and <code>export</code>, from scripts, with no window and no GPU. Reads <code>.isdd</code> (and older <code>.indicatrix</code>), <code>.asc</code>, <code>.gem</code> and <code>.gcs</code> and uses the same solver, retarget gate and optimizer as the desktop editor. Its <code>render</code> and <code>tilt-video</code> commands run saved render job files.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-cli">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-cli">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-web</code></td>
           <td>app (browser)</td>
-          <td>Browser build of indicatrix, served as static files: open or start a design (<code>.indicatrix</code>, <code>.asc</code>, <code>.gem</code>, <code>.gcs</code>), edit it in the same faceting CAD engine, and look at it as a solid, a faceting diagram and a spectral render traced on your CPU cores in Web Workers, with the brilliance, fire, windowing and extinction figures and the tilt curve. Files are read and saved as browser downloads; the design lives in the tab's session only. No design library, no remote rendering, no Deep Solve, no GPU renderer, no database. See the <a href="web.html">web app page</a>.</td>
+          <td>Browser build of indicatrix, served as static files: open or start a design (<code>.isdd</code>, <code>.asc</code>, <code>.gem</code>, <code>.gcs</code>), edit it in the same faceting CAD engine, and look at it as a solid, a faceting diagram and a spectral render traced on your CPU cores in Web Workers, with the brilliance, fire, windowing and extinction figures and the tilt curve. Files are read and saved as browser downloads; the design lives in the tab's session only. No design library, no remote rendering, no Deep Solve, no GPU renderer, no database. See the <a href="web.html">web app page</a>.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-web">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-web">docs.rs</a></td>
         </tr>
         <tr>
@@ -137,6 +138,18 @@
           <td>The Web Worker entry point of the browser build: decodes a message, runs the <code>indicatrix-web-core</code> handler, posts the reply.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-web-compute">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-web-compute">docs.rs</a></td>
         </tr>
+        <tr>
+          <td><code>indicatrix-mobile-core</code></td>
+          <td>library</td>
+          <td>The interface-free core of the mobile app: the local design library, the shared editor session, settings, the cutting-instruction rows, the property and check models, the CPU render pool with its battery and thermal governor, and the <code>Platform</code> trait that hides what the operating system provides (files, sharing, printing, clipboard, keep-awake, thermal state). No interface toolkit and no Android code; tested natively against a mock platform.</td>
+          <td class="pub">not published</td>
+        </tr>
+        <tr>
+          <td><code>indicatrix-mobile-android</code></td>
+          <td>app (Android)</td>
+          <td>The phone and tablet app: a touch-first Slint interface over <code>indicatrix-mobile-core</code>, packaged as a Gradle project with a thin Kotlin <code>NativeActivity</code> shim. Library, design editing (tiers, stone, light, checks), solid, diagram and CPU render views, and cutting mode. The same interface also runs in a desktop window as a preview. Built from source and not in an app store. See the <a href="mobile.html">mobile app page</a>.</td>
+          <td class="pub">not published</td>
+        </tr>
       </tbody>
     </table>
   </section>
@@ -150,9 +163,9 @@
         the current source tree, none of it has a release date, and the order below
         is not a promise of sequence. It is listed so that the direction of the
         project is visible. Features that have since landed, such as planning
-        stones from a 3D scan of the rough and cutting concave facets, are
-        described on the <a href="editor.html">studio page</a> and no longer
-        appear here.
+        stones from a 3D scan of the rough, taking the color of the rough from
+        photos and cutting concave facets, are described on the
+        <a href="editor.html">studio page</a> and no longer appear here.
       </p>
     </div>
     <table>
@@ -161,19 +174,14 @@
       </thead>
       <tbody>
         <tr>
-          <td>Colour from a photograph of the rough</td>
-          <td>Pick the render colour from a photo of the actual rough rather than from a catalogue preset: sample the stone's colour in the picture and derive an absorption spectrum that reproduces it, so the preview shows the stone you have, not a generic one. (The Rough planner already locates inclusions from photos on a fixed camera rig; this is about the colour of the stone itself.)</td>
-          <td>The spectral material model and the shared material catalogue (<a href="materials.html">materials page</a>), and the custom colour editor.</td>
-        </tr>
-        <tr>
           <td>Optical-effect overlays in the render</td>
           <td>Highlight directly in the rendered image where windowing, extinction, brilliance and fire occur. Each effect can be shown as a coloured overlay on the stone, so a cutter sees at a glance which facets leak light straight through or go dark at the current viewing angle, instead of reading it only from a score or the tilt curve. (Today the Solid view already hatches pavilion facets at risk of windowing; the render itself has no overlay.)</td>
           <td>The optical metrics and the tilt performance sweep (<a href="editor.html#tilt-analytics">studio page</a>), which already measure these effects from the camera's point of view but report them only as numbers and curves.</td>
         </tr>
         <tr>
-          <td>Mobile app</td>
-          <td>A phone or tablet client for browsing the library and viewing designs in high-definition renders. The rendering itself happens on a coordinator or worker over the existing remote protocol, so a mobile device gets the same quality as the desktop without tracing anything locally.</td>
-          <td>Distributed rendering and the coordinator model (<a href="distributed.html">distributed page</a>).</td>
+          <td>Mobile app: rendering on a coordinator, and a store release</td>
+          <td>Let the <a href="mobile.html">Android app</a> hand its rendering to a coordinator or worker over the existing remote protocol, so a phone gets the same quality as the desktop without tracing it all on the device, and browse a remote library. Today the app exists and traces on the device's processor only; More &rarr; Remote is a placeholder page. It is also not in an app store yet: you build it from source. A store listing is not scheduled.</td>
+          <td>Distributed rendering and the coordinator model (<a href="distributed.html">distributed page</a>), and the app&rsquo;s existing <code>Platform</code> split (<code>indicatrix-mobile-core</code>).</td>
         </tr>
         <tr>
           <td>GPU rendering in the browser</td>
@@ -199,7 +207,8 @@
     <ul>
       <li>The faceting CAD (<code>indicatrix-cut-core</code> and the editor UI in <code>apps/indicatrix-cut</code>) is beta; its interaction model is still changing, so check a design against an established CAD before you cut it.</li>
       <li><code>indicatrix-web</code> is the browser build (<a href="https://live.indicatrix-suite.com">live.indicatrix-suite.com</a>, described on the <a href="web.html">web app page</a>). It renders on the CPU in Web Workers (slower than the desktop's GPU path, so a few hundred samples take a while on a laptop), edits and solves designs with the same engine as the desktop, and keeps a design only for the life of the browser tab, so save your work as downloads. It has no design library, remote rendering, Deep Solve or GPU renderer, and it has no tutorials, cutting mode, history and variants, concave tools or command palette — see the web app page and its own <code>README.md</code> for the limits.</li>
-      <li>The GPU compute path requires a wgpu-supported adapter with at least 11 storage buffers per shader stage (<code>MEGAKERNEL_STORAGE_BUFFERS</code>, <code>crates/indicatrix/src/renderer/gpu/context.rs</code>); without one, rendering falls back to the CPU tracer. A concave stone, and a scene lit by one of the two UV lamp presets (physical-colour builds only), is always traced on the CPU, locally and on a remote worker, and renders slower than the same design without its tools.</li>
+      <li>The Android app (<code>apps/indicatrix-mobile-android</code>, described on the <a href="mobile.html">mobile app page</a>) is not in an app store: you build it from source and install it on your own device, or run its interface in a desktop window. It traces on the device&rsquo;s processor only, with no remote or GPU rendering, and it has no optimizer, Retarget, Deep Solve, history and variants, concave-tier editing, tutorials or help. There is no screen-reader support yet, because the interface toolkit exposes no accessibility tree on Android. Its <code>README.md</code> lists the other known limits.</li>
+      <li>The GPU compute path requires a wgpu-supported adapter with at least 11 storage buffers per shader stage (<code>MEGAKERNEL_STORAGE_BUFFERS</code>, <code>crates/indicatrix/src/renderer/gpu/context.rs</code>); without one, rendering falls back to the CPU tracer. A concave stone is always traced on the CPU, locally and on a remote worker, and renders slower than the same design without its tools.</li>
       <li>Concave tiers have limits. Each tool placement is taken from the flat stone's measured width, the optimizer and the angle sweep score the flat stone, and the GPU does not trace tools. Clicking a groove or dimple selects its concave tier, Compare draws, traces and measures the stone with its tools, and the Rough planner places a concave design on its carved outline.</li>
       <li>The Rough planner reads rough meshes as OBJ, STL (ASCII or binary) or PLY (ASCII or binary), up to 64 MiB, in a unit you choose (it suggests one when the size looks wrong but never applies it). Small scan defects are repaired on import: hair-wide gaps, faces turned the wrong way and holes up to 5 % of the bounding-box diagonal. A smooth scan is planned from the scan itself, with a simplified outline of at most 64 planes only for the grid, and every stone is still checked against the real scan; a scan plan stops at a time limit (120 s by default, shown as &ldquo;Stopped at the time limit&rdquo;) and shows the best layouts found. A mesh with more than 200,000 triangles, an open scan with bigger holes, or a mesh that crosses itself falls back to its convex outline with a note, except a smooth scan, which is refused (decimate it first). Inclusions can be added as closed meshes (or located from photos on a fixed camera rig); stones keep clear of them with a margin, while the weight and the yield count them as material. An inclusion that reaches the surface is refused, and inclusions on a block, cylinder or pebble rough are not available yet.</li>
       <li><code>indicatrix-cli</code> takes one design file per command. Its <code>retarget</code> accepts only a result the validity gate marks valid, where the desktop dialog also lets an unchecked change through, and its <code>.gcs</code> export is experimental, as in the editor.</li>
@@ -213,7 +222,7 @@
 <footer>
   <div class="container">
     <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>
 

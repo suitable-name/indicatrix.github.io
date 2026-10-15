@@ -18,6 +18,7 @@
       <a href="physics.html">Physics</a>
       <a href="editor.html">Studio &amp; CAD</a>
       <a href="web.html">Web app</a>
+      <a href="mobile.html">Mobile app</a>
       <a href="materials.html">Materials</a>
       <a href="comparison.html">Comparison</a>
       <a href="distributed.html" aria-current="page">Distributed</a>
@@ -355,9 +356,7 @@
         empty for a convex stone), at most 128 of them, and the worker side
         validates each one before tracing. The GPU kernels do not know about
         tools, so a coordinator or worker traces a stone with tools on the CPU
-        only, and local, remote and combined renders trace the same stone. A
-        scene lit by one of the two UV lamp presets is also traced on the CPU
-        only (protocol version 20).
+        only, and local, remote and combined renders trace the same stone.
       </li>
     </ul>
   </section>
@@ -495,6 +494,12 @@ indicatrix-worker join coordinator.local:7880</code></pre>
       exactly one such endpoint, and a settings file from an older build that
       listed several workers keeps only the first.
     </p>
+    <figure class="fig fig-portrait" style="--fig-max: 560px">
+      <a href="assets/images/fig_remote_coordinator.png">
+        <img src="assets/images/fig_remote_coordinator.png" width="840" height="860" alt="The Remote Coordinator dialog with one saved remote" loading="lazy">
+      </a>
+      <figcaption>Fig. 2 &mdash; The Remote Coordinator dialog: the Local and Remote switch for the library, Denoise Merged Image, the remote lanes kept in flight for batches and the pictures per preview request, and the saved remote with its live stream preferences (Live Progressive, 500 ms cadence), the export transfer (full data), Test Connection and Mirror Library to Local. The host name shown, <code>render-box.local</code>, is a placeholder.</figcaption>
+    </figure>
   </section>
 
 </main>
@@ -502,7 +507,7 @@ indicatrix-worker join coordinator.local:7880</code></pre>
 <footer>
   <div class="container">
     <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
-    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>
 
