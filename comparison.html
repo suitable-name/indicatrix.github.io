@@ -3,8 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Indicatrix — how it compares to other faceting and gem-rendering software</title>
-<meta name="description" content="Where Indicatrix sits next to GemCAD, GemRay, Gem Cut Studio, DiamCalc and general 3D renderers: design authoring, rendering physics, analysis, and file-format interoperability.">
+<title>Indicatrix compared with GemCAD, GemRay, Gem Cut Studio and DiamCalc</title>
+<meta name="description" content="Where Indicatrix sits next to GemCAD, GemRay, Gem Cut Studio, Gem Diagram and DiamCalc: design authoring, rendering physics, analysis, and file-format interoperability.">
+<!-- seo:start -->
+<link rel="canonical" href="https://www.indicatrix-suite.com/comparison.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indicatrix">
+<meta property="og:title" content="Indicatrix compared with GemCAD, GemRay, Gem Cut Studio and DiamCalc">
+<meta property="og:description" content="Where Indicatrix sits next to GemCAD, GemRay, Gem Cut Studio, Gem Diagram and DiamCalc: design authoring, rendering physics, analysis, and file-format interoperability.">
+<meta property="og:url" content="https://www.indicatrix-suite.com/comparison.html">
+<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -51,7 +65,7 @@
       <dt>GemCAD</dt>
       <dd>Robert Strickland's faceting-design program: the long-standing reference for authoring cutting instructions. Its <code>.asc</code> text export is the closest thing this field has to an interchange format, and <code>.gem</code> is its own binary save format. Strickland retired in 2023 and released GemCAD and GemRay free of charge — free to use, but not open source.</dd>
       <dt>GemRay</dt>
-      <dd>The ray-tracing companion to GemCAD: it renders a design, plots its brightness against tilt and can search the pavilion and crown angles for the best weighted brightness, but it cannot author designs itself. Its own documentation is unusually explicit about its limits — it does not model birefringence, dichroism or polarized light, and follows three colour rays rather than a spectrum.</dd>
+      <dd>The ray-tracing companion to GemCAD: it renders a design, plots its brightness against tilt and can search the pavilion and crown angles for the best weighted brightness, but it cannot author designs itself. Its own documentation is unusually explicit about its limits — it does not model birefringence, dichroism or polarized light, and follows three color rays rather than a spectrum.</dd>
       <dt>Gem Cut Studio</dt>
       <dd>A Windows faceting-design application, separate from GemCAD, with its own <code>.gcs</code> project format that stores a <em>solved</em> design (facets already closed into polygons) rather than a schedule to be solved.</dd>
       <dt>Gem Diagram</dt>
@@ -107,7 +121,7 @@
         </tr>
         <tr>
           <th scope="row">Automatic search over angles against an optical objective</th>
-          <td>✓ <span class="qual">beta, cancellable</span></td><td>✗ <span class="qual">manual, via ray paths</span></td><td>✓ <span class="qual">Nelder–Mead, pavilion and crown scale</span></td><td>✗ <span class="qual">manual optimizer</span></td><td>✗ <span class="qual">yield search, not angle</span></td><td>✓ <span class="qual">Pro: cut proportions</span></td>
+          <td>✓ <span class="qual">beta, cancellable, keeps the meets</span></td><td>✗ <span class="qual">manual, via ray paths</span></td><td>✓ <span class="qual">Nelder–Mead, pavilion and crown scale</span></td><td>✗ <span class="qual">manual optimizer</span></td><td>✗ <span class="qual">yield search, not angle</span></td><td>✓ <span class="qual">Pro: cut proportions</span></td>
         </tr>
         <tr>
           <th scope="row">Preform support</th>
@@ -119,16 +133,17 @@
         </tr>
         <tr>
           <th scope="row">Plans cuts from a block of rough (yield, placement in the rough)</th>
-          <td>✓ <span class="qual">beta, block/cylinder/pebble/OBJ mesh with cuts, as many stones as fit, up to 99 designs mixed</span></td><td>✗ <span class="qual">by hand: L/W, Vol./W³</span></td><td>✗ <span class="qual">optical merit only</span></td><td>✗ <span class="qual">single-design yield calculator</span></td><td>✓ <span class="qual">one design, orientation search</span></td><td>✗ <span class="qual">by hand: weight, locked limits</span></td>
+          <td>✓ <span class="qual">beta, block/cylinder/pebble/OBJ mesh with cuts, as many stones as fit or up to a set number, up to 99 designs mixed</span></td><td>✗ <span class="qual">by hand: L/W, Vol./W³</span></td><td>✗ <span class="qual">optical merit only</span></td><td>✗ <span class="qual">single-design yield calculator</span></td><td>✓ <span class="qual">one design, orientation search</span></td><td>✗ <span class="qual">by hand: weight, locked limits</span></td>
         </tr>
         <tr class="group"><th colspan="7" scope="colgroup">Rendering</th></tr>
+        <tr><th scope="row">Separate fixed-tap Ray-Traced engine</th><td>✓ <span class="qual">CPU/GPU; fixed-index approximation</span></td><td>?</td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
         <tr>
           <th scope="row">Produces a physically-based image of the cut stone</th>
           <td>✓</td><td>✗ <span class="qual">ray paths only</span></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td>
         </tr>
         <tr>
           <th scope="row">Refractive index evaluated per wavelength</th>
-          <td>✓ <span class="qual">8 channels/path</span></td><td>✗</td><td>✗ <span class="qual">3 colours</span></td><td>✗ <span class="qual">3 colours</span></td><td>✓ <span class="qual">dispersion value</span></td><td>✓ <span class="qual">chromatic dispersion</span></td>
+          <td>✓ <span class="qual">8 channels/path</span></td><td>✗</td><td>✗ <span class="qual">3 colors</span></td><td>✗ <span class="qual">3 colors</span></td><td>✓ <span class="qual">dispersion value</span></td><td>✓ <span class="qual">chromatic dispersion</span></td>
         </tr>
         <tr>
           <th scope="row">Polarization tracked through every interface (Stokes–Mueller)</th>
@@ -148,11 +163,11 @@
         </tr>
         <tr>
           <th scope="row">GPU compute path, verified against the CPU reference</th>
-          <td>✓ <span class="qual">tiered harness</span></td><td>✗</td><td>✗ <span class="qual">multicore CPU</span></td><td>✗</td><td>? <span class="qual">WebGL2 shader; check not stated</span></td><td>? <span class="qual">HDR engine on GPU; check not stated</span></td>
+          <td>✓ <span class="qual">separate checks for Path-Traced and Ray-Traced</span></td><td>✗</td><td>✗ <span class="qual">multicore CPU</span></td><td>✗</td><td>? <span class="qual">WebGL2 shader; check not stated</span></td><td>? <span class="qual">HDR engine on GPU; check not stated</span></td>
         </tr>
         <tr>
           <th scope="row">Renders split across machines on a local network</th>
-          <td>✓ <span class="qual">mTLS 1.3</span></td><td>✗</td><td>?</td><td>?</td><td>?</td><td>?</td>
+          <td>✓ <span class="qual">mTLS 1.3; both engines, protocol 29</span></td><td>✗</td><td>?</td><td>?</td><td>?</td><td>?</td>
         </tr>
         <tr class="group"><th colspan="7" scope="colgroup">Analysis</th></tr>
         <tr>
@@ -182,7 +197,7 @@
         </tr>
         <tr>
           <th scope="row">Runs in a browser</th>
-          <td>✓ <span class="qual">editor, diagram, CPU render; no library</span></td><td>✗</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td>
+          <td>✓ <span class="qual">editor, diagram, Path-Traced and Ray-Traced CPU/GPU; no library</span></td><td>✗</td><td>✗</td><td>✗</td><td>✓</td><td>✗</td>
         </tr>
       </tbody>
     </table>
@@ -250,24 +265,21 @@
       optimise it, see what it will look like cut in a given material (34 built into
       the shared catalogue — see <a href="materials.html">Materials</a>), and export
       something a cutter can work from — one program, one data model, no round trip
-      through a second tool. The renderer is the mature part of that. The design
-      editor is not there yet.
+      through a second tool. The renderer is the mature part of that; the faceting
+      CAD is in beta.
     </p>
     <div class="status">
       <span class="status-label">STATUS</span>
       <p>
-        The faceting CAD is in beta and under active development. Solving, optimising
-        and export work on the designs in the bundled catalogue, but the editor's
-        interaction model is still changing — so for now, check a design against an
-        established CAD before cutting rough with it. That is a statement about the
-        current state, not about the intended scope.
+        The faceting CAD is in beta and under active development: its interaction
+        model is still changing.
       </p>
     </div>
     <p>
       Concretely, what "in beta" already covers: a new design starts from a template
       gallery (five shape families, four round variants and teaching designs, and a
       blank design) or a step-by-step guided walkthrough that highlights the
-      relevant panel at each stage, with 68 short tutorials for the individual
+      relevant panel at each stage, with 69 short tutorials for the individual
       functions; Solve and
       the angle-search Optimize pass both run off the UI thread and can be cancelled
       mid-search — a real checkpoint the search itself observes, not just a UI
@@ -278,11 +290,17 @@
     </p>
     <p>
       The editor also covers things the matrix has no row for: concave facets
-      cut with cylinder, cone, circle, disc or sphere tools; tier angles that
-      follow relations such as <code>=P1 - 2</code>; a cutting mode that shows
-      the instructions one step per page; and <code>indicatrix-cli</code>, a
-      command-line tool that runs the solver, optimizer, retarget gate and
-      angle sweep without a window and prints deterministic text, JSON or CSV.
+      cut with cylinder, cone, circle, disc or sphere tools, which the renderer
+      traces on the CPU and on the GPU (up to 128 tools) and which the metrics,
+      the tilt curves and the optimizer score on the carved stone; frosted
+      facets, which render in previews, the live view, exports and render jobs
+      and which the tilt curves score as frosted (the live metrics, the
+      optimizer and Compare still treat every facet as polished); tier angles
+      that follow relations such as <code>=P1 - 2</code>; a cutting mode that
+      shows the instructions one step per page; and <code>indicatrix-cli</code>,
+      a command-line tool that runs the solver, optimizer, retarget gate and
+      angle sweep on one design or on several, without a window, and prints
+      deterministic text, JSON or CSV.
       None of the other tools' pages was read for these, so this page asserts
       nothing about whether they have them.
     </p>
@@ -292,23 +310,15 @@
       cylinder or pebble of rough, modelled with flat edge, corner and face cuts,
       or an OBJ mesh of a scanned or irregular rough,
       and, from either the library filter or the whole library, ranks up to 10
-      layouts by total carats, as many stones as fit and up to 99 designs mixed: a single stone is fitted exactly
+      layouts by total carats, as many stones as fit (or up to a number you set) and up to 99 designs mixed: a single stone is fitted exactly
       with its real outline in any orientation, and several stones get a sawing
       plan (slabs, then bars, then pieces, over all 6 cut orders). It is an
       estimate for clean, inclusion-free rough after your kerf and allowance: it
-      plans around the notches and hollows of a closed mesh and places no stone in air, but it knows nothing about inclusions, and it is desktop-only for now. The one other rough planner in the matrix is Gem Diagram's, which
+      plans around the notches and hollows of a closed mesh and places no stone in air, and it keeps stones clear of the inclusions you add to a mesh rough but knows nothing of any others, and it is desktop-only for now. The one other rough planner in the matrix is Gem Diagram's, which
       its documentation describes as an orientation search that starts from one
       loaded design and reports yield and finished weight for each orientation;
       it does not describe choosing among designs or stone counts.
     </p>
-    <p>
-      Two things are out of scope by design rather than by schedule, and knowing
-      which is which matters when you are deciding what to use:
-    </p>
-    <ul>
-      <li><strong>Not a jewellery CAD.</strong> Settings, prongs, shanks and casting — the stone is the whole model.</li>
-      <li><strong>Not a general 3D renderer.</strong> Geometry is the intersection of flat half-spaces, less convex tool volumes for concave facets, not triangle meshes; there is no scene graph, no import of arbitrary models into the renderer, and no animation. That constraint is what makes the optics tractable.</li>
-    </ul>
   </section>
 
   <section id="why">
@@ -319,7 +329,7 @@
       visible rather than academic: dispersion is the whole point of the object, the
       material is anisotropic, absorption depends on the direction light travelled
       through the crystal, and total internal reflection introduces phase shifts that
-      a polarization-free tracer simply discards. Indicatrix evaluates the refractive
+      a polarization-free tracer simply discards. Indicatrix’s Path-Traced engine evaluates the refractive
       index per wavelength from Sellmeier and Cauchy fits, carries Stokes vectors
       through Mueller matrices at every interface, splits ordinary and extraordinary
       rays with genuine Poynting walk-off, and applies absorption per direction — and
@@ -331,9 +341,9 @@
       general 3D package — Blender/Cycles, LuxCoreRender and the rest. They will light
       a gemstone mesh beautifully, but they have no notion of cutting instructions, an
       index wheel or a meet point, and they carry a single refractive index per
-      material rather than a dispersion curve, so the fire has to be faked. The
+      material rather than a dispersion curve, so their dispersion model differs. Indicatrix’s lightweight Ray-Traced option likewise uses fixed indices. The
       faceting tools above have the opposite problem: they know exactly what a tier
-      is, and their renderers follow three colour rays.
+      is, and their renderers follow three color rays.
     </p>
     <p>
       Whether that depth is worth it depends on what you are doing. For laying out a
@@ -366,11 +376,17 @@
     </ul>
   </section>
 
+  <section id="ray-traced-update">
+    <h2>Ray-Traced and Path-Traced</h2>
+    <p>Indicatrix offers both a spectral Path-Traced engine and a lightweight Ray-Traced engine. The spectral, polarization and birefringence claims in the matrix concern Path-Traced. Question marks in the Ray-Traced row mean that an equivalent mode has not been checked for that tool.</p>
+    <p>Ray-Traced is a deterministic approximation: one d-line index, or three fixed indices with Fire, RGB absorption tint and 1/4/8/16 AA taps. It finishes at the tap count without denoising. It omits polarization, birefringent doubling, scattering, zoning and edge rounding. Path-Traced retains the spectral model. Optical metrics, tilt sweeps and diagnostics keep their separate analytic tracer.</p>
+  </section>
+
 </main>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

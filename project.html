@@ -3,8 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project — Indicatrix</title>
+<title>Project, roadmap and status — Indicatrix</title>
 <meta name="description" content="The Indicatrix workspace: every crate and app with its registry links, the roadmap of planned features, and the current status and known limitations.">
+<!-- seo:start -->
+<link rel="canonical" href="https://www.indicatrix-suite.com/project.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indicatrix">
+<meta property="og:title" content="Project, roadmap and status — Indicatrix">
+<meta property="og:description" content="The Indicatrix workspace: every crate and app with its registry links, the roadmap of planned features, and the current status and known limitations.">
+<meta property="og:url" content="https://www.indicatrix-suite.com/project.html">
+<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -69,7 +83,7 @@
         <tr>
           <td><code>indicatrix-editor</code></td>
           <td>library</td>
-          <td>GUI-free faceting-design editor logic shared by the desktop editor and the web app: the editor session (design, undo/redo, selection, dirty tracking), tier, preform and material form parsing, plain-struct view models, the cutting sheet, Retarget, the guided walkthrough and tutorials, cutting mode, the angle sweep, the overall verdict and the solve policy. No GUI toolkit, no threads, no clock, no filesystem.</td>
+          <td>GUI-free faceting-design editor logic shared by the desktop editor and the web app: the editor session (design, undo/redo, selection, dirty tracking), tier, preform and material form parsing, plain-struct view models, the cutting sheet, Retarget, Deep Solve, variants, the guided walkthrough and tutorials, cutting mode, the angle sweep, the overall verdict and the solve policy. No GUI toolkit, no threads, no clock, no filesystem.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-editor">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-editor">docs.rs</a></td>
         </tr>
         <tr>
@@ -103,6 +117,12 @@
           <td class="pub"><a href="https://crates.io/crates/indicatrix-render-jobs">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-render-jobs">docs.rs</a></td>
         </tr>
         <tr>
+          <td><code>indicatrix-update</code></td>
+          <td>library</td>
+          <td>New-version check of the Indicatrix apps against the GitHub releases (<code>v&lt;version&gt;</code> tags).</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-update">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-update">docs.rs</a></td>
+        </tr>
+        <tr>
           <td><code>indicatrix-cut</code></td>
           <td>app (desktop)</td>
           <td>Desktop faceting-design editor: library browsing, spectral 3D rendering, material retargeting, and a solid inspection view.</td>
@@ -111,25 +131,25 @@
         <tr>
           <td><code>indicatrix-worker</code></td>
           <td>app (CLI / server)</td>
-          <td>The coordinator (<code>serve</code>): serves an indicatrix-backed design catalogue over mutual TLS and accepts joining render workers. The optional <code>worker</code> feature adds render capacity — <code>serve --render</code>, <code>join</code> to work for a coordinator, and <code>render</code>, a one-shot scene-to-PNG CLI.</td>
+          <td>The coordinator (<code>serve</code>): serves an indicatrix-backed design catalogue over mutual TLS and accepts joining render workers. The optional <code>worker</code> feature adds render capacity — <code>serve --render</code>, <code>join</code> to work for a coordinator, and <code>render</code>, a one-shot scene-to-PNG CLI. A coordinator that renders itself also keeps still-picture jobs for clients that disconnect.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-worker">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-worker">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-cli</code></td>
           <td>app (CLI)</td>
-          <td>Headless command-line tool for faceting designs: <code>info</code>, <code>solve</code>, <code>metrics</code>, <code>validate</code>, <code>optimize</code>, <code>retarget</code>, <code>sweep</code> and <code>export</code>, from scripts, with no window and no GPU. Reads <code>.isdd</code> (and older <code>.indicatrix</code>), <code>.asc</code>, <code>.gem</code> and <code>.gcs</code> and uses the same solver, retarget gate and optimizer as the desktop editor. Its <code>render</code> and <code>tilt-video</code> commands run saved render job files.</td>
+          <td>Headless command-line tool for faceting designs: <code>info</code>, <code>solve</code>, <code>metrics</code>, <code>validate</code>, <code>optimize</code>, <code>retarget</code>, <code>sweep</code> and <code>export</code>, from scripts, with no window and no GPU. Each of them takes any number of design files, and <code>--out-dir</code> writes one result per design. Reads <code>.isdd</code> (and older <code>.indicatrix</code>), <code>.asc</code>, <code>.gem</code> and <code>.gcs</code> and uses the same solver, retarget gate and optimizer as the desktop editor. Its <code>render</code> and <code>tilt-video</code> commands run saved render job files.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-cli">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-cli">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-web</code></td>
           <td>app (browser)</td>
-          <td>Browser build of indicatrix, served as static files: open or start a design (<code>.isdd</code>, <code>.asc</code>, <code>.gem</code>, <code>.gcs</code>), edit it in the same faceting CAD engine, and look at it as a solid, a faceting diagram and a spectral render traced on your CPU cores in Web Workers, with the brilliance, fire, windowing and extinction figures and the tilt curve. Files are read and saved as browser downloads; the design lives in the tab's session only. No design library, no remote rendering, no Deep Solve, no GPU renderer, no database. See the <a href="web.html">web app page</a>.</td>
+          <td>Browser build of indicatrix, served as static files: open or start a design (<code>.isdd</code>, <code>.asc</code>, <code>.gem</code>, <code>.gcs</code>), edit it in the same faceting CAD engine, and look at it as a solid, a faceting diagram and a spectral render traced on your CPU cores in Web Workers (and on the GPU for isotropic stones in Chrome and Edge), with the brilliance, fire, windowing and extinction figures and the tilt curve. Files are read and saved as browser downloads; the design is kept in the browser's own storage, so a reload brings it back. No design library, remote rendering, Deep Solve or database. See the <a href="web.html">web app page</a>.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-web">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-web">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-web-core</code></td>
           <td>library</td>
-          <td>The compute side of the browser build with no DOM and no GUI in it: the Web Worker protocol, the scene spec that builds the desktop's exact render scene, the CPU chunk tracer and its bit-exact accumulation, the worker-side solve, Optimize, metrics and tilt sweeps. Tested natively.</td>
+          <td>The compute side of the browser build with no DOM and no GUI in it: the Web Worker protocol, the scene spec that builds the desktop's exact render scene, the CPU chunk tracer and its bit-exact accumulation, the worker-side solve, Optimize, metrics and tilt sweeps, and the logic of the GPU admission and start-up test. Tested natively.</td>
           <td class="pub"><a href="https://crates.io/crates/indicatrix-web-core">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-web-core">docs.rs</a></td>
         </tr>
         <tr>
@@ -139,16 +159,22 @@
           <td class="pub"><a href="https://crates.io/crates/indicatrix-web-compute">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-web-compute">docs.rs</a></td>
         </tr>
         <tr>
+          <td><code>indicatrix-web-gpu</code></td>
+          <td>app (Web Worker)</td>
+          <td>The WebGPU render Worker of the browser build: decodes a message, runs event-wavefront GPU rendering and posts the reply. Built by Trunk as a worker next to <code>indicatrix-web</code>.</td>
+          <td class="pub">not published</td>
+        </tr>
+        <tr>
           <td><code>indicatrix-mobile-core</code></td>
           <td>library</td>
-          <td>The interface-free core of the mobile app: the local design library, the shared editor session, settings, the cutting-instruction rows, the property and check models, the CPU render pool with its battery and thermal governor, and the <code>Platform</code> trait that hides what the operating system provides (files, sharing, printing, clipboard, keep-awake, thermal state). No interface toolkit and no Android code; tested natively against a mock platform.</td>
-          <td class="pub">not published</td>
+          <td>The interface-free core of the mobile app: the local design library, the shared editor session, settings, the cutting-instruction rows, the property and check models, the render pool with its battery and thermal governor, history and variants, Deep Solve, Optimize and Retarget jobs, concave editing, the remote-rendering client (interactive sessions and durable server jobs), and the <code>Platform</code> trait that hides what the operating system provides (files, sharing, printing, clipboard, keep-awake, thermal state). No interface toolkit and no Android code; tested natively against a mock platform.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-mobile-core">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-mobile-core">docs.rs</a></td>
         </tr>
         <tr>
           <td><code>indicatrix-mobile-android</code></td>
           <td>app (Android)</td>
-          <td>The phone and tablet app: a touch-first Slint interface over <code>indicatrix-mobile-core</code>, packaged as a Gradle project with a thin Kotlin <code>NativeActivity</code> shim. Library, design editing (tiers, stone, light, checks), solid, diagram and CPU render views, and cutting mode. The same interface also runs in a desktop window as a preview. Built from source and not in an app store. See the <a href="mobile.html">mobile app page</a>.</td>
-          <td class="pub">not published</td>
+          <td>The phone and tablet app: a touch-first Slint interface over <code>indicatrix-mobile-core</code>, packaged as a Gradle project with a thin Kotlin <code>NativeActivity</code> shim. Library, design editing (tiers, concave tiers, stone, light, checks), solid, diagram and render views (on the device or on a coordinator or worker), history and variants, Deep Solve, Optimize, Retarget, cutting mode and server jobs. The same interface also runs in a desktop window as a preview. Built from source and not in an app store. See the <a href="mobile.html">mobile app page</a>.</td>
+          <td class="pub"><a href="https://crates.io/crates/indicatrix-mobile-android">crates.io</a><span class="sep"> · </span><a href="https://docs.rs/indicatrix-mobile-android">docs.rs</a></td>
         </tr>
       </tbody>
     </table>
@@ -164,8 +190,9 @@
         is not a promise of sequence. It is listed so that the direction of the
         project is visible. Features that have since landed, such as planning
         stones from a 3D scan of the rough, taking the color of the rough from
-        photos and cutting concave facets, are described on the
-        <a href="editor.html">studio page</a> and no longer appear here.
+        photos, cutting concave facets, the optical-effect overlays and
+        rendering on a coordinator from the Android app, are described on the
+        other pages and no longer appear here.
       </p>
     </div>
     <table>
@@ -174,24 +201,24 @@
       </thead>
       <tbody>
         <tr>
-          <td>Optical-effect overlays in the render</td>
-          <td>Highlight directly in the rendered image where windowing, extinction, brilliance and fire occur. Each effect can be shown as a coloured overlay on the stone, so a cutter sees at a glance which facets leak light straight through or go dark at the current viewing angle, instead of reading it only from a score or the tilt curve. (Today the Solid view already hatches pavilion facets at risk of windowing; the render itself has no overlay.)</td>
-          <td>The optical metrics and the tilt performance sweep (<a href="editor.html#tilt-analytics">studio page</a>), which already measure these effects from the camera's point of view but report them only as numbers and curves.</td>
+          <td>Optical-effect overlays in the web and Android apps</td>
+          <td>The desktop studio can mark windowing, extinction, brilliance and fire over the live render (Optical Diagnostics). The web and Android apps have no overlay yet. The overlay&rsquo;s analysis and compositing are free of desktop code so that those apps can adopt it, and a GPU version of its analysis pass is a possible later step.</td>
+          <td>The analytic ray classifier and image sampler in the <code>indicatrix</code> crate (<code>color/metrics</code>) and its overlay compositor (<code>renderer/optical_overlay.rs</code>).</td>
         </tr>
         <tr>
-          <td>Mobile app: rendering on a coordinator, and a store release</td>
-          <td>Let the <a href="mobile.html">Android app</a> hand its rendering to a coordinator or worker over the existing remote protocol, so a phone gets the same quality as the desktop without tracing it all on the device, and browse a remote library. Today the app exists and traces on the device's processor only; More &rarr; Remote is a placeholder page. It is also not in an app store yet: you build it from source. A store listing is not scheduled.</td>
-          <td>Distributed rendering and the coordinator model (<a href="distributed.html">distributed page</a>), and the app&rsquo;s existing <code>Platform</code> split (<code>indicatrix-mobile-core</code>).</td>
+          <td>Mobile app: help, tutorials and a store release</td>
+          <td>Add the manual, a first-run walkthrough and tutorials to the <a href="mobile.html">Android app</a> (its Help page says they arrive in a later version), and list the app in an app store. It is not in an app store yet: you build it from source. A store listing is not scheduled.</td>
+          <td>The studio&rsquo;s manual and tutorials (<a href="editor.html">studio page</a>) and the app&rsquo;s existing <code>Platform</code> split (<code>indicatrix-mobile-core</code>).</td>
         </tr>
         <tr>
-          <td>GPU rendering in the browser</td>
-          <td>Let the <a href="web.html">web app</a> trace on the GPU when the browser and graphics driver can take it, falling back to the CPU workers otherwise. Today the desktop's GPU kernel does not compile in browsers, so this needs a smaller, browser-sized kernel; it is being researched and is not promised.</td>
-          <td>The GPU compute path and its equivalence harness (<a href="physics.html#gpu-harness">physics page</a>), and the browser build's CPU worker pool (<a href="web.html#how">web app page</a>).</td>
+          <td>GPU rendering beyond the current Path-Traced browser material limits</td>
+          <td>The <a href="web.html">web app</a> tests the GPU while the page loads and renders isotropic stones such as diamond and spinel on it in Chrome and Edge (on by default, and it falls back to the CPU workers with the reason on any problem). Birefringent and color-zoned stones still render on the CPU workers. Extending the GPU to birefringent and color-zoned stones is not promised; it depends on kernels small enough for a browser to compile safely.</td>
+          <td>The GPU compute path and its equivalence harness (<a href="physics.html#gpu-harness">physics page</a>), and the browser build&rsquo;s CPU worker pool (<a href="web.html#how">web app page</a>).</td>
         </tr>
         <tr>
           <td>Multi-language support</td>
           <td>The desktop studio and the web app in more languages than English: menus, dialogs, messages and the guided walkthrough, with a language picker, plus the printed cutting instructions and faceting diagram labels in the chosen language.</td>
-          <td>The Slint interface toolkit's built-in translation support, which both applications already use; today every text in them is English only and none of it is marked for translation yet.</td>
+          <td>The Slint interface toolkit&rsquo;s built-in translation support, which both applications already use; today every text in them is English only and none of it is marked for translation yet.</td>
         </tr>
         <tr>
           <td>More database adapters</td>
@@ -205,23 +232,28 @@
   <section id="status">
     <h2><span class="sec-num">3</span>Status and limitations</h2>
     <ul>
-      <li>The faceting CAD (<code>indicatrix-cut-core</code> and the editor UI in <code>apps/indicatrix-cut</code>) is beta; its interaction model is still changing, so check a design against an established CAD before you cut it.</li>
-      <li><code>indicatrix-web</code> is the browser build (<a href="https://live.indicatrix-suite.com">live.indicatrix-suite.com</a>, described on the <a href="web.html">web app page</a>). It renders on the CPU in Web Workers (slower than the desktop's GPU path, so a few hundred samples take a while on a laptop), edits and solves designs with the same engine as the desktop, and keeps a design only for the life of the browser tab, so save your work as downloads. It has no design library, remote rendering, Deep Solve or GPU renderer, and it has no tutorials, cutting mode, history and variants, concave tools or command palette — see the web app page and its own <code>README.md</code> for the limits.</li>
-      <li>The Android app (<code>apps/indicatrix-mobile-android</code>, described on the <a href="mobile.html">mobile app page</a>) is not in an app store: you build it from source and install it on your own device, or run its interface in a desktop window. It traces on the device&rsquo;s processor only, with no remote or GPU rendering, and it has no optimizer, Retarget, Deep Solve, history and variants, concave-tier editing, tutorials or help. There is no screen-reader support yet, because the interface toolkit exposes no accessibility tree on Android. Its <code>README.md</code> lists the other known limits.</li>
-      <li>The GPU compute path requires a wgpu-supported adapter with at least 11 storage buffers per shader stage (<code>MEGAKERNEL_STORAGE_BUFFERS</code>, <code>crates/indicatrix/src/renderer/gpu/context.rs</code>); without one, rendering falls back to the CPU tracer. A concave stone is always traced on the CPU, locally and on a remote worker, and renders slower than the same design without its tools.</li>
-      <li>Concave tiers have limits. Each tool placement is taken from the flat stone's measured width, the optimizer and the angle sweep score the flat stone, and the GPU does not trace tools. Clicking a groove or dimple selects its concave tier, Compare draws, traces and measures the stone with its tools, and the Rough planner places a concave design on its carved outline.</li>
-      <li>The Rough planner reads rough meshes as OBJ, STL (ASCII or binary) or PLY (ASCII or binary), up to 64 MiB, in a unit you choose (it suggests one when the size looks wrong but never applies it). Small scan defects are repaired on import: hair-wide gaps, faces turned the wrong way and holes up to 5 % of the bounding-box diagonal. A smooth scan is planned from the scan itself, with a simplified outline of at most 64 planes only for the grid, and every stone is still checked against the real scan; a scan plan stops at a time limit (120 s by default, shown as &ldquo;Stopped at the time limit&rdquo;) and shows the best layouts found. A mesh with more than 200,000 triangles, an open scan with bigger holes, or a mesh that crosses itself falls back to its convex outline with a note, except a smooth scan, which is refused (decimate it first). Inclusions can be added as closed meshes (or located from photos on a fixed camera rig); stones keep clear of them with a margin, while the weight and the yield count them as material. An inclusion that reaches the surface is refused, and inclusions on a block, cylinder or pebble rough are not available yet.</li>
-      <li><code>indicatrix-cli</code> takes one design file per command. Its <code>retarget</code> accepts only a result the validity gate marks valid, where the desktop dialog also lets an unchecked change through, and its <code>.gcs</code> export is experimental, as in the editor.</li>
-      <li>Render jobs run one at a time and never start by themselves. A job freezes the design, material, lighting, camera and export settings, but not the remote worker: its address and certificates are read from Settings when the job runs.</li>
-      <li>Indicatrix is not jewellery CAD, a general 3D renderer, or a grading or appraisal instrument.</li>
+      <li>The faceting CAD (<code>indicatrix-cut-core</code> and the editor UI in <code>apps/indicatrix-cut</code>) is beta; its interaction model is still changing.</li>
+      <li><code>indicatrix-web</code> is the browser build (<a href="https://live.indicatrix-suite.com">live.indicatrix-suite.com</a>, described on the <a href="web.html">web app page</a>). It renders on CPU Web Workers (slower than the desktop&rsquo;s GPU path, so a few hundred samples take a while on a laptop) and, for isotropic stones in Chrome and Edge, on the GPU: the page tests the GPU while it loads and says what it renders with. It edits and solves designs with the same engine as the desktop, and keeps the design you are working on in this browser (so a reload brings it back), but it is not a store, so save your work as downloads. It has no design library, remote rendering or Deep Solve, no tutorials, cutting mode, variants or command palette, and its concave tiers are listed but cannot be edited &mdash; see the web app page and its own <code>README.md</code> for the limits.</li>
+      <li>The Android app (<code>apps/indicatrix-mobile-android</code>, described on the <a href="mobile.html">mobile app page</a>) is not in an app store: you build it from source and install it on your own device, or run its interface in a desktop window. It renders on the device (on its GPU for pictures up to 512 &times; 512 pixels, otherwise on its processor) or on a coordinator or worker it has enrolled with. It has history and variants, Deep Solve, concave editing, Optimize and Retarget, but no Rough planner, tutorials or help yet. Optimize and Retarget are included by the default <code>validated-design-search</code> feature. There is no screen-reader support yet, because the interface toolkit exposes no accessibility tree on Android. Its <code>README.md</code> lists the other known limits.</li>
+      <li>The GPU compute path requires a Vulkan, DirectX 12 or Metal adapter (OpenGL is left out on the desktop on purpose; <code>WGPU_BACKEND=gl</code> tries it at your own risk) with at least 11 storage buffers per shader stage (<code>MEGAKERNEL_STORAGE_BUFFERS</code>, <code>crates/indicatrix/src/renderer/gpu/context.rs</code>); without one, rendering falls back to the CPU tracer. A concave stone is traced on the GPU with all of its up to 128 tool placements (<code>GPU_MAX_TOOL_PRIMITIVES</code>, <code>crates/indicatrix/src/geometry/tool/pack.rs</code>), locally, on a remote worker and in the browser.</li>
+      <li>Concave tiers have limits. Every tool placement is sized from the finished flat stone&rsquo;s width W (the same W as the cutting sheet&rsquo;s L/W), so concave edits never change the stone&rsquo;s width, length or height. The optimizer&rsquo;s yield and optics, the angle sweep, Retarget and the library previews use the stone with its tools, but the optimizer&rsquo;s shape penalty (the table percent and the crown-to-pavilion ratio) reads the flat stone. Deep Solve declines a design with concave tiers. A concave tier cannot be frosted.</li>
+      <li>Frosted tiers and facets render matte in the studio, the library previews, exports, render jobs and remote renders, and the tilt curves follow them. The live Checks numbers, the optimizer, Retarget and Compare still score every facet as polished. A <code>.asc</code> file cannot hold frosting (the editor says so on export; <code>.isdd</code> and <code>.gcs</code> files keep it). The web and Android apps load, save and render frosting but only offer the Frosted Girdle switch, not frosting a tier or a facet.</li>
+      <li>The Rough planner reads rough meshes as OBJ, STL (ASCII or binary) or PLY (ASCII or binary), up to 64 MiB, in a unit you choose (it suggests one when the size looks wrong but never applies it). Small scan defects are repaired on import: hair-wide gaps, faces turned the wrong way and holes whose edge loop is up to 5 % of the bounding-box diagonal long (at most 64 edges). A smooth scan is planned from the scan itself, with a simplified outline of at most 64 planes only for the grid, and every stone is still checked against the real scan; a scan plan stops at a time limit (120 s by default, shown as &ldquo;Stopped at the time limit&rdquo;) and shows the best layouts found. A mesh with more than 200,000 triangles, an open scan with bigger holes, or a mesh that crosses itself falls back to its convex outline with a note, except a smooth scan, which is refused (decimate it first). Inclusions can be added as closed meshes (or located from photos on a fixed camera rig); stones keep clear of them with a margin, while the weight and the yield count them as material. An inclusion that reaches the surface is refused, and inclusions on a block, cylinder or pebble rough are not available yet.</li>
+      <li>The <code>.gcs</code> export (editor, browser build and <code>indicatrix-cli</code>) is experimental: its files have not yet been opened in Gem Cut Studio.</li>
     </ul>
+  </section>
+
+  <section id="ray-traced-update">
+    <h2>Ray-Traced and Path-Traced</h2>
+    <p>Ray-Traced is available on desktop, browser, Android and remote workers, with CPU and GPU rendering. It supports every material class as a fixed-index approximation. Browser Path-Traced anisotropic GPU support remains a separate future task.</p>
+    <p>Ray-Traced is a deterministic approximation: one d-line index, or three fixed indices with Fire, RGB absorption tint and 1/4/8/16 AA taps. It finishes at the tap count without denoising. It omits polarization, birefringent doubling, scattering, zoning and edge rounding. Path-Traced retains the spectral model. Optical metrics, tilt sweeps and diagnostics keep their separate analytic tracer.</p>
   </section>
 
 </main>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

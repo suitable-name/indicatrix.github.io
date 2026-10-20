@@ -4,7 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy — Indicatrix</title>
-<meta name="description" content="The privacy policy of the Indicatrix desktop application: no accounts, no advertising, no analytics and no telemetry; what the app stores on your computer and the two optional network connections it can make.">
+<meta name="description" content="The privacy policy of the Indicatrix desktop application and Android app: no accounts, no advertising, no analytics and no telemetry; what each app stores on your device and the optional network connections it can make.">
+<!-- seo:start -->
+<link rel="canonical" href="https://www.indicatrix-suite.com/privacy.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indicatrix">
+<meta property="og:title" content="Privacy Policy — Indicatrix">
+<meta property="og:description" content="The privacy policy of the Indicatrix desktop application and Android app: no accounts, no advertising, no analytics and no telemetry; what each app stores on your device and the optional network connections it can make.">
+<meta property="og:url" content="https://www.indicatrix-suite.com/privacy.html">
+<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -34,29 +48,36 @@
   <div class="page-head">
     <span class="tag">Policy</span>
     <h1>Privacy Policy for Indicatrix</h1>
-    <p class="subtitle">Effective date: 15 October 2026</p>
+    <p class="subtitle">Effective date: 19 October 2026</p>
   </div>
 
   <p>
-    This policy covers the Indicatrix desktop application ("the app"), published by
-    suitable-name. The app is a gemstone faceting design and rendering program. It is open source
-    under the MIT License; its source code is at
+    This policy covers two programs published by Niklas Gussek (suitable-name on GitHub): the Indicatrix desktop
+    application ("the desktop app") and the Indicatrix Android app, package
+    <code>com.indicatrixsuite.mobile</code> ("the Android app"). Together they are "the apps".
+    Both are gemstone faceting design and rendering programs. Indicatrix's own source code is open
+    source under the MIT License and is published at
     <a href="https://github.com/suitable-name/indicatrix">https://github.com/suitable-name/indicatrix</a>.
+    The apps also include third-party components under their own licenses, for example the Slint
+    user interface toolkit under the Slint Royalty-free license.
   </p>
 
   <section id="summary">
     <h2>Summary</h2>
     <p>
-      The app does not collect, sell or share your personal data. It has no user accounts, no
+      The apps do not collect, sell or share your personal data. They have no user accounts, no
       advertising, no analytics and no telemetry. Your designs, your design library and your settings
-      stay on your computer. The app connects to the internet only for the two purposes described
-      below, and only after you allow it or set it up yourself.
+      stay on your own computer or phone. A design leaves it only when you save, share or print it
+      somewhere you choose, render it on a rendering server you set up, or move your data to a new
+      device. The desktop app connects to the internet only for the two purposes described below,
+      and only after you allow it or set it up yourself. The Android app connects only to a remote
+      rendering server whose address you enter yourself.
     </p>
   </section>
 
   <section id="stored-data">
-    <h2>Data stored on your computer</h2>
-    <p>The app saves the following in your own user folders on your computer:</p>
+    <h2>Desktop app: data stored on your computer</h2>
+    <p>The desktop app saves the following in your own user folders on your computer:</p>
     <ul>
       <li>your settings and preferences;</li>
       <li>your design library (a local database file) and the designs, renders, cutting instructions and
@@ -65,14 +86,14 @@
     </ul>
     <p>
       This data is never sent to us. You can delete it at any time by deleting those files or by
-      uninstalling the app.
+      uninstalling the desktop app.
     </p>
   </section>
 
   <section id="network">
-    <h2>Network connections</h2>
+    <h2>Desktop app: network connections</h2>
     <p>
-      <strong>1. Checking for a new version (optional).</strong> The app asks you whether it may check for updates.
+      <strong>1. Checking for a new version (optional).</strong> The desktop app asks you whether it may check for updates.
       If you allow it, it sends at most one request a day to GitHub's public API
       (<code>api.github.com</code>) to read the version number of the latest Indicatrix release (and one more
       whenever you press "Check Now" in Preferences). The request
@@ -83,7 +104,7 @@
       downloaded or installed automatically. You can turn the check off in Preferences at any time.
     </p>
     <p>
-      <strong>2. Remote rendering and remote libraries (optional, set up by you).</strong> If you connect the app
+      <strong>2. Remote rendering and remote libraries (optional, set up by you).</strong> If you connect the desktop app
       to a render coordinator or worker, the app sends that machine what it needs for the job: the
       design geometry, material, lighting and camera settings. It may also read or copy design library
       entries from that machine. You choose and operate these machines yourself (for example your own
@@ -91,19 +112,265 @@
       to us or to any third party through this feature.
     </p>
     <p>
-      If you open a link in the app (the user manual, the release page or the project website), it
+      If you open a link in the desktop app (the user manual, the release page or the project website), it
       opens in your web browser, and that website's own privacy policy applies.
+    </p>
+  </section>
+
+  <section id="android">
+    <h2>Android app</h2>
+    <p>
+      The Android app has no user accounts, advertising, analytics, telemetry, crash reporting or
+      update check. It contains no Google Play services, no Firebase and no advertising, analytics or
+      crash-reporting library.
+    </p>
+
+    <h3>Data stored on your phone</h3>
+    <p>
+      The Android app keeps its data in its private app storage on the device. On its own it writes
+      nothing to shared storage, such as your Downloads or Pictures folders; a file goes there only
+      when you pick that location in the system save dialog. It stores:
+    </p>
+    <ul>
+      <li><strong>Settings</strong>, as a plain-text file: your preferences (theme, render and
+        lighting settings, library view and similar choices) and up to 10 recently opened items. A
+        recent item holds the title, the time you opened it, and a library entry number or the file's
+        display name. It holds no file path and no link to the file.</li>
+      <li><strong>Remote rendering settings</strong>, in the same file: the name you gave the server,
+        its address (host and port), the transfer mode, the update interval, whether the phone is
+        paired, and whether large transfers may use a metered network.</li>
+      <li><strong>Your design library</strong>, a local database. It holds the design files you
+        import (for a .gem or .gcs file, the converted .asc file and the original) and the designs
+        you save to the library, each under its file name and with its tags, variants and other
+        library marks, plus previews and measurements the app works out from each design. The
+        library starts empty.</li>
+      <li><strong>The design you are working on.</strong> Every 5 seconds, if the design has changed,
+        the app saves a copy of it with a short note on where it came from (for example the file's
+        display name or the library entry). The app reopens this copy when it starts.</li>
+      <li><strong>Cutting progress</strong>: the done marks you set in Cutting Mode, one small file per
+        design. A design without a design id, such as an imported .asc file you have not saved yet,
+        is recognized by its content, so each edited version of it gets its own file.</li>
+      <li><strong>One HDR lighting map</strong>, if you import one: a converted copy of at most
+        2048 &times; 1024 pixels. The app does not keep the original file.</li>
+      <li><strong>Cached files</strong>: library thumbnails, and a copy of the last file you shared,
+        which stays until you share another file or the cache is cleared. Printing uses Android's
+        system WebView, which can keep its own working files in the app's storage.</li>
+      <li><strong>Damaged files</strong>: if the settings file or the autosaved design cannot be
+        read when the app starts, the app renames it to a name ending in
+        <code>.corrupt-</code> and the time, keeps it beside the new file and starts fresh. It does
+        not delete these copies.</li>
+      <li><strong>Pairing credentials</strong>, if you pair the phone with a rendering server: the
+        server's CA certificate, the phone's certificate and its private key. The app encrypts them
+        with AES-GCM under a key held in the Android Keystore and keeps them in a folder that Android
+        leaves out of backups. Forget Server on the Remote page (More &gt; Remote) deletes them (see
+        &ldquo;Deleting your data&rdquo;). The app does not store the one-time pairing token or the
+        pairing address. The One-Time Enrollment Token field is a password field: it hides the token
+        and asks your keyboard app not to learn it, except while you show the token with the eye
+        icon. The pairing and rendering addresses are ordinary text fields, which your keyboard app
+        may remember, as it can anything you type.</li>
+    </ul>
+    <p>
+      The app writes diagnostic messages, which can include file paths and the names of files you
+      open, to Android's system log on the device, also in release builds. It writes no log file and
+      sends no logs anywhere.
+    </p>
+
+    <h3>Files you open, save, share or print</h3>
+    <p>
+      The app reads only the files you give it: files or a folder you pick in the system file picker,
+      and files you open or share with it from another app. It reads each file once, keeps no lasting
+      access to your files or folders, and stores no file path or link. From a picked folder it
+      looks at the names and types of the files in it and in its subfolders, and reads only the
+      design files (.isdd, .indicatrix, .asc, .gem and .gcs).
+    </p>
+    <p>
+      Without the network, data leaves the app only when you act: when you save a file through the
+      system save dialog (to any location you choose, which may be a cloud storage service), share a
+      file with an app you pick, print a cutting sheet through the print service you choose, or copy
+      the tilt curve to the clipboard. The privacy terms of the place or app you chose apply to those
+      copies.
+    </p>
+    <p>
+      Printing renders the cutting sheet in Android's system WebView. The app's manifest opts out
+      of WebView metrics, so the WebView does not send Google usage or crash metrics for this app,
+      even if you allowed your phone to share usage and diagnostics data.
+    </p>
+
+    <h3>Network connections</h3>
+    <p>
+      The Android app makes network connections only for remote rendering, which is optional. It has
+      no built-in server address: it connects to nothing until you type an address and then start a
+      pairing or a connection test, choose Remote as the render backend, send a server job, or use
+      the Server Jobs section of the Remote page. Rendering on the device, the default, uses no
+      network. You choose the server: your own computer or a server that you or your organization
+      run. Nothing you send through this feature goes to us or to any third party. Every connection
+      the app makes to the server is encrypted with TLS 1.3. If you enter the server by name rather
+      than by IP address, the phone looks the name up through your network's DNS service, and the
+      TLS handshake names the server, so your network or DNS provider can see which server you
+      connect to, but not what is sent.
+    </p>
+    <p>
+      <strong>1. Pairing.</strong> You type the server's pairing address and a one-time token issued on
+      that server. The app first checks the server's identity against a fingerprint inside the token,
+      and only then sends the token's secret. The server answers with the certificates and the private
+      key that the phone uses to prove its identity on later connections. The app stores them
+      encrypted, as described above.
+    </p>
+    <p>
+      <strong>2. Connection test.</strong> "Test Authenticated Connection" connects to the rendering
+      address over mutual TLS. As on every connection after pairing, the phone presents the
+      certificate it received at pairing, which identifies this phone to that server; it can carry
+      the name the server's operator gave the phone when issuing the token. The app then sends only
+      a greeting: the protocol version, two short codes that identify the app's build, that it
+      connects as a viewer, that it supports color zoning, and the data formats it accepts. It sends
+      no design, no user name and no hardware or advertising identifier. The app then shows the
+      server's certificate fingerprint and what the server can do.
+    </p>
+    <p>
+      <strong>3. Remote rendering and picture export.</strong> When you choose Remote as the render
+      backend, the app sends the server a description of the scene built from your design: the facet
+      geometry, the material, the camera, the lighting, and the picture size and render settings. It
+      does not send the design file. The scene carries the material's name (for a custom material,
+      the name stored in the design) but no design title, notes, author or source link. If the scene
+      uses your HDR lighting map and the server asks for it, the app sends the map as the app uses
+      it, not the original file, at most once per connection. The server sends back the picture.
+    </p>
+    <p>
+      The Remote choice is saved and stays in effect, also after the app restarts, until you pick
+      another backend or use Forget Server, which switches it back to Automatic. While it is
+      selected, the app connects and sends the scene again each time the live render starts or
+      restarts: when you open the Render view; when you change the design, camera, lighting,
+      material or quality; when you return to the app; and up to three times after a lost
+      connection. Picture exports then also render on the server.
+    </p>
+    <p>
+      An Indicatrix rendering server keeps the HDR lighting maps it receives in its own cache, by
+      default up to 2 GiB, and removes the least recently used map when it needs the space. The map has no
+      expiry date and is not tied to a job: clearing the map on the phone or deleting a job does not
+      remove it from the server. A coordinator passes the scene, and the map if the scene uses one,
+      on to the render machines joined to it, and each of them keeps its own copy of the map in its
+      cache.
+    </p>
+    <p>
+      <strong>4. Server jobs.</strong> "Send To Server" in the export sheet stores a render job on the
+      server. The job carries the same scene description, the sample count, the color space, the
+      design's title as the job's label (at most 120 characters) and a one-time code that stops a
+      retried upload from creating the job twice. If the scene uses your HDR lighting map, the server
+      asks for it and keeps it in its cache, as described above. The server renders the picture and
+      keeps the job and the picture until you delete the job or the server's retention period ends;
+      by default an Indicatrix rendering server keeps a finished job for 7 days. It shows a job only to the
+      phone certificate that sent it. The Server Jobs section of the Remote page (More &gt; Remote)
+      lists, downloads, cancels and deletes your jobs. The phone keeps no list of jobs and no copy
+      of the pictures it downloads; a picture is saved only where you choose in the save dialog.
+    </p>
+    <p>
+      After pairing, every connection uses mutual TLS 1.3. The phone presents its certificate, and it
+      accepts the server only if the server's certificate was issued under the CA certificate the
+      phone received at pairing. The server recognizes the phone by that certificate.
+    </p>
+    <p>
+      On a metered network the app refuses, unless you turn on "Allow Metered Networks" (off by
+      default): every remote render, export or server job whose scene uses your HDR lighting map,
+      every FullData render or export, and every job picture download. Without an HDR lighting map, a
+      DisplayOnly render, a finished picture from a coordinator (up to about 4 MB) and a server job
+      go over any network. When Android reports no network, or cannot tell whether the network is
+      metered, the app treats it as unmetered.
+    </p>
+
+    <h3>Permissions</h3>
+    <ul>
+      <li><code>INTERNET</code>: to connect to the rendering server you set up.</li>
+      <li><code>ACCESS_NETWORK_STATE</code>: to check whether the current network is metered before a
+        large remote-rendering transfer.</li>
+    </ul>
+    <p>
+      Both are normal permissions that Android grants at install time. The AndroidX support library
+      the app uses also declares an internal permission that only Indicatrix itself can hold; it
+      gives no access to your data. The app asks for no access to your storage, camera, microphone,
+      location, contacts or accounts. Files go through the system file picker and save dialog,
+      sharing through the Android share sheet, and printing through the Android print service.
+    </p>
+
+    <h3>Backup</h3>
+    <p>
+      The app turns off Android's cloud backup: its manifest sets <code>allowBackup</code> to false,
+      so Android does not back up its data to your Google account. On Android 12 and later this
+      setting does not stop a direct device-to-device transfer when you set up a new phone (by cable
+      or over Wi-Fi). Such a transfer can copy the app's stored data to the new phone: the settings
+      (including the rendering server's name and address and the recent items), the design library,
+      the autosaved design, cutting progress and the HDR lighting map. The pairing credentials are
+      kept in a folder that Android leaves out of backups, and even if their encrypted file were
+      copied, the Android Keystore key that decrypts them cannot leave the phone, so a new phone must
+      be paired again.
+    </p>
+
+    <h3>Deleting your data</h3>
+    <p>Inside the app you can:</p>
+    <ul>
+      <li>delete designs from the library: in the Library, press and hold a design, tap the Delete
+        (trash can) icon in the bar at the top and confirm. This removes the design and its
+        thumbnails, its cutting progress (the file named after its design id and the file named
+        after its content), its line in the recent items and any autosaved copy of it. If it is the
+        design you have open, it stays open as an unsaved design, and the app does not autosave it
+        again until you change it;</li>
+      <li>empty the list of recent items with Clear Recent Items, below the Recent list on the More
+        page; the designs themselves stay;</li>
+      <li>delete the done marks of the open design, including marks of steps you edited since,
+        with Reset Progress in the Cut page's menu; this also removes the older-format progress
+        file of the design as it is now;</li>
+      <li>delete the done marks of every design on the phone with Delete All Cutting Progress, in
+        the Cut page's menu or in More &gt; Preferences;</li>
+      <li>remove the HDR lighting map from the phone with Clear in the Light tab;</li>
+      <li>delete the pairing credentials, and the saved server name and address, with Forget Server
+        on the Remote page (More &gt; Remote), after you confirm. This also deletes the Android
+        Keystore key that protects the credentials, stops any running connection to the server,
+        and switches Remote rendering back to Automatic if it was selected. It cannot be undone:
+        to use the server again you pair the phone with a new one-time token. Forget Server changes
+        nothing on the server: the server keeps its own list of paired phones until its operator
+        removes the phone, and keeps your jobs until they expire (by default 7 days after a job
+        finishes) or its operator deletes them. A new pairing gives the phone a new certificate,
+        which cannot see the old jobs, so delete the jobs you no longer need before you forget the
+        server;</li>
+      <li>cancel or delete your jobs on a server with Cancel Job or Delete in the Server Jobs
+        section of the Remote page (More &gt; Remote).</li>
+    </ul>
+    <p>Some data has no delete button in the app, or stays in cases these buttons do not reach:</p>
+    <ul>
+      <li>Variants you saved of a design stay in the library database when you delete the design's
+        library entry, because they belong to the design and not to the entry. Delete them first
+        in Saved Variants, in the Design page's menu.</li>
+      <li>Two library entries that carry the same design id share one progress file, and so does a
+        design without a design id whose content is identical to another's; deleting one removes
+        the marks the other uses. Marks stored under the content of an earlier edited version of a
+        design that has no design id are not found when you delete its entry; Delete All Cutting
+        Progress removes them.</li>
+      <li>The autosaved copy of the design you are working on has no delete button of its own. It
+        is replaced when you open or start another design, and deleting the design from the
+        library removes it.</li>
+      <li>The <code>.corrupt-</code> copies of damaged settings or autosave files stay.</li>
+    </ul>
+    <p>
+      Everything the app stores on the phone is in its private app storage. To delete all of it,
+      uninstall the app or clear the app's storage in Android's settings. Files you saved, shared or
+      printed are outside the app, and uninstalling it does not remove them. Jobs on a server stay
+      there until you delete them or the server removes them (by default 7 days after a job
+      finishes). HDR lighting maps stay in a server's cache until the server needs the space or its
+      operator clears the cache.
     </p>
   </section>
 
   <section id="data-we-collect">
     <h2>Data we collect</h2>
-    <p>None. We do not receive, store or process any personal data from your use of the app.</p>
+    <p>
+      None. We do not receive, store or process any personal data from your use of the apps. Data
+      you send to a rendering server goes to that server, which you or your organization run, not to
+      us.
+    </p>
   </section>
 
   <section id="children">
     <h2>Children</h2>
-    <p>The app does not knowingly collect any data from anyone, including children under 13.</p>
+    <p>The apps do not knowingly collect any data from anyone, including children under 13.</p>
   </section>
 
   <section id="changes">
@@ -126,7 +393,7 @@
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a></p>
   </div>
 </footer>

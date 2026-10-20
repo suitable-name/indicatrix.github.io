@@ -3,8 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Web app — Indicatrix</title>
-<meta name="description" content="Indicatrix in the browser: open or start a faceting design, edit and solve it, and render it on your own CPU cores. Nothing to install, nothing uploaded. What the web app does, and what only the desktop app does yet.">
+<title>Faceting design in the browser — Indicatrix web app</title>
+<meta name="description" content="Indicatrix in the browser: open or start a faceting design, edit and solve it, and render it on the GPU or your CPU cores. A start-up test picks what your device can use. Nothing to install, nothing uploaded.">
+<!-- seo:start -->
+<link rel="canonical" href="https://www.indicatrix-suite.com/web.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indicatrix">
+<meta property="og:title" content="Faceting design in the browser — Indicatrix web app">
+<meta property="og:description" content="Indicatrix in the browser: open or start a faceting design, edit and solve it, and render it on the GPU or your CPU cores. A start-up test picks what your device can use. Nothing to install, nothing uploaded.">
+<meta property="og:url" content="https://www.indicatrix-suite.com/web.html">
+<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -42,12 +56,12 @@
     <span class="status-label">BETA</span>
     <p>
       The web app shares its faceting engine with the desktop studio, so it
-      shares the desktop editor's beta status: check results against a
-      conventional CAD before cutting. It is also a smaller program than the
-      desktop app, and it lacks most of the newer studio features, such as
-      tutorials, cutting mode and concave tools. Section 3 lists exactly what
-      is missing today; several of those items are current limits of this
-      first browser build, not decisions.
+      shares the desktop editor's beta status: the interaction model is still
+      changing. It is also a smaller program than the desktop app, and it
+      lacks several of the newer studio features, such as tutorials, cutting
+      mode and editing concave tiers. Section 3 lists exactly what is missing
+      today; several of those items are current limits of this browser build,
+      not decisions.
     </p>
   </div>
 
@@ -83,10 +97,10 @@
     <h2><span class="sec-num">2</span>What it can do</h2>
     <dl class="deflist">
       <dt>Designs</dt>
-      <dd>Start a new design from the template gallery (an empty design plus nine built-in templates, in one list). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own self-contained <code>.isdd</code> design file (and the older <code>.indicatrix</code> design files), by file picker or by dragging files onto the page. The file reader is the desktop's, so a design file with concave tiers or tier relations (format versions 2 and 3) opens too; section 3 says what the web app does with them. Save the design as <code>.isdd</code>, or save <code>.asc</code>. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG.</dd>
+      <dd>Start a new design from the template gallery (an empty design plus nine built-in templates, in one list). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own self-contained <code>.isdd</code> design file (and the older <code>.indicatrix</code> design files), by file picker or by dragging files onto the page. The file reader is the desktop's, so a design file with concave tiers or tier relations (format versions 2 and 3) opens too; section 3 says what the web app does with them. Save the design as <code>.isdd</code>, or save <code>.asc</code>; an experimental <code>.gcs</code> export is in the File menu too. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG. A design's frosted facets are kept in the <code>.isdd</code> file and survive a <code>.gcs</code> import.</dd>
 
       <dt>CAD editor</dt>
-      <dd>The tier table with inline angle editing, keyboard and Ctrl+wheel nudging, undo and redo; the four-tab inspector (Tier, Preform, Optimize, Schedule); design settings, including a compact custom-material editor; and the guided walkthrough, the same ten-step worked example as the desktop. The angle and exact-scale fields of the tier form take plain arithmetic such as <code>41.5+0.3</code>.</dd>
+      <dd>The tier table with inline angle editing, keyboard and Ctrl+wheel nudging, undo and redo; the five-tab inspector (Tier, Preform, Optimize, Schedule, History); design settings, including a compact custom-material editor; and the guided walkthrough, the same ten-step worked example as the desktop. The angle and exact-scale fields of the tier form take plain arithmetic such as <code>41.5+0.3</code>. The angle cell in the tier table also takes a relation that starts with <code>=</code>, for example <code>=P1 - 2</code>; the tier then follows the other tier and shows an = badge. A Good / Check / Problem badge sums up the design's checks, with a one-click fix where a safe one exists. The History tab lists every undo step and jumps to any of them. Concave tiers are listed after the flat ones with their tool line; they can be selected but not edited yet.</dd>
 
       <dt>Mouse manipulation</dt>
       <dd>In the Solid view, drag the angle, depth and index handles of a selected facet, or switch to Slice mode and cut a new facet by dragging a line across the stone. One drag is one undo step, and the design solves itself when you let go.</dd>
@@ -95,16 +109,16 @@
       <dd>Solving anything but a small design runs in a background Web Worker, so the page stays responsive; a small design, or one whose last solve was fast, is solved directly on the page thread. A solve can re-run automatically after each edit (auto-solve). Optimize and Retarget run in the Worker with live progress, and Cancel stops the search between steps and keeps the best result found so far; a search that has not stopped 30 seconds after Cancel is ended and keeps no partial result. If the solve Worker fails three times for the same design, the page reports the failure and does not try again until the design changes.</dd>
 
       <dt>Rendering</dt>
-      <dd>A progressive spectral path-traced render on your CPU cores, with a denoise once the picture settles. It uses the same physics, the same material catalogue and the same lighting choices as the desktop app, and it can load an HDR environment map (see the limits below). Export the result as a PNG in sRGB or Display P3.</dd>
+      <dd>Path-Traced offers a progressive spectral render on your CPU cores and, in Chrome and Edge, on the GPU too for isotropic stones such as diamond and spinel, with a denoise once the picture settles. While the page loads it tests the GPU behind a loading bar and then says what the render uses (section 4). It uses the same physics, the same material catalogue and the same lighting choices as the desktop app, and it can load an HDR environment map (see the limits below). A design with concave tiers is rendered with its tools cut out, on the CPU and on the GPU, and a design's frosted facets are drawn as frosted. Export the result as a PNG in sRGB or Display P3.</dd>
 
       <dt>Views</dt>
-      <dd>The Render view, the Solid view (facet picking and selection linked to the tier table) and the Diagram view (crown, pavilion and profile panels).</dd>
+      <dd>The Render view, the Solid view (facet picking and selection linked to the tier table, with the cuts of concave tools drawn) and the Diagram view (crown, pavilion and profile panels).</dd>
 
       <dt>Optical figures</dt>
-      <dd>The metrics readout (brilliance, fire, scintillation, windowing, extinction) and the Tilt Performance dialog: brilliance, windowing and extinction against tilt, four azimuths of 181 points each. Both run in their own worker, so they never wait behind a solve. As on the desktop, the readout is scored under the light the view is lit with: with an HDR environment map loaded it is scored under that map and says so. The tilt sweep is scored under the lighting preset at the current light, as the desktop's dialog is, and the dialog notes this while a map is loaded.</dd>
+      <dd>The metrics readout (brilliance, fire, scintillation, windowing, extinction) and the Tilt Performance dialog: brilliance, windowing and extinction against tilt, four azimuths of 181 points each. Both run in their own worker, so they never wait behind a solve. As on the desktop, the readout is scored under the light the view is lit with: with an HDR environment map loaded it is scored under that map and says so. The tilt sweep is scored under the lighting preset at the current light, as the desktop's dialog is, and the dialog notes this while a map is loaded. For a design with concave tiers, both are scored on the stone with its tools cut out, as on the desktop. The tilt sweep also scores a design's frosted facets as frosted; the metrics readout scores every facet as polished.</dd>
 
       <dt>Session memory</dt>
-      <dd>Your settings, the current design and your place in the walkthrough are kept for the life of the browser tab, so a reload brings them back. Closing the tab clears them, so save your design as a download before you leave.</dd>
+      <dd>Your settings and your place in the walkthrough are remembered in this browser, and the design you are working on is restored after a reload, but the app is not a store: save your design as a download before you leave.</dd>
     </dl>
   </section>
 
@@ -127,7 +141,7 @@
         <tr>
           <td>Rough planner</td>
           <td>No. It plans across the design library, which the browser app does not have.</td>
-          <td>Library &rarr; Plan Rough...: ranks up to 10 layouts (as many stones as fit, up to 99 designs mixed) from a block, cylinder, pebble or scanned mesh of rough (beta; <a href="editor.html#rough-planner">studio page</a>). Desktop-only for now.</td>
+          <td>Library &rarr; Plan Rough...: ranks up to 10 layouts (as many stones as fit or up to a set number, up to 99 designs mixed) from a block, cylinder, pebble or scanned mesh of rough (beta; <a href="editor.html#rough-planner">studio page</a>). Desktop-only for now.</td>
         </tr>
         <tr>
           <td>Remote and distributed rendering</td>
@@ -136,8 +150,8 @@
         </tr>
         <tr>
           <td>GPU rendering</td>
-          <td>No. Rendering is CPU-only for now.</td>
-          <td>The GPU compute path, when the machine has a suitable adapter. A browser-sized GPU path is being researched; it is planned, not promised (see the <a href="project.html#roadmap">roadmap</a>).</td>
+          <td>Ray-Traced supports every material class in Chrome and Edge; Path-Traced supports isotropic stones such as diamond and spinel, including concave stones (up to the 128 tools a design can hold). The page tests the GPU while it loads (section 4). For Path-Traced, anisotropic and color-zoned stones render on the CPU, and the message names the reason.</td>
+          <td>The full GPU compute path for isotropic, uniaxial and biaxial materials, when the machine has a suitable adapter.</td>
         </tr>
         <tr>
           <td>Deep Solve</td>
@@ -170,34 +184,29 @@
           <td>Five objectives (Balanced, Brilliance, Low windowing, Low extinction, Keep weight), per-tier angle ranges, a girdle guard, several starting arrangements (8 by default, up to 32, an evaluation budget of 800 by default), and up to five ranked candidates, each with a preview (<a href="editor.html#preforms-optimizer">studio page</a>).</td>
         </tr>
         <tr>
-          <td>Retarget validity check</td>
-          <td>No. The proposal leaves the table, culet and girdle alone, and Apply changes the angles and the material together in one undo step. It does not turn facets about the girdle, and it does not check the result for a closed stone, a surviving girdle or vanished facets.</td>
-          <td>Facets turn about their girdle-side edge, and every result is checked against the original stone: a closed stone, the girdle's thickness including its thinnest corner, the table and culet, and facets that vanish. Apply is disabled for a result that is not valid.</td>
-        </tr>
-        <tr>
           <td>Tier relations</td>
-          <td>Plain arithmetic only. The angle field takes <code>41.5+0.3</code> but not a relation that starts with <code>=</code>. A design file with relations opens, but the web app has no way to type one, and nothing marks a tier that follows one.</td>
+          <td>Partly. The angle cell in the tier table takes a relation that starts with <code>=</code>, for example <code>=P1 - 2</code>, and a tier that follows one shows an = badge. The tier form's angle field takes plain arithmetic only, such as <code>41.5+0.3</code>.</td>
           <td>A tier's angle can follow other tiers, for example <code>=P1 - 2</code>; the tier shows a link icon and the file is written as format version 3.</td>
         </tr>
         <tr>
           <td>Concave facets</td>
-          <td>No tool form and no concave rows. A design file with concave tiers opens. The browser's render traces the flat planes only, so it does not show the tool cuts. Apply Gear in the design settings is refused when a concave tier would not be valid on the new gear.</td>
-          <td>Cylinder, cone, circle, disc and sphere tools in the tier table and the inspector, drawn in the solid view and the diagram, counted in the optical metrics, and traced by the render on the CPU (<a href="editor.html">studio page</a>).</td>
+          <td>Viewing and rendering, no editing. A design file with concave tiers opens. Its concave tiers are listed after the flat ones with their tool line and can be selected, but there is no tool form and every editing action on one is refused. The Solid view, the render (CPU and GPU), the PNG export, the metrics readout, the tilt sweep, Optimize and Retarget all use the stone with its tools cut out. Apply Gear in the design settings is refused when a concave tier would not be valid on the new gear.</td>
+          <td>Cylinder, cone, circle, disc and sphere tools in the tier table and the inspector, drawn in the solid view and the diagram, counted in the optical metrics, and traced by the render on the CPU or the GPU (<a href="editor.html">studio page</a>).</td>
         </tr>
         <tr>
-          <td>Good / Check / Problem badge, angle sweep, Edit as Text</td>
-          <td>No. The status panel lists the warnings, each one a click-through to its tier, but there is no overall badge and no fix buttons. There is no angle sweep and no Edit as Text view.</td>
-          <td>An overall badge with a one-click fix where a safe one exists, Edit &rarr; Angle Sweep (a table, a chart and CSV for one tier's angle), and Edit &rarr; Edit as Text.</td>
+          <td>Angle sweep, Edit as Text, Good / Check / Problem findings from measured figures</td>
+          <td>No. There is no angle sweep and no Edit as Text view. The Good / Check / Problem badge covers the structural, windowing-by-angle and proportion findings; it does not use the measured brilliance, windowing and extinction.</td>
+          <td>Edit &rarr; Angle Sweep (a table, a chart and CSV for one tier's angle), Edit &rarr; Edit as Text, and a badge that also uses the measured optical figures.</td>
         </tr>
         <tr>
           <td>History and variants</td>
-          <td>No. Undo and Redo only.</td>
+          <td>The History tab lists the undo steps and jumps to any of them, without pictures. There are no variants.</td>
           <td>A History tab with a picture of every step and a jump to any of them, and named variants of a design kept in the library.</td>
         </tr>
         <tr>
           <td>Tutorials and welcome tour</td>
           <td>No. The ten-step guided walkthrough is the only guide.</td>
-          <td>68 short tutorials, one for each CAD function, a welcome tour on first run, and Build this Design, which turns a library design into a lesson.</td>
+          <td>69 short tutorials, one for each CAD function, a welcome tour on first run, and Build This Design, which turns a library design into a lesson. Video tutorials are on the <a href="https://www.youtube.com/@Indicatrix-Suite">Indicatrix YouTube channel</a>.</td>
         </tr>
         <tr>
           <td>Cutting mode</td>
@@ -210,18 +219,18 @@
           <td>One Simple / Advanced switch, Preferences (interface scale, high contrast, larger drag handles), the manual built into the program with <strong>?</strong> buttons and a glossary, and a command palette on Ctrl+K.</td>
         </tr>
         <tr>
-          <td>Quick colour in the render</td>
-          <td>No. The body colour is an override in the design settings.</td>
-          <td>A Color control next to Render Material: nine ready-made colours or any colour, for the open design or as a view-only choice.</td>
+          <td>Quick color in the render</td>
+          <td>Partly. The Render settings panel has a Body Color control, a quick copy of the color choice in the design settings. It changes the design in one undo step; there is no view-only color.</td>
+          <td>A Color control next to Render Material: nine ready-made colors or any color, for the open design or as a view-only choice.</td>
         </tr>
         <tr>
           <td>Command-line tool</td>
           <td>No. It is a separate program.</td>
-          <td><code>indicatrix-cli</code> runs the solver, optimizer, retarget gate and sweep without a window (<a href="index.html#getting-started">getting started</a>).</td>
+          <td><code>indicatrix-cli</code> runs the solver, optimizer, retarget gate and sweep without a window, on one design or on several at once (<a href="index.html#getting-started">getting started</a>).</td>
         </tr>
         <tr>
           <td>Full custom-material editor</td>
-          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and colour (saved with the design in the <code>.isdd</code> file); one custom material travels with the design. There is no entry of Sellmeier or Cauchy coefficients: a material typed that way on the desktop is drawn here with a Cauchy curve built from its n<sub>D</sub> and F&minus;C figure, which is close but not the same curve.</td>
+          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and color (saved with the design in the <code>.isdd</code> file); one custom material travels with the design. There is no entry of Sellmeier or Cauchy coefficients: a material typed that way on the desktop is drawn here with a Cauchy curve built from its n<sub>D</sub> and F&minus;C figure, which is close but not the same curve.</td>
           <td>The full editor, including Sellmeier and Cauchy coefficients with validation (<a href="materials.html#custom-materials">materials page</a>), and the saved custom-material store.</td>
         </tr>
         <tr>
@@ -258,12 +267,34 @@
       and the optical figures have their own, so they never wait behind a solve.
       Small solves, the final tone map and merge of the rendered chunks, and the
       drawing of the Solid and Diagram views still run on the page thread.
-      Rendering is the same spectral, polarization-aware path tracer, run on
-      the CPU; there is no GPU involved.
+      Rendering runs on your CPU cores. In Chrome and Edge it also runs on the GPU,
+      for every Ray-Traced material class and for isotropic Path-Traced stones such as diamond and spinel; that needs WebGPU and is on by
+      default.
     </p>
     <p>
-      Your work is kept in the browser tab's session storage (settings, the
-      current design, walkthrough progress) and in the files you save. There is
+      While the page loads it tests the GPU behind a loading bar: it starts a GPU
+      worker and asks for the adapter, checks the adapter's limits, compiles the
+      kernels one by one and traces a small test picture. The CPU workers render
+      meanwhile, and the bar's Hide button hides only the bar. Then the page says
+      what the render uses, as a message and as a sentence that stays in the Render
+      settings panel, for example &ldquo;Rendering on the GPU (the adapter's name)
+      with 7 workers on the CPU&rdquo; or &ldquo;Rendering on the CPU (7 workers)&rdquo;
+      followed by the reason. A browser without WebGPU, a Path-Traced stone the GPU cannot trace
+      (anisotropic, color-zoned, more than 64
+      concave tools, or an environment map too large for the adapter) and any problem
+      during the test fall back to the CPU, and the sentence names the reason. The
+      GPU Rendering switch in the Render settings panel turns the GPU off; with it
+      off, the page skips the test.
+    </p>
+    <p>
+      The result is kept per graphics card, browser version and shader build. An
+      adapter that passed before only compiles the kernels again and skips the test
+      picture. If the browser lost the GPU during an earlier run, the page does not
+      test it by itself again: the panel shows the reason, <strong>Forget GPU Test
+      Result</strong> lifts it, and <strong>Test GPU</strong> runs the test by hand.
+    </p>
+    <p>
+      Your settings, walkthrough progress and the GPU test result are remembered in this browser (local storage, per graphics card, browser version and shader build); the design you are working on is kept in the tab and in the browser's database so a reload brings it back, and otherwise in the files you save. There is
       no server side to the app: no upload, no account, no design database.
     </p>
   </section>
@@ -273,9 +304,10 @@
     <p>
       A current desktop Chrome, Edge, Firefox or Safari. The page needs
       WebAssembly, Web Workers and WebGL 2 (used to draw the interface), and it
-      uses <code>sessionStorage</code> if it is available. It does not need
-      WebGPU, and it does not need any special server settings. If WebGL 2 is
-      disabled, the page says so instead of starting.
+      uses <code>localStorage</code>, <code>sessionStorage</code> and IndexedDB if they are available. WebGPU is optional, for
+      GPU rendering in Chrome and Edge; without it the page renders on the CPU and
+      says so. It does not need any special
+      server settings. If WebGL 2 is disabled, the page says so instead of starting.
     </p>
     <p>
       A tablet works for viewing and tapping. Touch arrives as mouse events, so
@@ -287,7 +319,7 @@
   <section id="limits">
     <h2><span class="sec-num">6</span>Limits</h2>
     <ul>
-      <li><strong>Render speed.</strong> The desktop app can use the GPU; the browser renders on the CPU. A few hundred samples per pixel take tens of seconds to minutes depending on the machine and the size of the view, so expect it to be slower than the desktop's GPU path. The live view traces at most 960 pixels on its longest edge.</li>
+      <li><strong>Render speed.</strong> Rendering runs on your CPU cores. In Chrome and Edge it also runs on the GPU for every Ray-Traced material class and for isotropic Path-Traced stones such as diamond and spinel; the page tests the GPU while it loads and falls back to the CPU on any problem. For Path-Traced, anisotropic and color-zoned stones render on the CPU only. For Ray-Traced, an HDR map beyond the GPU's limits falls back to the CPU. A few hundred samples per pixel take tens of seconds to minutes on the CPU, depending on the machine and the size of the view. The live view traces at most 960 pixels on its longest edge.</li>
       <li><strong>Samples and export size.</strong> The live render takes 64 to 1024 samples per pixel. PNG export takes 16 to 4096 samples and up to 4096 pixels on the longest edge.</li>
       <li><strong>HDR environment maps.</strong> A <code>.hdr</code> file is limited to 64 MiB and 8192 &times; 4096 texels in the browser. Each render worker, and the analysis worker that scores the metrics readout under the map, keeps its own decoded copy, so a large map is used on fewer render workers, with a message, rather than being downsampled. When the memory budget holds only one copy, a render worker keeps it and the readout falls back to the lighting preset and says so. A map that one worker cannot hold within the per-worker memory budget is refused.</li>
       <li><strong>Long solves.</strong> A solve in the worker that runs for more than 60 seconds is stopped. A cancelled Optimize or Retarget that has not stopped after a 30-second grace period is ended, and keeps no partial result.</li>
@@ -299,24 +331,34 @@
   <section id="desktop">
     <h2><span class="sec-num">7</span>Get the desktop app</h2>
     <p>
-      For the design library, the Rough planner, GPU rendering, remote rendering, Deep Solve, tilt
+      For the design library, the Rough planner, Path-Traced GPU rendering of anisotropic stones, remote rendering, Deep Solve, tilt
       video export, full-size master stills, the newer studio features (tutorials, cutting mode,
-      concave tiers, history and variants) and the command-line tool, use the desktop application. It
-      is a ready-built download for Windows and Linux (see the
+      editing concave tiers, variants) and the command-line tool, use the desktop application. On
+      Windows the easiest way to install it is the
+      <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a>,
+      which keeps it updated. It is also a ready-built download for Windows and Linux (see the
       <a href="index.html#downloads">downloads section</a>), and it also
       installs from crates.io or builds from source; the commands are in the
       <a href="index.html#getting-started">getting started section</a> of the
       overview, and the application itself is described on the
       <a href="editor.html">studio and CAD page</a>. The two open the same
       files, so a design saved from the web app opens on the desktop and back.
+      Video tutorials are on the
+      <a href="https://www.youtube.com/@Indicatrix-Suite">Indicatrix YouTube channel</a>.
     </p>
+  </section>
+
+  <section id="ray-traced-update">
+    <h2>Ray-Traced and Path-Traced</h2>
+    <p>Choose Path-Traced or Ray-Traced in Render. Ray-Traced supports every material class on CPU and, where admitted, WebGPU. Its GPU uses at least four storage bindings, an independent kernel hash and crash record, and a 16×16 four-tap CPU/GPU self-check. Tool and HDR limits can fall back to CPU; engine refusals remain errors. No remote rendering is offered in the browser.</p>
+    <p>Ray-Traced is a deterministic approximation: one d-line index, or three fixed indices with Fire, RGB absorption tint and 1/4/8/16 AA taps. It finishes at the tap count without denoising. It omits polarization, birefringent doubling, scattering, zoning and edge rounding. Path-Traced retains the spectral model. Optical metrics, tilt sweeps and diagnostics keep their separate analytic tracer.</p>
   </section>
 
 </main>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

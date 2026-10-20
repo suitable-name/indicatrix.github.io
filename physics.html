@@ -3,8 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Physics &amp; optics — Indicatrix</title>
-<meta name="description" content="The optics Indicatrix implements: hero-wavelength spectral sampling, Stokes-Mueller polarization, Sellmeier dispersion, uniaxial and biaxial crystal optics, and the GPU equivalence harness.">
+<title>Gemstone optics and physics — Indicatrix</title>
+<meta name="description" content="The optics behind Indicatrix: hero-wavelength spectral sampling, Sellmeier dispersion, Stokes-Mueller polarization, uniaxial and biaxial crystal optics, pleochroic absorption fitted to measured spectra, concave tools and the GPU equivalence harness.">
+<!-- seo:start -->
+<link rel="canonical" href="https://www.indicatrix-suite.com/physics.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indicatrix">
+<meta property="og:title" content="Gemstone optics and physics — Indicatrix">
+<meta property="og:description" content="The optics behind Indicatrix: hero-wavelength spectral sampling, Sellmeier dispersion, Stokes-Mueller polarization, uniaxial and biaxial crystal optics, pleochroic absorption fitted to measured spectra, concave tools and the GPU equivalence harness.">
+<meta property="og:url" content="https://www.indicatrix-suite.com/physics.html">
+<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -78,8 +92,8 @@
           <td>No triangle mesh. Flat facets are planes; a concave facet is a cylinder, cone, sphere or disc tool subtracted from the stone (<code>geometry/plane.rs</code>, <code>simd/slab.rs</code>, <code>geometry/tool.rs</code>, <code>optics/raytracer/intersect_stone.rs</code>)</td>
         </tr>
         <tr>
-          <td>Colour</td>
-          <td>CIE 1931 tabulated colour-matching functions to XYZ, then tone mapped</td>
+          <td>Color</td>
+          <td>CIE 1931 tabulated color-matching functions to XYZ, then tone mapped</td>
           <td><code>color/mod.rs</code>, <code>color/gamut.rs</code></td>
         </tr>
         <tr>
@@ -94,14 +108,14 @@
   <section id="hwss">
     <h2><span class="sec-num">2</span>Hero-wavelength spectral sampling</h2>
     <p>
-      RGB rendering assigns each ray one of three fixed colour channels, which
+      RGB rendering assigns each ray one of three fixed color channels, which
       cannot represent a continuously varying refractive index and produces
-      banded colour fringing inside a dispersive gemstone. Independently
+      banded color fringing inside a dispersive gemstone. Independently
       sampling one random wavelength per ray avoids the banding but converges
       far more slowly, since each pixel's channels are decorrelated.
     </p>
     <p>
-      Indicatrix instead traces 8 wavelengths per ray at once
+      Indicatrix’s Path-Traced engine instead traces 8 wavelengths per ray at once
       (<code>NUM_CHANNELS</code>, <code>crates/indicatrix/src/optics/raytracer/mod.rs</code>):
       a hero wavelength λ₀ drawn uniformly over the visible range 380–780&nbsp;nm,
       plus 7 companions spaced by a fixed fractional offset and wrapped into
@@ -249,7 +263,7 @@ delta = delta_p - delta_s</code></pre></div>
   <section id="pleochroism">
     <h2><span class="sec-num">6</span>Directional pleochroic absorption</h2>
     <p>
-      Pleochroic gemstones show different colour along different
+      Pleochroic gemstones show different color along different
       crystallographic directions because absorption depends on the electric
       field's orientation relative to the crystal. Indicatrix evaluates a
       per-direction absorption tensor via the Beer–Lambert law
@@ -259,7 +273,7 @@ delta = delta_p - delta_s</code></pre></div>
     <p>where <code>d</code> is the chord length through the material and <code>E_hat</code> is the ray's electric-field direction.</p>
     <ul>
       <li><strong>Dichroism</strong> (uniaxial materials): distinct ordinary- and extraordinary-ray absorption bands.</li>
-      <li><strong>Trichroism</strong> (biaxial materials): three independent absorption spectra along α, β, γ — the mechanism behind Alexandrite's colour change and Tanzanite's trichroism.</li>
+      <li><strong>Trichroism</strong> (biaxial materials): three independent absorption spectra along α, β, γ — the mechanism behind Alexandrite's color change and Tanzanite's polarized absorption.</li>
     </ul>
   </section>
 
@@ -298,11 +312,21 @@ delta = delta_p - delta_s</code></pre></div>
       a design without concave tiers renders as before.
     </p>
     <p>
-      The WGSL kernels know nothing about tools, so a stone with tools is
-      traced on the CPU whatever the compute setting
-      (<code>scene_routes_to_gpu</code> in <code>renderer/gpu_backend/</code>).
-      A remote render carries the tool volumes in the scene
-      (<code>SceneState::tools</code>, wire protocol version 19), so local,
+      The WGSL kernels trace the tools too. A tool is packed as five
+      <code>vec4</code> records after the planes in the same storage buffer
+      (<code>geometry/tool/pack.rs</code>), and
+      <code>renderer/shaders/transport_physics/10_concave_tools.wgsl</code> is the
+      WGSL twin of the CPU tool code: the same closed-form intervals and the same
+      carve, with the CPU code as the reference. It differs only where WGSL
+      forces it: a tool is split into its convex pieces on demand instead of in an
+      array, and the carve scans the tools instead of sorting the boundaries.
+    </p>
+    <p>
+      The GPU traces up to 128 tool placements per stone
+      (<code>GPU_MAX_TOOL_PRIMITIVES</code>, equal to the CPU's
+      <code>MAX_TOOL_PRIMITIVES</code>), which is every placement a design can
+      hold, so every concave stone can go to the GPU. A remote render carries
+      the tool volumes in the scene (<code>SceneState::tools</code>), so local,
       remote and combined renders trace the same stone.
     </p>
   </section>
@@ -323,12 +347,13 @@ delta = delta_p - delta_s</code></pre></div>
   </section>
 
   <section id="colormetrics">
-    <h2><span class="sec-num">9</span>Colour and tone mapping</h2>
+    <h2><span class="sec-num">9</span>Color and tone mapping</h2>
     <ul>
-      <li>Spectral radiance in each of the 8 channels is integrated against the tabulated CIE 1931 2° colour-matching functions (380–780&nbsp;nm, 5&nbsp;nm steps, <code>color/cie1931.rs</code>) to obtain CIE XYZ (<code>optics/raytracer/color.rs</code>).</li>
+      <li>A stone&rsquo;s body color comes from its material&rsquo;s absorption bands, applied per channel by the Beer&ndash;Lambert law above. A band is a Gaussian in energy (wavenumber) or in wavelength (<code>optics/absorption.rs</code>). The colors of Ruby, Sapphire, Emerald, Peridot, Spessartine, Tsavorite, Demantoid, Aquamarine and Tanzanite (the heated stone) are fitted to published measured absorption spectra, with energy bands; Amethyst, Citrine and Tourmaline keep their earlier data. Aquamarine has its crystal c axis in the table plane, so a face-up stone shows its blue ray. The <a href="materials.html#color-basis">materials page</a> lists the sources.</li>
+      <li>Spectral radiance in each of the 8 channels is integrated against the tabulated CIE 1931 2° color-matching functions (380–780&nbsp;nm, 5&nbsp;nm steps, <code>color/cie1931.rs</code>) to obtain CIE XYZ (<code>optics/raytracer/color.rs</code>).</li>
       <li>An ACES filmic tone-mapping curve (Narkowicz 2015 fit) is applied to the luminance channel before the vector is scaled back into RGB, avoiding hue shift on saturated dispersion fire (<code>color/space.rs</code>).</li>
-      <li>Out-of-gamut colours are compressed back into the target space; supported output spaces are sRGB, Display P3, and Rec. 2020 (<code>color/gamut.rs</code>, <code>color/space.rs</code>).</li>
-      <li>PNG exports from the desktop studio are 8-bit RGBA; any non-sRGB export (Display P3, Rec. 2020) embeds an ICC profile identifying that colour space, while sRGB exports are written untagged (<code>apps/indicatrix-cut/src/bridge/export_thread/tonemap_png.rs</code>; the ICC profile builder is <code>crates/indicatrix/src/render_setup/icc_profile.rs</code>).</li>
+      <li>Out-of-gamut colors are compressed back into the target space; supported output spaces are sRGB, Display P3, and Rec. 2020 (<code>color/gamut.rs</code>, <code>color/space.rs</code>).</li>
+      <li>PNG exports from the desktop studio are 8-bit RGBA; any non-sRGB export (Display P3, Rec. 2020) embeds an ICC profile identifying that color space, while sRGB exports are written untagged (<code>apps/indicatrix-cut/src/bridge/export_thread/tonemap_png.rs</code>; the ICC profile builder is <code>crates/indicatrix/src/render_setup/icc_profile.rs</code>).</li>
     </ul>
   </section>
 
@@ -347,7 +372,7 @@ delta = delta_p - delta_s</code></pre></div>
       <li><strong>Light-tent variants</strong> (<code>WhiteTray</code>, <code>ShopLights</code>, <code>WindowDaylight</code>) — the same model with other parameters, all lit by a D65 spectrum: a white tray lit from below with bright, perfectly even walls and no cards or spark; a bright diffuse jewellery-shop ceiling with small pinpoint spots; and a dim room lit by one broad window, a single soft key with no cards or spark. The built-in <em>Window daylight</em> view places that key at 30&deg; elevation.</li>
       <li><strong>Daylight sky (no sun)</strong> (<code>DaylightDome</code>) — a clear sky only, brighter at the horizon than at the zenith, with dark ground and no sun disc.</li>
       <li><strong>Daylight sky and direct sun</strong> (<code>DaylightSun</code>) — the same sky plus a real sun, a hard-edged disc 0.27&deg; across that supplies about 82&nbsp;% of the light at the default key height. It is sampled directly, and a stone flashes with fire whenever a facet catches it.</li>
-      <li><strong>Contrast view</strong> (<code>Aset</code>) — an ASET-style diagnostic view that colours the sky by elevation &mdash; green from 0&deg; to 45&deg;, red from 45&deg; to 75&deg;, blue from 75&deg; to 90&deg; overhead, and black below the horizon &mdash; with no white balance, for seeing where in the stone the light returns from. Its figures are scored as the Grading tray.</li>
+      <li><strong>Contrast view</strong> (<code>Aset</code>) — an ASET-style diagnostic view that colors the sky by elevation &mdash; green from 0&deg; to 45&deg;, red from 45&deg; to 75&deg;, blue from 75&deg; to 90&deg; overhead, and black below the horizon &mdash; with no white balance, for seeing where in the stone the light returns from. Its figures are scored as the Grading tray.</li>
     </ul>
     <p>
       The lit models also darken every exit direction that falls inside the
@@ -355,11 +380,10 @@ delta = delta_p - delta_s</code></pre></div>
       table reflections; the readouts follow the same head-shadow cone and count
       every lit direction under a lit model, whereas under a Studio rig brilliance
       is measured against that rig's own lamps. The Studio rig ignores the
-      observer. The size of the head shadow is the <strong>Head shadow</strong> setting,
+      observer. The size of the head shadow is the <strong>Head Shadow</strong> setting,
       0&ndash;30&deg; (default 16&deg;, about a head at arm&rsquo;s length; 0 switches it off).
       It changes the brilliance, windowing and extinction figures as well as the
-      picture, so a wider shadow lowers face-up brilliance; the Studio rigs, the UV
-      lamps, the contrast view and an HDR map ignore it. Radiances are chosen so
+      picture, so a wider shadow lowers face-up brilliance; the Studio rigs, the contrast view and an HDR map ignore it. Radiances are chosen so
       that at exposure 1 the ambient terms land near middle grey after the ACES curve
       and only a direct reflection of a light source clips to white.
     </p>
@@ -379,13 +403,13 @@ delta = delta_p - delta_s</code></pre></div>
       weight, rather than waiting for a bounce to randomly find a bright pixel.
     </p>
     <p>
-      The main light is set by two angles. <strong>Light azimuth</strong> runs 0&ndash;360&deg;
-      (default 48&deg;) and <strong>light elevation</strong> 10&ndash;90&deg; (default 72&deg;).
+      The main light is set by two angles. <strong>Light Azimuth</strong> runs 0&ndash;360&deg;
+      (default 48&deg;) and <strong>Light Elevation</strong> about 8.6&deg; to 88.8&deg; (default 72&deg;).
       They move the light tent&rsquo;s softbox (its black cards turn with it), the sun of the
       direct-sun preset, the glow of the sky-only preset, the window of Window daylight and the
       Studio key softbox. The Grading tray does not depend on them, since the whole hemisphere is
-      lit evenly, and an HDR map ignores them. <strong>Studio exposure</strong> scales the light
-      of every built-in preset from 0.4&times; to 2.5&times; (default 1&times;) and is likewise
+      lit evenly, and an HDR map ignores them. <strong>Exposure</strong> (the <em>Overall Brightness</em> slider) scales the light
+      of every built-in preset from 0.2&times; to 5&times; (default 1&times;) and is likewise
       not applied to an HDR map.
     </p>
     <p>
@@ -397,13 +421,29 @@ delta = delta_p - delta_s</code></pre></div>
       export dialog so that one export renders the stone under several lightings.
     </p>
     <p>
-      Separately from the environment, a <em>backdrop card</em> can be placed behind
-      the stone: <code>BACKDROP_GREY</code> (0.23, tone-mapping to roughly sRGB 160) or
-      <code>BACKDROP_WHITE</code> (8.0, a light box). Only the primary camera ray sees
-      it — the stone's own optics never do — so light leaking through a window or a
-      poorly-angled pavilion stays as dark as the real ground behind it instead of
-      picking up a glow the card would otherwise cast. The six-material comparison in the
-      <a href="index.html#renders">overview&rsquo;s renders section</a> sits on the grey card.
+      The <em>backdrop</em> is a physical object: a matte tray lying under the stone out
+      to the horizon and lit by the lighting rig, so one scene is seen around the stone
+      and through it. Its radiance is <code>albedo &times; E<sub>rig</sub> / &pi;</code>,
+      where <code>E<sub>rig</sub></code> is the rig&rsquo;s irradiance on an
+      upward-facing plane, computed once on the host for the chosen lighting and light
+      direction. Every ray that leaves the stone, a camera ray that misses it or a ray
+      that exits through the pavilion at any bounce, looks the tray up through the same
+      environment function, so a window shows what is really there. There are four
+      choices: <strong>White</strong> (albedo 0.90, white paper; the default),
+      <strong>Grey</strong> (0.18, the photographic grey card), <strong>Black</strong>
+      (0.02, velvet) and <strong>As Lit</strong>, the lighting&rsquo;s own ground
+      &mdash; for the Grading tray, nothing below the girdle, the ISO convention, so
+      windows look dark. The tray is lit, not a light source, so it follows the
+      exposure; in a view from the side the horizon appears where it physically is.
+      HDR environment maps ignore the backdrop (the map is the world). Two built-in
+      lightings bring their own tray because their look depends on it: Studio Softbox the
+      Grey one and Dramatic Spotlight the Black one; every other lighting starts on White,
+      and any tray can still be chosen afterwards. The metrics and
+      tilt curves do not read it: windowing is still the light that leaves through the
+      pavilion, and its numbers are unchanged. Renders made before 2026-10, including
+      the six-material comparison in the
+      <a href="index.html#renders">overview&rsquo;s renders section</a>, show an older
+      rule, a grey card that only the camera ray saw.
     </p>
   </section>
 
@@ -426,12 +466,12 @@ delta = delta_p - delta_s</code></pre></div>
         </tr>
         <tr>
           <td>Tier 2</td>
-          <td>Individual ported functions — Sellmeier evaluation, Fresnel/TIR, Stokes-Mueller rotation (<code>renderer/gpu/transport_check/</code>), and ray-plane polyhedron intersection (<code>renderer/gpu/polyhedron_check.rs</code>); <code>renderer/gpu/ulp.rs</code> holds the shared ULP-distance helper both use</td>
-          <td>Per-function ULP budget (case-bank match for the intersection test, whose result is a discrete hit record rather than a smooth scalar)</td>
+          <td>Individual ported functions — Sellmeier evaluation, Fresnel/TIR, Stokes-Mueller rotation (<code>renderer/gpu/transport_check/</code>), and ray-plane polyhedron intersection (<code>renderer/gpu/polyhedron_check.rs</code>); <code>renderer/gpu/ulp.rs</code> holds the shared ULP-distance helper both use. The concave tool carve runs the production kernel code against the CPU intersection for every tool shape and sweep (<code>renderer/gpu/tool_check.rs</code>)</td>
+          <td>Per-function ULP budget (case-bank match for the intersection test, whose result is a discrete hit record rather than a smooth scalar). The tool check uses a relative tolerance, because the GPU may fuse a multiply and an add</td>
         </tr>
         <tr>
           <td>Tier 3</td>
-          <td>Full rendered images, CPU vs. GPU, for a representative subset of the built-in materials, about 9 of the 34 (Spinel, Zircon, Tourmaline, Quartz, Rutile, Synthetic Moissanite, Alexandrite, Topaz, Tanzanite; <code>renderer/gpu/estimator_check/image_comparison.rs</code>)</td>
+          <td>Full rendered images, CPU vs. GPU, for a representative subset of the built-in materials, about 9 of the 34 (Spinel, Zircon, Tourmaline, Quartz, Rutile, Synthetic Moissanite, Alexandrite, Topaz, Tanzanite; <code>renderer/gpu/estimator_check/image_comparison.rs</code>), plus one concave stone, a round brilliant with a ball dimple and a cylinder groove (<code>renderer/gpu/estimator_check/image_comparison_concave.rs</code>), and further scenes for a frosted girdle, inclusion scattering, edge rounding, color zones, each lighting model, surface glare and HDR environment light</td>
           <td>Statistical (Welford mean/variance) equivalence</td>
         </tr>
         <tr>
@@ -454,11 +494,17 @@ delta = delta_p - delta_s</code></pre></div>
     <div class="code-block"><pre><code>cargo run --profile probe -p indicatrix --features gpu --example gpu_equivalence_harness</code></pre></div>
   </section>
 
+  <section id="ray-traced-update">
+    <h2>Ray-Traced and Path-Traced</h2>
+    <p>The spectral derivation on this page describes Path-Traced. Ray-Traced deliberately trades those spectral and polarization effects for a fixed-index approximation; it does not replace the analytic optical metrics.</p>
+    <p>Ray-Traced is a deterministic approximation: one d-line index, or three fixed indices with Fire, RGB absorption tint and 1/4/8/16 AA taps. It finishes at the tap count without denoising. It omits polarization, birefringent doubling, scattering, zoning and edge rounding. Path-Traced retains the spectral model. Optical metrics, tilt sweeps and diagnostics keep their separate analytic tracer.</p>
+  </section>
+
 </main>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

@@ -3,8 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio &amp; CAD — Indicatrix</title>
-<meta name="description" content="Indicatrix Cut: the desktop faceting studio. Design library, live spectral viewport, tilt performance sweeps, a beta faceting CAD with parametric relations and concave tiers, a rough planner, cutting mode and guided tutorials.">
+<title>Faceting studio and CAD — Indicatrix</title>
+<meta name="description" content="The Indicatrix desktop faceting studio: design library, live spectral render, tilt performance curves, a faceting CAD with constraint solver, relations, concave tiers and frosted facets, optimizer, rough planner, cutting mode and guided tutorials.">
+<!-- seo:start -->
+<link rel="canonical" href="https://www.indicatrix-suite.com/editor.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indicatrix">
+<meta property="og:title" content="Faceting studio and CAD — Indicatrix">
+<meta property="og:description" content="The Indicatrix desktop faceting studio: design library, live spectral render, tilt performance curves, a faceting CAD with constraint solver, relations, concave tiers and frosted facets, optimizer, rough planner, cutting mode and guided tutorials.">
+<meta property="og:url" content="https://www.indicatrix-suite.com/editor.html">
+<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -54,12 +68,10 @@
       in-app tutorials, and results carry stale badges the moment they no longer
       match the current design. The features added in October 2026 are the newest
       part: concave tiers, parametric relations, history and variants, cutting
-      mode, the tutorials and the command palette. They passed code review and
-      automated tests, and they have had less hands-on use than the older parts.
-      The editor's interaction model is still evolving, so check a design against
-      an established CAD before you cut from it. That advice describes the state
-      of the CAD today: Indicatrix is meant to grow into a complete faceting
-      suite. The design library and 3D viewport (sections 1–4 below) are more
+      mode, the tutorials and the command palette. They have had less hands-on
+      use than the older parts.
+      The editor's interaction model is still evolving; Indicatrix is meant to
+      grow into a complete faceting suite. The design library and 3D viewport (sections 1–4 below) are more
       stable than the editor itself and the rough planner (sections 5–11).
     </p>
   </div>
@@ -74,9 +86,9 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_studio_main.jpg">
-        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1080" alt="Studio main window: design library on the left, path-traced live render on the right">
+        <img src="assets/images/fig_studio_main.jpg" width="1800" height="1080" alt="Studio main window: design library on the left, the Solid view of the stone on the right with the Solid, Path-Traced and Ray-Traced switch above it">
       </a>
-      <figcaption>Fig. 1 — Design library on the left, live spectral viewport on the right: the 45.148 SplitChecker 12 design rendered in grossular garnet under the ring-light preset, with the optical readout above the stone.</figcaption>
+      <figcaption>Fig. 1 — Design library on the left, live viewport on the right: the 45.148 SplitChecker 12 design in the Solid view, with the Solid, Path-Traced and Ray-Traced switch, the Grossular Garnet (Tsavorite) material, the Gem Studio Ring Lights preset and the Tilt Curve, Front, Top and Export buttons above the stone, and the Live Render and Edit tabs at the top right.</figcaption>
     </figure>
     <p>
       The sections follow the window. Sections 2 to 4 cover the library, the
@@ -89,13 +101,13 @@
     <ul>
       <li><strong>Library and viewport</strong> (sections 2–4): a searchable
         design library, a live spectral path tracer with fifteen lighting presets, a
-        quick colour for the stone, per-design lighting, and tilt performance
-        curves and videos.</li>
+        quick color for the stone, optical diagnostics, per-design lighting, and
+        tilt performance curves and videos.</li>
       <li><strong>Faceting CAD, beta</strong> (sections 5–10): a constraint solver
         and tier editor with nine templates and an overall verdict badge;
         <a href="#relations">parametric relations</a> between tier angles;
         <a href="#concave">concave tiers</a> cut with cylinder, cone, circle, disc
-        or sphere tools; an angle optimizer, Retarget, angle sweeps and a compare
+        or sphere tools; <a href="#frosting">frosted facets</a>; an angle optimizer, Retarget, angle sweeps and a compare
         window with plain-words deltas; an undo history with thumbnails and saved
         <a href="#history-variants">variants</a>; and a step-by-step
         <a href="#cutting-mode">cutting mode</a>.</li>
@@ -110,12 +122,12 @@
       <li><strong>Render jobs</strong> (section 14): a queue of still exports and
         tilt videos that renders one job at a time while you work, with a script
         export for rendering on another computer.</li>
-      <li><strong>Learning and interface</strong> (sections 15–16): 68 short
-        tutorials, a &ldquo;Build this design&rdquo; lesson for any library
+      <li><strong>Learning and interface</strong> (sections 15–16): 69 short
+        tutorials, a &ldquo;Build This Design&rdquo; lesson for any library
         design, a Simple and Advanced switch, preferences, a built-in manual and a
         command palette.</li>
-      <li><strong>Install and command line</strong> (section 17): installing with
-        Cargo, building from source, the log file, and the windowless
+      <li><strong>Install and command line</strong> (section 17): the Microsoft
+        Store, installing with Cargo, building from source, the log file, and the windowless
         <code>indicatrix-cli</code>.</li>
     </ul>
     <p>
@@ -150,7 +162,7 @@
       auto-detected and keep whatever label the source data or a manual edit
       gives them. Import brings in single <code>.asc</code>, <code>.gem</code>
       or <code>.gcs</code> files or entire folders (subfolders only when
-      <em>Include subfolders</em> is ticked before you choose the folder); the
+      <em>Include Subfolders</em> is ticked before you choose the folder); the
       original file is preserved alongside the parsed schedule. The import runs
       in the background with a progress bar, a file that cannot be read is skipped
       with the reader's own explanation while the rest of the folder still
@@ -171,10 +183,20 @@
       candidate designs from this library.
     </p>
     <p>
+      The preview thumbnails are rendered in the white tray lighting, a bright
+      white surround, with a head shadow of 8&deg;, so that a stone&rsquo;s body
+      color reads at its true value and many designs compare side by side. They
+      lie on a grey tray by default, so a colorless stone stands apart from its
+      background; <em>Thumbnail Backdrop</em> under Render &amp; Output switches it
+      to white or black. The live view&rsquo;s default lighting, backdrop and its
+      16&deg; head shadow are unchanged. A design with concave tiers or frosted facets is previewed with
+      them.
+    </p>
+    <p>
       Per-design actions are on the right-click menu of a card, on its three-dot
       button and in <strong>Library &rarr; Selected Design</strong>. They include
       generating previews and tilt curves, ignoring a design, excluding it from
-      the Rough planner, and <strong>Build this design</strong>, which turns the
+      the Rough planner, and <strong>Build This Design</strong>, which turns the
       design into a step-by-step tutorial (<a href="#tutorials">section 15</a>).
     </p>
     <p>
@@ -191,10 +213,10 @@
   <section id="viewport">
     <h2><span class="sec-num">3</span>The 3D viewport</h2>
     <p>
-      The viewport switches between a fast solid preview and the full
-      spectral path tracer. Orbit, pan, and zoom with the mouse; the
+      The viewport switches between Solid, lightweight Ray-Traced and full
+      spectral Path-Traced views. Orbit, pan, and zoom with the mouse; the
       progressive path tracer accumulates samples while the camera is still
-      and resets on any camera or material change. Fifteen lighting presets —
+      and resets on any camera or material change. Thirteen lighting presets —
       an analytic studio rig in five moods (daylight, incandescent, a 2856 K
       Incandescent A, ring lights and a dark spotlight), eight lit models (a
       <em>Grading tray</em> hemisphere, the default jewellery light tent and its
@@ -204,7 +226,8 @@
       a green/red/blue contrast view in the style of an ASET scope, scored as
       the Grading tray; see the
       <a href="physics.html#environment">physics page</a>) — plus an optional
-      grey or white backdrop card behind the stone, a surface-glare slider
+      backdrop under the stone (a lit tray: White by default, Grey, Black or As Lit; the Studio
+      Softbox lighting brings the Grey tray and Dramatic Spotlight the Black one), a surface-glare slider
       that fades the white mirror image of the light on the table (the
       cross-polarised look; built-in presets only, never the readouts), and
       custom HDR equirectangular environment maps, are all supported, along
@@ -220,10 +243,10 @@
       rather than freezing.
     </p>
     <p>
-      <strong>Studio exposure</strong> is a Settings slider from 0.4&times; to 2.5&times;
-      (default 1&times;) that scales the light of every built-in lighting; a loaded
+      <strong>Exposure</strong> is the <em>Overall Brightness</em> slider of the Lighting tab, from 0.2&times; to 5&times;
+      (default 1&times;), and it scales the light of every built-in lighting; a loaded
       HDR map ignores it. The <strong>light direction</strong> is an azimuth (0&ndash;360&deg;,
-      default 48&deg;) and an elevation (10&ndash;90&deg;, default 72&deg;), set by two
+      default 48&deg;) and an elevation (about 8.6&deg; to 88.8&deg;, default 72&deg;), set by two
       sliders in Settings or by right-dragging (or Shift + left-dragging) in the viewport;
       it moves the light tent's softbox, the sun and the studio key light, and the Grading tray
       does not depend on it. A <strong>view</strong> is a lighting preset plus a light direction,
@@ -247,47 +270,61 @@
       <a href="assets/images/fig_tilt_in_editor.jpg">
         <img src="assets/images/fig_tilt_in_editor.jpg" width="1800" height="1080" alt="The editor's view bar with the tilt dialog open over the Diagram view" loading="lazy">
       </a>
-      <figcaption>Fig. 2 — The view bar in Edit mode: solid, path-traced or both, the faceting diagram, fixed directions, Fit and Reset, and Tilt Curve, here opened over the Diagram view.</figcaption>
+      <figcaption>Fig. 2 — The view bar in Edit mode: Solid, Path-Traced, Ray-Traced, Both or the faceting diagram, fixed directions, Fit and Reset, and Tilt Curve, here opened over the Diagram view.</figcaption>
     </figure>
     <p>
       The <strong>Color</strong> button in the Live Render toolbar shows the stone
-      in another colour without making a custom material. Its list holds
-      <em>Material default</em>, nine ready-made colours (Clear, Blue, Red, Green,
-      Violet, Yellow, Pink, Teal and Amber) and <em>Custom color...</em>, which
-      opens a colour editor with three sliders, Tone, Saturation and Hue (the
-      L*, C* and h of the L*C*h colour space), and a hue, saturation and
+      in another color without making a custom material. Its list holds
+      <em>Material default</em>, nine ready-made colors (Clear, Blue, Red, Green,
+      Violet, Yellow, Pink, Teal and Amber) and <em>Custom Color...</em>, which
+      opens a color editor with three sliders, Tone, Saturation and Hue (the
+      L*, C* and h of the L*C*h color space), and a hue, saturation and
       brightness picker as an alternative. When the view shows the design that is open in the
-      editor, the pick becomes that design's own colour, in one undo step. For
+      editor, the pick becomes that design's own color, in one undo step. For
       anything else, such as a design you only browse, the pick changes this view
-      only and the app remembers it. Whatever colour the view shows is also the
-      colour of the metrics, the tilt curves, high-resolution exports, the tilt
+      only and the app remembers it. Whatever color the view shows is also the
+      color of the metrics, the tilt curves, high-resolution exports, the tilt
       video and renders done by remote workers. A material that defines its own
-      colour disables the button.
+      color disables the button.
     </p>
     <p>
-      The same colour editor opens from two more places: <strong>Custom...</strong>
-      in the <em>Body Color</em> box of Design settings (the design's own colour,
+      The same color editor opens from two more places: <strong>Custom...</strong>
+      in the <em>Body Color</em> box of Design settings (the design's own color,
       applied in one undo step) and <strong>Pick...</strong> in the Material
-      Editor, where <em>Save</em> keeps the colour in a custom material. The
-      colour of a gem depends on the length of the light path, so the editor shows
+      Editor, where <em>Save</em> keeps the color in a custom material. The
+      color of a gem depends on the length of the light path, so the editor shows
       what you chose as four swatches, at 3 mm, 5 mm, 10 mm and <em>This
       stone</em> (the design's own size, 5 mm while no girdle diameter is set), and
       the design keeps it as an absorption spectrum per millimetre: a larger stone
       renders deeper and a smaller one lighter. A badge says
-      <em>Reachable</em> with the colour difference (Delta E) from your request, or
-      in amber that the colour is not fully reachable at this size and how far the
-      closest reachable colour is; very rich colours are not all reachable. A
-      custom material keeps its seven-band colour, and the web app has the same
+      <em>Reachable</em> with the color difference (Delta E) from your request, or
+      in amber that the color is not fully reachable at this size and how far the
+      closest reachable color is; very rich colors are not all reachable. A
+      custom material keeps its seven-band color, and the web app has the same
       editor.
     </p>
     <p>
-      A design can also remember its lighting. <em>Use this lighting for this
-      design</em> in Settings saves the lighting rig, the light's position and
+      A design can also remember its lighting. <em>Use This Lighting for This Design</em> in Settings saves the lighting rig, the light's position and
       height, the exposure, the surface glare, the backdrop and a loaded HDR
       environment map. It does not save the camera. The lighting is kept in the
       library under the design's id and never in the design file. It is applied
       when the design is opened in the editor, and not when you click a row in the
       catalogue, so you can compare many designs under one lighting.
+    </p>
+    <p>
+      <strong>Optical Diagnostics</strong> marks where light is lost or returned.
+      In Live Render, tick <em>Enable Optical Diagnostics</em> and pick the
+      layers: <em>Windowing (/)</em> as cyan lines, <em>Extinction (X)</em> as
+      magenta crosses, <em>Brilliance (Dots)</em> as green dots and <em>Fire
+      (Dispersion Potential)</em> as gold stipple. The layer is a separate analytical
+      pass aligned with the camera and drawn over the picture. It is off at first,
+      its opacity starts at 45 %, and it does not change the render. A small map
+      (128 pixels on the long edge, one sample) appears when the view settles, and a
+      320-pixel map of four samples replaces it. <em>Refresh Diagnostic Map</em> recomputes it, <em>Diagnostic Map on Neutral Stone</em> replaces the parts of the stone you did not select with neutral grey, and the layer is not available under the contrast view (ASET). The figures are shares of the
+      stone&rsquo;s visible area, so they differ from the live readouts. A still
+      export can include the layer with a <code>.optical.txt</code> legend beside
+      the picture, the tilt video can include it with a caption, and a render job
+      keeps the choice.
     </p>
     <p>
       A custom material can be entered as a Sellmeier fit (one or three terms) or
@@ -307,11 +344,10 @@
     </figure>
     <p>
       The Live Render picture follows the Edit tab's Cut slider
-      (<a href="#inspection">section 12</a>) and shows a badge with a <em>Show
-      finished</em> button while the stone is cut back. A stone with concave tiers
-      (<a href="#concave">section 7</a>) is always traced on the CPU, because the
-      GPU kernels do not know about tools. A remote worker receives the tools with
-      the scene and traces the same stone.
+      (<a href="#inspection">section 12</a>) and shows a badge with a <em>Show Finished</em> button while the stone is cut back. A stone with concave tiers
+      (<a href="#concave">section 7</a>) is traced with its tools on the GPU and
+      on the CPU, up to the 128 tool placements a design can hold. A remote worker receives the tools with the scene and
+      traces the same stone.
     </p>
   </section>
 
@@ -328,7 +364,7 @@
         <a href="assets/images/fig_tilt_video_export.png">
           <img src="assets/images/fig_tilt_video_export.png" width="1800" height="1350" alt="Export Tilt Video panel of the tilt dialog" loading="lazy">
         </a>
-        <figcaption>Fig. 5 — Export Tilt Video, unfolded below the chart (the panel scrolls): the material, then the angle range and step, here &minus;90&deg; to 90&deg; in steps of 1&deg;. The frame rate, resolution, samples per pixel, bounces, colour space and transfer follow below.</figcaption>
+        <figcaption>Fig. 5 &mdash; Export Tilt Video, unfolded below the chart. The panel scrolls, so only its first line is in view, the Include Optical Diagnostics (4 Samples/Pixel) box; the material, the angle range and step, and the frame rate, resolution, samples per pixel, bounces, color space and transfer follow below it.</figcaption>
       </figure>
     </div>
     <p>
@@ -337,7 +373,10 @@
       (<code>±90°</code>) at each of 4 fixed camera azimuths — 0°, 45°, 90°,
       135° (<code>PROFILE_AZIMUTHS_DEG</code>, <code>crates/indicatrix/src/color/metrics/profile.rs</code>)
       — and plots brilliance, windowing, and extinction together so a design's
-      behaviour in the hand, not just face-up, is visible.
+      behaviour in the hand, not just face-up, is visible. The curves follow the
+      stone&rsquo;s frosting (<a href="#frosting">section 5</a>): a frosted
+      facet scatters light, so a frosted design&rsquo;s curves differ from its
+      polished ones. A design without frosting is swept exactly as before.
     </p>
     <p>
       A tilt sweep can also be exported as a video: pick one of the four
@@ -351,8 +390,8 @@
       frame renders through the same local CPU/GPU/hybrid setting and
       configured remote coordinator as a still-image export — not a separate,
       CPU-only tracer — including the same <em>Transfer</em> choice while a
-      remote is configured: <em>Full data</em> merges the remote's samples
-      with the local lanes, <em>Final picture only</em> has the coordinator
+      remote is configured: <em>Full Data</em> merges the remote's samples
+      with the local lanes, <em>Final Picture Only</em> has the coordinator
       send one finished PNG per frame while the local lanes stay idle. The
       live viewport pauses for the whole video's
       duration exactly as it does during a still-image export, and never
@@ -371,7 +410,7 @@
       <a href="assets/images/fig_cad_edit.jpg">
         <img src="assets/images/fig_cad_edit.jpg" width="1800" height="1080" alt="Edit mode on 41.029B FVS-65: solid view with a selected crown tier, tier table and tier inspector" loading="lazy">
       </a>
-      <figcaption>Fig. 6 — Edit mode on 41.029B FVS-65 (Long Octagon): the solid view with the crown tier C3 selected and its angle and index handles, the tier table beside it and the Tier inspector editing C3.</figcaption>
+      <figcaption>Fig. 6 — Edit mode on 41.029B FVS-65 (Long Octagon): the solid view with the crown tier C3 selected and its angle and index handles, the Solid, Path-Traced, Ray-Traced, Both and Diagram switch above it, the tier table beside it and the Tier inspector editing C3.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_cad_diagram.jpg">
@@ -381,7 +420,7 @@
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_diagram_crown.png">
-        <img src="assets/images/fig_diagram_crown.png" width="1400" height="1563" alt="Crown panel of the faceting diagram with facet labels" loading="lazy">
+        <img src="assets/images/fig_diagram_crown.png" width="1400" height="1540" alt="Crown panel of the faceting diagram with facet labels" loading="lazy">
       </a>
       <figcaption>Fig. 8 — The crown panel alone (Crown in the view bar): every crown facet labelled with its tier code and index position on the index-gear scale.</figcaption>
     </figure>
@@ -414,7 +453,7 @@
       re-running that analysis.
     </p>
     <p>
-      A pavilion tier's row shows a colour-coded critical-angle margin bar
+      A pavilion tier's row shows a color-coded critical-angle margin bar
       next to its angle field, live as you type, and the first time (per
       session) a design has no anchor tier, a one-time explainer card walks
       through why the solver needs one before you hit the "no anchor"
@@ -432,7 +471,7 @@
       applied, the design solves to a closed stone — whichever route got
       there (the tier form, a quick-add button, an inline edit, Undo/Redo, or
       auto-solve); a status chip reads "Waiting for: …" until then.
-      <em>Skip step</em> moves on without the goal, <em>Back</em> returns to
+      <em>Skip Step</em> moves on without the goal, <em>Back</em> returns to
       the previous step, and the two reading steps wait for <em>Next</em>.
       Controls the current step does not use are locked — dimmed, with a
       tooltip saying so, keyboard shortcuts included — until the guide is
@@ -459,7 +498,7 @@
       <a href="assets/images/fig_tier_form.png">
         <img src="assets/images/fig_tier_form.png" width="1232" height="1400" alt="The Tier tab of the inspector editing tier C3: angle with slider and Typical menu, Meets, name, indices, facet chips and the Save Tier button" loading="lazy">
       </a>
-      <figcaption>Fig. 9 &mdash; The Tier tab of the inspector editing tier C3 of 41.029B FVS-65: the angle (37) with its slider and Typical menu, Meets set to Exact Scale Value, the name, the indices, a chip for each facet, the position box with Add, Mirror and Rotate, and Save Tier and New Tier at the bottom.</figcaption>
+      <figcaption>Fig. 9 &mdash; The Tier tab of the inspector editing tier C3 of 41.029B FVS-65: the angle (37) with its slider and Typical menu, Meets set to Exact Scale Value with its scale value, the name, the indices, a chip for each facet, the position box with Add, Mirror and Rotate, the Finish box (Frosted), Cheater Offset with Set and Clear, and Save Tier at the bottom.</figcaption>
     </figure>
     <p>
       The <strong>Indices</strong> field takes values from <code>0</code> up to
@@ -493,7 +532,42 @@
       printed without its minus sign, so Up makes the shown number bigger. A burst
       of nudges is one undo step. Ctrl+D duplicates a tier, Alt+Up and Alt+Down
       reorder it, and Ctrl+click or Shift+click select several tiers for one
-      batched nudge.
+      batched nudge. The <em>Select</em> button above the table shows a check box
+      on each row instead. With two or more tiers selected, a bar above the table
+      shows <em>N selected</em>, <em>Clear</em>, <em>Delete</em> and an Offset box:
+      type the degrees (a calculation works) and press Enter or <em>Offset</em>,
+      and every selected tier's angle moves by that amount as one undo step. You
+      do not have to click a row first.
+    </p>
+    <h3 id="frosting">Frosted facets</h3>
+    <p>
+      A tier can be cut frosted: a matte, light-scattering finish instead of a
+      polished one. In the Tier tab the <em>Finish</em> row has a
+      <em>Frosted</em> check box that frosts every facet of the tier at once, as
+      one undo step. In Advanced mode each facet chip also has a frost button for
+      frosting single facets, and a note says that some facets of the tier are
+      frosted. The tier table marks a frosted tier with a frost icon. A concave
+      tier has no frosting setting. The <em>Frosted Girdle</em> switch on the Stone
+      tab, which draws the girdle band matte, is a separate setting.
+    </p>
+    <p>
+      The frosting is part of the design. It is saved in the <code>.isdd</code>
+      file, and a design with no frosting is written exactly as before. Gem Cut
+      Studio <code>.gcs</code> files carry it both ways: a frosted tier or facet
+      in an imported file stays frosted, and Export as Gem Cut Studio writes it
+      back. An <code>.asc</code> file has no field for it, so exporting one writes
+      the geometry and a dialog titled <em>Frosting Is Not Part of This Format</em>
+      says so. The cutting sheet marks the tier <em>(Frosted)</em>, or lists the
+      frosted facets. The library keeps the frosting of each design, so
+      its traced previews show the stone frosted.
+    </p>
+    <p>
+      The live render, the Compare window, exports, render jobs and remote
+      workers all draw a frosted facet matte, and the tilt curves follow it
+      (<a href="#tilt-analytics">section 4</a>). The live readouts, the
+      optimizer, the angle sweep and the Compare figures still treat every facet
+      as polished, so a frosted design&rsquo;s tilt curves and those numbers can
+      differ on purpose.
     </p>
     <h3>Templates</h3>
     <p>
@@ -526,8 +600,8 @@
       safe tool exists, a <strong>Fix</strong> button. The fixes are: snap an
       index to the nearest gear tooth; remove facets that a later tier cuts away;
       move a tier to just after the last tier it meets; steepen a pavilion facet
-      to the critical angle plus 2°, turned about its girdle-side edge; and add a
-      flat table. A fix is planned on a copy of the design, refused with a plain
+      to the critical angle plus 2°, turned about its girdle corners so the girdle
+      outline stays; and add a flat table. A fix is planned on a copy of the design, refused with a plain
       sentence when it cannot be made safely, and is one undo step. The badge is
       recomputed after each solve and stays dimmed after an edit until the next
       one.
@@ -570,24 +644,24 @@
       move every crown and pavilion angle by up to 3°, 6°, 10° or 15° from its
       Shift angle, tries 100, 300 or 800 trial stones (Quick, Normal or Thorough),
       and offers up to three valid options, scored under the Grading tray
-      whatever lighting the viewport shows. The Crown Handling control (Advanced)
-      says how the crown follows the pavilion. By default <em>Crown follows the
-      pavilion</em>: a steeper or shallower pavilion makes the stone deeper or
+      whatever lighting the viewport shows. An option can carry a label for what
+      it is best at: <em>Best optics within limits</em>, <em>Closest to
+      original</em> or <em>Balanced</em>. The Crown Handling control (Advanced)
+      says how the crown follows the pavilion. By default <em>Crown Follows the Pavilion</em>: a steeper or shallower pavilion makes the stone deeper or
       shallower, and every crown angle is scaled by the same vertical stretch, so
       the stone keeps its silhouette (crown height against pavilion depth) and its
-      table size. Switch that off to use a <em>Fraction of shift</em> slider
-      instead (0 % leaves the crown alone), or tick <em>Scale crown by ratio
-      instead</em> to scale every crown angle by the ratio of the two critical
+      table size. Switch that off to use a <em>Fraction of Shift</em> slider
+      instead (0 % leaves the crown alone), or tick <em>Scale Crown by Ratio Instead</em> to scale every crown angle by the ratio of the two critical
       angles, which wins over the other two.
     </p>
     <figure class="fig">
       <a href="assets/images/fig_retarget.jpg">
-        <img src="assets/images/fig_retarget.jpg" width="1800" height="1153" alt="Retarget for Material dialog, sapphire to emerald in Shift mode, before and after side by side" loading="lazy">
+        <img src="assets/images/fig_retarget.jpg" width="1800" height="1153" alt="Retarget for Material dialog, the Astryx Star design retargeted to Sapphire in Shift mode, before and after side by side" loading="lazy">
       </a>
-      <figcaption>Fig. 11 — Retarget for Material: the sapphire 41.029B FVS-65 retargeted to emerald (n_D 1.5791, critical angle 39.29°) in Shift mode. On the left the crown handling options, each tier's old and new angle with its margin and a Safe or Windows verdict (P1 from 64.44° to 69.10°), the Valid line and the optical comparison; on the right the stone before and after, path traced.</figcaption>
+      <figcaption>Fig. 11 — Retarget for Material: the Astryx Star design retargeted to Sapphire (n_D 1.7681, critical angle 34.44°) in Shift mode. On the left the crown handling options, each tier&rsquo;s old and new angle with its margin and a Safe or Marginal verdict (P1 from 42.80° to 36.88°), the Valid line (girdle 1.5 %, table 36 %, depth 57 %, was 72 %) and the optical comparison; on the right the stone before and after, side by side and path traced (48 spp), with the Solid, Path Traced and Ray Traced switch above the pictures.</figcaption>
     </figure>
     <p>
-      <em>Keep the design's look</em> (Advanced, on by default) scores every
+      <em>Keep the Design's Look</em> (Advanced, on by default) scores every
       option, and the Shift start it is compared with, with a penalty for drifting
       from the design's table size and its crown-to-pavilion ratio, so the search
       prefers options that look like your stone; the verdict quotes the depth and
@@ -600,14 +674,12 @@
       The table, the culet and the girdle never move. The table and culet are
       listed greyed as <em>Not changed</em>, and the girdle is not listed. A moved
       angle keeps its sign and stays between 1° and 89.5°. Each facet turns about
-      the edge it shares with the girdle, so the girdle keeps its outline and
-      thickness, and the table and culet heights are refitted so they keep their
-      size. A tier whose angle follows a relation is not changed on its own; it
+      its girdle corners, so the girdle keeps its outline, and the table and
+      culet heights are refitted so they keep their size. A tier whose angle follows a relation is not changed on its own; it
       follows the tiers it reads.
     </p>
     <p>
-      One exception keeps a change valid: <em>Allow a thicker girdle (up to
-      +10 %)</em>, on by default in Advanced mode. When the new angles would pinch
+      One exception keeps a change valid: <em>Allow a Thicker Girdle (up to +10 %)</em>, on by default in Advanced mode. When the new angles would pinch
       the girdle at its corners, Retarget thickens the girdle band by 5 % and then
       by 10 % (never thinner) before giving up. Only the thickness changes: the
       plan view, the table and culet size and the crown-to-pavilion ratio are kept,
@@ -618,6 +690,8 @@
       Every result is checked against the original stone before Apply is allowed.
       The dialog says <em>Valid</em>, with the girdle, thinnest-point and table
       figures, or <em>Not valid</em> with the reasons: the facets no longer close;
+      a meet of the original stone would split, or one of its facets or edges
+      would disappear (<a href="#preforms-optimizer">section 8</a>);
       the girdle disappears or becomes less than half as thick, overall or at its
       thinnest point (the corners of a faceted girdle); the table falls below the
       top of the girdle or the culet rises above its bottom; a tier loses facets;
@@ -625,14 +699,15 @@
       plain Shift is not valid, the dialog says so and points to Optimize.
       <em>Compare...</em> keeps working on a change that is not valid, so you can
       see what goes wrong. If the original design itself does not solve, nothing
-      can be compared, the dialog says so, and Apply keeps the plain angle change.
-      Apply is one undo step that covers the angles, the heights and the material.
+      can be compared, the dialog says so, and Apply stays off. Apply is one undo
+      step that covers the angles, the heights and the material, and it commits
+      the stone that was checked.
     </p>
     <figure class="fig">
       <a href="assets/images/fig_retarget_overlay.png">
         <img src="assets/images/fig_retarget_overlay.png" width="1800" height="1153" alt="Retarget for Material dialog with the Overlay view: red outline before, green outline after" loading="lazy">
       </a>
-      <figcaption>Fig. 12 — The same retarget in the Overlay view, solid: the stone before and after drawn on top of each other, red for the outline before and green for the outline after.</figcaption>
+      <figcaption>Fig. 12 — The same retarget in the Overlay view, solid: the stone before and after drawn on top of each other, red for the outline before and green for the outline after, with the legend under the picture.</figcaption>
     </figure>
     <p>
       The Risk column depends on the block. A pavilion row shows its margin over
@@ -668,9 +743,9 @@
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_gear_before_after.jpg">
-        <img src="assets/images/fig_gear_before_after.jpg" width="1800" height="1175" alt="The 45.148 SplitChecker 12 design before (96 teeth, left) and after (64 teeth, right) a gear change, with the solid view and the tier table of each side by side" loading="lazy">
+        <img src="assets/images/fig_gear_before_after.jpg" width="1800" height="1175" alt="The 45.148 SplitChecker 12 design before (96 teeth, left) and after (64 teeth, right) a gear change, with the solid view and the Tiers panel of each side by side" loading="lazy">
       </a>
-      <figcaption>Fig. 14 — A gear change from 96 to 64 teeth on 45.148 SplitChecker 12, before (left) and after (right): the solid view above and the tier table below, where the angles and meets stay the same and every tier&rsquo;s indices are recomputed.</figcaption>
+      <figcaption>Fig. 14 — A gear change from 96 to 64 teeth on 45.148 SplitChecker 12, before (left) and after (right): the solid view above and the Tiers panel (7 tiers) below, with the facet pattern of the stone different after the change.</figcaption>
     </figure>
   </section>
 
@@ -710,7 +785,7 @@
     <p>
       A tier with a relation is marked in three places. The Angle field shows the
       relation, a note under it reads &ldquo;Follows a relation&rdquo; with the
-      angle it works out to and a <strong>Remove relation</strong> button, and the
+      angle it works out to and a <strong>Remove Relation</strong> button, and the
       tier table shows a link icon in the angle cell. Removing the relation keeps
       the angle the tier has at that moment. Setting, changing and removing a
       relation are each one undo step, and the Undo button says which
@@ -738,7 +813,7 @@
       others follow is allowed: the followers keep their angle and stop following,
       and one Undo brings back the tier and the relation together. The
       <strong>Steps / Mirror</strong> panel can generate a ladder of step cuts
-      with <strong>Keep linked</strong> ticked, so that each tier after the first
+      with <strong>Keep Linked</strong> ticked, so that each tier after the first
       follows the first (<code>Step1 + 2</code>, <code>Step1 + 4</code> and so
       on).
     </p>
@@ -830,11 +905,10 @@
     <p>
       The solid view, the diagram and the render show the stone with every tool's
       cut removed, and the tool facets have their own ids, so hover names them.
-      The path tracer runs such a stone on the CPU, whatever the local compute
-      setting, because the GPU kernels do not know about tools; a render of a
-      concave design is slower than the same design without its tools. A remote
-      worker receives the tools with the scene and traces the same stone, so
-      local, remote and combined renders agree. Brilliance, windowing, extinction,
+      The path tracer runs such a stone on the GPU as well as on the CPU, up to the
+      128 tool placements a design can hold. A remote worker receives
+      the tools with the scene and traces the same stone, so local, remote and
+      combined renders agree. Brilliance, windowing, extinction,
       scintillation and fire, the tilt curves and the tilt hover preview are
       computed on the stone with its tools. A design whose tiers do not resolve to
       tools (a tier that fails validation, or more placements than the limit) is
@@ -842,7 +916,7 @@
     </p>
     <p>
       The native <code>.isdd</code> file keeps concave tiers exactly (design
-      file version 2). An <code>.asc</code> file keeps two footnotes per tier in
+      file version 2 or later). An <code>.asc</code> file keeps two footnotes per tier in
       cutting order and never writes a concave tier as an <code>.asc</code> tier.
       A <code>.gcs</code> export keeps the same footnotes in its footer fields.
       Export Edited .asc and Export as Gem Cut Studio tell you before writing that
@@ -852,21 +926,24 @@
       Other tools treat concave tiers as follows. The Rough planner takes the
       volume, the carat weight and the yield from the carved stone, draws the
       cuts and places the stone on its carved outline
-      (<a href="#rough-planner">section 11</a>). The optimizer and the angle sweep
-      score the flat stone, so their figures leave out the tools. The Compare
+      (<a href="#rough-planner">section 11</a>). The optimizer, Retarget and the
+      angle sweep score the stone with its tools: their optical figures and the
+      sweep's tilt averages are measured on the carved stone, and the yield reads
+      the carved volume, so a groove or a dimple costs yield. The Compare
       window draws, traces and measures the stone with its tools (a concave side
       may trace at a lower sample count when it is slow); the History pictures
-      draw the flat stone. Cutting mode shows a
+      draw it with its tools too, and so do the library previews, the batch tilt
+      curves and the library detail view. Cutting mode shows a
       Tool line on a concave step. Two tutorials teach concave tiers: one for the
       cylinder and cone, one for the sphere, disc and plunge.
     </p>
     <p>
       Clicking a groove or dimple in the solid view or the diagram selects its
       concave tier, and selecting a concave row tints all of its tool facets.
-      Limits today: each tool placement is taken from
-      the flat stone's measured width, so concave edits never change the stone's
-      width, length or height; library previews of a design that has only an angle
-      table leave its concave rows out; and the GPU does not trace tools.
+      Limits today: every tool placement is sized from
+      the finished flat stone's width W (the same W as the sheet's L/W), so concave
+      edits never change the stone's width, length or height; and a design holds
+      at most 128 tool placements.
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 560px">
       <a href="assets/images/fig_concave_tier_form.png">
@@ -921,6 +998,23 @@
       Nothing changes until you click Apply.
     </p>
     <p>
+      Every candidate keeps the stone&rsquo;s meets. Before it searches, the
+      optimizer records the stone&rsquo;s facet network: each meet (a point where
+      three or more facets come together) and the edges and faces between them.
+      A proposed angle is then corrected so that no meet splits into several
+      points, no facet or edge disappears, and the girdle&rsquo;s outline and
+      height stay as they are. A proposal that cannot be corrected is dropped
+      before its optics are scored. Retarget (<a href="#cad-solver">section 5</a>)
+      works the same way, with tighter limits on how far the shape may drift. For Retarget the limits on the stone's depth, the girdle height and the movement of the meets grow with how far the change turns the facets, so a large step between distant materials is not refused for that alone; the meets, the girdle thickness, the table and the aspect are not relaxed. The
+      line above the candidate list reports how many original meets were
+      preserved. A design imported from an older GemCad file, whose depths are written
+      with five decimals, has meets that already miss by a few millionths of the stone;
+      the check recognises them as meets, records that miss and asks no candidate to
+      close it, so such designs are optimized and retargeted like any other. A design with concave tiers is handled the same way: the check
+      covers its flat facets, no run edits a tool, and the optical figures and the
+      yield are measured on the stone with its tools.
+    </p>
+    <p>
       A coordinate search walks downhill and can settle in a good but not the
       best arrangement, so the desktop optimizer tries <strong>several starting
       points</strong>. It first screens a spread of trial arrangements, keeps the
@@ -940,35 +1034,35 @@
       <a href="assets/images/fig_optimizer_setup.jpg">
         <img src="assets/images/fig_optimizer_setup.jpg" width="1800" height="1070" alt="The editor with the Objective list of the Optimize tab open over the tier table" loading="lazy">
       </a>
-      <figcaption>Fig. 16 &mdash; The Optimize tab&rsquo;s Objective list open over the tier table of 41.029B FVS-65: Balanced, Brilliance, Low Windowing, Low Extinction and Keep Weight (the list scrolls, and holds the tone goals further down).</figcaption>
+      <figcaption>Fig. 16 &mdash; The Optimize tab&rsquo;s Objective list open over the tier table of 41.029B FVS-65: Balanced, Brilliance, Low Windowing, Low Extinction, Keep Weight and Lighten Dark Rough (the list scrolls).</figcaption>
     </figure>
     <ul>
       <li><strong>Objective.</strong> Seven presets set the weights of windowing,
         extinction, tilt brilliance, yield and tone: Balanced (1, 1, 1), Brilliance
-        (tilt brilliance 4), Low windowing (windowing 4), Low extinction
-        (extinction 4), Keep weight (yield 3), and the two tone goals below.
+        (tilt brilliance 4), Low Windowing (windowing 4), Low Extinction
+        (extinction 4), Keep Weight (yield 3), and the two tone goals below.
         Custom shows the weight fields, the Yield weight slider (0 to 3) and the
         Tone slider (&minus;3 to 3).</li>
-      <li><strong>Tone goals.</strong> <em>Lighten dark rough</em> looks for the
-        angles that return the lightest face-up colour (higher L*), for rough so
-        dark that the stone looks black. <em>Intensify pale rough</em> looks for
-        the strongest colour (higher C*), for pale material such as aquamarine.
-        The face-up tone is the colour of the light that comes back out of the
-        table, worked out from the body colour in Design settings and the light
+      <li><strong>Tone goals.</strong> <em>Lighten Dark Rough</em> looks for the
+        angles that return the lightest face-up color (higher L*), for rough so
+        dark that the stone looks black. <em>Intensify Pale Rough</em> looks for
+        the strongest color (higher C*), for pale material such as aquamarine.
+        The face-up tone is the color of the light that comes back out of the
+        table, worked out from the body color in Design settings and the light
         path through it, under the lighting the Live Render shows when you press
-        Optimize; the UV presets use daylight. Set the girdle diameter so the colour
+        Optimize. Set the girdle diameter so the color
         is sized as in the Live Render. The candidate list gains a Tone column (a
-        dot in the predicted colour and L*), the picked candidate shows before and
+        dot in the predicted color and L*), the picked candidate shows before and
         after swatches, and green marks the figure the chosen goal pulls on. A
-        material with no body colour gives the goal nothing to do, and a line
+        material with no body color gives the goal nothing to do, and a line
         under the objective says so. The tone is measured table-up only.</li>
       <li><strong>What may change.</strong> A tier pinned to an exact scale value
-        stays put unless <em>Vary anchored tiers</em> is ticked. Then the search
+        stays put unless <em>Vary Anchored Tiers</em> is ticked. Then the search
         may turn it about the edge where it meets the girdle, so the girdle
         outline stays; the tick starts on when every tier is pinned, which is true
-        of every freshly imported design. <em>Keep the girdle</em>, on by default,
+        of every freshly imported design. <em>Keep the Girdle</em>, on by default,
         discards a candidate whose girdle would be thinner than half the original
-        or that loses the table. <em>Only selected tiers</em> limits the search to
+        or that loses the table. <em>Only Selected Tiers</em> limits the search to
         the selection. A candidate is also rejected if it breaks the closed solid
         or adds a vanishing or undersized facet.</li>
       <li><strong>Never moved.</strong> A tier whose angle follows a relation goes
@@ -1000,7 +1094,7 @@
       <a href="assets/images/fig_optimizer_result.png">
         <img src="assets/images/fig_optimizer_result.png" width="1232" height="1400" alt="The Optimize tab after a run: the candidate list, the before and after figures of candidate 1 and the tiers it would change" loading="lazy">
       </a>
-      <figcaption>Fig. 17 &mdash; The Optimize tab after a run, scrolled to the results: the starting stone and five candidates (green beats the start, red is worse), candidate 1 selected with its before and after figures (tilt brilliance 30.68 % to 33.02 %, windowing 48.19 % to 46.73 %), the tiers it would change with their old and new angles, and Preview and Compare.</figcaption>
+      <figcaption>Fig. 17 &mdash; The Optimize tab after a run on the Astryx Star design, scrolled to the results: the starting stone and five candidates (green beats the start, red is worse), candidate 1 selected with its before and after figures (tilt brilliance 25.87 % to 31.30 %, windowing 54.49 % to 54.01 %, extinction 19.64 % to 14.69 %, yield loss 97.44 % to 97.63 %, blended score 49.42 to 45.80), the tiers it would change with their old and new angles (P1 42.80° to 42.64°, down to C4 20.50° to 19.92°), and Preview and Compare.</figcaption>
     </figure>
     <h3>Angle sweeps</h3>
     <p>
@@ -1018,10 +1112,12 @@
     </p>
     <p>
       A chart draws one line per figure, each scaled to its own lowest and highest
-      value, so lines compare by shape and not by height. <em>Use this angle</em>
+      value, so lines compare by shape and not by height. <em>Use This Angle</em>
       sets the tier's angle in one undo step, and <em>Copy CSV</em> and <em>Save
       CSV...</em> export the rows. A table, a culet, a girdle tier and a tier that
-      follows a relation cannot be swept, and the figures leave out concave tools.
+      follows a relation cannot be swept. On a design with concave tiers the
+      figures, and the tilt averages when ticked, are measured on the stone with
+      its tools.
     </p>
     <figure class="fig">
       <a href="assets/images/fig_angle_sweep.png">
@@ -1037,7 +1133,7 @@
       stones side by side, or behind a split slider, in the solid view or
       path-traced, turned together. Retarget, Optimize, the snapshot comparison
       and a pair of variants all open it. Opened from the Optimize tab, its header
-      has a <em>Compare against</em> list: <em>Current design</em> (the default) or
+      has a <em>Compare Against</em> list: <em>Current design</em> (the default) or
       <em>Original (before retarget)</em>, offered once a Retarget has been
       applied, so an optimized, retargeted stone can be judged against the stone
       you started with.
@@ -1055,20 +1151,20 @@
       face-up (+4 %) and shows less windowing (-3 %).&rdquo;), or say &ldquo;No
       clear optical difference.&rdquo; One button adds the average over four
       directions and 181 tilt angles for both stones, with a threshold of 1 point.
-      <em>Keep after</em> applies the change exactly as the dialog's own Apply
+      <em>Keep After</em> applies the change exactly as the dialog's own Apply
       does.
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 860px">
       <a href="assets/images/fig_compare_overlay.png">
         <img src="assets/images/fig_compare_overlay.png" width="1800" height="1276" alt="Compare window opened from Optimize, overlay view with the before and after table" loading="lazy">
       </a>
-      <figcaption>Fig. 19 &mdash; The compare window opened from the Optimize tab, in the Overlay view with the solid stone: red marks what the optimized stone removes and green what it adds. The table gives before, after and change for brilliance (42.5 % to 66.1 %), windowing (12.3 % to 10.0 %), extinction (45.2 % to 23.9 %), fire and scintillation, with a sentence in words and the Tilt Average button; Close, Discard and Keep After are below.</figcaption>
+      <figcaption>Fig. 19 &mdash; The compare window opened from the Optimize tab, in the Overlay view with the solid stone: red marks what the optimized stone removes and green what it adds. The table gives before, after and change for brilliance (28.1 % to 83.7 %), windowing (23.3 % to 12.6 %), extinction (48.5 % to 3.7 %), fire and scintillation, with a sentence in words and the Tilt Average button. The Side by Side, Overlay and Split Slider choices and the Solid, Path Traced and Ray Traced switch are above the picture; Close, Discard and Keep After are below.</figcaption>
     </figure>
     <figure class="fig fig-portrait" style="--fig-max: 860px">
       <a href="assets/images/fig_compare_traced.jpg">
         <img src="assets/images/fig_compare_traced.jpg" width="1800" height="1276" alt="Compare window, side by side and path traced, with the tilt-average rows" loading="lazy">
       </a>
-      <figcaption>Fig. 20 &mdash; The same window side by side and path traced, after the Tilt Average button: the table gains the tilt brilliance (30.7 % to 33.0 %), tilt windowing (48.2 % to 46.7 %) and tilt extinction (21.1 % to 20.2 %) rows and a sentence on the average over all tilts.</figcaption>
+      <figcaption>Fig. 20 &mdash; The same window side by side and path traced, after the Tilt Average button: the table gains the tilt brilliance (26.1 % to 31.9 %), tilt windowing (54.2 % to 53.6 %) and tilt extinction (19.7 % to 14.5 %) rows and a sentence on the average over all tilts.</figcaption>
     </figure>
   </section>
 
@@ -1097,7 +1193,8 @@
       angle count as one step. The pictures are drawn in the background, only for
       the rows in view, from one fixed angle in the flat-shaded solid view. A step
       whose design does not solve shows &ldquo;Does not solve&rdquo; instead of a
-      picture, and the pictures leave out concave tools. The list is one Tab stop
+      picture, and the pictures of a concave design show the cuts of its tools.
+      The list is one Tab stop
       with Up, Down, Home, End and Enter. The history starts again at New, Open
       and Load, and it is not saved with the design file.
     </p>
@@ -1191,7 +1288,7 @@
       the page shows a <em>Changed since you marked it</em> badge and the step
       stops counting as done until you cut it as it now reads and mark it again.
       Renaming a tier or editing its note does not change the fingerprint.
-      <strong>Reset progress</strong> removes every mark of the open design, after
+      <strong>Reset Progress</strong> removes every mark of the open design, after
       a question.
     </p>
     <figure class="fig">
@@ -1226,11 +1323,13 @@
       material (only materials with a known specific gravity are offered, because
       the specific gravity turns volume into carats), and if you type the weight
       you measured on a scale it checks the model against it and tells you when
-      the two disagree; <em>Fit to weight</em> scales the whole model to the
-      weight you typed. <em>Designs (up to)</em> (1 to 99) sets how many
-      different designs one layout may mix; the number of stones is not limited, so
-      the planner fits as many stones as weigh the most. The planner returns up to 10
-      layouts, heaviest first.
+      the two disagree; <em>Fit to Weight</em> scales the whole model to the
+      weight you typed. <em>Designs (Up To)</em> (1 to 99, 1 by default) sets how many
+      different designs one layout may mix, and <em>Stones (Up To)</em> (0 to 99)
+      how many stones it may hold in all. With the stone limit at 0, the default,
+      the planner fits as many stones as weigh the most; with a limit it searches
+      for the heaviest layouts of at most that many stones. The planner returns up
+      to 10 layouts, heaviest first.
     </p>
     <p>
       <strong>A non-convex rough from a mesh file.</strong> A scanned or irregular
@@ -1240,7 +1339,7 @@
       applies it. The file is read in the background, and a file larger than
       64 MiB is refused before any of it is read. If the mesh is closed, the planner uses the mesh itself and not
       only its convex outline: no planned stone reaches into air at a notch or a
-      hollow, and the volume, the weight check, Fit to weight, the yield and every
+      hollow, and the volume, the weight check, Fit to Weight, the yield and every
       fill percentage use the volume of the material. A hollow rough, written as
       an outer surface plus one more closed surface for each cavity, has the
       cavity volumes taken out whichever way they are wound. If the file cannot be
@@ -1249,13 +1348,13 @@
       hull of its vertices and says why; a smooth scan, whose outline is too fine to
       stand in for it, is refused instead and has to be decimated first. Small scan defects are repaired first:
       hair-wide gaps are joined, faces turned the wrong way are turned back, and
-      holes up to 5&nbsp;% of the bounding-box diagonal (at most 64 edges) are
+      holes whose edge loop is up to 5&nbsp;% of the bounding-box diagonal long (at most 64 edges) are
       filled; the status line says what was done. A mesh that crosses itself is
       detected and falls back to its convex outline with a note naming the place.
       A smooth scan is planned from the scan itself: a simplified outline of at
       most 64 planes only sizes the grid, every stone is checked against the scan,
       and the plan uses every processor core. A scan is planned on a coarser grid
-      than a modelled rough and stops at the <em>Scan plan time limit</em>
+      than a modelled rough and stops at the <em>Scan Plan Time Limit</em>
       (120&nbsp;s by default, 0 for none); a stopped plan shows the best layouts
       found so far, marked as a partial search. Saved plans keep the mesh, and older
       plans still open.
@@ -1266,7 +1365,7 @@
       PLY, in the same coordinates and unit as the rough), or locate one from
       photos taken on a fixed camera rig (a beam-splitter cube of known size
       calibrates the rig). Stones keep clear of an inclusion with a margin of
-      0.3&nbsp;mm by default, while the weight, Fit to weight and the yield count it
+      0.3&nbsp;mm by default (for an inclusion located from photos, the larger of that and twice the uncertainty of the solution), while the weight, Fit to Weight and the yield count it
       as material, because it is stone you hold. An inclusion that reaches the
       surface is refused (model it as a notch instead). Inclusions on a block,
       cylinder or pebble, and keep-out shapes without a mesh, are not available
@@ -1276,12 +1375,12 @@
       3D view, with the readout showing the mesh volume. -->
     <figure class="fig">
       <a href="assets/images/fig_rough_planner.png">
-        <img src="assets/images/fig_rough_planner.png" width="1800" height="1153" alt="Rough Planner window: the modelled rough and the plan controls" loading="lazy">
+        <img src="assets/images/fig_rough_planner.png" width="1800" height="1153" alt="Rough Planner window before planning: the list of edge cuts, the empty 3D view and the plan controls" loading="lazy">
       </a>
-      <figcaption>Fig. 24 — Modelling the rough: a block with five edge cuts (each with its two setbacks), the selected cut face highlighted in the 3D view, and the Plan controls below: how many different designs a layout may use (the number of stones is left to the planner), which designs to try (here the current library filter, the 321 oval designs), and the losses for kerf and allowance.</figcaption>
+      <figcaption>Fig. 24 — The Rough Planner before planning: the list of edge cuts (cuts 2 to 5 in view, each with its two setbacks, here 1.3 mm), the 3D view with its Rough, Result, Front, Top, Side and Reset buttons and the Cut Faces box, the Results column waiting for a plan, and the Plan controls below: Designs (Up To), Stones (Up To) with No Limit, which designs to try (here the current library filter, 321 designs, or the whole library of 3,299), and the losses for kerf and allowance.</figcaption>
     </figure>
     <p>
-      The <em>candidate designs</em> are either the designs the library's search
+      The <em>Candidate Designs</em> are either the designs the library's search
       and filters currently show, or the whole library. A single design can be
       <strong>excluded from planning</strong> &mdash; a plain cube that keeps
       winning, say &mdash; from a button on its result row or from the library's
@@ -1320,7 +1419,7 @@
     </p>
     <p>
       Every result is also shown in a <strong>3D view</strong>: the stones are drawn
-      as their real designs, each design in its own colour, inside the rough and the
+      as their real designs, each design in its own color, inside the rough and the
       saw pieces, and hovering a stone tells you its design, weight and place in the
       plan. Each design in a result carries its own <strong>metrics</strong>: its
       share of the layout's weight, its finished size and proportions, its volume,
@@ -1332,7 +1431,7 @@
       <a href="assets/images/fig_rough_planner_result.jpg">
         <img src="assets/images/fig_rough_planner_result.jpg" width="1800" height="1153" alt="Rough Planner result: 28 stones of two oval designs drawn inside the rough and the result card" loading="lazy">
       </a>
-      <figcaption>Fig. 25 — A result with the library filtered to ovals: 10 layouts from 318 designs in 6.9 s; the selected layout, with at most two designs, 29.65 ct at 31.4 % yield, cuts 28 ovals of two designs (17 and 11, from two large to many small) from a rough that weighs 94.40 ct, drawn in their saw pieces, with each design&rsquo;s weight, size, ratios, volume, orientation, fill and optics in the card.</figcaption>
+      <figcaption>Fig. 25 — A result with the library filtered to ovals: 10 layouts from 318 designs in 33.7 s; the selected layout, with at most two designs, 29.65 ct at 31.4 % yield, cuts 28 ovals of two designs (17 and 11, from two large to many small) from a rough that weighs 94.40 ct, drawn in their saw pieces, with each design&rsquo;s weight, size, ratios, volume, orientation, fill and optics in the card.</figcaption>
     </figure>
     <p>
       A design's name in a result is a <strong>link into the library</strong>; a
@@ -1428,9 +1527,9 @@
     <h2><span class="sec-num">12</span>Solid inspection view</h2>
     <figure class="fig">
       <a href="assets/images/fig_solid_view.png">
-        <img src="assets/images/fig_solid_view.png" width="1800" height="1157" alt="Solid inspection view with facet picking" loading="lazy">
+        <img src="assets/images/fig_solid_view.png" width="1800" height="1157" alt="Solid shading in the Live Render panel, with the Solid, Path-Traced and Ray-Traced switch" loading="lazy">
       </a>
-      <figcaption>Fig. 26 — Solid shading in the Live Render panel: the stone drawn flat and untextured, here the dodecagon fitted to the view. The Edit tab&rsquo;s solid view, described below, adds facet picking: click a facet to jump to its row in the schedule.</figcaption>
+      <figcaption>Fig. 26 — Solid shading in the Live Render panel: the stone drawn flat and untextured, here seen from above and zoomed in, with the Solid, Path-Traced and Ray-Traced switch, the material and lighting-preset pickers and the Tilt Curve, Front, Top and Export buttons above it, and the mouse hints below. The Edit tab&rsquo;s solid view, described below, adds facet picking: click a facet to jump to its row in the schedule.</figcaption>
     </figure>
     <p>
       The Edit tab's second viewport shows the exact polyhedral solid (facet edges
@@ -1463,7 +1562,7 @@
     <p>
       The slider's border turns amber while the stone is cut back. The Live Render
       picture and the Optimize and Retarget previews follow the slider, and Live
-      Render shows a badge with a <em>Show finished</em> button. The Diagram
+      Render shows a badge with a <em>Show Finished</em> button. The Diagram
       always shows the finished design. Exports, the tilt video, the tilt curves
       and the hover pictures always draw the finished gem
       (<a href="#export">section 13</a>).
@@ -1482,7 +1581,7 @@
       and the Snap pill turns the snapping off. One drag is one undo step, and Esc
       during a drag puts the design back. The Diagram view has the same handles on
       its flat panels. A tier whose angle follows a relation has no angle handle.
-      The Larger handles preference (<a href="#interface">section 16</a>) makes the
+      The Larger Handles preference (<a href="#interface">section 16</a>) makes the
       handles about 60 % bigger for touch screens and pens.
     </p>
     <p>
@@ -1500,9 +1599,10 @@
 
   <section id="export">
     <h2><span class="sec-num">13</span>Export</h2>
+    <p>Export selects Path-Traced or Ray-Traced. Ray-Traced uses an Anti-Aliasing tap count and Fire instead of progressive samples, and has no denoising. Local CPU/GPU and matching protocol-29 remote peers carry the chosen engine; a frozen job preserves it.</p>
     <figure class="fig">
       <a href="assets/images/fig_cutting_schedule.png">
-        <img src="assets/images/fig_cutting_schedule.png" width="1800" height="510" alt="Cutting instructions table" loading="lazy">
+        <img src="assets/images/fig_cutting_schedule.png" width="1800" height="513" alt="Cutting instructions table" loading="lazy">
       </a>
       <figcaption>Fig. 27 — The cutting instructions of 45.148 SplitChecker 12: one row per step with facet (and its earlier number), angle and index-gear positions, split into All Steps, Pavilion and Crown, with a Copy Instructions button.</figcaption>
     </figure>
@@ -1532,15 +1632,15 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 460px">
       <a href="assets/images/fig_export_dialog.png">
-        <img src="assets/images/fig_export_dialog.png" width="840" height="1578" alt="Export High-Resolution Render dialog before an export" loading="lazy">
+        <img src="assets/images/fig_export_dialog.png" width="840" height="1834" alt="Export High-Resolution Render dialog before an export, with the Renderer row" loading="lazy">
       </a>
-      <figcaption>Fig. 28 &mdash; Export High-Resolution Render before an export: the output folder and file name template, 4K output size, Rec.2020, Local Only (no remote coordinator is configured, so the remote choices are dimmed), 12 bounces and 1024 samples per pixel, with Close, Add to Queue and Start Export.</figcaption>
+      <figcaption>Fig. 28 &mdash; Export High-Resolution Render before an export: the Include Optical Diagnostics box and the material (Benitoite), the output folder and file name template, 4K output size, Rec.2020, Local Only (the remote choices are dimmed while the app checks for the remote), 12 bounces, the Renderer row with Path-Traced selected and Ray-Traced beside it, and 1024 samples per pixel, with Close, Add to Queue and Start Export.</figcaption>
     </figure>
     <dl class="deflist">
       <dt>Max resolution</dt><dd>8192 × 8192 px (<code>MAX_EXPORT_DIM</code>)</dd>
       <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>
       <dt>Max bounces</dt><dd>128 (<code>MAX_EXPORT_BOUNCES</code>)</dd>
-      <dt>Colour spaces</dt><dd>sRGB, Display P3, Rec. 2020 (Display P3/Rec. 2020 exports embed an ICC profile so they aren't misread as sRGB)</dd>
+      <dt>Color spaces</dt><dd>sRGB, Display P3, Rec. 2020 (Display P3/Rec. 2020 exports embed an ICC profile so they aren't misread as sRGB)</dd>
       <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, the native <code>.isdd</code> design file, 8-bit PNG renders. Read and import: <code>.gem</code> and <code>.gcs</code>. Write, experimental: <code>.gcs</code>. <a href="#design-file-formats">Details below</a>.</dd>
     </dl>
     <p class="small">Constants from <code>apps/indicatrix-cut/src/bridge/export_thread/params.rs</code>.</p>
@@ -1588,7 +1688,7 @@
     </ul>
     <p>
       The order and the labels are the same everywhere in the app (the sheet,
-      Cutting mode, the Cut slider and a Build this design lesson). Pavilion and
+      Cutting mode, the Cut slider and a Build This Design lesson). Pavilion and
       girdle tiers come first, then the crown, and the table is always last; a
       concave tier is cut after the flat tiers of its side. A tier that meets a
       facet cut later moves to just after the last facet it meets. Codes are
@@ -1605,17 +1705,21 @@
     <ul>
       <li><strong>GemCAD <code>.asc</code></strong>: read and written, with CRLF line
         ends as GemCAD writes them. A relation is exported as its current angle
-        and a concave tier as two footnotes in cutting order.</li>
+        and a concave tier as two footnotes in cutting order. The format has no
+        field for frosting, so the geometry is written and a dialog says that the
+        frosting is not part of the format.</li>
       <li><strong>Native <code>.isdd</code></strong>
         (<code>crates/indicatrix-formats/src/native</code>): a self-contained text
-        file in TOML syntax with a versioned header; files saved as <code>.isdd</code>
-        by earlier versions still open. It keeps constraints, preforms, tier
-        relations, concave tiers and a snapshot of a custom material, which a plain
-        <code>.asc</code> cannot hold. A file is written as version 2 only when it
-        has concave tiers, as version 3 only when a tier has a relation and as version 4
-        only when its rough is a planned piece from the Rough planner, so every
-        other file is unchanged and an older build refuses a version 3 or 4 file rather
-        than dropping the relations or the rough. It also carries descriptive metadata (title,
+        file in TOML syntax with a versioned header. Files saved with the earlier
+        <code>.indicatrix</code> extension still open; the program only writes
+        <code>.isdd</code>. It keeps constraints, preforms, tier
+        relations, concave tiers, frosted tiers and facets and a snapshot of a custom
+        material, which a plain <code>.asc</code> cannot hold. A file is written as
+        version 2 only when it has concave tiers, as version 3 only when a tier has a
+        relation and as version 4 only when its rough is a planned piece from the
+        Rough planner, so every other file is unchanged and an older build refuses a
+        version 3 or 4 file rather than dropping the relations or the rough. Frosting
+        adds no version: a design without it writes the same file as before. It also carries descriptive metadata (title,
         designer, source, notes, tags, licence, dates, an id) and attachments that
         cannot be recomputed (a PDF, the original <code>.gem</code> or
         <code>.asc</code>, a diagram image); derived values such as ratios, volume,
@@ -1623,14 +1727,16 @@
         import. Variants, cutting marks and per-design lighting are not in the file
         (section 2).</li>
       <li><strong>Gem Cut Studio <code>.gcs</code></strong>: opens and imports,
-        converted to <code>.asc</code> cutting instructions. The reader follows the
+        converted to <code>.asc</code> cutting instructions, and a frosted tier or
+        facet in the file stays frosted. The reader follows the
         file description in that program's 1.1 manual (pp. 58&ndash;61) and reads
         all 59 real files of its test corpus. Gem Cut Studio rescales its designs
         to fill its workspace, so the converted masts are about 0.9 of what GemCAD
         writes for the same design; the shape is identical. Anything the reader
         does not recognise is listed in the import summary. The writer is
-        experimental: it follows the published description, has not been checked in
-        Gem Cut Studio itself, and chiral designs are untested.</li>
+        experimental: it follows the published description, writes the frosting back,
+        has not been checked in Gem Cut Studio itself, and chiral designs are
+        untested.</li>
       <li><strong>GemCAD <code>.gem</code></strong>: opens and imports, converted to
         <code>.asc</code> cutting instructions. GemCAD's binary save format has no
         published specification; the geometry (every facet plane, tier, name and
@@ -1656,10 +1762,12 @@
     </p>
     <h3>What a job keeps</h3>
     <p>
-      A job keeps a frozen copy of everything it needs: the finished stone, the
-      material and its colour, the lighting, the camera, the size, the samples and
-      the other export settings, so changing the design afterwards does not change
-      what it renders. It does not freeze the remote worker: the address and
+      A job keeps a frozen copy of everything it needs: the finished stone with
+      its concave tools and any frosted tier or facet, the material and its color,
+      the lighting, the camera, the size, the engine, the samples or fixed AA taps and Fire, the Optical Diagnostics
+      choice and the other export settings, so changing the design afterwards does
+      not change what it renders. A job file written before frosting existed has no
+      frosting and renders the stone polished. It does not freeze the remote worker: the address and
       certificates are read from Settings when the job runs, and a job whose remote
       is gone renders on this computer with a note. It does remember where to
       render (local only, local and remote, or remote only) and the transfer. With
@@ -1737,6 +1845,7 @@
     <table>
       <thead><tr><th>Option</th><th>Meaning</th></tr></thead>
       <tbody>
+        <tr><td><code>--engine path|ray</code></td><td>Override the frozen renderer; Ray-Traced jobs use format 2 and fixed AA taps without denoising.</td></tr>
         <tr><td><code>--local cpu|gpu|cpu+gpu</code></td><td>Engines of this computer; the default is <code>cpu+gpu</code>. Without GPU support in the build everything renders on the processor and a note says so.</td></tr>
         <tr><td><code>--remote HOST:PORT</code> with <code>--cert-dir FOLDER</code></td><td>Also use a remote worker; the two go together.</td></tr>
         <tr><td><code>--compute local|remote|both</code></td><td>Replace the job's own choice; <code>remote</code> and <code>both</code> need <code>--remote</code>.</td></tr>
@@ -1767,16 +1876,22 @@
     <h2><span class="sec-num">15</span>Tutorials and guided lessons</h2>
     <p>
       <strong>Help &rarr; Tutorials...</strong> opens the tutorial browser.
-      Tutorials are grouped in sections (Getting started, Tiers, Solving,
-      Optimizing, Viewing, Output, Library and Preferences), there is a search
-      box, every finished tutorial gets a Done mark, and a Reset progress button
-      clears the marks. There are 68 short tutorials, each teaching one tool, from
-      adding a tier to angle sweeps, variants, concave tools, cutting mode and the
-      Rough planner (<code>crates/indicatrix-editor/src/guide/tutorials</code>).
+      Tutorials are grouped in sections (Getting Started, Tiers, Solving,
+      Optimizing, Viewing, Output, Library, Preferences, and Built from the
+      Library for lessons made from a design), there is a search
+      box, every finished tutorial gets a Done mark, and a Reset Progress button
+      clears the marks. There are 69 short tutorials, each teaching one tool, from
+      adding a tier to angle sweeps, variants, concave tools, optical diagnostics,
+      cutting mode and the Rough planner
+      (<code>crates/indicatrix-editor/src/guide/tutorials</code>).
       Two longer lessons sit beside them: the worked example, in which you build a
       round-brilliant-style stone yourself, tier by tier, and an eight-step
       welcome tour. A first-run dialog offers the tour, a start from a template,
       or nothing.
+    </p>
+    <p>
+      Video tutorials are on the Indicatrix YouTube channel:
+      <a href="https://www.youtube.com/@Indicatrix-Suite">https://www.youtube.com/@Indicatrix-Suite</a>.
     </p>
     <p>
       A small guide panel walks through the lesson. Each step lists numbered
@@ -1787,15 +1902,14 @@
       whose result leaves no trace in the design, such as a file exported or the
       Cut slider moved, is judged from the action itself. Controls the step does
       not need are dimmed, and their keyboard shortcuts do nothing, until the
-      tutorial is closed. <em>Back</em> returns to the previous step, <em>Skip
-      step</em> moves on, and the cross closes the tutorial. Which tutorials you
+      tutorial is closed. <em>Back</em> returns to the previous step, <em>Skip Step</em> moves on, and the cross closes the tutorial. Which tutorials you
       finished is kept in the program's settings and not in a design.
     </p>
-    <h3>Build this design</h3>
+    <h3>Build This Design</h3>
     <p>
       Any design in the library, local or remote, can become a tutorial that shows
       how to cut it from scratch. Use the steps button in the design header,
-      <em>Build this design</em> on the card's menu, <em>Library &rarr; Selected
+      <em>Build This Design</em> on the card's menu, <em>Library &rarr; Selected
       Design</em> or the command palette. The program reads the design, solves it
       to learn every depth, writes the lesson and starts it. The library design
       itself is not opened and is never changed; you build in a new design. The
@@ -1828,7 +1942,7 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 672px">
       <a href="assets/images/fig_build_menu.png">
-        <img src="assets/images/fig_build_menu.png" width="672" height="368" alt="Library card menu with the Build this design entry" loading="lazy">
+        <img src="assets/images/fig_build_menu.png" width="672" height="368" alt="Library card menu with the Build This Design entry" loading="lazy">
       </a>
       <figcaption>Fig. 30 — The card menu of a library design: Generate Previews, Compute Tilt Curves, Ignore, Exclude from Planner, Build This Design and Add Tag.</figcaption>
     </figure>
@@ -1836,13 +1950,13 @@
       <a href="assets/images/fig_build_step1.png">
         <img src="assets/images/fig_build_step1.png" width="520" height="960" alt="Guide panel on step 1 of 19, Start a new design" loading="lazy">
       </a>
-      <figcaption>Fig. 31 — The guide panel on step 1 of 19 of a lesson for 41.029B FVS-65, Start a new design: New Design, start from Empty, a cylinder preform, index gear 120, symmetry order 2 with mirror on, no material yet, then Create, a line saying what to look for, and the Waiting for chip.</figcaption>
+      <figcaption>Fig. 31 — The guide panel on step 1 of 19 of a lesson for 41.029B FVS-65, Start a new design: New Design, start from Empty, a cylinder preform, index gear 120, symmetry order 2 with mirror on, no material yet, then Create, a line saying what to look for, a Show Me Where button and the Waiting for chip.</figcaption>
     </figure>
     <figure class="fig fig-portrait" style="--fig-max: 440px">
       <a href="assets/images/fig_build_step2.png">
         <img src="assets/images/fig_build_step2.png" width="520" height="960" alt="Guide panel on step 2 of 19, Add G1 (girdle)" loading="lazy">
       </a>
-      <figcaption>Fig. 32 — Step 2 of 19, Add G1 (girdle), tier 1 of 15: angle -90.0, Meets Exact scale value 0.8695, name 1 and its indices, with the Waiting for chip below the actions and Back and Next at the bottom.</figcaption>
+      <figcaption>Fig. 32 — Step 2 of 19, Add G1 (girdle), tier 1 of 15: angle -90.0, Meets Exact scale value 0.8695, name 1 and its indices, with a Show Me Where button and the Waiting for chip below the actions and Back and Next at the bottom.</figcaption>
     </figure>
     <!-- FIGURE WANTED: the tutorial browser with sections and Done marks, and the
       guide panel on a step with its Waiting for chip. -->
@@ -1871,17 +1985,15 @@
     <h3>Preferences</h3>
     <p>
       <strong>Edit &rarr; Preferences...</strong> (Ctrl+,) has these sections:
-      Interface, Appearance, Direct manipulation, Updates and Tutorials. <em>Interface
-      scale</em> offers Automatic and eight fixed scales from 75 % to 200 %, and
-      applies at the next start. <em>High contrast</em> switches to near-black
+      Interface, Appearance, Direct Manipulation, Updates and Tutorials. <em>Interface Scale</em> offers Automatic and eight fixed scales from 75 % to 200 %, and
+      applies at the next start. <em>High Contrast</em> switches to near-black
       backgrounds, white text, visible borders and bright accents. It applies at
       once and covers the main window and the Compare and Rough Planner windows;
-      the colours that carry meaning (the curve colours of the tilt graph, for
-      example) and the rendered pictures keep their own colours. <em>Larger
-      handles</em> makes the angle, depth and index handles about 60 % bigger.
-      <em>Snap to gear steps</em> is the setting of the Snap button, and the app
+      the colors that carry meaning (the curve colors of the tilt graph, for
+      example) and the rendered pictures keep their own colors. <em>Larger Handles</em> makes the angle, depth and index handles about 60 % bigger.
+      <em>Snap to Gear Steps When Dragging</em> is the setting of the Snap button, and the app
       also remembers the Slice tool's Symmetric button. The Slice tool itself
-      starts off in every session. <em>Check for new versions</em> is off until you
+      starts off in every session. <em>Check for New Versions</em> is off until you
       allow it; when it is on, the program asks GitHub once a day whether a newer
       release exists, and <em>Check Now</em> asks at once. Every choice is saved
       automatically.
@@ -1910,7 +2022,7 @@
     <p>
       <strong>Ctrl+K</strong> or <strong>Ctrl+Shift+P</strong> (also Edit &rarr;
       Command Palette...) opens one small window that lists the program's actions,
-      nearly 80 of them in seven categories: File, Edit, View, Tiers, Solve, Tools
+      more than 80 of them in seven categories: File, Edit, View, Tiers, Solve, Tools
       and Help. Type a few letters of a name. The letters only have to appear in
       order, so <code>dsolve</code> finds Deep Solve. The start of a word counts
       for more, every word you type must match, and a match in the title beats a
@@ -1940,7 +2052,9 @@
     <p>
       The browser version needs no installation (see the
       <a href="web.html">web app page</a>). For the design library, GPU and remote
-      rendering, download the desktop application from the
+      rendering, get Indicatrix for Windows from the Microsoft Store,
+      <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">https://apps.microsoft.com/store/detail/9PF7KR401SNC</a>,
+      where the Store keeps it updated, download the desktop application from the
       <a href="index.html#downloads">downloads</a> section of the overview, or
       install or build it with Cargo as below. Then start with the
       <a href="https://github.com/suitable-name/indicatrix/tree/main/apps/indicatrix-cut/docs/manual">user manual</a>.
@@ -2008,9 +2122,12 @@ cargo run -p indicatrix-cut --release --features gpu</code></pre>
     <p>
       <code>indicatrix-cli</code> runs the same solver, optimizer, retarget gate and
       sweep as the editor without a window or a GPU, so a number printed there is
-      the number the editor shows. A design is an <code>.isdd</code> (or an older <code>.isdd</code>),
+      the number the editor shows. A design is an <code>.isdd</code> (or an older <code>.indicatrix</code>),
       <code>.asc</code>, <code>.gem</code> or <code>.gcs</code> file, read from its
-      extension.
+      extension. Every command that takes a design takes several, for example
+      <code>indicatrix-cli metrics *.isdd --csv</code>; each runs as it would
+      alone, and a design that fails prints its error under its name while the
+      others still run.
     </p>
     <table>
       <thead><tr><th>Command</th><th>What it does</th></tr></thead>
@@ -2020,7 +2137,7 @@ cargo run -p indicatrix-cut --release --features gpu</code></pre>
         <tr><td><code>metrics</code></td><td>Table-up windowing, brilliance, extinction, fire and scintillation, the proportions and the yield; <code>--tilt</code> adds the tilt averages.</td></tr>
         <tr><td><code>validate</code></td><td>The warnings and the Good, Check or Problem verdict of the status strip.</td></tr>
         <tr><td><code>optimize</code></td><td>The Optimize tab's search, with ranked candidates; <code>--budget</code> (default 800), <code>--starts</code> (1 to 32, default 8), <code>--seed</code>, <code>--preset</code>; <code>--out</code> saves the best.</td></tr>
-        <tr><td><code>retarget</code></td><td>The Retarget dialog's engine and validity gate for another material (<code>--mode shift|optimize</code>, <code>--crown-fraction</code>, <code>--crown-ratio</code>, <code>--no-keep-look</code>).</td></tr>
+        <tr><td><code>retarget</code></td><td>The Retarget dialog's engine and validity gate for another material (<code>--mode shift|optimize</code>, <code>--crown-fraction</code>, <code>--crown-ratio</code>, <code>--no-keep-look</code>, <code>--girdle-allowance</code>, which thickens the girdle by up to 10 % as the dialog does but is off unless given).</td></tr>
         <tr><td><code>sweep</code></td><td>Sets one tier to every angle of a range and scores each one (<code>--csv</code>).</td></tr>
         <tr><td><code>export</code></td><td>Writes <code>.asc</code>, <code>.isdd</code>, <code>.gcs</code> or the cutting sheet as <code>.html</code>.</td></tr>
         <tr><td><code>render</code>, <code>tilt-video</code></td><td>Render a job file made by the render queue (<a href="#render-jobs">section 14</a>).</td></tr>
@@ -2062,16 +2179,28 @@ cargo run -p indicatrix-cli --release -- retarget --help</code></pre>
       on the same files prints the same bytes, and the result of <code>optimize</code>
       does not depend on the number of processor cores. <code>retarget</code> accepts
       only a Valid result, since a command line has nobody to look at the stone.
-      <code>.gcs</code> export is experimental, as in the editor.
+      <code>.gcs</code> export is experimental, as in the editor. A newer release
+      is named in one line on standard error, never on standard output;
+      <code>--no-update-check</code> turns that off.
       The tool lives in <code>apps/indicatrix-cli</code>.
     </p>
+  </section>
+
+  <section id="ray-traced-update">
+    <h2>Ray-Traced and Path-Traced</h2>
+    <p>Edit has Solid, Ray-Traced (key 5), Path-Traced, Both and Diagram; Live Render also offers Ray-Traced. Advanced settings expose Anti-Aliasing and Fire. Export freezes the chosen engine and options; thumbnails can use Ray-Traced, and Compare uses eight taps with Fire.</p>
+    <p>Ray-Traced is a deterministic approximation: one d-line index, or three fixed indices with Fire, RGB absorption tint and 1/4/8/16 AA taps. It finishes at the tap count without denoising. It omits polarization, birefringent doubling, scattering, zoning and edge rounding. Path-Traced retains the spectral model. Optical metrics, tilt sweeps and diagnostics keep their separate analytic tracer.</p>
+    <figure class="fig">
+      <a href="assets/images/fig_retarget_ray.jpg"><img src="assets/images/fig_retarget_ray.jpg" width="1800" height="1153" alt="Retarget for Material dialog with the Ray-Traced switch, before and after side by side" loading="lazy"></a>
+      <figcaption>Fig. 35 &mdash; Retarget for Material with the Ray-Traced switch: the same Astryx Star retarget to Sapphire, before and after side by side at eight anti-aliasing taps, with the note on what Ray-Traced leaves out above the pictures.</figcaption>
+    </figure>
   </section>
 
 </main>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

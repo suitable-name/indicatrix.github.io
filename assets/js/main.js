@@ -229,7 +229,7 @@ const GEM_MATERIALS = {
     birefringence: "+0.0076",
     sg: "3.73",
     formula: "Sellmeier 3-pole (Walling 1980)",
-    description: "Daylight (green) to incandescent (red) colour shift from directional absorption.",
+    description: "Daylight (green) to incandescent (red) color shift from directional absorption.",
     evaluate: (lambdaUm) => {
       // Walling et al. 1980, n(alpha)-direction Sellmeier, encoded as three
       // poles (materials/zircon_through_topaz.rs: b=[0.78522, 1.21202, 16.81],
@@ -305,7 +305,7 @@ const GEM_MATERIALS = {
     birefringence: "+0.0130",
     sg: "3.35",
     formula: "Cauchy fit",
-    description: "Unheated trichroism spanning red, blue, and yellow-green by orientation.",
+    description: "The heat-treated, violet-blue stone; strongly pleochroic, from blue to violet by orientation.",
     evaluate: (lambdaUm) => {
       // No primary fit exists for zoisite/tanzanite;
       // materials/tanzanite_through_cubic_zirconia.rs uses a 2-parameter Cauchy
@@ -384,7 +384,7 @@ const GEM_MATERIALS = {
     birefringence: "+0.0415",
     sg: "3.22",
     formula: "Sellmeier 3-pole (Wang et al. 2013, 6H-SiC ordinary ray)",
-    description: "More than twice diamond's dispersion at a higher index, and colourless. The curve is the ordinary ray; the extraordinary ray sits about 0.04 higher.",
+    description: "More than twice diamond's dispersion at a higher index, and colorless. The curve is the ordinary ray; the extraordinary ray sits about 0.04 higher.",
     evaluate: (lambdaUm) => {
       // Wang et al. (2013), 6H-SiC ordinary ray, n^2 = 6.57232 + 0.1401/(l^2 - 0.03178)
       // - 0.02153*l^2, encoded as three poles in
@@ -405,7 +405,7 @@ const GEM_MATERIALS = {
     dispersion: "0.1636 (o) / 0.2072 (e)",
     abbe: "9.9 (o) / 9.2 (e)",
     birefringence: "+0.2957",
-    sg: "4.25 (reference value, not in the app)",
+    sg: "4.25",
     formula: "Sellmeier 3-pole with a constant term (DeVore 1951, ordinary ray)",
     description: "The strongest birefringence and dispersion of any built-in material. The curve is the ordinary ray; the extraordinary ray sits about 0.30 higher.",
     evaluate: (lambdaUm) => {
@@ -515,7 +515,7 @@ function dispersionIndexRange() {
   return sharedIndexRange;
 }
 
-// An approximate display colour for a visible wavelength in nm (the usual piecewise-
+// An approximate display color for a visible wavelength in nm (the usual piecewise-
 // linear hue ramp), dimmed toward both ends of the spectrum where the eye's response
 // falls off, but never below 45 % so the ends of the curve stay visible.
 function spectralColor(nm) {
@@ -620,7 +620,7 @@ function drawDispersionCurve(ctx, canvas, material) {
     ctx.fillText(line.name, xPos, height - padding.bottom + 16);
   });
 
-  // Curve, each segment in the colour of its own wavelength. On a light page a dark
+  // Curve, each segment in the color of its own wavelength. On a light page a dark
   // outline goes under it first, or the yellow part would vanish into the paper.
   ctx.fillStyle = colors.paper2;
   const paper = ctx.fillStyle;

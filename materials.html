@@ -3,8 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Materials — Indicatrix</title>
-<meta name="description" content="The 34 built-in gem materials in Indicatrix, one of them color zoned: refractive index, dispersion, birefringence, and crystal system, sourced from the optics literature or corroborated gemological references.">
+<title>Gem materials: refractive index, dispersion and color — Indicatrix</title>
+<meta name="description" content="The 34 built-in gem materials in Indicatrix: refractive index, dispersion, birefringence and crystal system from the optics literature, with colors fitted to published measured absorption spectra.">
+<!-- seo:start -->
+<link rel="canonical" href="https://www.indicatrix-suite.com/materials.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indicatrix">
+<meta property="og:title" content="Gem materials: refractive index, dispersion and color — Indicatrix">
+<meta property="og:description" content="The 34 built-in gem materials in Indicatrix: refractive index, dispersion, birefringence and crystal system from the optics literature, with colors fitted to published measured absorption spectra.">
+<meta property="og:url" content="https://www.indicatrix-suite.com/materials.html">
+<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -41,7 +55,7 @@
     <p>
       Each line is one material's refractive index n(λ) across the visible
       spectrum, from violet (380 nm, left) to red (780 nm, right), drawn from
-      the same coefficients as the table below, and coloured by wavelength.
+      the same coefficients as the table below, and colored by wavelength.
       The index always falls toward the red, and the steeper the line, the
       stronger the dispersion and the fire. The dot marks n<sub>D</sub> at
       589 nm, the value usually quoted for a gem. All materials share one
@@ -105,7 +119,7 @@
         <tr><td>Spinel</td><td>Cubic</td><td>Isotropic</td><td>1.71610</td><td>0.0118</td><td>0.0000</td></tr>
         <tr><td>Quartz</td><td>Trigonal</td><td>Uniaxial +</td><td>1.54421</td><td>0.0078</td><td>+0.0091</td></tr>
         <tr><td>Tourmaline (elbaite)</td><td>Trigonal</td><td>Uniaxial −</td><td>1.63941</td><td>0.0099</td><td>−0.0210</td></tr>
-        <tr><td>Tanzanite</td><td>Orthorhombic</td><td>Biaxial +</td><td>1.70086</td><td>0.0174</td><td>+0.0130</td></tr>
+        <tr><td>Tanzanite (heated)</td><td>Orthorhombic</td><td>Biaxial +</td><td>1.70086</td><td>0.0174</td><td>+0.0130</td></tr>
         <tr><td>Synthetic moissanite</td><td>Hexagonal</td><td>Uniaxial +</td><td>2.64743</td><td>0.0635</td><td>+0.0415</td></tr>
         <tr><td>Cubic zirconia</td><td>Cubic</td><td>Isotropic</td><td>2.15846</td><td>0.0346</td><td>0.0000</td></tr>
         <tr><td>Aquamarine</td><td>Hexagonal</td><td>Uniaxial −</td><td>1.57700</td><td>0.0082</td><td>−0.0060</td></tr>
@@ -125,7 +139,7 @@
         <tr><td>GGG</td><td>Cubic</td><td>Isotropic</td><td>1.970</td><td>0.0450</td><td>0.0000</td></tr>
         <tr><td>Benitoite</td><td>Hexagonal</td><td>Uniaxial +</td><td>1.757</td><td>0.0261</td><td>+0.0470</td></tr>
         <tr><td>Andalusite</td><td>Orthorhombic</td><td>Biaxial −</td><td>1.634</td><td>0.0093</td><td>0.0100</td></tr>
-        <tr><td>Opal (body colour)</td><td>Amorphous<sup>*</sup></td><td>Isotropic</td><td>1.45</td><td>0.0010</td><td>0.0000</td></tr>
+        <tr><td>Opal (body color)</td><td>Amorphous<sup>*</sup></td><td>Isotropic</td><td>1.45</td><td>0.0010</td><td>0.0000</td></tr>
         <tr><td>Glass (Schott N-BK7)</td><td>—<sup>†</sup></td><td>Isotropic</td><td>1.51672</td><td>0.0081</td><td>0.0000</td></tr>
         <tr><td>Glass (Schott F2)</td><td>—<sup>†</sup></td><td>Isotropic</td><td>1.61989</td><td>0.0171</td><td>0.0000</td></tr>
         <tr><td>Rutile</td><td>Tetragonal</td><td>Uniaxial +</td><td>2.613 (o) / 2.909 (e)</td><td>0.164 (o) / 0.207 (e)</td><td>+0.2957</td></tr>
@@ -137,7 +151,42 @@
       not a mineralogical claim — its own comment says so explicitly.
       <sup>†</sup>The two reference optical glasses are amorphous, included as
       isotropic calibration materials rather than gemstones. Precious opal's
-      play-of-colour (structural diffraction, not absorption) is not modelled.
+      play-of-color (structural diffraction, not absorption) is not modelled.
+    </p>
+    <h3 id="color-basis">Where each material&rsquo;s color comes from</h3>
+    <p>
+      A built-in material&rsquo;s color is a set of absorption bands, each with a
+      position, a width and a strength, and a pleochroic material has one set per
+      ray direction. The colors of nine built-ins are fitted to published
+      measured absorption spectra, and their bands are Gaussian in energy
+      (wavenumber). Amethyst, Citrine and Tourmaline keep their earlier data.
+    </p>
+    <ul>
+      <li>
+        <strong>Fitted to published measured spectra:</strong> Ruby and Sapphire
+        (GIA cross-section data for the Cr<sup>3+</sup> and Fe<sup>2+</sup>&ndash;Ti<sup>4+</sup>
+        bands), Emerald (Caltech spectrum GRR 3570), Peridot (Caltech olivine
+        spectra along the three principal rays), Spessartine (Caltech GRR 43),
+        Tsavorite (Caltech GRR 229), Demantoid (GIA 2952, from the Caltech
+        server), Aquamarine (two polarized Caltech spectra of GRR 1488) and
+        Tanzanite, heated (three polarized Caltech spectra of the blue zoisite
+        GRR 2292). Each band set is a bounded least-squares fit to the measured
+        curve.
+      </li>
+      <li>
+        <strong>Earlier data, hand-set wavelength bands:</strong> Amethyst, Citrine
+        and Tourmaline. Ametrine is Amethyst and Citrine in two zones, described
+        below.
+      </li>
+    </ul>
+    <p>
+      Tanzanite is the heated, violet-blue stone sold under that name. It has three
+      polarized absorption sets (alpha, beta, gamma), fitted to a naturally blue
+      zoisite crystal that lacks the band heating removes. Alpha is the darkest and
+      most purplish ray, beta is blue and gamma is the lightest. Aquamarine has its
+      c axis in the table plane, as Tourmaline does, so a stone seen face-up shows
+      the blue ray and reads light blue; with the axis along the view it would
+      show the nearly colorless ordinary ray.
     </p>
     <h3 id="ametrine">Ametrine, a color-zoned built-in</h3>
     <p>
@@ -175,14 +224,14 @@
   </section>
 
   <section id="alexandrite-case">
-    <h2><span class="sec-num">3</span>Alexandrite's colour change</h2>
+    <h2><span class="sec-num">3</span>Alexandrite's color change</h2>
     <p>
       Alexandrite's chromium chromophore creates two transmission windows —
       one blue-green near 500 nm, one deep red near 680 nm — separated by a
       strong absorption valley around 580 nm. Daylight, rich in blue-green
       photons, favours the 500 nm window; incandescent light, rich in red
       photons, favours the 680 nm window. Because this is a genuine
-      two-window spectral effect rather than a colour swap, it falls directly
+      two-window spectral effect rather than a color swap, it falls directly
       out of Indicatrix's per-wavelength transport rather than needing a
       special case. Alexandrite is also biaxial, so the effect is evaluated
       per direction: three independent absorption spectra along its α, β, γ
@@ -211,10 +260,10 @@
       Corundum (sapphire, ruby) is trigonal, uniaxial negative. Its ordinary
       and extraordinary rays carry distinct absorption bands — a real,
       measured shift (roughly 580 nm vs. 700 nm for the Fe²⁺–Ti⁴⁺
-      charge-transfer band behind blue sapphire's colour; see the source
+      charge-transfer band behind blue sapphire's color; see the source
       comment on the <code>Sapphire</code> entry in <code>materials/diamond_through_emerald.rs</code>
       for the citation). Cutters orient the table facet perpendicular to the
-      c-axis specifically to show the more saturated ordinary-ray colour
+      c-axis specifically to show the more saturated ordinary-ray color
       face-up.
     </p>
   </section>
@@ -295,36 +344,36 @@
       close but not identical.
     </p>
     <p>
-      The Material Editor is not the only way to change a stone's colour. A
+      The Material Editor is not the only way to change a stone's color. A
       <strong>Color</strong> control in the Live Render toolbar, next to
-      Render Material, shows the stone in another colour without making a
-      custom material. It offers the material's own colour, nine ready-made
-      colours and any colour from a picker. For the design open in the editor,
-      with the render linked to it, a pick becomes that design's own colour
+      Render Material, shows the stone in another color without making a
+      custom material. It offers the material's own color, nine ready-made
+      colors and any color from a picker. For the design open in the editor,
+      with the render linked to it, a pick becomes that design's own color
       (one undo step); for anything else it changes the view only, and the app
-      remembers it. A colour is a what-if: the stone keeps its refractive
+      remembers it. A color is a what-if: the stone keeps its refractive
       index and dispersion, but its own absorption is replaced by an even one
-      in every direction, so pleochroism is not shown while a colour is set.
+      in every direction, so pleochroism is not shown while a color is set.
     </p>
     <p>
-      Any colour can also be described as a <strong>Custom colour</strong> with
+      Any color can also be described as a <strong>Custom Color</strong> with
       three sliders: tone (how light or dark), saturation (how rich) and hue
-      (the basic colour, in degrees around the colour wheel), the L*C*h
-      description of a colour. The same editor opens from three places:
+      (the basic color, in degrees around the color wheel), the L*C*h
+      description of a color. The same editor opens from three places:
       <em>Custom&hellip;</em> in the Body Color box of Design settings,
-      <em>Pick&hellip;</em> in the Material Editor (the colour is saved with the
-      material, and a custom material keeps it), and <em>Custom colour&hellip;</em>
+      <em>Pick&hellip;</em> in the Material Editor (the color is saved with the
+      material, and a custom material keeps it), and <em>Custom Color&hellip;</em>
       in the Live Render Color list. Because the same absorption looks deeper
-      in a larger stone, the editor shows the colour as four swatches, at 3,
+      in a larger stone, the editor shows the color as four swatches, at 3,
       5 and 10&nbsp;mm and <em>This stone</em> (the design&rsquo;s own size), and
       the design keeps it as an absorption spectrum per millimetre, so a larger
       stone renders deeper and a smaller one lighter. A badge says
-      <em>Reachable</em> with the colour difference, or, in amber, that the
-      colour is not fully reachable at this size and how far the closest
-      reachable colour is; very rich or very light-and-rich colours are not
-      all reachable. Applying the settings keeps a custom colour exactly as it
+      <em>Reachable</em> with the color difference, or, in amber, that the
+      color is not fully reachable at this size and how far the closest
+      reachable color is; very rich or very light-and-rich colors are not
+      all reachable. Applying the settings keeps a custom color exactly as it
       is, even when you change the species in the same step. Older versions
-      show a close three-colour version of it; the web app has the same editor.
+      show a close three-color version of it; the web app has the same editor.
     </p>
     <p>
       The app's material pickers are built in two places, both from
@@ -358,7 +407,7 @@
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

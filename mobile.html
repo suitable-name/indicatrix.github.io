@@ -3,8 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mobile app — Indicatrix</title>
-<meta name="description" content="Indicatrix for Android: a touch-first phone and tablet app with a design library, a faceting editor, solid, diagram and CPU-traced render views and a cutting mode. Not in an app store yet, but you can build it and try it today.">
+<title>Indicatrix for Android — faceting on phone and tablet</title>
+<meta name="description" content="Indicatrix for Android: a touch-first phone and tablet app with a design library, a faceting editor with concave tiers, solid, diagram and render views, remote rendering on your own server and a cutting mode.">
+<!-- seo:start -->
+<link rel="canonical" href="https://www.indicatrix-suite.com/mobile.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Indicatrix">
+<meta property="og:title" content="Indicatrix for Android — faceting on phone and tablet">
+<meta property="og:description" content="Indicatrix for Android: a touch-first phone and tablet app with a design library, a faceting editor with concave tiers, solid, diagram and render views, remote rendering on your own server and a cutting mode.">
+<meta property="og:url" content="https://www.indicatrix-suite.com/mobile.html">
+<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -45,7 +59,10 @@
       your own Android phone or tablet (section 5), or run the same interface
       in a desktop window with one command, no device needed. It is built from
       source for now, and it is a smaller program than the desktop studio:
-      section 3 lists what only the desktop does.
+      section 3 lists what only the desktop does. Several newer features
+      (history and variants, concave editing, Deep Solve, Optimize, Retarget,
+      GPU rendering and remote rendering) are in the source but have not been
+      validated on devices yet; section 6 has the details.
     </p>
   </div>
 
@@ -66,7 +83,8 @@
       side of a tablet): <strong>Library</strong>, <strong>Design</strong>,
       <strong>Cut</strong> and <strong>More</strong>. It works on your own
       device. The designs, the library and the settings stay on it, and
-      the render is traced on its processor.
+      the render is traced on its processor or its graphics chip. A render
+      goes to your own desktop or server only when you choose Remote.
     </p>
     <figure class="fig">
       <div class="fig-grid-auto" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr))">
@@ -92,17 +110,32 @@
       <dt>Editing tiers</dt>
       <dd>The Tiers tab lists every tier with its angle, name, indices and its margin over the critical angle. Add a tier or use Quick Add for a table, girdle or culet; change an angle with a keypad, a slider or small steps from 0.01&deg; to 1&deg;; edit the name and the indices (add an index, turn all of them by one tooth, mirror them, complete an orbit); see what a tier meets and adopt a meet that an imported file stated; duplicate, reorder or delete a tier; select several tiers and nudge them together. Designs solve in the background, and the status chip shows the result.</dd>
 
+      <dt>Concave tiers</dt>
+      <dd>The + Concave button in the Tiers tab adds a concave tier, and a tap on a concave row opens it for editing or deleting. Pick a tool (cylinder, cone, circle, disc or sphere) and set the facet angle, the index positions, the tool azimuth, its position and diameter relative to the stone width and, for a cone or a disc, the included angle, and whether the tool reciprocates or plunges. Save Tier commits one edit; Cancel Draft discards the draft. The solid view, the render, the checks and the cutting rows use the stone with its tools cut out.</dd>
+
+      <dt>History and variants</dt>
+      <dd>In the Design page's overflow menu, Session History lists the steps of the design, previews a step with a short comparison and moves to it; later steps stay available until you make a new edit. Saved Variants keeps named copies of the design with notes, saved from the current design or from a historical step; opening one is a single undoable edit, and variants survive restarts.</dd>
+
       <dt>Handles and Slice</dt>
       <dd>In the Solid view, drag the angle and index handles of a selected facet, or switch to Slice and cut a new facet by dragging a line across the stone (Keep, Flip, Discard and Symmetric choose what happens to the cut). A Snap switch, also in Preferences, snaps a dragged angle to the index gear. Preset views (Front, Top, Bottom, Left, Right), Fit and Reset move the camera.</dd>
 
       <dt>Views</dt>
-      <dd>The Solid view, the Diagram view (crown, pavilion and profile panels) and the Render view, a progressive path-traced picture on the device's processor, with Pause, a Light switch that makes a drag move the light, a quality step (Draft, Normal or Fine), Denoise and Export. Export Picture saves or shares a PNG at a size, a sample count and a color space (sRGB or Display P3) that you pick, up to limits set in the app's settings (1024 pixels on the long edge and 256 samples per pixel by default).</dd>
+      <dd>The Solid view, the Diagram view (crown, pavilion and profile panels) and the Render view, with progressive Path-Traced or fixed-tap Ray-Traced pictures, with Pause, a choice of where it is traced (Automatic On Device, Device CPU, Device GPU or Remote &middot; Upload Scene), a Light switch that makes a drag move the light, a quality step (Draft, Normal or Fine), Denoise and Export. Export Picture saves or shares a PNG at a size, a sample count and a color space (sRGB or Display P3) that you pick, up to limits set in the app's settings (1024 pixels on the long edge and 256 samples per pixel by default).</dd>
+
+      <dt>Device GPU</dt>
+      <dd>Automatic On Device uses the device's GPU when it can and the processor otherwise; the render report says which one is tracing and, for the processor, why. The Path-Traced GPU path takes pictures of up to 262,144 pixels (512 &times; 512); Ray-Traced allows 1,048,576 pixels and every material class. A larger picture or a color zoning the GPU kernels cannot render is traced on the processor.</dd>
+
+      <dt>Remote rendering</dt>
+      <dd>Choose Remote &middot; Upload Scene in the Render view to trace on your own desktop or server (<a href="distributed.html">distributed page</a>). More &rarr; Remote holds the endpoint's address, a one-time enrollment token that enrolls the phone (mutual TLS, with the credentials encrypted by an Android Keystore key), the transfer mode (DisplayOnly for a coordinator, FullData for a coordinator or a standalone worker) and Allow Metered Networks, which lets a session that moves many megabytes run on a metered connection. Nothing is uploaded until you choose Remote. An HDR environment map is sent once, exactly as the device uses it, to an endpoint that supports it. PNG export works in both modes, up to 1,048,576 pixels. Send To Server in the export sheet stores a durable job on the endpoint, which keeps rendering after the phone disconnects and refuses color-zoned materials; More &rarr; Remote &rarr; Server Jobs lists, saves, cancels and deletes the phone's jobs. A live remote render that is interrupted reconnects by itself a few times and restarts from sample zero.</dd>
 
       <dt>Stone and light</dt>
       <dd>The Stone tab picks the material from the built-in list, sets a refractive-index override, a body color and the stone width, the inclusion haze, a frosted girdle, edge rounding and the crystal axis, and makes a custom material of your own. The Light tab picks a lighting rig, loads an HDR environment map, sets the light azimuth and elevation, the exposure, the backdrop, the surface glare and the head shadow.</dd>
 
       <dt>Checks</dt>
-      <dd>The Checks tab gives the verdict (Good, Check or Problem), lists the warnings with a Show button and, where the shared code has a safe one, a Fix button; it shows the proportions, the preform fields and the yield figures, measures brilliance, fire, scintillation, windowing and extinction on demand, and opens the tilt curves (brilliance, windowing and extinction as the stone tips, on four axes, with Copy Data).</dd>
+      <dd>The Checks tab gives the verdict (Good, Check or Problem), lists the warnings with a Show button and, where the shared code has a safe one, a Fix button; it shows the proportions, the preform fields and the yield figures, measures brilliance, fire, scintillation, windowing and extinction on demand, and opens the tilt curves (brilliance, windowing and extinction as the stone tips, on four axes, with Copy Data). For a design with concave tiers the figures and curves are scored on the stone with its tools cut out. The tilt curves score a design's frosted facets as frosted; the measured figures score every facet as polished.</dd>
+
+      <dt>Deep Solve, Optimize and Retarget</dt>
+      <dd>In the Design page's overflow menu. Deep Solve checks a solve against printed proportions that you enter (Vol/W&sup3;, L/W, C/W, P/W, H/W) and can pin a mast as an explicit, undoable edit; it does not run on a design with concave tiers. Optimize searches the tier angles with an evaluation budget, a seed, a number of starts and candidates, and an option to keep the girdle thickness, and lists candidates to apply or save as variants. Retarget For Material checks a shift of the angles for another material (with an optional girdle thickening of up to 10%), searches alternatives, and applies the geometry and the material together. Optimize and Retarget are included by the default <code>validated-design-search</code> feature.</dd>
 
       <dt>Cutting</dt>
       <dd>The Cut page lists the cutting instructions in cutting order, with a progress card, the faceting diagram, and buttons to share or print the cutting sheet and to share the diagram. Start Cutting opens cutting mode, one step per page with the angle in large figures, the index chips, the stone after the step and the index wheel; the done marks are kept on the device and Reset Progress clears them.</dd>
@@ -134,19 +167,19 @@
       </thead>
       <tbody>
         <tr>
-          <td>Remote rendering and a remote library</td>
-          <td>No. More &rarr; Remote is a placeholder page that says it arrives in a later version. The render is traced on the device only.</td>
-          <td>Hand sample tracing to a coordinator or render worker, and browse its catalogue (<a href="distributed.html">distributed page</a>).</td>
+          <td>Remote library</td>
+          <td>No. Remote renders a scene on your endpoint; it does not browse the endpoint's catalogue.</td>
+          <td>Browse a coordinator's catalogue and hand sample tracing to it (<a href="distributed.html">distributed page</a>).</td>
         </tr>
         <tr>
           <td>GPU rendering</td>
-          <td>No. The render runs on the device's processor, on up to six worker threads (two in battery saver).</td>
+          <td>Partly. The device GPU traces Path-Traced pictures of up to 262,144 pixels (512 &times; 512), or Ray-Traced pictures of up to 1,048,576 pixels; larger pictures and some stones use the processor, on up to six worker threads (two in battery saver).</td>
           <td>The GPU compute path, when the machine has a suitable adapter.</td>
         </tr>
         <tr>
-          <td>Optimize, Retarget, Deep Solve and angle sweeps</td>
-          <td>No.</td>
-          <td>The optimizer with ranked candidates, Retarget for another material, Deep Solve and Angle Sweep (<a href="editor.html#preforms-optimizer">studio page</a>).</td>
+          <td>Angle sweep</td>
+          <td>No. The tilt curves are there.</td>
+          <td>Edit &rarr; Angle Sweep: a table, a chart and CSV for one tier's angle (<a href="editor.html#preforms-optimizer">studio page</a>).</td>
         </tr>
         <tr>
           <td>Rough planner and rough color</td>
@@ -154,23 +187,18 @@
           <td>Plan stones from a block, pebble or scanned rough, and take the color of the rough from photos (<a href="editor.html#rough-planner">studio page</a>).</td>
         </tr>
         <tr>
-          <td>Concave tiers</td>
-          <td>Listed with their tool line and shown in the cutting rows, but edited only on the desktop.</td>
-          <td>Cylinder, cone, circle, disc and sphere tools (<a href="editor.html#concave">studio page</a>).</td>
-        </tr>
-        <tr>
-          <td>History, variants and snapshots</td>
-          <td>No. Undo and redo only.</td>
+          <td>History pictures, snapshots and the Compare window</td>
+          <td>No. Session History lists the steps with a short text comparison and Saved Variants keeps named copies, but there is no picture of each step, no snapshot and no Compare window.</td>
           <td>A History tab with a picture of every step, named variants and a compare window (<a href="editor.html#history-variants">studio page</a>).</td>
         </tr>
         <tr>
           <td>Tutorials, manual and help</td>
           <td>No. More &rarr; Help is a placeholder page for a later version.</td>
-          <td>68 short tutorials, Build this Design, the manual built into the program, and a command palette.</td>
+          <td>69 short tutorials, Build This Design, the manual built into the program, and a command palette. Video tutorials are on the <a href="https://www.youtube.com/@Indicatrix-Suite">Indicatrix YouTube channel</a>.</td>
         </tr>
         <tr>
-          <td>Tilt video, render jobs and large stills</td>
-          <td>No. One still at a time, as a PNG, up to the limits in the app's settings. The tilt curves themselves are there.</td>
+          <td>Tilt video, a local render-job queue and large stills</td>
+          <td>No tilt video and no local queue. One still at a time, as a PNG, up to the limits in the app's settings; a still can be sent to your own server as a job (see Remote rendering above). The tilt curves themselves are there.</td>
           <td>Tilt video export, a queue of render jobs, and stills up to 8192 &times; 8192 pixels.</td>
         </tr>
         <tr>
@@ -205,7 +233,7 @@
       <a href="assets/images/fig_mobile_tablet_design_render.jpg">
         <img src="assets/images/fig_mobile_tablet_design_render.jpg" width="1800" height="1125" alt="The Design page on a tablet, Render view beside the tier list" loading="lazy">
       </a>
-      <figcaption>Fig. 4 &mdash; The Design page in the Render view: the picture on the left, the Tiers tab on the right with the verdict chip and Solve.</figcaption>
+      <figcaption>Fig. 4 &mdash; The Design page in the Render view: the picture on the left with its progress line and a row of render buttons under it (Pause, Light, Automatic On Device, Device CPU, Device GPU, Remote and Ray-Traced), and the Tiers tab on the right with the verdict chip and Solve.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_mobile_tablet_cut.png">
@@ -245,7 +273,7 @@
       steps:
     </p>
     <ol>
-      <li>Install <strong>Android Studio</strong> and, from its SDK Manager, Android SDK Platform 37, the current Build-Tools and <strong>NDK r30</strong>. A JDK 17 is the one bundled with Android Studio.</li>
+      <li>Install <strong>Android Studio</strong> and, from its SDK Manager, Android SDK Platform 37, the current Build-Tools and <strong>NDK r30</strong>. Gradle asks for a JetBrains JDK 21 and downloads it when none is installed; the JDK bundled with Android Studio also fits.</li>
       <li>Add the Rust target and the build helper:
         <div class="code-block">
           <div class="code-block-head"><span>terminal</span><button class="copy-btn">Copy</button></div>
@@ -253,7 +281,7 @@
 cargo install cargo-ndk --version 4.1.2 --locked</code></pre>
         </div>
       </li>
-      <li>Set <code>ANDROID_HOME</code>, <code>ANDROID_NDK_HOME</code> and <code>JAVA_HOME</code> (the README also names <code>ANDROID_JAR</code>, which cargo commands you run yourself need), then restart Android Studio and your shells.</li>
+      <li>Set <code>ANDROID_HOME</code>, <code>ANDROID_NDK_HOME</code> and <code>JAVA_HOME</code> (a JDK 17 or newer; the README also names <code>ANDROID_JAR</code>, which cargo commands you run yourself need), then restart Android Studio and your shells.</li>
       <li>Open <code>apps/indicatrix-mobile-android/android</code> in Android Studio once and let it sync: that creates the Gradle wrapper.</li>
       <li>Pick a device with USB debugging on and press <strong>Run</strong>. Android Studio builds the Rust library for you before every build. Or build from a terminal in that folder and install with <code>adb</code>:
         <div class="code-block">
@@ -276,10 +304,11 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk</code></pre>
     <h2><span class="sec-num">6</span>Known limitations</h2>
     <ul>
       <li><strong>Not released.</strong> There is no store listing, no signed release and no automatic update. You build the app yourself.</li>
-      <li><strong>Local rendering only.</strong> The render is traced on the device, so a few hundred samples per pixel take a while on a phone, and the render lowers its work when the device runs hot or the battery saver is on. There is no remote rendering yet.</li>
+      <li><strong>Not validated on devices.</strong> History and variants, concave editing, Deep Solve, Optimize, Retarget, device GPU rendering and remote rendering are in the source, written and read, but not yet run on a range of devices. The GPU kernels for concave tools have not been tried on Adreno and Mali chips, and remote rendering has not been tried against a real worker over Wi-Fi or mobile data. Optimize and Retarget are included by the default <code>validated-design-search</code> feature; their device validation remains pending.</li>
+      <li><strong>Rendering time.</strong> A few hundred samples per pixel take a while on a phone, and the render lowers its work when the device runs hot or the battery saver is on. A live remote render restarts from sample zero after an interruption, and does not survive the app process being killed; a server job does.</li>
       <li><strong>No TalkBack.</strong> The interface toolkit exposes no accessibility tree on Android.</li>
-      <li><strong>External mouse wheel.</strong> The toolkit's Android adapter has no handling for scroll events, so a tablet with an attached mouse may crash when the wheel turns. This is unverified; the README names a workaround.</li>
-      <li><strong>Back gesture.</strong> The app asks Android to keep sending the Back key to the toolkit. On some Android 16 (API 36) devices Back may do nothing or fire twice; the README says which manifest flag to flip.</li>
+      <li><strong>External mouse wheel.</strong> The toolkit's Android adapter does not handle scroll events. The app ignores them, so a mouse wheel or trackpad scroll does nothing; scrolling by touch works.</li>
+      <li><strong>Back navigation.</strong> Android 13 (API 33) and newer use the app's own Back handling, with predictive back from Android 14 (API 34); Android 9 to 12 use the Back key route. It is not yet validated across Android versions, devices and navigation modes.</li>
       <li><strong>Keyboard.</strong> The toolkit drives the soft keyboard through its own helper, and numbers are typed on the app's own keypad, not the system numeric keyboard.</li>
       <li><strong>Printing.</strong> The cutting sheet is printed from an off-screen web view; check the system print preview that it came out right.</li>
       <li><strong>Files from other apps.</strong> Reading is limited to 64 MiB per file, 256 MiB per request and 2,000 design files per picked folder.</li>
@@ -289,21 +318,40 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk</code></pre>
   <section id="desktop">
     <h2><span class="sec-num">7</span>Get the desktop app</h2>
     <p>
-      For remote and GPU rendering, the optimizer, Retarget, the Rough planner,
-      history and variants, the tutorials and the command-line tool, use the
-      desktop application. It is a ready-built download for Windows and Linux
-      (see the <a href="index.html#downloads">downloads section</a>), described
-      on the <a href="editor.html">studio and CAD page</a>. The browser version
-      needs nothing installed (<a href="web.html">web app page</a>). All three
-      open the same design files.
+      For the Rough planner, the tutorials and manual, tilt video, a remote
+      library, the Compare window and the command-line tool, use the desktop
+      application. On Windows the easiest way to install it is the
+      <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a>,
+      which keeps it updated. It is also a ready-built download for Windows and
+      Linux (see the <a href="index.html#downloads">downloads section</a>),
+      described on the <a href="editor.html">studio and CAD page</a>. Video
+      tutorials are on the
+      <a href="https://www.youtube.com/@Indicatrix-Suite">Indicatrix YouTube channel</a>.
+      The browser version needs nothing installed
+      (<a href="web.html">web app page</a>). All three open the same design
+      files.
     </p>
+  </section>
+
+  <section id="ray-traced-update">
+    <h2>Ray-Traced and Path-Traced</h2>
+    <p>The Render page selects Path-Traced or Ray-Traced. Draft, Normal and Fine use 1, 4 and 8 Ray-Traced AA taps; export uses 16. Ray-Traced device GPU pictures allow up to 1,048,576 pixels, versus 262,144 for Path-Traced, with CPU fallback for device limits. Remote mode carries the selected engine using protocol 29.</p>
+    <p>Ray-Traced is a deterministic approximation: one d-line index, or three fixed indices with Fire, RGB absorption tint and 1/4/8/16 AA taps. It finishes at the tap count without denoising. It omits polarization, birefringent doubling, scattering, zoning and edge rounding. Path-Traced retains the spectral model. Optical metrics, tilt sweeps and diagnostics keep their separate analytic tracer.</p>
+    <figure class="fig fig-portrait" style="--fig-max: 360px">
+      <a href="assets/images/fig_mobile_phone_design_ray.png"><img src="assets/images/fig_mobile_phone_design_ray.png" width="780" height="1600" alt="The Design page on a phone, Render view with a Ray-Traced picture" loading="lazy"></a>
+      <figcaption>Fig. 6 &mdash; Ray-Traced on a phone: the Standard Round Brilliant finished on the device GPU, the render report and the note on what Ray-Traced leaves out.</figcaption>
+    </figure>
+    <figure class="fig">
+      <a href="assets/images/fig_mobile_tablet_design_ray.jpg"><img src="assets/images/fig_mobile_tablet_design_ray.jpg" width="1800" height="1125" alt="The Design page on a tablet, Render view with a Ray-Traced picture beside the tier list" loading="lazy"></a>
+      <figcaption>Fig. 7 &mdash; Ray-Traced on a tablet: the same picture beside the Tiers tab, with Ray-Traced selected among the render buttons.</figcaption>
+    </figure>
   </section>
 
 </main>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a></p>
+    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>
