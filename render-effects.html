@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surface finish, silk and play-of-color — Pleochroma</title>
+<meta name="description" content="Render effects in Pleochroma: polish quality and the direction of polishing scratches from your own faceting machine, ground facets and worn edges, silk and other inclusions that follow the crystal axis, the play-of-color of opal and the schiller of labradorite, and gem materials with a refractive-index curve for each ray.">
+<!-- seo:start -->
+<link rel="canonical" href="https://pleochroma.com/render-effects.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pleochroma">
+<meta property="og:title" content="Surface finish, silk and play-of-color — Pleochroma">
+<meta property="og:description" content="Render effects in Pleochroma: polish quality and the direction of polishing scratches from your own faceting machine, ground facets and worn edges, silk and other inclusions that follow the crystal axis, the play-of-color of opal and the schiller of labradorite, and gem materials with a refractive-index curve for each ray.">
+<meta property="og:url" content="https://pleochroma.com/render-effects.html">
+<meta property="og:image" content="https://pleochroma.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Pleochroma&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="icon" type="image/png" href="assets/images/icon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Pleochroma</a>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="physics.html">Physics</a>
+      <a href="editor.html">Studio &amp; CAD</a>
+      <a href="web.html">Web app</a>
+      <a href="mobile.html">Mobile app</a>
+      <a href="materials.html">Materials</a>
+      <a href="comparison.html">Comparison</a>
+      <a href="distributed.html">Distributed</a>
+      <a href="gallery.html">Figures</a>
+      <a href="project.html">Project</a>
+    </nav>
+    <a href="https://github.com/suitable-name/pleochroma" class="gh-link">GitHub</a>
+  </div>
+</header>
+
+<main class="container">
+  <div class="page-head">
+    <span class="tag">Feature</span>
+    <h1>Surface finish, silk and play-of-color</h1>
+    <p class="subtitle">A real stone is not a flawless, perfectly polished crystal. Pleochroma can draw the polish of its facets, the silk and needles inside it, and the flashes of color of opal and labradorite, and it keeps the refractive index of each ray of a birefringent crystal on its own curve.</p>
+    <p class="cta-row">
+      <a class="cta" href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/26-surface-finish.md">Read the manual chapters</a>
+    </p>
+  </div>
+
+  <div class="status">
+    <span class="status-label">NEW</span>
+    <p>
+      These effects are new.
+      Every one is off until you switch it on: a design that uses none of them
+      renders, is scored and is saved exactly as it always was. The one visible
+      change for existing designs is a frosted facet, which is now a ground
+      surface (section 2).
+    </p>
+  </div>
+
+  <section id="idea">
+    <h2><span class="sec-num">1</span>The idea</h2>
+    <p>
+      The renderer already follows light through the stone with polarization,
+      dispersion and birefringence. What it did not have was the stone&rsquo;s
+      <em>texture</em>: how well a facet is polished, what is inside the stone,
+      and the structure that makes opal flash. Each new effect is a choice of the
+      design, saved with it as one undo step, drawn by the path tracer on the
+      processor and on the graphics card, and by a remote worker.
+    </p>
+    <dl class="deflist">
+      <dt>Surface finish</dt>
+      <dd>How well a tier, or one facet, is polished, or how coarsely it is ground, and which way the polishing scratches point on <em>your</em> machine.</dd>
+
+      <dt>Inclusions</dt>
+      <dd>Needles and plates inside the stone that all point one way: the silk of a sapphire, growth tubes, the fibres of a cat&rsquo;s-eye, the sheen of a moonstone.</dd>
+
+      <dt>Play-of-color and schiller</dt>
+      <dd>The spectral flashes of a precious opal and the single sheet of color of a labradorite, which come from a fine internal structure and move as you tilt the stone.</dd>
+
+      <dt>A curve for each ray</dt>
+      <dd>A birefringent crystal has a refractive index for each ray, and each changes with wavelength in its own way. For the stones where published curves exist, Pleochroma uses them.</dd>
+    </dl>
+  </section>
+
+  <section id="surface">
+    <h2><span class="sec-num">2</span>Surface finish</h2>
+    <p>
+      A polished facet is never a perfect mirror. A good polish keeps the sharp
+      reflection and sends a small share of the light, the
+      <strong>total integrated scatter</strong>, into a soft halo around it. The
+      share depends on the roughness of the surface (its RMS height, Rq, in
+      nanometres) and grows with the square of the roughness, and it is larger for
+      short wavelengths, so a poor polish hazes <em>blue</em>. The scratches of the
+      lap are grooves in one direction, so the halo is stretched across them: the
+      streaked highlight cutters know from a facet polished in one direction.
+    </p>
+    <p>
+      A <strong>Surface Finish</strong> submenu in the tier table and a section in
+      the tier inspector set the grade for a whole tier. A single facet can
+      override it.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Grade</th><th>Typical lap</th><th>Roughness</th><th>Halo at normal incidence, 550&nbsp;nm</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Ideal</td><td>none</td><td>0</td><td>none (the default)</td></tr>
+        <tr><td>Mirror</td><td>50k to 100k diamond or alumina</td><td>Rq 1&nbsp;nm</td><td>about 0.05&nbsp;%</td></tr>
+        <tr><td>Fine</td><td>14k diamond</td><td>Rq 2.5&nbsp;nm</td><td>about 0.3&nbsp;%</td></tr>
+        <tr><td>Commercial</td><td>8k diamond</td><td>Rq 6&nbsp;nm</td><td>about 2&nbsp;%</td></tr>
+        <tr><td>Prepolish</td><td>3k diamond</td><td>Rq 25&nbsp;nm</td><td>about 28&nbsp;%</td></tr>
+        <tr><td>Ground (Fine)</td><td>1200 grit</td><td>roughness 0.30</td><td>a frosted facet, fine grain</td></tr>
+        <tr><td>Ground (Coarse)</td><td>600 grit</td><td>roughness 0.50</td><td>a frosted facet, coarse grain</td></tr>
+        <tr><td>Custom</td><td>any</td><td>0 to 100&nbsp;nm and an anisotropy</td><td>your numbers</td></tr>
+      </tbody>
+    </table>
+    <p class="small">
+      The roughness values are typical figures, chosen to look right for each lap.
+      They are starting points for you to tune, not measurements of a particular
+      lap.
+    </p>
+    <h3>Your faceting machine decides the scratches</h3>
+    <p>
+      While you polish, the lap moves along the tangent of the circle through the
+      spot where the stone touches it, so the scratches run along that tangent. On
+      a machine whose dop arm points at the lap centre the scratches run parallel
+      to the girdle. On a mast machine, with the mast standing to one side, the
+      angle between the arm and the tangent changes as the stone moves in and out
+      along the lap, so the scratches <em>fan</em> over a range of angles. And the
+      stone does travel: the program models the sweep of the last polishing pass
+      between an inner and an outer radius of the lap, and draws the true mix of
+      directions, a softer, fan-shaped halo instead of one sharp streak.
+    </p>
+    <p>
+      So the direction is a setting of your machine, not of the design. The
+      <strong>Faceting Machine</strong> section of the Preferences holds the arm
+      (pointing at the lap centre, or the mast to the side, with an arm offset), the
+      lap radius, the mast position and the sweep range (Narrow, Typical, Wide or
+      your own radii), with a small picture of the lap from above. It is saved in
+      your settings and never in a design, so the same design shows each
+      cutter&rsquo;s own scratches. A tier can instead fix the direction with
+      <strong>Custom Angle</strong>, or switch the fan off with
+      <strong>No Sweep</strong>.
+    </p>
+    <h3>Frosting, worn edges and a view aid</h3>
+    <p>
+      A frosted facet is now a <strong>ground</strong> surface: a rough dielectric
+      that scatters light forward and back as frost does, with the energy a rough
+      surface would otherwise lose put back, so a ground girdle glows softly
+      instead of turning flat and dark. <strong>Abraded Edges</strong> in the Stone
+      tab wears a narrow band along every facet edge (a width and a wear).
+      <strong>Show Surface Finish</strong> tints each facet by its grade and draws
+      ticks along its scratches in the Solid view; it is a view aid and is not
+      saved.
+    </p>
+  </section>
+
+  <section id="inclusions">
+    <h2><span class="sec-num">3</span>Inclusions and silk</h2>
+    <p>
+      A <strong>needle</strong> scatters light that crosses it and ignores light
+      that travels along it, and it throws the scattered light onto a cone around
+      its axis: the source of the star in a star sapphire and the eye in a
+      cat&rsquo;s-eye. A <strong>plate</strong> acts as a tiny mirror and flashes
+      when it faces both the light and the eye. Very fine inclusions scatter short
+      wavelengths more and look bluish-white, coarse ones look grey.
+    </p>
+    <p>
+      The Stone tab offers presets for the materials that have them, with
+      <strong>Density</strong>, <strong>Sheen</strong> (the width of the cone),
+      <strong>Silk Color</strong> (Grey, Slightly Blue, Blue) and
+      <strong>Silk Turn</strong>. <strong>Show Silk Directions</strong> draws the
+      needle directions over the stone.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Material</th><th>Presets</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sapphire, Ruby</td><td>Fine Silk, Rutile Silk, Star Silk: three needle sets in the basal plane, 60&deg; apart</td></tr>
+        <tr><td>Chrysoberyl (yellow), Alexandrite</td><td>Cat&rsquo;s-Eye Silk: one needle set along the crystal&rsquo;s c direction (needs the Second Axis)</td></tr>
+        <tr><td>Tourmaline</td><td>Growth Tubes</td></tr>
+        <tr><td>Emerald, Aquamarine, Morganite</td><td>Rain</td></tr>
+        <tr><td>Quartz</td><td>Rutilated: needles of every orientation</td></tr>
+        <tr><td>Moonstone</td><td>Adularescence: one broad set of plates</td></tr>
+      </tbody>
+    </table>
+    <p>
+      The inclusions are placed in the crystal, so they follow the
+      <a href="crystal-axis.html">crystal axis</a>: turn the axis and the silk turns
+      with it. For a one-axis crystal the <strong>Silk Turn</strong> is the stored
+      turn about the axis used only to orient the needles; the optics of the stone
+      ignore it. A custom material can carry up to four inclusion families of its
+      own, set in the Material Editor.
+    </p>
+    <p>
+      Honestly: a <strong>faceted</strong> stone shows silk as a soft sheen that
+      turns with the stone, a velvety body and bright streaks where the cone
+      reaches the eye through a facet. A faceted star sapphire shows fragments of
+      the star. A true star or eye needs a curved dome, and the program builds
+      stones from flat facets and subtractive tools, so a smooth star or eye awaits
+      a dome shape in a later version.
+    </p>
+  </section>
+
+  <section id="play-of-color">
+    <h2><span class="sec-num">4</span>Play-of-color and schiller</h2>
+    <p>
+      These colors are not absorption. They come from an orderly internal
+      structure that reflects one narrow band of wavelengths, according to the
+      spacing of its layers and the angle of the light, so they are pure and they
+      shift as you tilt the stone. <strong>Precious opal</strong> is a close-packed
+      array of silica spheres 150 to 300&nbsp;nm across: about 200&nbsp;nm reflects
+      blue and about 270&nbsp;nm red, in patches that each point their own way.
+      <strong>Labradorite</strong> has fine lamellae of one orientation fixed in the
+      crystal, so the whole face flashes at once from one direction, and the flash
+      follows the crystal axis.
+    </p>
+    <p>
+      New built-in materials carry the host optics: Precious Opal (White), Precious
+      Opal (Black), Labradorite and Moonstone. The Stone tab has a
+      <strong>Play-of-Color</strong> group (<strong>Schiller</strong> for
+      labradorite) with a Pattern (Pinfire, Harlequin, Broad Flash), a patch size,
+      a color range, Purity, Coverage and a <strong>Reseed</strong> button that
+      draws a new arrangement of the patches. The seed is saved with the design, so
+      a design always shows the same patches. A custom material can imitate an opal
+      or a labradorite.
+    </p>
+  </section>
+
+  <section id="curves">
+    <h2><span class="sec-num">5</span>A curve for each ray</h2>
+    <p>
+      The refractive index of each ray of a birefringent crystal changes with
+      wavelength. Where a published curve exists, Pleochroma now uses it for the
+      ray, on the processor and on the graphics card alike:
+    </p>
+    <ul>
+      <li>the extraordinary ray of <strong>sapphire</strong> and <strong>ruby</strong> (Malitson and Dodge, 1972) and of <strong>synthetic moissanite</strong> (Wang, 2013), joining quartz and rutile;</li>
+      <li>the alpha and gamma rays of <strong>alexandrite</strong> and <strong>chrysoberyl (yellow)</strong> (Walling, 1980), whose total birefringence is therefore 0.0076 where it was 0.0090;</li>
+      <li>a separate Cauchy curve for each ray of <strong>benitoite</strong>.</li>
+    </ul>
+    <p>
+      The doubled images of a birefringent stone also separate a little by color,
+      because the direction in which the extraordinary ray is displaced follows its
+      index at each wavelength. The Material Editor lets a custom material have its
+      own extraordinary-ray curve, or alpha and gamma curves for a two-axis
+      crystal. Materials without a published curve keep a constant offset, as
+      before.
+    </p>
+  </section>
+
+  <section id="where">
+    <h2><span class="sec-num">6</span>Where they show</h2>
+    <ul>
+      <li>The path-traced view (with or without the solid's edges), exports, render jobs, remote workers and the command-line tool draw the effects, and so does the graphics card.</li>
+      <li>The <a href="web.html">web app</a> reads the design&rsquo;s choices and draws them on the processor.</li>
+      <li>The Ray-Traced view ignores them, and says so next to each group.</li>
+      <li>The optical figures (brilliance, windowing, extinction, fire, scintillation), the Verdict, Compare, the optimizer, the sweeps and Tune describe a clear, perfectly polished stone. When an effect is on, the Checks tooltip, the Verdict and the Compare header add &ldquo;Figures ignore &hellip;&rdquo;, naming what is on.</li>
+      <li>The Android app does not carry these effects in its remote renders yet.</li>
+    </ul>
+  </section>
+
+  <section id="limits">
+    <h2><span class="sec-num">7</span>Limits</h2>
+    <ul>
+      <li>The polish grades, the silk amounts and the patch sizes of play-of-color are looks chosen to be plausible, with the grain, the amounts and the colors for you to tune. The correlation length of a lap and the size of the patches of opal are not published.</li>
+      <li>The scratch direction comes from a model of the machine. Check it against a real facet and adjust the arm offset and the sweep.</li>
+      <li>A faceted stone shows fragments of a star, not a star; a dome shape is planned.</li>
+      <li>Cubic materials (star garnet, star spinel) have no inclusion presets yet.</li>
+      <li>Thin-film colors (the rainbow of a crack), the glitter of sunstone and chips knocked out of an edge are not modeled.</li>
+      <li>Silk and play-of-color may take longer to converge than a plain stone; the cost has not been measured yet. The graphics card and a remote worker are there for final renders.</li>
+    </ul>
+    <p>
+      The manual describes each control:
+      <a href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/26-surface-finish.md">Surface Finish</a>,
+      <a href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/27-inclusions-and-silk.md">Inclusions and Silk</a>
+      and
+      <a href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/28-play-of-color-and-schiller.md">Play-of-Color and Schiller</a>.
+      The <a href="physics.html#inclusions">physics page</a> explains the optics
+      underneath and the <a href="materials.html">materials page</a> lists the
+      materials.
+    </p>
+    <p>
+      Six short tutorials in the program (Help, Tutorials, section Materials and Color)
+      walk through the effects: Polish Quality and Haze, Scratch Direction, Silk in a
+      Sapphire, Opal Play-of-Color, Labradorite Flash, and Ordinary and Extraordinary
+      Curves.
+    </p>
+  </section>
+
+  <section id="ray-traced-update">
+    <h2>Ray-Traced and Path-Traced</h2>
+    <p>Ray-Traced is a deterministic approximation: one d-line index, or three fixed indices with Fire, RGB absorption tint and 1/4/8/16 AA taps. It finishes at the tap count without denoising. It omits polarization, birefringent doubling, scattering, oriented inclusions, surface finish, play-of-color, zoning and edge rounding. Path-Traced retains the spectral model. Optical metrics, tilt sweeps and diagnostics keep their separate analytic tracer.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>Pleochroma Gem Design Suite · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/pleochroma/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/pleochroma">Source on GitHub</a> · <a href="https://crates.io/crates/pleochroma">crates.io</a> · <a href="https://docs.rs/pleochroma">docs.rs</a> · <a href="https://www.youtube.com/@Pleochroma">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

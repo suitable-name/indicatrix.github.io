@@ -1,6 +1,6 @@
 /**
- * Indicatrix — site script.
- * License: MIT | https://github.com/suitable-name/indicatrix
+ * Pleochroma — site script.
+ * License: MIT | https://github.com/suitable-name/pleochroma
  *
  * No external resources are loaded. Everything on the site works with this
  * script disabled except the dispersion chart on materials.html, which prints
@@ -170,11 +170,11 @@ function initCopyButtons() {
  *
  * Sellmeier/Cauchy coefficients and evaluate() functions are transcribed
  * directly from the DispersionModel values of the built-in materials in
- * crates/indicatrix/src/optics/materials/ (one file per group of species;
+ * crates/pleochroma/src/optics/materials/ (one file per group of species;
  * see optics/dispersion.rs for the exact Sellmeier3/Cauchy evaluation form
  * these mirror). For a uniaxial material the curve drawn is the ordinary
  * ray. Specific gravity is the figure in
- * crates/indicatrix-cut-core/src/material/specific_gravity.rs where that
+ * crates/pleochroma-cut-core/src/material/specific_gravity.rs where that
  * table has a row; a value with no row there is labelled as a reference
  * value. The drawing code is restyled to the datasheet palette (read from
  * the page's own CSS custom properties, so it follows the light/dark theme

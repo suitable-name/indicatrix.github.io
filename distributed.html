@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Distributed rendering — Indicatrix</title>
-<meta name="description" content="Indicatrix&#x27;s remote rendering: preview-then-handoff, sample-range additivity, a coordinator that workers join, durable server jobs, lossless result compression, mutual TLS with token enrollment, and the indicatrix-worker CLI.">
+<title>Distributed rendering — Pleochroma</title>
+<meta name="description" content="Pleochroma&#x27;s remote rendering: preview-then-handoff, sample-range additivity, a coordinator that workers join, durable server jobs, lossless result compression, mutual TLS with token enrollment, and the pleochroma-worker CLI.">
 <!-- seo:start -->
-<link rel="canonical" href="https://www.indicatrix-suite.com/distributed.html">
+<link rel="canonical" href="https://pleochroma.com/distributed.html">
 <meta name="theme-color" content="#16171a">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Indicatrix">
-<meta property="og:title" content="Distributed rendering — Indicatrix">
-<meta property="og:description" content="Indicatrix&#x27;s remote rendering: preview-then-handoff, sample-range additivity, a coordinator that workers join, durable server jobs, lossless result compression, mutual TLS with token enrollment, and the indicatrix-worker CLI.">
-<meta property="og:url" content="https://www.indicatrix-suite.com/distributed.html">
-<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:site_name" content="Pleochroma">
+<meta property="og:title" content="Distributed rendering — Pleochroma">
+<meta property="og:description" content="Pleochroma&#x27;s remote rendering: preview-then-handoff, sample-range additivity, a coordinator that workers join, durable server jobs, lossless result compression, mutual TLS with token enrollment, and the pleochroma-worker CLI.">
+<meta property="og:url" content="https://pleochroma.com/distributed.html">
+<meta property="og:image" content="https://pleochroma.com/assets/images/fig_fvs_hero.jpg">
 <meta property="og:image:width" content="1800">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Pleochroma&#x27;s spectral path tracer">
 <meta name="twitter:card" content="summary_large_image">
 <!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
@@ -26,7 +26,7 @@
 
 <header class="masthead">
   <div class="container">
-    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Pleochroma</a>
     <nav>
       <a href="index.html">Overview</a>
       <a href="physics.html">Physics</a>
@@ -39,7 +39,7 @@
       <a href="gallery.html">Figures</a>
       <a href="project.html">Project</a>
     </nav>
-    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+    <a href="https://github.com/suitable-name/pleochroma" class="gh-link">GitHub</a>
   </div>
 </header>
 
@@ -71,7 +71,7 @@
   </defs>
 
   <rect class="box" x="20" y="34" width="240" height="168"/>
-  <text class="lbl" x="32" y="56">DESKTOP · indicatrix-cut</text>
+  <text class="lbl" x="32" y="56">DESKTOP · pleochroma-cut</text>
   <text x="32" y="86">camera moving</text>
   <text class="muted" x="32" y="106">  local CPU / GPU preview,</text>
   <text class="muted" x="32" y="124">  few samples, immediate</text>
@@ -120,13 +120,13 @@
     <p>
       Spectral path tracing through a high-index gemstone with dozens of
       internal bounces is expensive, and streaming every interactive frame
-      to a remote machine would add visible input latency. Indicatrix instead
+      to a remote machine would add visible input latency. Pleochroma instead
       renders locally while the camera moves, and hands off to its one
       configured remote endpoint once the camera settles: the client sends a
       compact <code>SceneState</code> (serialized with <code>postcard</code>)
       and the remote streams traced radiance back, which is folded into the
       client's own accumulation buffer. That endpoint is always a
-      <em>coordinator</em>, <code>indicatrix-worker serve</code>, which renders
+      <em>coordinator</em>, <code>pleochroma-worker serve</code>, which renders
       the request itself, splits it across render workers that have joined it,
       or both (section 3); the desktop app never talks to a worker directly.
     </p>
@@ -137,7 +137,7 @@
       image against one shared sample budget — the live view's single target
       sample count, there is no separate remote setting — through one sample
       cursor per settle (<code>LiveEpoch</code>,
-      <code>apps/indicatrix-cut/src/bridge/sample_cursor/live.rs</code>), so
+      <code>apps/pleochroma-cut/src/bridge/sample_cursor/live.rs</code>), so
       their samples are combined, never duplicated. The remote side claims short
       chunks sized to about 1.5&nbsp;s of its measured rate (8 samples for the
       first chunk, before a rate is known; <code>LIVE_CHUNK_TARGET_SECS</code>,
@@ -159,7 +159,7 @@
       covering the stone itself carry the full bounce budget. Because each
       sample's RNG seed is a deterministic function of pixel index and sample
       number, sample contributions are additive and order-independent, so
-      Indicatrix instead partitions work by sample-index range across the
+      Pleochroma instead partitions work by sample-index range across the
       whole frame — one node traces samples [0, 64), another [64, 128), and
       so on — with no tile-seam stitching and linear load balancing across
       heterogeneous machines.
@@ -167,12 +167,12 @@
     <p>
       Disjointness is the whole correctness condition, so it is enforced in one
       place: a <code>SampleCursor</code> in the GUI-free
-      <code>crates/indicatrix-dispatch</code> hands out disjoint absolute sample
+      <code>crates/pleochroma-dispatch</code> hands out disjoint absolute sample
       ranges to every contributor of one image — the export's local and remote
       lanes, the live view's local tracer and remote chunks, and the
       coordinator's own lane and joined workers alike. Every backend also applies
       the same non-finite rule (<code>add_finite_sample</code>,
-      <code>crates/indicatrix/src/optics/raytracer/sampling.rs</code>, with its
+      <code>crates/pleochroma/src/optics/raytracer/sampling.rs</code>, with its
       twin in the GPU reduction): a sample with a NaN or infinite component is
       dropped but still counted, so one bad sample can never poison a pixel's sum
       and the divisor of a merge is always the number of samples actually traced.
@@ -185,8 +185,8 @@
   <section id="coordinator">
     <h2><span class="sec-num">3</span>The coordinator and joining workers</h2>
     <p>
-      <code>indicatrix-worker serve</code> is the coordinator
-      (<code>apps/indicatrix-worker/src/serve</code>,
+      <code>pleochroma-worker serve</code> is the coordinator
+      (<code>apps/pleochroma-worker/src/serve</code>,
       <code>src/coordinator</code>). It always serves the read-only design
       library to viewers. On a build with the <code>worker</code> feature it also
       opens a separate worker port that render workers dial into, and it traces
@@ -209,8 +209,8 @@
       </p>
     </div>
     <p>
-      A worker is <code>indicatrix-worker join &lt;coordinator-host:port&gt;</code>
-      (<code>apps/indicatrix-worker/src/join</code>): it connects out to the
+      A worker is <code>pleochroma-worker join &lt;coordinator-host:port&gt;</code>
+      (<code>apps/pleochroma-worker/src/join</code>): it connects out to the
       coordinator's worker port over mutual TLS with a worker certificate,
       reports its render capability in its HELLO, and then serves the
       coordinator's requests on that connection. No inbound port is needed on
@@ -226,9 +226,9 @@
         <tr><th>Default port</th><th>Listener</th><th>Who connects</th><th>Allowlist</th></tr>
       </thead>
       <tbody>
-        <tr><td>7878</td><td>viewer port (<code>--bind</code>)</td><td><code>indicatrix-cut</code></td><td><code>allowlist-viewers.txt</code></td></tr>
+        <tr><td>7878</td><td>viewer port (<code>--bind</code>)</td><td><code>pleochroma-cut</code></td><td><code>allowlist-viewers.txt</code></td></tr>
         <tr><td>7879</td><td>viewer enrollment (<code>--enroll-bind</code>)</td><td>a viewer redeeming a token</td><td>—</td></tr>
-        <tr><td>7880</td><td>worker port (<code>--worker-bind</code>)</td><td><code>indicatrix-worker join</code></td><td><code>allowlist-workers.txt</code></td></tr>
+        <tr><td>7880</td><td>worker port (<code>--worker-bind</code>)</td><td><code>pleochroma-worker join</code></td><td><code>allowlist-workers.txt</code></td></tr>
         <tr><td>7881</td><td>worker enrollment (<code>--worker-enroll-bind</code>)</td><td><code>join --token</code></td><td>—</td></tr>
       </tbody>
     </table>
@@ -236,7 +236,7 @@
       The worker port sits two ports above <code>--bind</code> and each
       enrollment listener one above its own port, on <code>--bind</code>'s host
       unless overridden (<code>WORKER_PORT_OFFSET</code>,
-      <code>apps/indicatrix-worker/src/cli/mod.rs</code>). Every listener binds
+      <code>apps/pleochroma-worker/src/cli/mod.rs</code>). Every listener binds
       loopback only unless <code>--allow-remote</code> is passed.
       <code>--no-workers</code> skips the worker port and its enrollment
       listener; <code>--no-enroll</code> skips both enrollment listeners.
@@ -244,7 +244,7 @@
     <p>
       How a request runs depends on its kind (<code>src/coordinator/job</code>).
       An export-type request — a still export, a tilt-video frame — becomes a
-      job: a lane pool (<code>indicatrix-dispatch</code>'s <code>LanePool</code>)
+      job: a lane pool (<code>pleochroma-dispatch</code>'s <code>LanePool</code>)
       over the request's sample range, with one lane for every idle joined
       worker whose pixel cap accepts the image plus the coordinator's own lane,
       each claiming chunks from the shared sample cursor sized to its measured
@@ -293,7 +293,7 @@
         negotiated per connection: the client lists the encodings it can decode
         in its HELLO and the server picks the first entry of its own preference
         list the client accepts (<code>negotiate</code>,
-        <code>crates/indicatrix-net/src/messages/encoding.rs</code>). The default
+        <code>crates/pleochroma-net/src/messages/encoding.rs</code>). The default
         preference is a byte shuffle (four planes: every value's first byte,
         then every second byte, …) followed by Zstandard level 1, then shuffle
         plus LZ4, then raw; a loopback peer gets raw only, and raw is also the
@@ -347,14 +347,14 @@
       <li>
         <strong>HDR environment maps by content hash.</strong> A scene lit by a
         loaded HDR panorama names the map only by the SHA-256 of its file bytes
-        (<code>crates/indicatrix-net/src/messages/asset.rs</code>). A node that
+        (<code>crates/pleochroma-net/src/messages/asset.rs</code>). A node that
         lacks it answers <code>NEED_ASSET</code>; the requester sends the bytes
         once (<code>ASSET</code>, at most 256&nbsp;MiB, checked before anything
         is allocated); the receiver verifies the hash and keeps the bytes in a
         bounded on-disk cache (<code>asset-cache</code> next to
         <code>--db</code> or <code>--cert-dir</code>, or
-        <code>$INDICATRIX_ASSET_CACHE_DIR</code>; size cap
-        <code>$INDICATRIX_ASSET_CACHE_MIB</code>, default 2048&nbsp;MiB), and a
+        <code>$PLEOCHROMA_ASSET_CACHE_DIR</code>; size cap
+        <code>$PLEOCHROMA_ASSET_CACHE_MIB</code>, default 2048&nbsp;MiB), and a
         later request naming the same hash is never asked again. The coordinator
         asks the viewer once and forwards the map to each joined worker that
         asks. A remote advertises HDR support in its WELCOME only when some lane
@@ -363,7 +363,7 @@
         from a file, or over the size limit), HDR scenes render locally, with
         one status note. The asset is a Radiance <code>.hdr</code> file or, since
         protocol version 25, an <code>IXENVMAP</code> version 1 float asset
-        (<code>crates/indicatrix-net/src/messages/envmap_asset.rs</code>), told
+        (<code>crates/pleochroma-net/src/messages/envmap_asset.rs</code>), told
         apart by its first bytes. The Android app sends the map exactly as the
         device renders with it, as a float asset, and an endpoint that
         advertises HDR support decodes both.
@@ -396,12 +396,12 @@
         <strong>Durable server jobs.</strong> A final-picture request is tied to
         its connection: if the viewer drops, the work stops. A job is not.
         Protocol version 25 adds <code>ClientMessage::Job</code>
-        (<code>crates/indicatrix-net/src/messages/job.rs</code>): the client
+        (<code>crates/pleochroma-net/src/messages/job.rs</code>): the client
         submits a scene with a random 16-byte token, a label, a sample count and
         a color space; the server stores it as a file, renders it on its own
         lane, one job at a time, and keeps the PNG until its retention ends
-        (7 days by default, <code>$INDICATRIX_JOB_RETENTION_HOURS</code>; the
-        directory is <code>$INDICATRIX_JOB_DIR</code>, or <code>jobs</code> next
+        (7 days by default, <code>$PLEOCHROMA_JOB_RETENTION_HOURS</code>; the
+        directory is <code>$PLEOCHROMA_JOB_DIR</code>, or <code>jobs</code> next
         to the library database). The client reconnects at any time to list,
         fetch, cancel or delete it. The server derives the job's id from the
         client certificate's fingerprint and the token, so repeating a submit
@@ -421,26 +421,26 @@
   <section id="mtls-security">
     <h2><span class="sec-num">5</span>Mutual TLS, roles and token enrollment</h2>
     <p>
-      The wire protocol lives in <code>crates/indicatrix-net</code>, typed
+      The wire protocol lives in <code>crates/pleochroma-net</code>, typed
       message framing with no networking of its own.
-      <code>indicatrix-worker</code>'s <code>serve</code> and <code>join</code>
+      <code>pleochroma-worker</code>'s <code>serve</code> and <code>join</code>
       commands carry the actual sockets and TLS.
     </p>
     <ul>
       <li>TLS 1.3 only, via <code>rustls</code> with the <code>ring</code> crypto provider; TLS 1.2 is excluded from the feature set at compile time, not merely disabled at runtime (<code>tls::server_config</code>/<code>tls::client_config</code>).</li>
-      <li>Mutual authentication: both sides present a certificate signed by the same private CA (<code>indicatrix-worker cert</code> subcommands manage that CA). The coordinator's own certificate is used on both of its ports.</li>
+      <li>Mutual authentication: both sides present a certificate signed by the same private CA (<code>pleochroma-worker cert</code> subcommands manage that CA). The coordinator's own certificate is used on both of its ports.</li>
       <li>Every client certificate carries a role: a worker certificate's Common Name is <code>worker:&lt;label&gt;</code>, a viewer's is the plain label (which may not start with <code>worker:</code>). Each listener checks the role and its own fingerprint allowlist — <code>allowlist-viewers.txt</code> and <code>allowlist-workers.txt</code> next to the CA, with a pre-role <code>allowlist.txt</code> still honoured as the viewers list while it is the only one — so a viewer certificate is never accepted on the worker port, nor a worker certificate on the viewer port. The HELLO carries the peer's role too, and a mismatch is refused with <code>ROLE_REFUSED</code>. <code>--trust-any-client-cert</code> skips both allowlists, never the role check.</li>
-      <li>One-time token enrollment (the wire protocol and claim-side verification in <code>crates/indicatrix-net/src/enroll</code>; the server-side registry that mints and expires tokens in <code>apps/indicatrix-worker/src/enroll</code>): <code>indicatrix-worker cert issue-token</code> asks a running <code>serve</code> process's enrollment listener, from a loopback connection only, to mint a 180-second, single-use token for a viewer, or with <code>--role worker</code> for a worker. The desktop app's Redeem button, <code>cert claim</code>, or <code>join --token</code> redeems it — verifying the listener's certificate chain against the CA fingerprint carried inside the token itself, before sending the token's secret — and writes the same three-file certificate bundle <code>cert issue-client</code> would, without a manual copy. A listener refuses a token request for the other role.</li>
+      <li>One-time token enrollment (the wire protocol and claim-side verification in <code>crates/pleochroma-net/src/enroll</code>; the server-side registry that mints and expires tokens in <code>apps/pleochroma-worker/src/enroll</code>): <code>pleochroma-worker cert issue-token</code> asks a running <code>serve</code> process's enrollment listener, from a loopback connection only, to mint a 180-second, single-use token for a viewer, or with <code>--role worker</code> for a worker. The desktop app's Redeem button, <code>cert claim</code>, or <code>join --token</code> redeems it — verifying the listener's certificate chain against the CA fingerprint carried inside the token itself, before sending the token's secret — and writes the same three-file certificate bundle <code>cert issue-client</code> would, without a manual copy. A listener refuses a token request for the other role.</li>
       <li>Plaintext serving (<code>--insecure-no-tls</code>) is available for local debugging, refused on any non-loopback bind address, and disables the worker port and both enrollment listeners.</li>
-      <li>Every connection negotiates a protocol version during its HELLO/WELCOME handshake (<code>PROTOCOL_VERSION</code>, 28 at the time of writing; the constant in <code>crates/indicatrix-net/src/messages/mod.rs</code> is authoritative), together with a build hash and, where both sides can establish it, a content hash of the <code>indicatrix</code> source tree; a mismatched peer is refused outright (<code>BUILD_MISMATCH</code>) rather than risking a misread frame or a merge of samples from different physics.</li>
+      <li>Every connection negotiates a protocol version during its HELLO/WELCOME handshake (<code>PROTOCOL_VERSION</code>, 28 at the time of writing; the constant in <code>crates/pleochroma-net/src/messages/mod.rs</code> is authoritative), together with a build hash and, where both sides can establish it, a content hash of the <code>pleochroma</code> source tree; a mismatched peer is refused outright (<code>BUILD_MISMATCH</code>) rather than risking a misread frame or a merge of samples from different physics.</li>
       <li>Every message is length-prefixed and bounded before a payload is even allocated (<code>framing::MAX_FRAME_LEN</code>, 512&nbsp;MiB; the enrollment listener caps its own request further, at 4&nbsp;KiB), and a just-accepted socket carries a 20-second read/write timeout through its TLS handshake until its first HELLO arrives (<code>HANDSHAKE_TIMEOUT</code>, <code>serve/socket.rs</code>) — an idle or slow-loris connection cannot pin a thread indefinitely. <code>--max-connections</code> (default 64) bounds authenticated connections, counted separately for viewers and joined workers, and a second limiter at four times that cap bounds connections still in their handshake. A per-address cap on the viewer port, <code>--max-preauth-per-ip</code> (default 8), closes a connection from an address that already has that many unauthenticated ones open.</li>
     </ul>
   </section>
 
   <section id="worker-cli">
-    <h2><span class="sec-num">6</span>The <code>indicatrix-worker</code> CLI</h2>
+    <h2><span class="sec-num">6</span>The <code>pleochroma-worker</code> CLI</h2>
     <p>
-      <code>indicatrix-worker</code> has four subcommands: <code>render</code>
+      <code>pleochroma-worker</code> has four subcommands: <code>render</code>
       (one-shot scene-to-PNG, no networking), <code>serve</code> (the
       coordinator: the design-library protocol over TLS, the worker port, and
       with <code>--render</code> its own render lane), <code>join</code> (a
@@ -450,11 +450,11 @@
       <code>render</code>, <code>join</code> and <code>serve --render</code>
       need a build with the <code>worker</code> feature (<code>gpu</code>
       implies it). Flags below are copied from the CLI's own <code>--help</code>
-      text in <code>apps/indicatrix-worker/src/cli/mod.rs</code>.
+      text in <code>apps/pleochroma-worker/src/cli/mod.rs</code>.
     </p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — render</span><button class="copy-btn">Copy</button></div>
-      <pre><code>indicatrix-worker render \
+      <pre><code>pleochroma-worker render \
   --scene scene.json \
   --out render.png \
   --width 3840 \
@@ -465,7 +465,7 @@
     <p class="small"><code>--only-gpu</code> / <code>--only-cpu</code> force a backend; the default is a hybrid split across both when it measures as worthwhile.</p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — serve (coordinator)</span><button class="copy-btn">Copy</button></div>
-      <pre><code>indicatrix-worker serve \
+      <pre><code>pleochroma-worker serve \
   --bind 0.0.0.0:7878 --allow-remote \
   --ca pki/ca.pem --cert pki/server.pem --key pki/server.key \
   --render</code></pre>
@@ -482,7 +482,7 @@
     </p>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — join (worker)</span><button class="copy-btn">Copy</button></div>
-      <pre><code>indicatrix-worker join coordinator.local:7880</code></pre>
+      <pre><code>pleochroma-worker join coordinator.local:7880</code></pre>
     </div>
     <p class="small">
       The address is the coordinator's worker port (also accepted as
@@ -502,26 +502,26 @@
     <div class="code-block">
       <div class="code-block-head"><span>terminal — on the coordinator machine</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># 1. create a CA</span>
-indicatrix-worker cert init --dir pki/
+pleochroma-worker cert init --dir pki/
 
 <span class="cmt"># 2. issue the coordinator's own certificate (used on the viewer and worker ports)</span>
-indicatrix-worker cert issue-server --dir pki/ --host coordinator.local --ip 192.0.2.10
+pleochroma-worker cert issue-server --dir pki/ --host coordinator.local --ip 192.0.2.10
 
 <span class="cmt"># 3. start the coordinator; drop --render if this machine should not trace samples itself</span>
-indicatrix-worker serve --bind 0.0.0.0:7878 --allow-remote \
+pleochroma-worker serve --bind 0.0.0.0:7878 --allow-remote \
   --ca pki/ca.pem --cert pki/server.pem --key pki/server.key --render
 
 <span class="cmt"># 4. mint one-time, 180-second enrollment tokens (loopback only)</span>
-indicatrix-worker cert issue-token --ca pki/ca.pem --admin-addr 127.0.0.1:7879 --name my-laptop
-indicatrix-worker cert issue-token --ca pki/ca.pem --admin-addr 127.0.0.1:7881 --name gpu-box --role worker</code></pre>
+pleochroma-worker cert issue-token --ca pki/ca.pem --admin-addr 127.0.0.1:7879 --name my-laptop
+pleochroma-worker cert issue-token --ca pki/ca.pem --admin-addr 127.0.0.1:7881 --name gpu-box --role worker</code></pre>
     </div>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — on each worker machine</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># first run: claim the worker token into worker-cert/, then join</span>
-indicatrix-worker join --coordinator coordinator.local:7880 --token GW1-...
+pleochroma-worker join --coordinator coordinator.local:7880 --token GW1-...
 
 <span class="cmt"># every later run reuses the claimed bundle</span>
-indicatrix-worker join coordinator.local:7880</code></pre>
+pleochroma-worker join coordinator.local:7880</code></pre>
     </div>
     <p>
       <code>serve</code>'s viewer enrollment listener defaults to the same host
@@ -538,7 +538,7 @@ indicatrix-worker join coordinator.local:7880</code></pre>
       bundle for copying by hand.
     </p>
     <p>
-      In <code>indicatrix-cut</code>, open the <strong>Remote</strong> panel
+      In <code>pleochroma-cut</code>, open the <strong>Remote</strong> panel
       (<strong>Remote Coordinator</strong>) and choose <em>Set Up Remote Coordinator</em>: enter the coordinator's viewer address
       (<code>coordinator.local:7878</code>), paste the enrollment address
       (<code>coordinator.local:7879</code>) and the printed token, and press
@@ -568,7 +568,7 @@ indicatrix-worker join coordinator.local:7880</code></pre>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
+    <p>Pleochroma Gem Design Suite · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/pleochroma/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/pleochroma">Source on GitHub</a> · <a href="https://crates.io/crates/pleochroma">crates.io</a> · <a href="https://docs.rs/pleochroma">docs.rs</a> · <a href="https://www.youtube.com/@Pleochroma">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

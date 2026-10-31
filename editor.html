@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Faceting studio and CAD — Indicatrix</title>
-<meta name="description" content="The Indicatrix desktop faceting studio: design library, live spectral render, tilt performance curves, a faceting CAD with constraint solver, relations, concave tiers and frosted facets, optimizer, rough planner, cutting mode and guided tutorials.">
+<title>Faceting studio and CAD — Pleochroma</title>
+<meta name="description" content="The Pleochroma desktop faceting studio: design library, live spectral render, tilt performance curves, a faceting CAD with constraint solver, relations, concave tiers and frosted facets, optimizer, rough planner, cutting mode and guided tutorials.">
 <!-- seo:start -->
-<link rel="canonical" href="https://www.indicatrix-suite.com/editor.html">
+<link rel="canonical" href="https://pleochroma.com/editor.html">
 <meta name="theme-color" content="#16171a">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Indicatrix">
-<meta property="og:title" content="Faceting studio and CAD — Indicatrix">
-<meta property="og:description" content="The Indicatrix desktop faceting studio: design library, live spectral render, tilt performance curves, a faceting CAD with constraint solver, relations, concave tiers and frosted facets, optimizer, rough planner, cutting mode and guided tutorials.">
-<meta property="og:url" content="https://www.indicatrix-suite.com/editor.html">
-<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:site_name" content="Pleochroma">
+<meta property="og:title" content="Faceting studio and CAD — Pleochroma">
+<meta property="og:description" content="The Pleochroma desktop faceting studio: design library, live spectral render, tilt performance curves, a faceting CAD with constraint solver, relations, concave tiers and frosted facets, optimizer, rough planner, cutting mode and guided tutorials.">
+<meta property="og:url" content="https://pleochroma.com/editor.html">
+<meta property="og:image" content="https://pleochroma.com/assets/images/fig_fvs_hero.jpg">
 <meta property="og:image:width" content="1800">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Pleochroma&#x27;s spectral path tracer">
 <meta name="twitter:card" content="summary_large_image">
 <!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
@@ -26,7 +26,7 @@
 
 <header class="masthead">
   <div class="container">
-    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Pleochroma</a>
     <nav>
       <a href="index.html">Overview</a>
       <a href="physics.html">Physics</a>
@@ -39,7 +39,7 @@
       <a href="gallery.html">Figures</a>
       <a href="project.html">Project</a>
     </nav>
-    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+    <a href="https://github.com/suitable-name/pleochroma" class="gh-link">GitHub</a>
   </div>
 </header>
 
@@ -47,13 +47,13 @@
   <div class="page-head">
     <span class="tag">Desktop application</span>
     <h1>The studio &amp; faceting CAD</h1>
-    <p class="subtitle"><code>indicatrix-cut</code> — a Slint desktop application: design library, live spectral viewport, a constraint-based faceting editor, a rough planner and guided tutorials.</p>
+    <p class="subtitle"><code>pleochroma-cut</code> — a Slint desktop application: design library, live spectral viewport, a constraint-based faceting editor, a rough planner and guided tutorials.</p>
     <p class="cta-row">
-      <a class="cta" href="https://github.com/suitable-name/indicatrix/tree/main/apps/indicatrix-cut/docs/manual">Read the user manual</a>
+      <a class="cta" href="https://github.com/suitable-name/pleochroma/tree/main/apps/pleochroma-cut/docs/manual">Read the user manual</a>
     </p>
     <p>
       This page is an overview. The user manual explains every window step by
-      step; begin with <a href="https://github.com/suitable-name/indicatrix/blob/main/apps/indicatrix-cut/docs/manual/01-getting-started.md">Chapter 1, Getting Started</a>.
+      step; begin with <a href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/01-getting-started.md">Chapter 1, Getting Started</a>.
       Inside the program it opens from <strong>Help &rarr; User Manual</strong>, and
       F1 opens the page for whatever is on screen.
     </p>
@@ -62,7 +62,7 @@
   <div class="status">
     <span class="status-label">STATUS</span>
     <p>
-      The faceting CAD is in beta. Solving runs on a background solve service with
+      Solving runs on a background solve service with
       real mid-solve cancellation and a progress-tracked activity list rather than
       freezing the editor, new designs are guided by a template gallery and by
       in-app tutorials, and results carry stale badges the moment they no longer
@@ -70,7 +70,7 @@
       part: concave tiers, parametric relations, history and variants, cutting
       mode, the tutorials and the command palette. They have had less hands-on
       use than the older parts.
-      The editor's interaction model is still evolving; Indicatrix is meant to
+      The editor's interaction model is still evolving; Pleochroma is meant to
       grow into a complete faceting suite. The design library and 3D viewport (sections 1–4 below) are more
       stable than the editor itself and the rough planner (sections 5–11).
     </p>
@@ -79,7 +79,7 @@
   <section id="overview">
     <h2><span class="sec-num">1</span>Overview</h2>
     <p>
-      <code>apps/indicatrix-cut</code> is built with
+      <code>apps/pleochroma-cut</code> is built with
       <a href="https://slint.dev">Slint</a>. It combines a design-library
       browser, a live 3D spectral viewport, and the faceting CAD engine in
       one window.
@@ -88,7 +88,7 @@
       <a href="assets/images/fig_studio_main.jpg">
         <img src="assets/images/fig_studio_main.jpg" width="1800" height="1080" alt="Studio main window: design library on the left, the Solid view of the stone on the right with the Solid, Path-Traced and Ray-Traced switch above it">
       </a>
-      <figcaption>Fig. 1 — Design library on the left, live viewport on the right: the 45.148 SplitChecker 12 design in the Solid view, with the Solid, Path-Traced and Ray-Traced switch, the Grossular Garnet (Tsavorite) material, the Gem Studio Ring Lights preset and the Tilt Curve, Front, Top and Export buttons above the stone, and the Live Render and Edit tabs at the top right.</figcaption>
+      <figcaption>Fig. 1 — Design library on the left, live viewport on the right: the 45.148 SplitChecker 12 design in the Solid view, with the Solid, Path-Traced and Ray-Traced switch, the Spinel material, the Gem Studio Ring Lights preset and the Tilt Curve, Front, Top, Turn 90° and Export buttons above the stone, and the Live Render and Edit tabs at the top right.</figcaption>
     </figure>
     <p>
       The sections follow the window. Sections 2 to 4 cover the library, the
@@ -103,7 +103,7 @@
         design library, a live spectral path tracer with fifteen lighting presets, a
         quick color for the stone, optical diagnostics, per-design lighting, and
         tilt performance curves and videos.</li>
-      <li><strong>Faceting CAD, beta</strong> (sections 5–10): a constraint solver
+      <li><strong>Faceting CAD</strong> (sections 5–10): a constraint solver
         and tier editor with nine templates and an overall verdict badge;
         <a href="#relations">parametric relations</a> between tier angles;
         <a href="#concave">concave tiers</a> cut with cylinder, cone, circle, disc
@@ -111,11 +111,12 @@
         window with plain-words deltas; an undo history with thumbnails and saved
         <a href="#history-variants">variants</a>; and a step-by-step
         <a href="#cutting-mode">cutting mode</a>.</li>
-      <li><strong>Rough planner, beta</strong> (section 11): ranks layouts of
+      <li><strong>Rough planner</strong> (section 11): ranks layouts of
         stones from a modelled block, cylinder or pebble, or from an OBJ, STL or
         PLY mesh of a non-convex rough, keeping clear of its inclusions. It can
         also take the <a href="#rough-color">color and color zones of the
-        rough</a> from backlit photos.</li>
+        rough</a> from backlit photos, and orient the stones to the rough&rsquo;s
+        <a href="crystal-axis.html">crystal axis</a> by a rule you can override.</li>
       <li><strong>Solid view and export</strong> (sections 12–13): the Cut slider,
         drag handles, Slice, the faceting diagram, the printable cutting sheet,
         finished-stone exports and the file formats.</li>
@@ -128,7 +129,7 @@
         command palette.</li>
       <li><strong>Install and command line</strong> (section 17): the Microsoft
         Store, installing with Cargo, building from source, the log file, and the windowless
-        <code>indicatrix-cli</code>.</li>
+        <code>pleochroma-cli</code>.</li>
     </ul>
     <p>
       The native design file keeps all of this. A design with parametric relations
@@ -139,8 +140,8 @@
       This page describes the desktop application. Most of the features added in
       October 2026 exist only there; the <a href="web.html">web app page</a> says
       what the browser version has. The same engines also run without a window in
-      the command-line tool <code>indicatrix-cli</code>
-      (<code>apps/indicatrix-cli</code>), with the commands info, solve, metrics,
+      the command-line tool <code>pleochroma-cli</code>
+      (<code>apps/pleochroma-cli</code>), with the commands info, solve, metrics,
       validate, optimize, retarget, sweep, export, render and tilt-video; see
       <a href="#install-cli">section 17</a>. Some controls named
       below are hidden in the Simple interface; section 16 says which.
@@ -151,7 +152,7 @@
     <h2><span class="sec-num">2</span>The design library</h2>
     <p>
       Designs are stored in a local SQLite database
-      (<code>indicatrix-vault</code>) by default — no account, no telemetry —
+      (<code>pleochroma-vault</code>) by default — no account, no telemetry —
       though the library view can also switch to browsing the remote
       coordinator's catalogue over the network instead. Filterable by shape, index-gear
       tooth count, refractive-index range, length/width ratio, and facet
@@ -205,7 +206,7 @@
       9</a>), the cutting steps you mark done (<a href="#cutting-mode">section
       10</a>) and the lighting you save for the design
       (<a href="#viewport">section 3</a>). The library finds them by the design's
-      id, which the <code>.isdd</code> file keeps in its metadata. Copying
+      id, which the <code>.psdd</code> file keeps in its metadata. Copying
       the file to another computer copies the design and not this data.
     </p>
   </section>
@@ -270,16 +271,20 @@
       <a href="assets/images/fig_tilt_in_editor.jpg">
         <img src="assets/images/fig_tilt_in_editor.jpg" width="1800" height="1080" alt="The editor's view bar with the tilt dialog open over the Diagram view" loading="lazy">
       </a>
-      <figcaption>Fig. 2 — The view bar in Edit mode: Solid, Path-Traced, Ray-Traced, Both or the faceting diagram, fixed directions, Fit and Reset, and Tilt Curve, here opened over the Diagram view.</figcaption>
+      <figcaption>Fig. 2 — The view bar in Edit mode: Solid, Path-Traced, Ray-Traced or the faceting diagram, fixed directions, Fit and Reset, and Tilt Curve, here opened over the Diagram view.</figcaption>
     </figure>
     <p>
       The <strong>Color</strong> button in the Live Render toolbar shows the stone
       in another color without making a custom material. Its list holds
-      <em>Material default</em>, nine ready-made colors (Clear, Blue, Red, Green,
-      Violet, Yellow, Pink, Teal and Amber) and <em>Custom Color...</em>, which
+      <em>Material Default</em>, the <a href="materials.html#color-variants">color
+      variants</a> of the material (and your own saved ones), nine ready-made colors
+      (Clear, Blue, Red, Green, Violet, Yellow, Pink, Teal and Amber) for a material
+      that has one color in every direction, and <em>Custom Color...</em>, which
       opens a color editor with three sliders, Tone, Saturation and Hue (the
       L*, C* and h of the L*C*h color space), and a hue, saturation and
-      brightness picker as an alternative. When the view shows the design that is open in the
+      brightness picker as an alternative. A pleochroic stone keeps its
+      pleochroism: the editor has one such color for each direction of the
+      crystal, and <em>Save as Variant...</em> keeps the result. When the view shows the design that is open in the
       editor, the pick becomes that design's own color, in one undo step. For
       anything else, such as a design you only browse, the pick changes this view
       only and the app remembers it. Whatever color the view shows is also the
@@ -326,6 +331,34 @@
       the picture, the tilt video can include it with a caption, and a render job
       keeps the choice.
     </p>
+    <div class="fig-grid">
+      <figure class="fig">
+        <a href="assets/images/fig_optical_windowing.jpg">
+          <img src="assets/images/fig_optical_windowing.jpg" width="1800" height="1143" alt="Optical Diagnostics with Windowing on: cyan hatching over the render" loading="lazy">
+        </a>
+        <figcaption>Fig. 3 &mdash; Windowing (/) on: cyan hatching over the render where light leaves through the pavilion and the backdrop shows through. The status line reads Ready &middot; 320 &times; 180 &middot; 4 samples per pixel.</figcaption>
+      </figure>
+      <figure class="fig">
+        <a href="assets/images/fig_optical_windowing_extinction.jpg">
+          <img src="assets/images/fig_optical_windowing_extinction.jpg" width="1800" height="1138" alt="Optical Diagnostics with Windowing and Extinction: cyan hatching and magenta crosses over the render" loading="lazy">
+        </a>
+        <figcaption>Fig. 4 &mdash; Windowing and Extinction (X) together: magenta crosses where light is trapped or lost, cyan hatching where it leaks; the render stays visible under the layer.</figcaption>
+      </figure>
+    </div>
+    <div class="fig-grid">
+      <figure class="fig">
+        <a href="assets/images/fig_optical_neutral.jpg">
+          <img src="assets/images/fig_optical_neutral.jpg" width="1800" height="1143" alt="Windowing and Extinction on a neutral grey stone" loading="lazy">
+        </a>
+        <figcaption>Fig. 5 &mdash; The same two layers with Diagnostic Map on Neutral Stone: the stone is drawn neutral grey, so only the chosen classes carry color.</figcaption>
+      </figure>
+      <figure class="fig">
+        <a href="assets/images/fig_optical_fire.jpg">
+          <img src="assets/images/fig_optical_fire.jpg" width="1800" height="1130" alt="Fire (Dispersion Potential) alone on the neutral stone, in gold" loading="lazy">
+        </a>
+        <figcaption>Fig. 6 &mdash; Fire (Dispersion Potential) alone on the neutral stone: gold where the dispersion potential is high, on the 0&ndash;0.1 weighted-degree scale of the legend.</figcaption>
+      </figure>
+    </div>
     <p>
       A custom material can be entered as a Sellmeier fit (one or three terms) or
       a Cauchy fit instead of two sliders. The editor shows the index at the
@@ -338,10 +371,32 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 480px">
       <a href="assets/images/fig_material_editor.png">
-        <img src="assets/images/fig_material_editor.png" width="880" height="1218" alt="The Gem Material Editor with the Simple curve sliders and the body color swatches" loading="lazy">
+        <img src="assets/images/fig_material_editor.png" width="880" height="2144" alt="The Gem Material Editor with the Simple curve sliders and the body color swatches" loading="lazy">
       </a>
-      <figcaption>Fig. 3 &mdash; The Gem Material Editor in Simple mode: the preset template and the material name, the refractive index, dispersion, specific gravity and birefringence sliders, the crystal system and optical character, and the body color swatches with Pick, then Delete, Cancel, Save and Save &amp; Apply.</figcaption>
+      <figcaption>Fig. 7 &mdash; The Gem Material Editor in Simple mode: the preset template and the material name, the refractive index, dispersion, specific gravity and birefringence sliders, the crystal system and optical character, the Inclusion Families list with Add Family, the Play-of-Color box, the body color swatches with Pick, the Color Variants list (a material menu, Material Default and the named variants, each with Duplicate), then Delete, Cancel, Save and Save &amp; Apply.</figcaption>
     </figure>
+    <h3 id="color-patterns">Color patterns</h3>
+    <p>
+      A custom material can have zones of different colors, for example a pink core
+      inside a green rim. The Material Editor's <strong>Color Pattern</strong>
+      section (<strong>Add Pattern...</strong>, <strong>Edit Pattern...</strong>,
+      <strong>Remove Pattern</strong>) opens the <strong>Color Pattern Editor</strong>,
+      a window of its own. You start from a template (Uniform, Bicolor, Tricolor,
+      Banded, Watermelon, Reverse Watermelon, Core and Rim, Split or Sectors) or a
+      saved preset, then give each zone a name, a color, a shape and a size. A pattern
+      has a base zone and up to four more; later zones cover earlier ones. A zone can
+      take its colors from the <strong>Colors</strong> menu (one color, an Along and an
+      Across color, or Alpha, Beta and Gamma, by the crystal of the material) or from a
+      <a href="materials.html#color-variants">color variant</a> of the material. The pattern has an axis (Table Normal, Across or Across
+      Turned), either scales with the stone width or stays fixed in millimeters, and
+      has a boundary from sharp to soft. Three previews, <em>Crystal</em>,
+      <em>Current Design</em> and <em>Cross-Section</em>, show the result, and the
+      window has its own Undo and Redo. Patterns show in the Path-Traced views, in
+      render jobs and on remote workers that support zoning; the Ray-Traced view shows
+      the base color. The <a href="materials.html#color-patterns">materials page</a>
+      has more.
+    </p>
+    <!-- figure: color_pattern_editor -->
     <p>
       The Live Render picture follows the Edit tab's Cut slider
       (<a href="#inspection">section 12</a>) and shows a badge with a <em>Show Finished</em> button while the stone is cut back. A stone with concave tiers
@@ -358,20 +413,20 @@
         <a href="assets/images/fig_tilt_curve.png">
           <img src="assets/images/fig_tilt_curve.png" width="1800" height="1350" alt="Tilt Performance Curve Analysis dialog" loading="lazy">
         </a>
-        <figcaption>Fig. 4 — Brilliance, windowing and extinction across a tilt sweep: 181 points from −90° to +90° on one of four camera azimuths, with the face-up figures above the chart.</figcaption>
+        <figcaption>Fig. 8 — Brilliance, windowing and extinction across a tilt sweep: 181 points from −90° to +90° on one of four camera azimuths, with the face-up figures above the chart and, when the cached curve was rendered with another material, an orange banner with Re-Render Fresh.</figcaption>
       </figure>
       <figure class="fig">
         <a href="assets/images/fig_tilt_video_export.png">
           <img src="assets/images/fig_tilt_video_export.png" width="1800" height="1350" alt="Export Tilt Video panel of the tilt dialog" loading="lazy">
         </a>
-        <figcaption>Fig. 5 &mdash; Export Tilt Video, unfolded below the chart. The panel scrolls, so only its first line is in view, the Include Optical Diagnostics (4 Samples/Pixel) box; the material, the angle range and step, and the frame rate, resolution, samples per pixel, bounces, color space and transfer follow below it.</figcaption>
+        <figcaption>Fig. 9 &mdash; Export Tilt Video, unfolded below the chart. The panel scrolls, so only its header line is in view; the Include Optical Diagnostics (4 Samples/Pixel) box, the material, the angle range and step, and the frame rate, resolution, samples per pixel, bounces, color space and transfer follow below it.</figcaption>
       </figure>
     </div>
     <p>
       A cut that looks brilliant face-up can black out or window heavily at a
-      few degrees of tilt. Indicatrix sweeps a 181-point tilt profile
+      few degrees of tilt. Pleochroma sweeps a 181-point tilt profile
       (<code>±90°</code>) at each of 4 fixed camera azimuths — 0°, 45°, 90°,
-      135° (<code>PROFILE_AZIMUTHS_DEG</code>, <code>crates/indicatrix/src/color/metrics/profile.rs</code>)
+      135° (<code>PROFILE_AZIMUTHS_DEG</code>, <code>crates/pleochroma/src/color/metrics/profile.rs</code>)
       — and plots brilliance, windowing, and extinction together so a design's
       behaviour in the hand, not just face-up, is visible. The curves follow the
       stone&rsquo;s frosting (<a href="#frosting">section 5</a>): a frosted
@@ -382,7 +437,7 @@
       A tilt sweep can also be exported as a video: pick one of the four
       camera azimuths as the sweep axis, a step from 0.01° up to 5° between
       frames (<code>MIN_STEP_DEG</code>/<code>MAX_STEP_DEG</code>,
-      <code>apps/indicatrix-cut/src/gui/tilt/video_export/params.rs</code>),
+      <code>apps/pleochroma-cut/src/gui/tilt/video_export/params.rs</code>),
       and a resolution from 128 × 128 up to 8K (7680 × 4320), or a custom
       size clamped to the same 128–8192 px range per axis. An optional
       performance overlay burns the brilliance/windowing/extinction readout
@@ -405,30 +460,30 @@
   </section>
 
   <section id="cad-solver">
-    <h2><span class="sec-num">5</span>Constraint solver and tier editor <span class="tag">beta</span></h2>
+    <h2><span class="sec-num">5</span>Constraint solver and tier editor</h2>
     <figure class="fig">
       <a href="assets/images/fig_cad_edit.jpg">
         <img src="assets/images/fig_cad_edit.jpg" width="1800" height="1080" alt="Edit mode on 41.029B FVS-65: solid view with a selected crown tier, tier table and tier inspector" loading="lazy">
       </a>
-      <figcaption>Fig. 6 — Edit mode on 41.029B FVS-65 (Long Octagon): the solid view with the crown tier C3 selected and its angle and index handles, the Solid, Path-Traced, Ray-Traced, Both and Diagram switch above it, the tier table beside it and the Tier inspector editing C3.</figcaption>
+      <figcaption>Fig. 10 — Edit mode on 41.029B FVS-65 (Long Octagon): the solid view with the crown tier C3 selected and its angle and index handles, the Solid, Path-Traced, Ray-Traced and Diagram switch above it, the tier table beside it and the Tier inspector, with its vs Baseline strip, editing C3.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_cad_diagram.jpg">
         <img src="assets/images/fig_cad_diagram.jpg" width="1800" height="1080" alt="Diagram view: crown, pavilion and profile panels beside the tier table and the Schedule tab" loading="lazy">
       </a>
-      <figcaption>Fig. 7 — The Diagram view of the same design: crown, pavilion and profile on the index-gear scale, with the tier table and the inspector's Schedule tab (facet, angle, indices) beside them.</figcaption>
+      <figcaption>Fig. 11 — The Diagram view of the same design: crown, pavilion and profile on the index-gear scale, with the tier table and the inspector's Schedule tab (facet, angle, indices) beside them.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_diagram_crown.png">
         <img src="assets/images/fig_diagram_crown.png" width="1400" height="1540" alt="Crown panel of the faceting diagram with facet labels" loading="lazy">
       </a>
-      <figcaption>Fig. 8 — The crown panel alone (Crown in the view bar): every crown facet labelled with its tier code and index position on the index-gear scale.</figcaption>
+      <figcaption>Fig. 12 — The crown panel alone (Crown in the view bar): every crown facet labelled with its tier code and index position on the index-gear scale.</figcaption>
     </figure>
     <p>
       Cutting instructions are a geometric constraint graph, not a static list of
       numbers. A meet-point instruction ("cut tier P2 until it meets P1 and G1
       at a single point") specifies a facet's depth implicitly; the solver in
-      <code>crates/indicatrix/src/geometry/meet_solver</code> resolves that
+      <code>crates/pleochroma/src/geometry/meet_solver</code> resolves that
       depth by intersecting the facet plane with its neighbours' already-known
       vertices, walking the schedule in dependency order so that changing one
       tier's angle recomputes every tier that depends on it. Where a design
@@ -479,7 +534,7 @@
       layout and floats at the window's right edge everywhere else, where it
       can be dragged out of the way; either way it collapses to a small
       "Guide · Step N of M" pill
-      (<a href="https://github.com/suitable-name/indicatrix/blob/main/apps/indicatrix-cut/docs/manual/07-new-design-worked-example.md"><code>apps/indicatrix-cut/docs/manual/07-new-design-worked-example.md</code></a>).
+      (<a href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/07-new-design-worked-example.md"><code>apps/pleochroma-cut/docs/manual/07-new-design-worked-example.md</code></a>).
       A full keyboard-shortcut overlay is one press of <code>?</code> away
       (or Help → Keyboard Shortcuts) whenever no text field has focus.
     </p>
@@ -496,9 +551,9 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 560px">
       <a href="assets/images/fig_tier_form.png">
-        <img src="assets/images/fig_tier_form.png" width="1232" height="1400" alt="The Tier tab of the inspector editing tier C3: angle with slider and Typical menu, Meets, name, indices, facet chips and the Save Tier button" loading="lazy">
+        <img src="assets/images/fig_tier_form.png" width="1232" height="1468" alt="The Tier tab of the inspector editing tier C3: angle with slider and Typical menu, Meets, name, indices, facet chips and the Save Tier button" loading="lazy">
       </a>
-      <figcaption>Fig. 9 &mdash; The Tier tab of the inspector editing tier C3 of 41.029B FVS-65: the angle (37) with its slider and Typical menu, Meets set to Exact Scale Value with its scale value, the name, the indices, a chip for each facet, the position box with Add, Mirror and Rotate, the Finish box (Frosted), Cheater Offset with Set and Clear, and Save Tier at the bottom.</figcaption>
+      <figcaption>Fig. 13 &mdash; The Tier tab of the inspector editing tier C3 of 41.029B FVS-65: the angle (37) with its slider and Typical menu, Meets set to Exact Scale Value with its scale value, the name, the indices, the Girdle Facet Preset button, a chip for each facet, the position box with Add, Mirror and Rotate, the Finish box (Frosted), and Save Tier at the bottom.</figcaption>
     </figure>
     <p>
       The <strong>Indices</strong> field takes values from <code>0</code> up to
@@ -551,7 +606,7 @@
       tab, which draws the girdle band matte, is a separate setting.
     </p>
     <p>
-      The frosting is part of the design. It is saved in the <code>.isdd</code>
+      The frosting is part of the design. It is saved in the <code>.psdd</code>
       file, and a design with no frosting is written exactly as before. Gem Cut
       Studio <code>.gcs</code> files carry it both ways: a frosted tier or facet
       in an imported file stays frosted, and Export as Gem Cut Studio writes it
@@ -578,7 +633,7 @@
       and the stone's width in millimetres, and the stone is built on its own
       rough and solved, so a closed stone is on screen at once. Each template is
       checked to close on every gear the dialog offers for it
-      (<code>crates/indicatrix-cut-core/src/templates.rs</code>). If the
+      (<code>crates/pleochroma-cut-core/src/templates.rs</code>). If the
       material's refractive index differs from the one the template was designed
       for by more than 0.02, the pavilion angles are first adapted with the
       Retarget Shift method below. The adapted stone is kept only if it passes
@@ -587,9 +642,9 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 560px">
       <a href="assets/images/fig_new_design.png">
-        <img src="assets/images/fig_new_design.png" width="1200" height="1440" alt="The New Design dialog: a gallery of shapes, round variants and teaching designs, and a blank design, with material, index gear and stone width" loading="lazy">
+        <img src="assets/images/fig_new_design.png" width="1200" height="1488" alt="The New Design dialog: a gallery of shapes, round variants and teaching designs, and a blank design, with material, index gear and stone width" loading="lazy">
       </a>
-      <figcaption>Fig. 10 &mdash; The New Design dialog: five everyday shapes (Standard Round Brilliant selected), the round variants and teaching designs, the Empty design, and below them the Material (Diamond), the Index Gear (96) and the Stone Width in millimetres (6.5), with Cancel and Create.</figcaption>
+      <figcaption>Fig. 14 &mdash; The New Design dialog: five everyday shapes (Standard Round Brilliant selected), the round variants and teaching designs, the Empty design, and below them the Material (Diamond), the Index Gear (96) and the Stone Width in millimetres (6.5), with Cancel and Create.</figcaption>
     </figure>
     <h3>The overall verdict</h3>
     <p>
@@ -612,7 +667,7 @@
       Problem, extinction above 40 % and 60 %, brilliance below 25 % and 10 %. The
       windowing limits are the ones to trust most. The other two are loose
       starting points, kept as named constants in
-      <code>crates/indicatrix-editor/src/verdict.rs</code>.
+      <code>crates/pleochroma-editor/src/verdict.rs</code>.
     </p>
     <!-- FIGURE WANTED: the status strip with the verdict badge and its list of
       reasons open, showing Show and Fix buttons. -->
@@ -628,7 +683,7 @@
       <code>.asc</code> cannot hold: notes, cheater offsets, targets, relations,
       concave tiers, the preform, the material and the girdle size. Apply never
       changes the preform, the material or the concave tiers. The dialog can lay
-      the text against the saved file or the snapshot, line by line, with added
+      the text against the saved file or the Baseline, line by line, with added
       and removed lines marked. While a design has concave tiers, the gear cannot
       be changed in the text, because the tool placements follow the gear.
     </p>
@@ -658,7 +713,7 @@
       <a href="assets/images/fig_retarget.jpg">
         <img src="assets/images/fig_retarget.jpg" width="1800" height="1153" alt="Retarget for Material dialog, the Astryx Star design retargeted to Sapphire in Shift mode, before and after side by side" loading="lazy">
       </a>
-      <figcaption>Fig. 11 — Retarget for Material: the Astryx Star design retargeted to Sapphire (n_D 1.7681, critical angle 34.44°) in Shift mode. On the left the crown handling options, each tier&rsquo;s old and new angle with its margin and a Safe or Marginal verdict (P1 from 42.80° to 36.88°), the Valid line (girdle 1.5 %, table 36 %, depth 57 %, was 72 %) and the optical comparison; on the right the stone before and after, side by side and path traced (48 spp), with the Solid, Path Traced and Ray Traced switch above the pictures.</figcaption>
+      <figcaption>Fig. 15 — Retarget for Material: the Astryx Star design retargeted to Sapphire (n_D 1.7681, critical angle 34.44°) in Shift mode (Stage 1. Shift, with 2. Optimize beside it). On the left the crown handling options, each tier&rsquo;s old and new angle with its margin and a Safe or Marginal verdict (P1 from 42.80° to 36.88°), the Valid line (girdle 1.5 %, table 36 %, depth 57 %, was 72 %) and the optical comparison; on the right the stone before and after, side by side and path traced (48 spp), with the Solid, Path Traced and Ray Traced switch above the pictures and a table of brilliance, windowing, extinction, fire and scintillation below them.</figcaption>
     </figure>
     <p>
       <em>Keep the Design's Look</em> (Advanced, on by default) scores every
@@ -707,7 +762,7 @@
       <a href="assets/images/fig_retarget_overlay.png">
         <img src="assets/images/fig_retarget_overlay.png" width="1800" height="1153" alt="Retarget for Material dialog with the Overlay view: red outline before, green outline after" loading="lazy">
       </a>
-      <figcaption>Fig. 12 — The same retarget in the Overlay view, solid: the stone before and after drawn on top of each other, red for the outline before and green for the outline after, with the legend under the picture.</figcaption>
+      <figcaption>Fig. 16 — The same retarget in the Overlay view, solid: the stone before and after drawn on top of each other, red for the outline before and green for the outline after, with the legend under the picture.</figcaption>
     </figure>
     <p>
       The Risk column depends on the block. A pavilion row shows its margin over
@@ -739,18 +794,18 @@
       <a href="assets/images/fig_gear_remap.png">
         <img src="assets/images/fig_gear_remap.png" width="920" height="594" alt="Confirm Index Remap dialog listing each tier's old and new indices" loading="lazy">
       </a>
-      <figcaption>Fig. 13 &mdash; The Confirm Index Remap dialog after picking 64 teeth for a 96-tooth design: the Rounding list (Nearest), one row per tier with its old and new indices, the rows that changed in red, and Confirm Remap and Cancel.</figcaption>
+      <figcaption>Fig. 17 &mdash; The Confirm Index Remap dialog after picking 64 teeth for a 96-tooth design: the Rounding list (Nearest), one row per tier with its old and new indices, the rows that changed in red, and Confirm Remap and Cancel.</figcaption>
     </figure>
     <figure class="fig">
       <a href="assets/images/fig_gear_before_after.jpg">
-        <img src="assets/images/fig_gear_before_after.jpg" width="1800" height="1175" alt="The 45.148 SplitChecker 12 design before (96 teeth, left) and after (64 teeth, right) a gear change, with the solid view and the Tiers panel of each side by side" loading="lazy">
+        <img src="assets/images/fig_gear_before_after.jpg" width="1800" height="1359" alt="The 45.148 SplitChecker 12 design before (96 teeth, left) and after (64 teeth, right) a gear change, with the solid view and the Tiers panel of each side by side" loading="lazy">
       </a>
-      <figcaption>Fig. 14 — A gear change from 96 to 64 teeth on 45.148 SplitChecker 12, before (left) and after (right): the solid view above and the Tiers panel (7 tiers) below, with the facet pattern of the stone different after the change.</figcaption>
+      <figcaption>Fig. 18 — A gear change from 96 to 64 teeth on 45.148 SplitChecker 12, before (left) and after (right): the solid view above and the Tiers panel (7 tiers) below, with the facet pattern of the stone different after the change.</figcaption>
     </figure>
   </section>
 
   <section id="relations">
-    <h2><span class="sec-num">6</span>Parametric relations <span class="tag">beta</span></h2>
+    <h2><span class="sec-num">6</span>Parametric relations</h2>
     <p>
       A <strong>relation</strong> makes one tier's angle follow other tiers'
       angles instead of being a number of its own. If P2 follows P1 with the
@@ -842,7 +897,7 @@
   </section>
 
   <section id="concave">
-    <h2><span class="sec-num">7</span>Concave tiers <span class="tag">beta</span></h2>
+    <h2><span class="sec-num">7</span>Concave tiers</h2>
     <p>
       Most facets are flat: a lap grinds one plane and the stone stays convex. A
       <strong>concave tier</strong> is cut with a shaped tool instead and leaves a
@@ -850,7 +905,7 @@
       cone (<code>CON</code>), a circle (<code>CIR</code>), a disc
       (<code>DSC</code>) or a sphere (<code>SPH</code>). The engine resolves each
       tool placement to a convex volume that is subtracted from the flat stone
-      (<code>crates/indicatrix/src/geometry/tool.rs</code>), up to 128 placements
+      (<code>crates/pleochroma/src/geometry/tool.rs</code>), up to 128 placements
       in one stone. A design with no concave tiers behaves, prints and saves
       exactly as before.
     </p>
@@ -890,7 +945,7 @@
     <p>
       A sixth manufacturability check runs only on designs with concave tiers; the
       five flat checks are unchanged. It reports
-      (<code>crates/indicatrix-cut-core/src/manufacturability/warning.rs</code>):
+      (<code>crates/pleochroma-cut-core/src/manufacturability/warning.rs</code>):
     </p>
     <ul>
       <li>a tool that lies outside the stone and cuts nothing;</li>
@@ -915,7 +970,7 @@
       drawn as its flat stone alone, and the tier table's warning badge says why.
     </p>
     <p>
-      The native <code>.isdd</code> file keeps concave tiers exactly (design
+      The native <code>.psdd</code> file keeps concave tiers exactly (design
       file version 2 or later). An <code>.asc</code> file keeps two footnotes per tier in
       cutting order and never writes a concave tier as an <code>.asc</code> tier.
       A <code>.gcs</code> export keeps the same footnotes in its footer fields.
@@ -947,16 +1002,16 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 560px">
       <a href="assets/images/fig_concave_tier_form.png">
-        <img src="assets/images/fig_concave_tier_form.png" width="1232" height="1400" alt="The Tier tab in Add Concave Tier mode: the facet fields, the tool choice with its theta, X, Y, Z, D/W and tool angle, and Reciprocating" loading="lazy">
+        <img src="assets/images/fig_concave_tier_form.png" width="1232" height="1468" alt="The Tier tab in Add Concave Tier mode: the facet fields, the tool choice with its theta, X, Y, Z, D/W and tool angle, and Reciprocating" loading="lazy">
       </a>
-      <figcaption>Fig. 15 &mdash; The Tier tab in Add Concave Tier mode: the facet on line 1 (name, angle, indices, instructions) and the tool on line 2 (Cylinder (CYL) here, with its theta, X, Y and Z, D/W and tool angle, and the Reciprocating box), then Add Concave Tier.</figcaption>
+      <figcaption>Fig. 19 &mdash; The Tier tab in Add Concave Tier mode: the Facet Line (name, angle, indices, instructions) and the Tool Line (Cylinder (CYL) here, with its theta, X, Y and Z, D/W and tool angle, and the Reciprocating box), then Add Concave Tier.</figcaption>
     </figure>
   </section>
 
   <section id="preforms-optimizer">
-    <h2><span class="sec-num">8</span>Preforms, the optimizer and angle sweeps <span class="tag">beta</span></h2>
+    <h2><span class="sec-num">8</span>Preforms, the optimizer and angle sweeps</h2>
     <p>
-      <code>indicatrix-cut-core</code>'s <code>preform</code> module models the
+      <code>pleochroma-cut-core</code>'s <code>preform</code> module models the
       rough gem material as a rectangular block or a round/oval cylinder. Its
       <code>yield_metrics</code> module reports volumetric yield, an estimated
       carat weight from the material's specific gravity, and flags a design whose
@@ -982,10 +1037,10 @@
       bisect the tier's mast until the design's measured girdle thickness or
       table width lands on a stated millimetre figure
       (<code>TierTarget::DepthMm</code>/<code>GirdleThicknessMm</code>/<code>
-      TableWidthMm</code>, <code>indicatrix-cut-core/src/design/targets.rs</code>).
+      TableWidthMm</code>, <code>pleochroma-cut-core/src/design/targets.rs</code>).
       Every tier also keeps a stable id (<code>tier_id</code>) that survives
       reordering, duplication, and a save/reopen round trip through
-      the native <code>.isdd</code> design file, so a manufacturability
+      the native <code>.psdd</code> design file, so a manufacturability
       warning or an authored target keeps pointing at the same tier across
       edits rather than a table row position.
     </p>
@@ -1032,9 +1087,9 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_optimizer_setup.jpg">
-        <img src="assets/images/fig_optimizer_setup.jpg" width="1800" height="1070" alt="The editor with the Objective list of the Optimize tab open over the tier table" loading="lazy">
+        <img src="assets/images/fig_optimizer_setup.jpg" width="1800" height="1121" alt="The editor with the Objective list of the Optimize tab open under the tier table" loading="lazy">
       </a>
-      <figcaption>Fig. 16 &mdash; The Optimize tab&rsquo;s Objective list open over the tier table of 41.029B FVS-65: Balanced, Brilliance, Low Windowing, Low Extinction, Keep Weight and Lighten Dark Rough (the list scrolls).</figcaption>
+      <figcaption>Fig. 20 &mdash; The Optimize tab&rsquo;s Objective list (with the Search and Tune choice above it) open under the tier table of 41.029B FVS-65: Balanced, Brilliance, Low Windowing, Low Extinction, Keep Weight and Lighten Dark Rough (the list scrolls).</figcaption>
     </figure>
     <ul>
       <li><strong>Objective.</strong> Seven presets set the weights of windowing,
@@ -1094,8 +1149,26 @@
       <a href="assets/images/fig_optimizer_result.png">
         <img src="assets/images/fig_optimizer_result.png" width="1232" height="1400" alt="The Optimize tab after a run: the candidate list, the before and after figures of candidate 1 and the tiers it would change" loading="lazy">
       </a>
-      <figcaption>Fig. 17 &mdash; The Optimize tab after a run on the Astryx Star design, scrolled to the results: the starting stone and five candidates (green beats the start, red is worse), candidate 1 selected with its before and after figures (tilt brilliance 25.87 % to 31.30 %, windowing 54.49 % to 54.01 %, extinction 19.64 % to 14.69 %, yield loss 97.44 % to 97.63 %, blended score 49.42 to 45.80), the tiers it would change with their old and new angles (P1 42.80° to 42.64°, down to C4 20.50° to 19.92°), and Preview and Compare.</figcaption>
+      <figcaption>Fig. 21 &mdash; The Optimize tab after a run on the Astryx Star design, scrolled to the results: the starting stone and five candidates (green beats the start, red is worse), candidate 1 selected with its before and after figures (tilt brilliance 25.87 % to 31.30 %, windowing 54.49 % to 54.01 %, extinction 19.64 % to 14.69 %, yield loss 97.44 % to 97.63 %, blended score 49.42 to 45.80), the tiers it would change with their old and new angles (P1 42.80° to 42.64°, down to C4 20.50° to 19.92°), and Preview and Compare.</figcaption>
     </figure>
+    <h3 id="tune">Tune</h3>
+    <p>
+      The Optimize tab has two pills, <strong>Search | Tune</strong>. Search is the
+      automatic optimizer above. <strong>Tune</strong> is its hand-driven partner:
+      it lists the tiers in the order a cutter works, the pavilion main first, then
+      the crown main, then the rest, and keeps the Baseline strip's figures in front
+      of you while you move each angle. Pick a tier, nudge its angle by &minus;0.5,
+      &minus;0.1, +0.1 or +0.5 degrees or type one (each is one undo step), and
+      watch which figures change beyond their noise threshold. <strong>Accept</strong>
+      keeps the design as a trial and ticks the tier, <strong>Revert This
+      Tier</strong> puts the tier back to its Baseline angle, and <strong>Next
+      Tier</strong> moves on. In the Advanced interface a small chart sweeps the
+      selected tier about two degrees either side of its angle, marks the current
+      angle and the best one, shades the plateau and sets an angle when clicked;
+      <strong>Jump to Best</strong> goes to the best one, and <strong>Pair
+      With...</strong> opens the two-tier sweep for the tier and a partner.
+    </p>
+    <!-- figure: optimizer_tune -->
     <h3>Angle sweeps</h3>
     <p>
       <strong>Edit &rarr; Angle Sweep...</strong> tries one tier's angle over a
@@ -1105,7 +1178,7 @@
       <em>Current</em>. Every angle is tried on a private copy of the design, so a
       sweep never changes the design while it runs. The table lists brilliance,
       windowing, extinction, fire, scintillation and yield for each angle, scored
-      table-up in the design's material under the viewport's lighting, with the
+      table-up in the design's material under the Grading tray lighting, with the
       best figure of each column in bold green. An angle that gives no stone still
       gets a row, marked <em>Not valid</em>, with the reason. A tick box adds the
       tilt averages, which costs about a second and a half per angle.
@@ -1123,15 +1196,44 @@
       <a href="assets/images/fig_angle_sweep.png">
         <img src="assets/images/fig_angle_sweep.png" width="1800" height="1440" alt="The Angle Sweep dialog: the tier and range fields, the chart, the selected angle and the table" loading="lazy">
       </a>
-      <figcaption>Fig. 18 &mdash; The Angle Sweep dialog for tier C3: from 32&deg; to 42&deg; in steps of 0.5&deg; (21 angles, all valid), the brilliance, windowing and extinction lines with the current angle marked, the selected angle with its figures and the note that one facet vanishes there, the table below, and Use 32.00&deg;, Copy CSV, Save CSV and Close.</figcaption>
+      <figcaption>Fig. 22 &mdash; The Angle Sweep dialog (One Tier, with Two Tiers beside it) for tier C3: from 32&deg; to 42&deg; in steps of 0.5&deg; (21 angles, all valid), the brilliance, windowing and extinction lines with the current angle marked, the selected angle with its figures and the note that one facet vanishes there, the table below, and Use 32.00&deg;, Copy CSV, Save CSV and Close.</figcaption>
     </figure>
-    <h3>Snapshot and the compare window</h3>
+    <h3 id="two-tier-sweep">Two-tier sweeps</h3>
     <p>
-      <strong>Snapshot Design</strong> keeps the current design and its solved
-      masts in memory for the session. <strong>Compare to Snapshot</strong> lists
+      The dialog's <strong>One Tier | Two Tiers</strong> pills switch to a mode that
+      sweeps two tiers together, for example the crown main against the pavilion
+      main, because the best angle of one often depends on the other. Each tier has
+      its own From, To and Step, and a grid holds at most 900 angle pairs. The
+      result is a heat map: one colored cell for each pair, bright for the best
+      values of the figure you choose, a ring on the design's own pair, a star on the
+      best pair, and hatching where a pair gives no stone. <em>Outline the Best
+      Cells</em> draws the plateau, the pairs that are as good as the best one within
+      the figure's noise threshold. Click a pair, or use the arrow keys, to read its
+      figures and their change from the design's own pair. <strong>Use These
+      Angles</strong> sets both tiers in one undo step, and <strong>Refine Around
+      This</strong> starts a finer grid around the selected pair. The tilt averages
+      can be added; above 100 pairs the dialog asks first.
+    </p>
+    <!-- figure: angle_sweep_two_tiers -->
+    <h3 id="baseline">Baseline and the compare window</h3>
+    <p>
+      The <strong>Baseline</strong> is the copy of the design that every later
+      change is read against. It is set when a design opens and after an Optimize
+      or a Retarget is applied, and <strong>Set Baseline</strong> keeps the design as
+      it is now, with its solved masts, in memory for the session. A strip under the
+      inspector's tabs shows the design's figures (brilliance, windowing,
+      extinction, fire, scintillation, yield and the warnings) with their signed
+      change since the Baseline, scored face-up under the Grading tray. A change is
+      green when it is better than the figure's noise threshold, red when worse
+      and grey when it is within the threshold, which most small nudges are. The
+      strip says <em>Out of Date</em> when the design has not been solved since the
+      change, and <em>Measure Tilt</em> adds the tilt averages. These figures describe
+      the stone itself; the numbers in the Live Render corner describe this view
+      under this light, so the two brilliance numbers differ.
+      <strong>Compare to Baseline</strong> lists
       each tier as Same, Changed, Added or Removed. The compare window shows two
       stones side by side, or behind a split slider, in the solid view or
-      path-traced, turned together. Retarget, Optimize, the snapshot comparison
+      path-traced, turned together. Retarget, Optimize, the Baseline comparison
       and a pair of variants all open it. Opened from the Optimize tab, its header
       has a <em>Compare Against</em> list: <em>Current design</em> (the default) or
       <em>Original (before retarget)</em>, offered once a Retarget has been
@@ -1146,7 +1248,7 @@
       change and one word: better, worse or same. A change smaller than a
       threshold reads as about the same: 2 points for brilliance, windowing and
       extinction, 3 for scintillation, and for fire 5 % of the before value but at
-      least half an index point. A few sentences put the result in words, from the
+      least half an index point (the same thresholds color the Baseline strip). A few sentences put the result in words, from the
       most important change to the least (&ldquo;The after design is brighter
       face-up (+4 %) and shows less windowing (-3 %).&rdquo;), or say &ldquo;No
       clear optical difference.&rdquo; One button adds the average over four
@@ -1154,27 +1256,28 @@
       <em>Keep After</em> applies the change exactly as the dialog's own Apply
       does.
     </p>
-    <figure class="fig fig-portrait" style="--fig-max: 860px">
+    <figure class="fig fig-portrait" style="--fig-max: 640px">
       <a href="assets/images/fig_compare_overlay.png">
-        <img src="assets/images/fig_compare_overlay.png" width="1800" height="1276" alt="Compare window opened from Optimize, overlay view with the before and after table" loading="lazy">
+        <img src="assets/images/fig_compare_overlay.png" width="1644" height="1856" alt="Compare window opened from Optimize, overlay view with the before and after table" loading="lazy">
       </a>
-      <figcaption>Fig. 19 &mdash; The compare window opened from the Optimize tab, in the Overlay view with the solid stone: red marks what the optimized stone removes and green what it adds. The table gives before, after and change for brilliance (28.1 % to 83.7 %), windowing (23.3 % to 12.6 %), extinction (48.5 % to 3.7 %), fire and scintillation, with a sentence in words and the Tilt Average button. The Side by Side, Overlay and Split Slider choices and the Solid, Path Traced and Ray Traced switch are above the picture; Close, Discard and Keep After are below.</figcaption>
+      <figcaption>Fig. 23 &mdash; The Optimize Comparison window opened from the Optimize tab, in the Overlay view with the solid stone: red marks what the optimized stone removes and green what it adds. The table gives before, after and change for brilliance (30.8 % to 79.9 %), windowing (20.6 % to 16.1 %), extinction (48.5 % to 3.9 %), fire and scintillation, with a sentence in words and the Tilt Average button. The Side by Side, Overlay and Split Slider choices and the Solid, Path Traced and Ray Traced switch are above the picture; Close is at the top right, and Discard Preview and Apply This Candidate are below.</figcaption>
     </figure>
-    <figure class="fig fig-portrait" style="--fig-max: 860px">
+    <figure class="fig fig-portrait" style="--fig-max: 640px">
       <a href="assets/images/fig_compare_traced.jpg">
-        <img src="assets/images/fig_compare_traced.jpg" width="1800" height="1276" alt="Compare window, side by side and path traced, with the tilt-average rows" loading="lazy">
+        <img src="assets/images/fig_compare_traced.jpg" width="1644" height="1856" alt="Compare window, side by side and path traced, with the tilt-average rows" loading="lazy">
       </a>
-      <figcaption>Fig. 20 &mdash; The same window side by side and path traced, after the Tilt Average button: the table gains the tilt brilliance (26.1 % to 31.9 %), tilt windowing (54.2 % to 53.6 %) and tilt extinction (19.7 % to 14.5 %) rows and a sentence on the average over all tilts.</figcaption>
+      <figcaption>Fig. 24 &mdash; The same window side by side and path traced, after the Tilt Average button: the table gains the tilt brilliance (26.4 % to 32.0 %), tilt windowing (53.8 % to 54.4 %) and tilt extinction (19.8 % to 13.6 %) rows and a sentence on the average over all tilts.</figcaption>
     </figure>
   </section>
 
   <section id="history-variants">
-    <h2><span class="sec-num">9</span>History and variants <span class="tag">beta</span></h2>
+    <h2><span class="sec-num">9</span>History and variants</h2>
     <p>
-      The inspector's <strong>History</strong> tab has two views. <em>Steps</em>
+      The inspector's <strong>History</strong> tab has three views. <em>Steps</em>
       lists every change made to the open design, newest first, each with a small
       picture of the design at that step. <em>Variants</em> lists named copies of
-      the design that you chose to keep.
+      the design that you chose to keep. <em>Trials</em> lists the states you
+      tried while tuning, with their figures, for the session.
     </p>
     <h3>Steps</h3>
     <p>
@@ -1200,9 +1303,9 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 560px">
       <a href="assets/images/fig_history_steps.png">
-        <img src="assets/images/fig_history_steps.png" width="1232" height="1400" alt="The History tab, Steps view: three steps and the start, with the current step marked Now" loading="lazy">
+        <img src="assets/images/fig_history_steps.png" width="1232" height="1468" alt="The History tab, Steps view: three steps and the start, with the current step marked Now" loading="lazy">
       </a>
-      <figcaption>Fig. 21 &mdash; The History tab, Steps view: Set P3 angle to 47.4 degrees (step 3, marked Now), Set P2 angle to 51.3, Set P1 angle to 64.9, and Start. Each step has a small picture of the stone at that point.</figcaption>
+      <figcaption>Fig. 25 &mdash; The History tab, Steps view (Steps, Variants and Trials are its three views): Set P3 angle to 47.4 degrees (step 3, marked Now), Set P2 angle to 51.3, Set P1 angle to 64.9, and Start. Each step has a small picture of the stone at that point.</figcaption>
     </figure>
     <h3>Variants</h3>
     <p>
@@ -1239,14 +1342,39 @@
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 560px">
       <a href="assets/images/fig_history_variants.png">
-        <img src="assets/images/fig_history_variants.png" width="1232" height="1400" alt="The History tab, Variants view: two saved variants and the Compare Two Designs box" loading="lazy">
+        <img src="assets/images/fig_history_variants.png" width="1232" height="1468" alt="The History tab, Variants view: two saved variants and the Compare Two Designs box" loading="lazy">
       </a>
-      <figcaption>Fig. 22 &mdash; The Variants view: Save as Variant, the Compare Two Designs box (Current Design and Shorter Crown, with Compare Pictures and Compare Text), and two saved variants, Steeper Pavilion (marked Working From, from: Shorter Crown) and Shorter Crown, each with Open, Rename, Note and Delete.</figcaption>
+      <figcaption>Fig. 26 &mdash; The Variants view: Save as Variant, two saved variants, Steeper Pavilion (marked Working From, from: Shorter Crown) and Shorter Crown, each with Open, Rename, Note and Delete, and below them the Compare Two Designs box (Current Design and Shorter Crown, with Compare Pictures and Compare Text).</figcaption>
     </figure>
+    <h3 id="trials">Trials</h3>
+    <p>
+      <strong>Trials</strong>, the third view, is a numbered list of the states
+      you tried while tuning, each with its figures: brilliance, windowing,
+      extinction, fire, yield and the number of warnings, scored under the Grading
+      tray like the strip under the tabs. <strong>Keep as Trial</strong> (or
+      Ctrl+Shift+K) keeps the design as it is now. Use This Angle and Use These
+      Angles in the angle sweep, applying an Optimize candidate or a Retarget, and
+      Accept in Tune add a trial by themselves, and the design as it was just
+      before an Optimize or a Retarget is kept as <em>Before Optimize</em> or
+      <em>Before Retarget</em>. <em>Record Every Change</em>, off by default, adds
+      a trial for every change, at most one a second. Undo and Redo never add one.
+    </p>
+    <p>
+      The table colors each figure against the Baseline, green better, red worse
+      and grey within the noise threshold, and outlines the best figure of each
+      column. A click on a row shows that trial on the stone. <strong>Restore</strong>
+      brings the design back as one undo step; <strong>Compare to Current</strong>
+      opens the compare window; <strong>Set as Baseline</strong>,
+      <strong>Save as Variant...</strong>, <strong>Delete</strong>, a Star and a note
+      are on each row, and <strong>Re-score Trials</strong> scores trials made in
+      another material. Trials live only for the session: they are gone when the
+      design closes, so save one as a variant to keep it.
+    </p>
+    <!-- figure: history_trials -->
   </section>
 
   <section id="cutting-mode">
-    <h2><span class="sec-num">10</span>Cutting mode <span class="tag">beta</span></h2>
+    <h2><span class="sec-num">10</span>Cutting mode</h2>
     <p>
       <strong>Edit &rarr; Cutting Mode...</strong>, the <strong>Cut Mode</strong>
       button on the command bar, or the command palette opens the cutting
@@ -1295,12 +1423,12 @@
       <a href="assets/images/fig_cutting_mode.png">
         <img src="assets/images/fig_cutting_mode.png" width="1800" height="1080" alt="Cutting mode on step 3 of 15: the large angle, the index chips, the stone after the step and the index wheel" loading="lazy">
       </a>
-      <figcaption>Fig. 23 &mdash; Cutting mode on step 3 of 15 of 41.029B FVS-65, tier P1 on the pavilion: the angle in large figures, one chip for each index, the instruction &ldquo;Set to mast depth 0.7313&rdquo;, the schedule, the stone after the step with P1 highlighted, and the 120-tooth index wheel with the four indices marked. Previous, Mark Step Done, Next and Reset Progress are below.</figcaption>
+      <figcaption>Fig. 27 &mdash; Cutting mode on step 3 of 15 of 41.029B FVS-65, tier P1 on the pavilion: the angle in large figures, one chip for each index, the instruction &ldquo;Set to mast depth 0.7313&rdquo;, the schedule, the stone after the step with P1 highlighted, and the 120-tooth index wheel with the four indices marked. Previous, Mark Step Done, Next and Reset Progress are below.</figcaption>
     </figure>
   </section>
 
   <section id="rough-planner">
-    <h2><span class="sec-num">11</span>Rough planner <span class="tag">beta</span></h2>
+    <h2><span class="sec-num">11</span>Rough planner</h2>
     <p>
       <strong>Library &rarr; Plan Rough...</strong> answers a question the
       preform's single-design yield figure cannot: given a piece of rough and
@@ -1377,7 +1505,7 @@
       <a href="assets/images/fig_rough_planner.png">
         <img src="assets/images/fig_rough_planner.png" width="1800" height="1153" alt="Rough Planner window before planning: the list of edge cuts, the empty 3D view and the plan controls" loading="lazy">
       </a>
-      <figcaption>Fig. 24 — The Rough Planner before planning: the list of edge cuts (cuts 2 to 5 in view, each with its two setbacks, here 1.3 mm), the 3D view with its Rough, Result, Front, Top, Side and Reset buttons and the Cut Faces box, the Results column waiting for a plan, and the Plan controls below: Designs (Up To), Stones (Up To) with No Limit, which designs to try (here the current library filter, 321 designs, or the whole library of 3,299), and the losses for kerf and allowance.</figcaption>
+      <figcaption>Fig. 28 — The Rough Planner before planning: the list of edge cuts (cuts 2 to 5 in view, each with its two setbacks, here 1.3 mm), the 3D view with its Rough, Result, Front, Top, Side and Reset buttons and the Cut Faces box, the Results column waiting for a plan, and the Plan controls below: Designs (Up To), Stones (Up To) with No Limit, which designs to try (here the current library filter, 321 designs, or the whole library of 3,299), and the losses for kerf and allowance.</figcaption>
     </figure>
     <p>
       The <em>Candidate Designs</em> are either the designs the library's search
@@ -1431,7 +1559,7 @@
       <a href="assets/images/fig_rough_planner_result.jpg">
         <img src="assets/images/fig_rough_planner_result.jpg" width="1800" height="1153" alt="Rough Planner result: 28 stones of two oval designs drawn inside the rough and the result card" loading="lazy">
       </a>
-      <figcaption>Fig. 25 — A result with the library filtered to ovals: 10 layouts from 318 designs in 33.7 s; the selected layout, with at most two designs, 29.65 ct at 31.4 % yield, cuts 28 ovals of two designs (17 and 11, from two large to many small) from a rough that weighs 94.40 ct, drawn in their saw pieces, with each design&rsquo;s weight, size, ratios, volume, orientation, fill and optics in the card.</figcaption>
+      <figcaption>Fig. 29 — A result with the library filtered to ovals: 10 layouts from 318 designs in 11.4 s; the selected layout, with at most two designs, 29.65 ct at 31.4 % yield, cuts 28 ovals of two designs (17 and 11, from two large to many small) from a rough that weighs 94.40 ct, drawn in their saw pieces, with each design&rsquo;s weight, size, ratios, volume, orientation, fill and optics in the card.</figcaption>
     </figure>
     <p>
       A design's name in a result is a <strong>link into the library</strong>; a
@@ -1511,13 +1639,13 @@
       synthetic photos and has not yet been measured against real stones, so
       treat a predicted color as an estimate and read its uncertainty. The manual
       chapter
-      <a href="https://github.com/suitable-name/indicatrix/blob/main/apps/indicatrix-cut/docs/manual/24-rough-colour-and-zoning.md"><code>apps/indicatrix-cut/docs/manual/24-rough-colour-and-zoning.md</code></a>
+      <a href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/24-rough-colour-and-zoning.md"><code>apps/pleochroma-cut/docs/manual/24-rough-colour-and-zoning.md</code></a>
       has the capture protocol and every step.
     </p>
     <p class="small">
-      Sources: <code>crates/indicatrix-cut-core/src/rough_plan/</code>,
-      <code>apps/indicatrix-cut/src/gui/rough_plan/</code>, and the manual chapter
-      <a href="https://github.com/suitable-name/indicatrix/blob/main/apps/indicatrix-cut/docs/manual/15-planning-a-rough.md"><code>apps/indicatrix-cut/docs/manual/15-planning-a-rough.md</code></a>.
+      Sources: <code>crates/pleochroma-cut-core/src/rough_plan/</code>,
+      <code>apps/pleochroma-cut/src/gui/rough_plan/</code>, and the manual chapter
+      <a href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/15-planning-a-rough.md"><code>apps/pleochroma-cut/docs/manual/15-planning-a-rough.md</code></a>.
       Importing a scanned or irregular rough as an OBJ, STL or PLY mesh works,
       and stones keep clear of the inclusions you add to it.
     </p>
@@ -1529,16 +1657,17 @@
       <a href="assets/images/fig_solid_view.png">
         <img src="assets/images/fig_solid_view.png" width="1800" height="1157" alt="Solid shading in the Live Render panel, with the Solid, Path-Traced and Ray-Traced switch" loading="lazy">
       </a>
-      <figcaption>Fig. 26 — Solid shading in the Live Render panel: the stone drawn flat and untextured, here seen from above and zoomed in, with the Solid, Path-Traced and Ray-Traced switch, the material and lighting-preset pickers and the Tilt Curve, Front, Top and Export buttons above it, and the mouse hints below. The Edit tab&rsquo;s solid view, described below, adds facet picking: click a facet to jump to its row in the schedule.</figcaption>
+      <figcaption>Fig. 30 — Solid shading in the Live Render panel: the stone drawn flat and untextured, here seen from above and zoomed in, with the Solid, Path-Traced and Ray-Traced switch, the lighting-preset picker and the Tilt Curve, Front, Top, Turn 90&deg; and Export buttons above it, and the mouse hints below. The Edit tab&rsquo;s solid view, described below, adds facet picking: click a facet to jump to its row in the schedule.</figcaption>
     </figure>
     <p>
       The Edit tab's second viewport shows the exact polyhedral solid (facet edges
       and vertices, not a tessellated approximation), flat-shaded, and it updates
-      after almost every edit, not only after Solve. Four buttons choose what it
-      shows: <strong>Solid</strong>, <strong>Path-traced</strong> (the Live Render
-      picture), <strong>Both</strong> (the path-traced picture with the solid's
-      facet edges on top) and <strong>Diagram</strong> (a flat faceting diagram
-      with crown, pavilion and profile panels, ringed by the index wheel). Hover
+      after almost every edit, not only after Solve. Buttons choose what it
+      shows: <strong>Solid</strong>, <strong>Path-Traced</strong> (the Live Render
+      picture), <strong>Ray-Traced</strong> and <strong>Diagram</strong> (a flat
+      faceting diagram with crown, pavilion and profile panels, ringed by the index
+      wheel). Keep Solid selected and click a tracer to draw the solid's facet edges
+      over its picture. Hover
       over a facet to read its tier, angle, index position, block and margin over
       the critical angle. Click a facet to select its whole tier in the tier list;
       click a row and its facets tint in the viewport. When an edit has not solved
@@ -1604,7 +1733,7 @@
       <a href="assets/images/fig_cutting_schedule.png">
         <img src="assets/images/fig_cutting_schedule.png" width="1800" height="513" alt="Cutting instructions table" loading="lazy">
       </a>
-      <figcaption>Fig. 27 — The cutting instructions of 45.148 SplitChecker 12: one row per step with facet (and its earlier number), angle and index-gear positions, split into All Steps, Pavilion and Crown, with a Copy Instructions button.</figcaption>
+      <figcaption>Fig. 31 — The cutting instructions of 45.148 SplitChecker 12: one row per step with facet (and its earlier number), angle and index-gear positions, split into All Steps, Pavilion and Crown, with a Copy Instructions button.</figcaption>
     </figure>
     <p>
       The command bar's <strong>File</strong> menu holds the design's own
@@ -1628,22 +1757,22 @@
       export first rebuilds the whole stone on the background solver, and when the
       design does not solve it exports nothing and says &ldquo;Nothing was
       exported: the design does not solve&rdquo; with the solver's reason
-      (<code>apps/indicatrix-cut/src/gui/editor/finished_stone.rs</code>).
+      (<code>apps/pleochroma-cut/src/gui/editor/finished_stone.rs</code>).
     </p>
     <figure class="fig fig-portrait" style="--fig-max: 460px">
       <a href="assets/images/fig_export_dialog.png">
         <img src="assets/images/fig_export_dialog.png" width="840" height="1834" alt="Export High-Resolution Render dialog before an export, with the Renderer row" loading="lazy">
       </a>
-      <figcaption>Fig. 28 &mdash; Export High-Resolution Render before an export: the Include Optical Diagnostics box and the material (Benitoite), the output folder and file name template, 4K output size, Rec.2020, Local Only (the remote choices are dimmed while the app checks for the remote), 12 bounces, the Renderer row with Path-Traced selected and Ray-Traced beside it, and 1024 samples per pixel, with Close, Add to Queue and Start Export.</figcaption>
+      <figcaption>Fig. 32 &mdash; Export High-Resolution Render before an export: the Include Optical Diagnostics box and the material (Emerald), the output folder and file name template, 4K output size, Rec.2020, Local Only (the remote choices are dimmed while the app checks for the remote), 12 bounces, the Renderer row with Path-Traced selected and Ray-Traced beside it, and 1024 samples per pixel, with Close, Add to Queue and Start Export.</figcaption>
     </figure>
     <dl class="deflist">
       <dt>Max resolution</dt><dd>8192 × 8192 px (<code>MAX_EXPORT_DIM</code>)</dd>
       <dt>Max samples</dt><dd>32 768 per pixel (<code>MAX_EXPORT_SPP</code>)</dd>
       <dt>Max bounces</dt><dd>128 (<code>MAX_EXPORT_BOUNCES</code>)</dd>
       <dt>Color spaces</dt><dd>sRGB, Display P3, Rec. 2020 (Display P3/Rec. 2020 exports embed an ICC profile so they aren't misread as sRGB)</dd>
-      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, the native <code>.isdd</code> design file, 8-bit PNG renders. Read and import: <code>.gem</code> and <code>.gcs</code>. Write, experimental: <code>.gcs</code>. <a href="#design-file-formats">Details below</a>.</dd>
+      <dt>File formats</dt><dd>Read and write: GemCAD <code>.asc</code>, the native <code>.psdd</code> design file, 8-bit PNG renders. Read and import: <code>.gem</code> and <code>.gcs</code>. Write, experimental: <code>.gcs</code>. <a href="#design-file-formats">Details below</a>.</dd>
     </dl>
-    <p class="small">Constants from <code>apps/indicatrix-cut/src/bridge/export_thread/params.rs</code>.</p>
+    <p class="small">Constants from <code>apps/pleochroma-cut/src/bridge/export_thread/params.rs</code>.</p>
     <p>
       The master still is an 8-bit PNG. The export dialog can also render the stone
       under several saved views in one export (<em>Also Render With These
@@ -1660,7 +1789,7 @@
       <li><strong>Header.</strong> The title (or &ldquo;Cutting instructions&rdquo;),
         an optional subtitle, &ldquo;by&rdquo; and the designer, and the month and
         year of the export. The title comes from the file details stored in the
-        <code>.isdd</code> file, falling back to the <code>.asc</code> header
+        <code>.psdd</code> file, falling back to the <code>.asc</code> header
         lines.</li>
       <li><strong>Facet Data.</strong> Tiers and facets in the pavilion, girdle and
         crown, and the totals. A tier without an index list is one facet, otherwise
@@ -1708,11 +1837,9 @@
         and a concave tier as two footnotes in cutting order. The format has no
         field for frosting, so the geometry is written and a dialog says that the
         frosting is not part of the format.</li>
-      <li><strong>Native <code>.isdd</code></strong>
-        (<code>crates/indicatrix-formats/src/native</code>): a self-contained text
-        file in TOML syntax with a versioned header. Files saved with the earlier
-        <code>.indicatrix</code> extension still open; the program only writes
-        <code>.isdd</code>. It keeps constraints, preforms, tier
+      <li><strong>Native <code>.psdd</code></strong>
+        (<code>crates/pleochroma-formats/src/native</code>): a self-contained text
+        file in TOML syntax with a versioned header. It keeps constraints, preforms, tier
         relations, concave tiers, frosted tiers and facets and a snapshot of a custom
         material, which a plain <code>.asc</code> cannot hold. A file is written as
         version 2 only when it has concave tiers, as version 3 only when a tier has a
@@ -1788,9 +1915,9 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_render_jobs.png">
-        <img src="assets/images/fig_render_jobs.png" width="1520" height="712" alt="The Render Jobs window with two queued still-image jobs" loading="lazy">
+        <img src="assets/images/fig_render_jobs.png" width="1520" height="712" alt="The Render Jobs window with a finished and a paused still-image job" loading="lazy">
       </a>
-      <figcaption>Fig. 29 &mdash; The Render Jobs window with two queued stills (1920 &times; 1080 at 64 samples and 1280 &times; 720 at 32 samples, both in the Light tent): Start Queue, the number waiting, Clear Finished and Export Script, and on each row Run Next, Up or Down, Pause, Cancel and Delete.</figcaption>
+      <figcaption>Fig. 33 &mdash; The Render Jobs window with stills of 41.029B FVS-65 (Current View, 1920 &times; 1080 at 32768 samples and 128 bounces, Rec.2020), the first Done and the second Paused: Start Queue, the counts (9 waiting, 3 paused, 1 done), Clear Finished and Export Script, and on each row buttons such as Run Next, Up or Down, Resume, Restart, Cancel, Show and Delete.</figcaption>
     </figure>
     <p>
       <strong>Start Queue</strong> renders the waiting jobs from the top down, one
@@ -1829,15 +1956,15 @@
       <code>renders/</code>. Copy it to the computer that should render and run
       <code>powershell -ExecutionPolicy Bypass -File run-render-jobs.ps1</code> or
       <code>sh run-render-jobs.sh</code>. The script calls
-      <code>indicatrix-cli</code> once per job (set <code>INDICATRIX_CLI</code> to
+      <code>pleochroma-cli</code> once per job (set <code>PLEOCHROMA_CLI</code> to
       its full path if it is not on the PATH), the engines, remote address and
       certificate folder can be changed at the top of the script, and a tilt video
       that stopped part way continues where it stopped.
     </p>
     <h3>Running a job file by hand</h3>
     <p>
-      A job is a <code>*.job.json</code> file. <code>indicatrix-cli render
-      FILE.job.json</code> renders a still and <code>indicatrix-cli tilt-video
+      A job is a <code>*.job.json</code> file. <code>pleochroma-cli render
+      FILE.job.json</code> renders a still and <code>pleochroma-cli tilt-video
       FILE.job.json</code> renders a tilt video; a file of the other kind is
       refused. Both use the program's own render engine, so the picture is the one
       the program would have made.
@@ -1880,18 +2007,18 @@
       Optimizing, Viewing, Output, Library, Preferences, and Built from the
       Library for lessons made from a design), there is a search
       box, every finished tutorial gets a Done mark, and a Reset Progress button
-      clears the marks. There are 69 short tutorials, each teaching one tool, from
+      clears the marks. There are 90 short tutorials, each teaching one tool, from
       adding a tier to angle sweeps, variants, concave tools, optical diagnostics,
       cutting mode and the Rough planner
-      (<code>crates/indicatrix-editor/src/guide/tutorials</code>).
+      (<code>crates/pleochroma-editor/src/guide/tutorials</code>).
       Two longer lessons sit beside them: the worked example, in which you build a
       round-brilliant-style stone yourself, tier by tier, and an eight-step
       welcome tour. A first-run dialog offers the tour, a start from a template,
       or nothing.
     </p>
     <p>
-      Video tutorials are on the Indicatrix YouTube channel:
-      <a href="https://www.youtube.com/@Indicatrix-Suite">https://www.youtube.com/@Indicatrix-Suite</a>.
+      Video tutorials are on the Pleochroma YouTube channel:
+      <a href="https://www.youtube.com/@Pleochroma">https://www.youtube.com/@Pleochroma</a>.
     </p>
     <p>
       A small guide panel walks through the lesson. Each step lists numbered
@@ -1925,7 +2052,7 @@
       <li>Solve and check; the step finishes when the result is a closed
         solid.</li>
       <li>Compare with the original. The lesson holds the original as the
-        snapshot, and the step finishes when every tier is cut as in the original
+        Baseline, and the step finishes when every tier is cut as in the original
         and every solved depth is within one percent of the original's.</li>
     </ol>
     <p>
@@ -1944,19 +2071,19 @@
       <a href="assets/images/fig_build_menu.png">
         <img src="assets/images/fig_build_menu.png" width="672" height="368" alt="Library card menu with the Build This Design entry" loading="lazy">
       </a>
-      <figcaption>Fig. 30 — The card menu of a library design: Generate Previews, Compute Tilt Curves, Ignore, Exclude from Planner, Build This Design and Add Tag.</figcaption>
+      <figcaption>Fig. 34 — The card menu of a library design: Generate Previews, Compute Tilt Curves, Ignore, Exclude from Planner, Build This Design and Add Tag.</figcaption>
     </figure>
     <figure class="fig fig-portrait" style="--fig-max: 440px">
       <a href="assets/images/fig_build_step1.png">
-        <img src="assets/images/fig_build_step1.png" width="520" height="960" alt="Guide panel on step 1 of 19, Start a new design" loading="lazy">
+        <img src="assets/images/fig_build_step1.png" width="520" height="1164" alt="Guide panel on step 1 of 19, Start a new design" loading="lazy">
       </a>
-      <figcaption>Fig. 31 — The guide panel on step 1 of 19 of a lesson for 41.029B FVS-65, Start a new design: New Design, start from Empty, a cylinder preform, index gear 120, symmetry order 2 with mirror on, no material yet, then Create, a line saying what to look for, a Show Me Where button and the Waiting for chip.</figcaption>
+      <figcaption>Fig. 35 — The guide panel on step 1 of 19 of a lesson for 41.029B FVS-65, Start a new design: New Design, start from Empty, a cylinder preform, index gear 120, symmetry order 2 with mirror on, no material yet, then Create, a line saying what to look for, a Show Me Where button and the Waiting for chip.</figcaption>
     </figure>
     <figure class="fig fig-portrait" style="--fig-max: 440px">
       <a href="assets/images/fig_build_step2.png">
-        <img src="assets/images/fig_build_step2.png" width="520" height="960" alt="Guide panel on step 2 of 19, Add G1 (girdle)" loading="lazy">
+        <img src="assets/images/fig_build_step2.png" width="520" height="1000" alt="Guide panel on step 2 of 19, Add G1 (girdle)" loading="lazy">
       </a>
-      <figcaption>Fig. 32 — Step 2 of 19, Add G1 (girdle), tier 1 of 15: angle -90.0, Meets Exact scale value 0.8695, name 1 and its indices, with a Show Me Where button and the Waiting for chip below the actions and Back and Next at the bottom.</figcaption>
+      <figcaption>Fig. 36 — Step 2 of 19, Add G1 (girdle), tier 1 of 15: angle -90.0, Meets Exact scale value 0.8695, name 1 and its indices, with a Show Me Where button and the Waiting for chip below the actions and Back and Next at the bottom.</figcaption>
     </figure>
     <!-- FIGURE WANTED: the tutorial browser with sections and Done marks, and the
       guide panel on a step with its Waiting for chip. -->
@@ -1976,10 +2103,10 @@
       them.&rdquo; A new installation starts in Simple; an installation used
       before the switch existed stays in Advanced. Simple hides, for example, the
       tier table's mast, solve, orbit and imported columns, the Schedule tab, Deep
-      Solve, Snapshot and Compare on the command bar, the Edit as Text and Angle
+      Solve, Set Baseline and Compare on the command bar, the Edit as Text and Angle
       Sweep commands, and the advanced render settings. Chapter 17 of the user
       manual
-      (<a href="https://github.com/suitable-name/indicatrix/blob/main/apps/indicatrix-cut/docs/manual/17-preferences-and-accessibility.md"><code>apps/indicatrix-cut/docs/manual/17-preferences-and-accessibility.md</code></a>)
+      (<a href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/17-preferences-and-accessibility.md"><code>apps/pleochroma-cut/docs/manual/17-preferences-and-accessibility.md</code></a>)
       lists them all.
     </p>
     <h3>Preferences</h3>
@@ -2037,13 +2164,13 @@
       <a href="assets/images/fig_command_palette.png">
         <img src="assets/images/fig_command_palette.png" width="1120" height="696" alt="The command palette with the word export typed and the matching commands listed" loading="lazy">
       </a>
-      <figcaption>Fig. 33 &mdash; The command palette with &ldquo;export&rdquo; typed: the matching actions with their categories and shortcuts, and one dimmed row, Show Last Saved File in Folder, with its reason (&ldquo;Nothing has been saved yet&rdquo;).</figcaption>
+      <figcaption>Fig. 37 &mdash; The command palette with &ldquo;export&rdquo; typed: the matching actions with their categories and shortcuts, and one dimmed row, Show Last Saved File in Folder, with its reason (&ldquo;Nothing has been saved yet&rdquo;).</figcaption>
     </figure>
     <figure class="fig fig-portrait" style="--fig-max: 480px">
       <a href="assets/images/fig_preferences.png">
-        <img src="assets/images/fig_preferences.png" width="960" height="1200" alt="The Preferences dialog: Interface, Appearance, Direct manipulation and Updates" loading="lazy">
+        <img src="assets/images/fig_preferences.png" width="960" height="1200" alt="The Preferences dialog: Interface, Appearance, Direct manipulation and Faceting Machine" loading="lazy">
       </a>
-      <figcaption>Fig. 34 &mdash; The Preferences dialog: the Simple and Advanced choice, Interface Scale and High Contrast, Larger Handles and Snap to Gear Steps When Dragging, and the update check (off).</figcaption>
+      <figcaption>Fig. 38 &mdash; The Preferences dialog: the Simple and Advanced choice, Interface Scale and High Contrast, Larger Handles and Snap to Gear Steps When Dragging, and the Faceting Machine section (the direction of the polishing scratches), with Done at the bottom; the Updates section (Check for New Versions) follows further down.</figcaption>
     </figure>
   </section>
 
@@ -2052,12 +2179,12 @@
     <p>
       The browser version needs no installation (see the
       <a href="web.html">web app page</a>). For the design library, GPU and remote
-      rendering, get Indicatrix for Windows from the Microsoft Store,
+      rendering, get Pleochroma for Windows from the Microsoft Store,
       <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">https://apps.microsoft.com/store/detail/9PF7KR401SNC</a>,
       where the Store keeps it updated, download the desktop application from the
       <a href="index.html#downloads">downloads</a> section of the overview, or
       install or build it with Cargo as below. Then start with the
-      <a href="https://github.com/suitable-name/indicatrix/tree/main/apps/indicatrix-cut/docs/manual">user manual</a>.
+      <a href="https://github.com/suitable-name/pleochroma/tree/main/apps/pleochroma-cut/docs/manual">user manual</a>.
       Windows, Linux and macOS are tested.
     </p>
     <h3>Install with Cargo</h3>
@@ -2073,25 +2200,25 @@
     <div class="code-block">
       <div class="code-block-head"><span>terminal — install from crates.io</span><button class="copy-btn">Copy</button></div>
       <pre><code><span class="cmt"># CPU-only build</span>
-cargo install indicatrix-cut
+cargo install pleochroma-cut
 
 <span class="cmt"># with the GPU path-tracing backend</span>
-cargo install indicatrix-cut --features gpu
+cargo install pleochroma-cut --features gpu
 
 <span class="cmt"># then start it (HDR environment-map loading is always included)</span>
-indicatrix-cut
+pleochroma-cut
 
 <span class="cmt"># optional: the coordinator / remote render worker</span>
-cargo install indicatrix-worker --features worker</code></pre>
+cargo install pleochroma-worker --features worker</code></pre>
     </div>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — build from source</span><button class="copy-btn">Copy</button></div>
-      <pre><code>git clone https://github.com/suitable-name/indicatrix.git
-cd indicatrix
-cargo run -p indicatrix-cut --release
+      <pre><code>git clone https://github.com/suitable-name/pleochroma.git
+cd pleochroma
+cargo run -p pleochroma-cut --release
 
 <span class="cmt"># with the GPU compute kernel</span>
-cargo run -p indicatrix-cut --release --features gpu</code></pre>
+cargo run -p pleochroma-cut --release --features gpu</code></pre>
     </div>
     <p>
       The repository's own build scripts (<code>scripts/pgo-build.ps1</code>,
@@ -2099,33 +2226,34 @@ cargo run -p indicatrix-cut --release --features gpu</code></pre>
       macOS, install with Cargo. Every crate's crates.io and docs.rs pages are
       listed in the <a href="index.html#workspace">workspace table</a>, and the
       renderer library's API reference is
-      <a href="https://docs.rs/indicatrix">docs.rs/indicatrix</a>. The remote worker
-      quick start and the headless <code>indicatrix-worker render</code> command are
+      <a href="https://docs.rs/pleochroma">docs.rs/pleochroma</a>. The remote worker
+      quick start and the headless <code>pleochroma-worker render</code> command are
       on the <a href="distributed.html#cluster-setup">distributed rendering page</a>.
     </p>
     <p>
-      The desktop app writes a log file (<code>indicatrix-cut.log</code>, next to the
+      The desktop app writes a log file (<code>pleochroma-cut.log</code>, next to the
       executable, falling back to the temp directory) for diagnosing a
       background-thread failure. Verbosity follows <code>RUST_LOG</code>, defaulting
       to <code>warn</code> everywhere and <code>info</code> for
-      <code>indicatrix</code> and <code>indicatrix_cut</code>
-      (<code>apps/indicatrix-cut/src/main.rs</code>). The library is a local
-      database file, <code>facet_diagrams.sqlite</code>, opened relative to the folder
-      the program is started from: starting it from another folder opens (or creates)
-      a different, empty-looking library. Settings are saved automatically to
-      <code>settings.toml</code> (in <code>%APPDATA%\indicatrix-cut</code> on Windows,
-      <code>~/Library/Application Support/indicatrix-cut</code> on macOS, and
-      <code>$XDG_CONFIG_HOME/indicatrix-cut</code> or <code>~/.config/indicatrix-cut</code>
+      <code>pleochroma</code> and <code>pleochroma_cut</code>
+      (<code>apps/pleochroma-cut/src/main.rs</code>). The library is a local
+      database file, <code>facet_diagrams.sqlite</code>: the one in the folder the
+      program is started from if it exists there, otherwise the one beside
+      <code>settings.toml</code>, created on the first start
+      (<code>PLEOCHROMA_LIBRARY</code> names any other file). Settings are saved automatically to
+      <code>settings.toml</code> (in <code>%APPDATA%\pleochroma-cut</code> on Windows,
+      <code>~/Library/Application Support/pleochroma-cut</code> on macOS, and
+      <code>$XDG_CONFIG_HOME/pleochroma-cut</code> or <code>~/.config/pleochroma-cut</code>
       on Linux); a damaged file is renamed aside and the defaults are used.
     </p>
     <h3>The command-line tool</h3>
     <p>
-      <code>indicatrix-cli</code> runs the same solver, optimizer, retarget gate and
+      <code>pleochroma-cli</code> runs the same solver, optimizer, retarget gate and
       sweep as the editor without a window or a GPU, so a number printed there is
-      the number the editor shows. A design is an <code>.isdd</code> (or an older <code>.indicatrix</code>),
+      the number the editor shows. A design is a <code>.psdd</code>,
       <code>.asc</code>, <code>.gem</code> or <code>.gcs</code> file, read from its
       extension. Every command that takes a design takes several, for example
-      <code>indicatrix-cli metrics *.isdd --csv</code>; each runs as it would
+      <code>pleochroma-cli metrics *.psdd --csv</code>; each runs as it would
       alone, and a design that fails prints its error under its name while the
       others still run.
     </p>
@@ -2133,30 +2261,30 @@ cargo run -p indicatrix-cut --release --features gpu</code></pre>
       <thead><tr><th>Command</th><th>What it does</th></tr></thead>
       <tbody>
         <tr><td><code>info</code></td><td>Name, gear, symmetry, preform, material and the tier list, with each tier's standard code. Does not solve.</td></tr>
-        <tr><td><code>solve</code></td><td>Solves every tier, checks that the facets enclose a stone and lists the manufacturability warnings; <code>--out</code> saves an <code>.isdd</code>, which also converts an <code>.asc</code>, <code>.gem</code> or <code>.gcs</code>.</td></tr>
+        <tr><td><code>solve</code></td><td>Solves every tier, checks that the facets enclose a stone and lists the manufacturability warnings; <code>--out</code> saves a <code>.psdd</code>, which also converts an <code>.asc</code>, <code>.gem</code> or <code>.gcs</code>.</td></tr>
         <tr><td><code>metrics</code></td><td>Table-up windowing, brilliance, extinction, fire and scintillation, the proportions and the yield; <code>--tilt</code> adds the tilt averages.</td></tr>
         <tr><td><code>validate</code></td><td>The warnings and the Good, Check or Problem verdict of the status strip.</td></tr>
         <tr><td><code>optimize</code></td><td>The Optimize tab's search, with ranked candidates; <code>--budget</code> (default 800), <code>--starts</code> (1 to 32, default 8), <code>--seed</code>, <code>--preset</code>; <code>--out</code> saves the best.</td></tr>
         <tr><td><code>retarget</code></td><td>The Retarget dialog's engine and validity gate for another material (<code>--mode shift|optimize</code>, <code>--crown-fraction</code>, <code>--crown-ratio</code>, <code>--no-keep-look</code>, <code>--girdle-allowance</code>, which thickens the girdle by up to 10 % as the dialog does but is off unless given).</td></tr>
         <tr><td><code>sweep</code></td><td>Sets one tier to every angle of a range and scores each one (<code>--csv</code>).</td></tr>
-        <tr><td><code>export</code></td><td>Writes <code>.asc</code>, <code>.isdd</code>, <code>.gcs</code> or the cutting sheet as <code>.html</code>.</td></tr>
+        <tr><td><code>export</code></td><td>Writes <code>.asc</code>, <code>.psdd</code>, <code>.gcs</code> or the cutting sheet as <code>.html</code>.</td></tr>
         <tr><td><code>render</code>, <code>tilt-video</code></td><td>Render a job file made by the render queue (<a href="#render-jobs">section 14</a>).</td></tr>
       </tbody>
     </table>
     <div class="code-block">
       <div class="code-block-head"><span>terminal — command-line tool (no window)</span><button class="copy-btn">Copy</button></div>
-      <pre><code><span class="cmt"># from a clone of the repository (an installed binary is just: indicatrix-cli info round.asc)</span>
-cargo run -p indicatrix-cli --release -- info round.asc
-cargo run -p indicatrix-cli --release -- solve round.asc --out round.isdd
-cargo run -p indicatrix-cli --release -- metrics round.isdd --material Sapphire --json
-cargo run -p indicatrix-cli --release -- validate round.asc --json
-cargo run -p indicatrix-cli --release -- optimize round.isdd --preset brilliance --budget 400 --starts 4 --seed 7 --out better.isdd
-cargo run -p indicatrix-cli --release -- retarget round.isdd --material Sapphire --crown-fraction 0.33 --out sapphire.isdd
-cargo run -p indicatrix-cli --release -- sweep round.isdd --tier "Pavilion Main" --from 39 --to 43 --step 0.5 --csv sweep.csv
-cargo run -p indicatrix-cli --release -- export round.isdd --format html --out sheet.html
+      <pre><code><span class="cmt"># from a clone of the repository (an installed binary is just: pleochroma-cli info round.asc)</span>
+cargo run -p pleochroma-cli --release -- info round.asc
+cargo run -p pleochroma-cli --release -- solve round.asc --out round.psdd
+cargo run -p pleochroma-cli --release -- metrics round.psdd --material Sapphire --json
+cargo run -p pleochroma-cli --release -- validate round.asc --json
+cargo run -p pleochroma-cli --release -- optimize round.psdd --preset brilliance --budget 400 --starts 4 --seed 7 --out better.psdd
+cargo run -p pleochroma-cli --release -- retarget round.psdd --material Sapphire --crown-fraction 0.33 --out sapphire.psdd
+cargo run -p pleochroma-cli --release -- sweep round.psdd --tier "Pavilion Main" --from 39 --to 43 --step 0.5 --csv sweep.csv
+cargo run -p pleochroma-cli --release -- export round.psdd --format html --out sheet.html
 
 <span class="cmt"># every command has its own help page</span>
-cargo run -p indicatrix-cli --release -- retarget --help</code></pre>
+cargo run -p pleochroma-cli --release -- retarget --help</code></pre>
     </div>
     <p>
       Angles are positive numbers, as the tier table shows them: the tier says which
@@ -2182,17 +2310,17 @@ cargo run -p indicatrix-cli --release -- retarget --help</code></pre>
       <code>.gcs</code> export is experimental, as in the editor. A newer release
       is named in one line on standard error, never on standard output;
       <code>--no-update-check</code> turns that off.
-      The tool lives in <code>apps/indicatrix-cli</code>.
+      The tool lives in <code>apps/pleochroma-cli</code>.
     </p>
   </section>
 
   <section id="ray-traced-update">
     <h2>Ray-Traced and Path-Traced</h2>
-    <p>Edit has Solid, Ray-Traced (key 5), Path-Traced, Both and Diagram; Live Render also offers Ray-Traced. Advanced settings expose Anti-Aliasing and Fire. Export freezes the chosen engine and options; thumbnails can use Ray-Traced, and Compare uses eight taps with Fire.</p>
+    <p>Edit has Solid, Ray-Traced (key 5), Path-Traced and Diagram, and Solid with a tracer draws the facet edges over its picture; Live Render also offers Ray-Traced. Advanced settings expose Anti-Aliasing and Fire. Export freezes the chosen engine and options; thumbnails can use Ray-Traced, and Compare uses eight taps with Fire.</p>
     <p>Ray-Traced is a deterministic approximation: one d-line index, or three fixed indices with Fire, RGB absorption tint and 1/4/8/16 AA taps. It finishes at the tap count without denoising. It omits polarization, birefringent doubling, scattering, zoning and edge rounding. Path-Traced retains the spectral model. Optical metrics, tilt sweeps and diagnostics keep their separate analytic tracer.</p>
     <figure class="fig">
       <a href="assets/images/fig_retarget_ray.jpg"><img src="assets/images/fig_retarget_ray.jpg" width="1800" height="1153" alt="Retarget for Material dialog with the Ray-Traced switch, before and after side by side" loading="lazy"></a>
-      <figcaption>Fig. 35 &mdash; Retarget for Material with the Ray-Traced switch: the same Astryx Star retarget to Sapphire, before and after side by side at eight anti-aliasing taps, with the note on what Ray-Traced leaves out above the pictures.</figcaption>
+      <figcaption>Fig. 39 &mdash; Retarget for Material with the Ray-Traced switch: the same Astryx Star retarget to Sapphire, before and after side by side at eight anti-aliasing taps, with the note on what Ray-Traced leaves out above the pictures.</figcaption>
     </figure>
   </section>
 
@@ -2200,7 +2328,7 @@ cargo run -p indicatrix-cli --release -- retarget --help</code></pre>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
+    <p>Pleochroma Gem Design Suite · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/pleochroma/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/pleochroma">Source on GitHub</a> · <a href="https://crates.io/crates/pleochroma">crates.io</a> · <a href="https://docs.rs/pleochroma">docs.rs</a> · <a href="https://www.youtube.com/@Pleochroma">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

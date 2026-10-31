@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gemstone optics and physics — Indicatrix</title>
-<meta name="description" content="The optics behind Indicatrix: hero-wavelength spectral sampling, Sellmeier dispersion, Stokes-Mueller polarization, uniaxial and biaxial crystal optics, pleochroic absorption fitted to measured spectra, concave tools and the GPU equivalence harness.">
+<title>Gemstone optics and physics — Pleochroma</title>
+<meta name="description" content="The optics behind Pleochroma: hero-wavelength spectral sampling, Sellmeier dispersion, Stokes-Mueller polarization, uniaxial and biaxial crystal optics, pleochroic absorption fitted to measured spectra, concave tools and the GPU equivalence harness.">
 <!-- seo:start -->
-<link rel="canonical" href="https://www.indicatrix-suite.com/physics.html">
+<link rel="canonical" href="https://pleochroma.com/physics.html">
 <meta name="theme-color" content="#16171a">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Indicatrix">
-<meta property="og:title" content="Gemstone optics and physics — Indicatrix">
-<meta property="og:description" content="The optics behind Indicatrix: hero-wavelength spectral sampling, Sellmeier dispersion, Stokes-Mueller polarization, uniaxial and biaxial crystal optics, pleochroic absorption fitted to measured spectra, concave tools and the GPU equivalence harness.">
-<meta property="og:url" content="https://www.indicatrix-suite.com/physics.html">
-<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:site_name" content="Pleochroma">
+<meta property="og:title" content="Gemstone optics and physics — Pleochroma">
+<meta property="og:description" content="The optics behind Pleochroma: hero-wavelength spectral sampling, Sellmeier dispersion, Stokes-Mueller polarization, uniaxial and biaxial crystal optics, pleochroic absorption fitted to measured spectra, concave tools and the GPU equivalence harness.">
+<meta property="og:url" content="https://pleochroma.com/physics.html">
+<meta property="og:image" content="https://pleochroma.com/assets/images/fig_fvs_hero.jpg">
 <meta property="og:image:width" content="1800">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Pleochroma&#x27;s spectral path tracer">
 <meta name="twitter:card" content="summary_large_image">
 <!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
@@ -26,7 +26,7 @@
 
 <header class="masthead">
   <div class="container">
-    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Pleochroma</a>
     <nav>
       <a href="index.html">Overview</a>
       <a href="physics.html" aria-current="page">Physics</a>
@@ -39,7 +39,7 @@
       <a href="gallery.html">Figures</a>
       <a href="project.html">Project</a>
     </nav>
-    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+    <a href="https://github.com/suitable-name/pleochroma" class="gh-link">GitHub</a>
   </div>
 </header>
 
@@ -47,7 +47,7 @@
   <div class="page-head">
     <span class="tag">Reference</span>
     <h1>Physics &amp; optics</h1>
-    <p class="subtitle">What Indicatrix actually computes, and where it lives in the source tree.</p>
+    <p class="subtitle">What Pleochroma actually computes, and where it lives in the source tree.</p>
   </div>
 
   <section id="glance">
@@ -64,12 +64,12 @@
         <tr>
           <td>Sampling</td>
           <td>Hero-wavelength spectral sampling, 8 channels per path</td>
-          <td>One hero wavelength plus 7 rotated companions per ray (<code>NUM_CHANNELS</code>, <code>crates/indicatrix/src/optics/raytracer/mod.rs</code>)</td>
+          <td>One hero wavelength plus 7 rotated companions per ray (<code>NUM_CHANNELS</code>, <code>crates/pleochroma/src/optics/raytracer/mod.rs</code>)</td>
         </tr>
         <tr>
           <td>Dispersion</td>
           <td>Sellmeier / Cauchy dispersion per material</td>
-          <td>34 built-in materials, each with a cited or derived fit (<code>crates/indicatrix/src/optics/materials/</code>, see the <a href="materials.html">materials page</a>). A custom material can carry its own Sellmeier or Cauchy coefficients, which are validated before use (<code>optics/dispersion.rs</code>)</td>
+          <td>38 built-in materials, each with a cited or derived fit (<code>crates/pleochroma/src/optics/materials/</code>, see the <a href="materials.html">materials page</a>). A custom material can carry its own Sellmeier or Cauchy coefficients, which are validated before use (<code>optics/dispersion.rs</code>)</td>
         </tr>
         <tr>
           <td>Polarization</td>
@@ -79,7 +79,7 @@
         <tr>
           <td>Anisotropy</td>
           <td>Uniaxial and biaxial crystal optics</td>
-          <td>Ordinary/extraordinary ray splitting and Poynting walk-off (<code>optics/birefringence/</code>, GPU port in <code>renderer/gpu/transport_check/eigenmodes_uniaxial.rs</code>)</td>
+          <td>Ordinary/extraordinary ray splitting and Poynting walk-off, with a refractive-index curve per ray where one is published (<code>optics/birefringence/</code>, GPU port in <code>renderer/gpu/transport_check/eigenmodes_uniaxial.rs</code>)</td>
         </tr>
         <tr>
           <td>Absorption</td>
@@ -99,7 +99,17 @@
         <tr>
           <td>Inclusions</td>
           <td>Henyey&ndash;Greenstein volumetric scattering</td>
-          <td>Optional per-material silk/haze scattering parameters, defined in <code>optics/materials/</code> and consumed by the Henyey&ndash;Greenstein estimator in <code>optics/raytracer/scattering/hg.rs</code></td>
+          <td>Optional per-material silk/haze scattering parameters, defined in <code>optics/materials/</code> and consumed by the Henyey&ndash;Greenstein estimator in <code>optics/raytracer/scattering/hg.rs</code>. Oriented needles and plates scatter by direction and wavelength (<code>scattering/oriented.rs</code>)</td>
+        </tr>
+        <tr>
+          <td>Structural color</td>
+          <td>Bragg reflection from a procedural domain map, by spectral delta tracking</td>
+          <td>Play-of-color of opal and schiller of labradorite (<code>optics/inclusions/bragg.rs</code>, <code>scattering/delta_tracking.rs</code>)</td>
+        </tr>
+        <tr>
+          <td>Surface finish</td>
+          <td>Total integrated scatter of a polish, GGX halo and ground facets</td>
+          <td>The exact interface physics at a sampled micro-normal (<code>optics/raytracer/surface/</code>)</td>
         </tr>
       </tbody>
     </table>
@@ -115,8 +125,8 @@
       far more slowly, since each pixel's channels are decorrelated.
     </p>
     <p>
-      Indicatrix’s Path-Traced engine instead traces 8 wavelengths per ray at once
-      (<code>NUM_CHANNELS</code>, <code>crates/indicatrix/src/optics/raytracer/mod.rs</code>):
+      Pleochroma’s Path-Traced engine instead traces 8 wavelengths per ray at once
+      (<code>NUM_CHANNELS</code>, <code>crates/pleochroma/src/optics/raytracer/mod.rs</code>):
       a hero wavelength λ₀ drawn uniformly over the visible range 380–780&nbsp;nm,
       plus 7 companions spaced by a fixed fractional offset and wrapped into
       the same range (<code>wrapped_hero_wavelengths</code>,
@@ -156,7 +166,7 @@ delta = (lambda_max - lambda_min) / 8</code></pre></div>
     <p>
       Rather than three fixed indices for red, green, and blue, each built-in
       material carries a dispersion model evaluated at the ray's actual
-      wavelength (<code>crates/indicatrix/src/optics/dispersion.rs</code>,
+      wavelength (<code>crates/pleochroma/src/optics/dispersion.rs</code>,
       <code>optics/materials/</code>, one file per group of species).
     </p>
     <h3>3-term Sellmeier</h3>
@@ -210,7 +220,7 @@ delta = (lambda_max - lambda_min) / 8</code></pre></div>
       before it exits. Treating reflectance as an unpolarized scalar
       probability misses the polarization state that builds up over those
       bounces, including total-internal-reflection phase retardation.
-      Indicatrix represents light as a 4-component Stokes vector
+      Pleochroma represents light as a 4-component Stokes vector
       (<code>optics/polarization.rs</code>):
     </p>
     <div class="code-block"><pre><code>S = [ I, Q, U, V ]</code></pre></div>
@@ -252,11 +262,26 @@ delta = delta_p - delta_s</code></pre></div>
     <h3>Biaxial (Alexandrite, Topaz, Tanzanite, Peridot, Andalusite...)</h3>
     <p>
       Two optical axes and three distinct principal indices n_α ≤ n_β ≤ n_γ.
-      Indicatrix's <code>BiaxialIndicatrix</code> solver evaluates the wave
+      Pleochroma's <code>BiaxialIndicatrix</code> solver evaluates the wave
       surface for both modes on CPU and, in the current build, in the
       compute kernel as well — every built-in material, biaxial or uniaxial,
       is GPU-supported (<code>GemMaterial::gpu_supported</code> is
       unconditional).
+    </p>
+    <h3 id="ray-curves">A curve for each ray</h3>
+    <p>
+      Each principal index has its own dispersion. A uniaxial material may carry
+      a separate extraordinary-ray curve (<code>uniaxial_extraordinary_dispersion</code>),
+      and a biaxial one a curve for the alpha and the gamma ray
+      (<code>biaxial_principal_dispersion</code>, the beta ray being the main
+      curve), sorted at each wavelength so the magnitude labels cannot swap. The
+      published fits used are the extraordinary ray of sapphire and ruby
+      (Malitson and Dodge 1972), of 6H moissanite (Wang 2013), and the alpha and
+      gamma rays of alexandrite (Walling 1980, with no crossing between 380 and
+      780&nbsp;nm), which chrysoberyl (yellow) also takes. The walk-off direction
+      uses the same index as the refraction at every wavelength, on the processor
+      and in the GPU kernels, so the doubled images separate by color. A material
+      without a curve is unchanged bit for bit.
     </p>
   </section>
 
@@ -265,22 +290,24 @@ delta = delta_p - delta_s</code></pre></div>
     <p>
       Pleochroic gemstones show different color along different
       crystallographic directions because absorption depends on the electric
-      field's orientation relative to the crystal. Indicatrix evaluates a
+      field's orientation relative to the crystal. Pleochroma evaluates a
       per-direction absorption tensor via the Beer–Lambert law
       (<code>optics/raytracer/absorption.rs</code>):
     </p>
     <div class="code-block"><pre><code>T(lambda) = exp( - A(lambda, E_hat) * d )</code></pre></div>
     <p>where <code>d</code> is the chord length through the material and <code>E_hat</code> is the ray's electric-field direction.</p>
+    <p>The direction of the crystal in the cut stone decides which color you see face-up. A stone can set that direction (and, for a biaxial crystal, a second direction) and the color, the doubling and the metrics follow it; see <a href="crystal-axis.html">the crystal axis page</a>.</p>
     <ul>
       <li><strong>Dichroism</strong> (uniaxial materials): distinct ordinary- and extraordinary-ray absorption bands.</li>
       <li><strong>Trichroism</strong> (biaxial materials): three independent absorption spectra along α, β, γ — the mechanism behind Alexandrite's color change and Tanzanite's polarized absorption.</li>
     </ul>
+    <p>The color of a pleochroic stone is kept when you change it. A <a href="materials.html#color-variants">color variant</a> (Pink or Yellow sapphire, Rubellite or Verdelite tourmaline, and so on) is a full per-direction absorption tensor: many are fitted to measured, mostly polarized spectra of the variety and the others are built from published band positions; almost all use a strength chosen for a typical face-up color and are marked as estimated. A color made in the custom color editor has one color for each direction (Along and Across for a one-axis crystal, Alpha, Beta and Gamma for a two-axis one). Only a material that has one color in every direction, such as a cubic crystal or a glass, is given a single even absorption.</p>
   </section>
 
   <section id="polyhedral">
     <h2><span class="sec-num">7</span>Half-space geometry and concave tools</h2>
     <p>
-      Instead of tessellating a gemstone into a triangle mesh, Indicatrix
+      Instead of tessellating a gemstone into a triangle mesh, Pleochroma
       represents each facet as an infinite planar half-space with outward
       unit normal n<sub>i</sub> and signed distance d<sub>i</sub>
       (<code>geometry/plane.rs</code>):
@@ -290,7 +317,7 @@ delta = delta_p - delta_s</code></pre></div>
     <h3>Concave facets: tools subtracted from the stone</h3>
     <p>
       A concave facet is the surface a shaped tool leaves, so it is not a
-      plane. Indicatrix keeps the planes and subtracts the tools: the stone is
+      plane. Pleochroma keeps the planes and subtracts the tools: the stone is
       P minus the union of the tool volumes T<sub>k</sub>
       (<code>geometry/tool.rs</code>). Each T<sub>k</sub> is convex: a ball (a
       sphere or dimple), a capped cylinder (a cylinder, or a circle as a short
@@ -342,7 +369,66 @@ delta = delta_p - delta_s</code></pre></div>
       shared path and reweighted per channel. A scattering point samples the
       environment directly and combines that with the phase-sampled
       continuation by a balance-heuristic weight (see the HDR paragraph in the
-      lighting section below), and a frosted facet&rsquo;s diffuse exit does the same.
+      lighting section below), and a frosted facet&rsquo;s exit does the same.
+    </p>
+    <h3 id="oriented-inclusions">Oriented inclusions</h3>
+    <p>
+      Needles and plates that all point one way make the scattering coefficient
+      depend on the direction of travel and the wavelength:
+      a needle extinguishes in proportion to the sine of the angle to its axis, a
+      plate in proportion to the cosine of the angle to its normal, and each is
+      scaled by (550&nbsp;nm / &lambda;) to a power of 0, 1, 2 or 4 (fine silk
+      scatters blue). Along one straight segment the direction is constant and the
+      medium homogeneous, so the same exponential free-path sampler applies. The
+      event picks one component of the mixture and samples its phase function; the
+      direction is shared by all eight channels and each owes the ratio of its own
+      mixture to the hero&rsquo;s. A needle scatters onto the cone that keeps the
+      component of the direction along its axis (a logistic kernel in that
+      component, a wrapped Cauchy distribution in the azimuth), which is the
+      physical origin of asterism and chatoyancy. A plate is a microflake mirror.
+      The inclusions are placed in the crystal frame, so they follow the crystal
+      axis (<code>optics/inclusions/</code>).
+    </p>
+    <h3 id="bragg">Bragg domains</h3>
+    <p>
+      Play-of-color and schiller are Bragg reflections from ordered domains. A
+      jittered grid with integer hashes (identical on the processor and the
+      graphics card) gives each domain a lattice normal, a period and an on/off
+      state. The first-order wavelength is 2&middot;d&middot;n&middot;cos&thinsp;&theta; (opal
+      about 2.33 times the sphere diameter; labradorite 2&middot;1.56 times the
+      lamella period), with a weak second order, and the reflection direction does
+      not depend on wavelength, so it fits hero-wavelength sampling. The free
+      flight is sampled by <strong>spectral delta tracking</strong>: tentative
+      collisions at a majorant rate, a real reflection accepted with the
+      hero&rsquo;s probability, and per-channel weights that are real-to-hero or
+      null-to-hero ratios, both non-negative because the majorant is a true bound.
+    </p>
+    <h3 id="surface-finish">Rough surfaces</h3>
+    <p>
+      A polished facet with an RMS roughness R<sub>q</sub> well below the
+      wavelength keeps its sharp specular event and scatters a fraction
+      1 &minus; exp(&minus;(4&pi; n R<sub>q</sub> cos&thinsp;&theta; / &lambda;)<sup>2</sup>) into
+      a halo (Bennett and Porteus; Harvey and co-workers). With that probability a
+      micro-normal is drawn from the visible-normal distribution of an anisotropic
+      GGX lobe and the <em>unchanged</em> polished dispatch runs at that normal, so
+      uniaxial entry, biaxial modes, total internal reflection and exit splitting
+      stay exact; the throughput is then corrected channel by channel for the
+      branch taken. The halo width is 2&thinsp;R<sub>q</sub>/&ell;<sub>c</sub>, stretched
+      across the scratches. The direction of the scratches comes from the
+      faceting machine: the tangent of the lap at the contact point, with the
+      contact radius drawn uniformly over the sweep of the last polishing pass, so
+      the fan of directions is part of the image.
+    </p>
+    <p>
+      A ground (frosted) facet is a GGX rough dielectric (Walter and co-workers;
+      Heitz), replacing the older cosine-weighted bounce. A single-scatter GGX
+      interface loses energy, so each event is divided by a tabulated directional
+      albedo (a Kulla&ndash;Conty-style compensation, indexed by roughness, incidence
+      angle and index ratio, one table for both sides of the interface), and a
+      lossless rough slab keeps its energy in the white furnace. Abraded edges are
+      a ground band found with the same nearest-plane search as edge rounding. The
+      effects are opt-in; with none switched on the trace is bit-identical to one
+      without the code.
     </p>
   </section>
 
@@ -353,7 +439,7 @@ delta = delta_p - delta_s</code></pre></div>
       <li>Spectral radiance in each of the 8 channels is integrated against the tabulated CIE 1931 2° color-matching functions (380–780&nbsp;nm, 5&nbsp;nm steps, <code>color/cie1931.rs</code>) to obtain CIE XYZ (<code>optics/raytracer/color.rs</code>).</li>
       <li>An ACES filmic tone-mapping curve (Narkowicz 2015 fit) is applied to the luminance channel before the vector is scaled back into RGB, avoiding hue shift on saturated dispersion fire (<code>color/space.rs</code>).</li>
       <li>Out-of-gamut colors are compressed back into the target space; supported output spaces are sRGB, Display P3, and Rec. 2020 (<code>color/gamut.rs</code>, <code>color/space.rs</code>).</li>
-      <li>PNG exports from the desktop studio are 8-bit RGBA; any non-sRGB export (Display P3, Rec. 2020) embeds an ICC profile identifying that color space, while sRGB exports are written untagged (<code>apps/indicatrix-cut/src/bridge/export_thread/tonemap_png.rs</code>; the ICC profile builder is <code>crates/indicatrix/src/render_setup/icc_profile.rs</code>).</li>
+      <li>PNG exports from the desktop studio are 8-bit RGBA; any non-sRGB export (Display P3, Rec. 2020) embeds an ICC profile identifying that color space, while sRGB exports are written untagged (<code>apps/pleochroma-cut/src/bridge/export_thread/tonemap_png.rs</code>; the ICC profile builder is <code>crates/pleochroma/src/render_setup/icc_profile.rs</code>).</li>
     </ul>
   </section>
 
@@ -366,7 +452,7 @@ delta = delta_p - delta_s</code></pre></div>
       (<code>optics/raytracer/environment/</code>):
     </p>
     <ul>
-      <li><strong>Studio</strong> (<code>Daylight</code>, <code>Incandescent</code>, <code>IlluminantA</code> at 2856&nbsp;K, <code>RingLights</code>, <code>DarkSpotlight</code>) — a charcoal backdrop, one key softbox, one fill, and sixteen ring pinpoints. Its arithmetic is pinned bit for bit by tables in <code>crates/indicatrix/tests/raytracer_tests/golden_regression.rs</code> (which are re-pinned whenever a deliberate physics change moves them).</li>
+      <li><strong>Studio</strong> (<code>Daylight</code>, <code>Incandescent</code>, <code>IlluminantA</code> at 2856&nbsp;K, <code>RingLights</code>, <code>DarkSpotlight</code>) — a charcoal backdrop, one key softbox, one fill, and sixteen ring pinpoints. Its arithmetic is pinned bit for bit by tables in <code>crates/pleochroma/tests/raytracer_tests/golden_regression.rs</code> (which are re-pinned whenever a deliberate physics change moves them).</li>
       <li><strong>Grading tray</strong> (<code>IsoHemisphere</code>, formerly &ldquo;ISO hemisphere&rdquo;; the preset is labelled D65 hemisphere + head shadow) — the whole upper hemisphere at radiance 1 and nothing below the girdle plane: the reference case, with no directional structure to flatter a cut. It is the scoring light: Optimize and Retarget score every design under it, and it is flat by design, so a tilt video under it shows no sparkle.</li>
       <li><strong>Light tent</strong>, the default preset &mdash; dim tent walls, one broad overhead softbox, three black cards on the ring positions away from the key, one small hard spark light, black velvet below the girdle. The black cards are the contrast a jewellery photographer adds so a bright stone reads as a facet pattern instead of a white blur.</li>
       <li><strong>Light-tent variants</strong> (<code>WhiteTray</code>, <code>ShopLights</code>, <code>WindowDaylight</code>) — the same model with other parameters, all lit by a D65 spectrum: a white tray lit from below with bright, perfectly even walls and no cards or spark; a bright diffuse jewellery-shop ceiling with small pinpoint spots; and a dim room lit by one broad window, a single soft key with no cards or spark. The built-in <em>Window daylight</em> view places that key at 30&deg; elevation.</li>
@@ -450,9 +536,9 @@ delta = delta_p - delta_s</code></pre></div>
   <section id="gpu-harness">
     <h2><span class="sec-num">11</span>GPU equivalence harness</h2>
     <p>
-      The optional GPU backend (<code>crates/indicatrix/src/renderer/gpu</code>) runs a hand-maintained
+      The optional GPU backend (<code>crates/pleochroma/src/renderer/gpu</code>) runs a hand-maintained
       WGSL port of the transport physics, not a compiled translation: the shader units under
-      <code>crates/indicatrix/src/renderer/shaders</code> are concatenated by <code>build.rs</code>
+      <code>crates/pleochroma/src/renderer/shaders</code> are concatenated by <code>build.rs</code>
       and dispatched as a compute kernel. It is checked against
       the CPU reference by a tiered harness rather than a single pass/fail comparison:
     </p>
@@ -471,7 +557,7 @@ delta = delta_p - delta_s</code></pre></div>
         </tr>
         <tr>
           <td>Tier 3</td>
-          <td>Full rendered images, CPU vs. GPU, for a representative subset of the built-in materials, about 9 of the 34 (Spinel, Zircon, Tourmaline, Quartz, Rutile, Synthetic Moissanite, Alexandrite, Topaz, Tanzanite; <code>renderer/gpu/estimator_check/image_comparison.rs</code>), plus one concave stone, a round brilliant with a ball dimple and a cylinder groove (<code>renderer/gpu/estimator_check/image_comparison_concave.rs</code>), and further scenes for a frosted girdle, inclusion scattering, edge rounding, color zones, each lighting model, surface glare and HDR environment light</td>
+          <td>Full rendered images, CPU vs. GPU, for a representative subset of the built-in materials, about 9 of the 38 (Spinel, Zircon, Tourmaline, Quartz, Rutile, Synthetic Moissanite, Alexandrite, Topaz, Tanzanite; <code>renderer/gpu/estimator_check/image_comparison.rs</code>), plus one concave stone, a round brilliant with a ball dimple and a cylinder groove (<code>renderer/gpu/estimator_check/image_comparison_concave.rs</code>), and further scenes for a frosted girdle, inclusion scattering, edge rounding, color zones, each lighting model, surface glare and HDR environment light</td>
           <td>Statistical (Welford mean/variance) equivalence</td>
         </tr>
         <tr>
@@ -491,7 +577,7 @@ delta = delta_p - delta_s</code></pre></div>
       a non-finite sample but still counts it, under one shared rule). The example harness can be run
       locally against your own GPU adapter:
     </p>
-    <div class="code-block"><pre><code>cargo run --profile probe -p indicatrix --features gpu --example gpu_equivalence_harness</code></pre></div>
+    <div class="code-block"><pre><code>cargo run --profile probe -p pleochroma --features gpu --example gpu_equivalence_harness</code></pre></div>
   </section>
 
   <section id="ray-traced-update">
@@ -504,7 +590,7 @@ delta = delta_p - delta_s</code></pre></div>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
+    <p>Pleochroma Gem Design Suite · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/pleochroma/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/pleochroma">Source on GitHub</a> · <a href="https://crates.io/crates/pleochroma">crates.io</a> · <a href="https://docs.rs/pleochroma">docs.rs</a> · <a href="https://www.youtube.com/@Pleochroma">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Faceting design in the browser — Indicatrix web app</title>
-<meta name="description" content="Indicatrix in the browser: open or start a faceting design, edit and solve it, and render it on the GPU or your CPU cores. A start-up test picks what your device can use. Nothing to install, nothing uploaded.">
+<title>Faceting design in the browser — Pleochroma web app</title>
+<meta name="description" content="Pleochroma in the browser: open or start a faceting design, edit and solve it, and render it on the GPU or your CPU cores. A start-up test picks what your device can use. Nothing to install, nothing uploaded.">
 <!-- seo:start -->
-<link rel="canonical" href="https://www.indicatrix-suite.com/web.html">
+<link rel="canonical" href="https://pleochroma.com/web.html">
 <meta name="theme-color" content="#16171a">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Indicatrix">
-<meta property="og:title" content="Faceting design in the browser — Indicatrix web app">
-<meta property="og:description" content="Indicatrix in the browser: open or start a faceting design, edit and solve it, and render it on the GPU or your CPU cores. A start-up test picks what your device can use. Nothing to install, nothing uploaded.">
-<meta property="og:url" content="https://www.indicatrix-suite.com/web.html">
-<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:site_name" content="Pleochroma">
+<meta property="og:title" content="Faceting design in the browser — Pleochroma web app">
+<meta property="og:description" content="Pleochroma in the browser: open or start a faceting design, edit and solve it, and render it on the GPU or your CPU cores. A start-up test picks what your device can use. Nothing to install, nothing uploaded.">
+<meta property="og:url" content="https://pleochroma.com/web.html">
+<meta property="og:image" content="https://pleochroma.com/assets/images/fig_fvs_hero.jpg">
 <meta property="og:image:width" content="1800">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Pleochroma&#x27;s spectral path tracer">
 <meta name="twitter:card" content="summary_large_image">
 <!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
@@ -26,7 +26,7 @@
 
 <header class="masthead">
   <div class="container">
-    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Pleochroma</a>
     <nav>
       <a href="index.html">Overview</a>
       <a href="physics.html">Physics</a>
@@ -39,7 +39,7 @@
       <a href="gallery.html">Figures</a>
       <a href="project.html">Project</a>
     </nav>
-    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+    <a href="https://github.com/suitable-name/pleochroma" class="gh-link">GitHub</a>
   </div>
 </header>
 
@@ -47,17 +47,15 @@
 
   <div class="page-head">
     <span class="tag">Browser application</span>
-    <h1>Indicatrix in the browser</h1>
+    <h1>Pleochroma in the browser</h1>
     <p class="subtitle">Open or start a faceting design, edit and solve it, and render it in a browser tab. Nothing to install.</p>
-    <p><a class="cta" href="https://live.indicatrix-suite.com">Open the web app &rarr; live.indicatrix-suite.com</a></p>
+    <p><a class="cta" href="https://live.pleochroma.com">Open the web app &rarr; live.pleochroma.com</a></p>
   </div>
 
   <div class="status">
-    <span class="status-label">BETA</span>
+    <span class="status-label">NOTE</span>
     <p>
-      The web app shares its faceting engine with the desktop studio, so it
-      shares the desktop editor's beta status: the interaction model is still
-      changing. It is also a smaller program than the desktop app, and it
+      The web app shares its faceting engine with the desktop studio. It is a smaller program than the desktop app, and it
       lacks several of the newer studio features, such as tutorials, cutting
       mode and editing concave tiers. Section 3 lists exactly what is missing
       today; several of those items are current limits of this browser build,
@@ -68,7 +66,7 @@
   <section id="what">
     <h2><span class="sec-num">1</span>What it is</h2>
     <p>
-      The web app is the same Indicatrix, compiled to run inside a browser page.
+      The web app is the same Pleochroma, compiled to run inside a browser page.
       You open a design file (or start a new one from a template), edit its
       cutting instructions, let the solver close the meet points, look at the
       stone as a solid, a faceting diagram and a spectral render, read off the
@@ -89,7 +87,7 @@
       <a href="assets/images/fig_web_ui_mobile.png">
         <img src="assets/images/fig_web_ui_mobile.png" width="900" height="1498" alt="The web app's start screen on a phone" loading="lazy">
       </a>
-      <figcaption>Fig. 2 — The same page on a phone at live.indicatrix-suite.com; the toolbar wraps into two rows.</figcaption>
+      <figcaption>Fig. 2 — The same page on a phone at live.pleochroma.com; the toolbar wraps into two rows.</figcaption>
     </figure>
   </section>
 
@@ -97,7 +95,7 @@
     <h2><span class="sec-num">2</span>What it can do</h2>
     <dl class="deflist">
       <dt>Designs</dt>
-      <dd>Start a new design from the template gallery (an empty design plus nine built-in templates, in one list). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Indicatrix's own self-contained <code>.isdd</code> design file (and the older <code>.indicatrix</code> design files), by file picker or by dragging files onto the page. The file reader is the desktop's, so a design file with concave tiers or tier relations (format versions 2 and 3) opens too; section 3 says what the web app does with them. Save the design as <code>.isdd</code>, or save <code>.asc</code>; an experimental <code>.gcs</code> export is in the File menu too. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG. A design's frosted facets are kept in the <code>.isdd</code> file and survive a <code>.gcs</code> import.</dd>
+      <dd>Start a new design from the template gallery (an empty design plus nine built-in templates, in one list). Open or import <code>.asc</code>, <code>.gem</code>, <code>.gcs</code> and Pleochroma's own self-contained <code>.psdd</code> design file, by file picker or by dragging files onto the page. The file reader is the desktop's, so a design file with concave tiers or tier relations (format versions 2 and 3) opens too; section 3 says what the web app does with them. Save the design as <code>.psdd</code>, or save <code>.asc</code>; an experimental <code>.gcs</code> export is in the File menu too. The cutting sheet downloads as an HTML page and the faceting diagram as a PNG. A design's frosted facets are kept in the <code>.psdd</code> file and survive a <code>.gcs</code> import.</dd>
 
       <dt>CAD editor</dt>
       <dd>The tier table with inline angle editing, keyboard and Ctrl+wheel nudging, undo and redo; the five-tab inspector (Tier, Preform, Optimize, Schedule, History); design settings, including a compact custom-material editor; and the guided walkthrough, the same ten-step worked example as the desktop. The angle and exact-scale fields of the tier form take plain arithmetic such as <code>41.5+0.3</code>. The angle cell in the tier table also takes a relation that starts with <code>=</code>, for example <code>=P1 - 2</code>; the tier then follows the other tier and shows an = badge. A Good / Check / Problem badge sums up the design's checks, with a one-click fix where a safe one exists. The History tab lists every undo step and jumps to any of them. Concave tiers are listed after the flat ones with their tool line; they can be selected but not edited yet.</dd>
@@ -126,7 +124,7 @@
     <h2><span class="sec-num">3</span>What it cannot do yet</h2>
     <p>
       These are the differences from the desktop application, as of this
-      beta. The right-hand column says where each one lives today.
+      release. The right-hand column says where each one lives today.
     </p>
     <table>
       <thead>
@@ -141,7 +139,7 @@
         <tr>
           <td>Rough planner</td>
           <td>No. It plans across the design library, which the browser app does not have.</td>
-          <td>Library &rarr; Plan Rough...: ranks up to 10 layouts (as many stones as fit or up to a set number, up to 99 designs mixed) from a block, cylinder, pebble or scanned mesh of rough (beta; <a href="editor.html#rough-planner">studio page</a>). Desktop-only for now.</td>
+          <td>Library &rarr; Plan Rough...: ranks up to 10 layouts (as many stones as fit or up to a set number, up to 99 designs mixed) from a block, cylinder, pebble or scanned mesh of rough (<a href="editor.html#rough-planner">studio page</a>). Desktop-only for now.</td>
         </tr>
         <tr>
           <td>Remote and distributed rendering</td>
@@ -206,7 +204,7 @@
         <tr>
           <td>Tutorials and welcome tour</td>
           <td>No. The ten-step guided walkthrough is the only guide.</td>
-          <td>69 short tutorials, one for each CAD function, a welcome tour on first run, and Build This Design, which turns a library design into a lesson. Video tutorials are on the <a href="https://www.youtube.com/@Indicatrix-Suite">Indicatrix YouTube channel</a>.</td>
+          <td>90 short tutorials, one for each CAD function, a welcome tour on first run, and Build This Design, which turns a library design into a lesson. Video tutorials are on the <a href="https://www.youtube.com/@Pleochroma">Pleochroma YouTube channel</a>.</td>
         </tr>
         <tr>
           <td>Cutting mode</td>
@@ -220,21 +218,21 @@
         </tr>
         <tr>
           <td>Quick color in the render</td>
-          <td>Partly. The Render settings panel has a Body Color control, a quick copy of the color choice in the design settings. It changes the design in one undo step; there is no view-only color.</td>
-          <td>A Color control next to Render Material: nine ready-made colors or any color, for the open design or as a view-only choice.</td>
+          <td>Partly. The Render settings panel has a Body Color control, a quick copy of the color choice in the design settings, with the same list: the material's color variants, the nine ready-made colors for a one-color material, and Custom with one color for each direction of a pleochroic crystal. It changes the design in one undo step; there is no view-only color. Variants you save stay in this browser, and the design file carries a copy of the variant it uses.</td>
+          <td>A Color control next to Render Material: the material's own color, its color variants, the nine ready-made colors (one-color materials only) or any color, for the open design or as a view-only choice.</td>
         </tr>
         <tr>
           <td>Command-line tool</td>
           <td>No. It is a separate program.</td>
-          <td><code>indicatrix-cli</code> runs the solver, optimizer, retarget gate and sweep without a window, on one design or on several at once (<a href="index.html#getting-started">getting started</a>).</td>
+          <td><code>pleochroma-cli</code> runs the solver, optimizer, retarget gate and sweep without a window, on one design or on several at once (<a href="index.html#getting-started">getting started</a>).</td>
         </tr>
         <tr>
           <td>Full custom-material editor</td>
-          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and color (saved with the design in the <code>.isdd</code> file); one custom material travels with the design. There is no entry of Sellmeier or Cauchy coefficients: a material typed that way on the desktop is drawn here with a Cauchy curve built from its n<sub>D</sub> and F&minus;C figure, which is close but not the same curve.</td>
+          <td>Partly. Name, refractive index, dispersion, birefringence, specific gravity and color (saved with the design in the <code>.psdd</code> file); one custom material travels with the design. There is no entry of Sellmeier or Cauchy coefficients: a material typed that way on the desktop is drawn here with a Cauchy curve built from its n<sub>D</sub> and F&minus;C figure, which is close but not the same curve.</td>
           <td>The full editor, including Sellmeier and Cauchy coefficients with validation (<a href="materials.html#custom-materials">materials page</a>), and the saved custom-material store.</td>
         </tr>
         <tr>
-          <td>Design metadata and attachments in the <code>.isdd</code> file</td>
+          <td>Design metadata and attachments in the <code>.psdd</code> file</td>
           <td>Kept, not edited. Opening a design file keeps its metadata (title, designer, source, notes, tags, licence, dates, id) and attachments (PDF, original <code>.gem</code>/<code>.asc</code>, diagram image), and Save design writes them back unchanged with a new modification time. The Design panel shows the title, designer, source, notes, tags and licence read-only.</td>
           <td>The same file format carries them (<a href="comparison.html#interop">file formats</a>).</td>
         </tr>
@@ -344,7 +342,7 @@
       <a href="editor.html">studio and CAD page</a>. The two open the same
       files, so a design saved from the web app opens on the desktop and back.
       Video tutorials are on the
-      <a href="https://www.youtube.com/@Indicatrix-Suite">Indicatrix YouTube channel</a>.
+      <a href="https://www.youtube.com/@Pleochroma">Pleochroma YouTube channel</a>.
     </p>
   </section>
 
@@ -358,7 +356,7 @@
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
+    <p>Pleochroma Gem Design Suite · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/pleochroma/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/pleochroma">Source on GitHub</a> · <a href="https://crates.io/crates/pleochroma">crates.io</a> · <a href="https://docs.rs/pleochroma">docs.rs</a> · <a href="https://www.youtube.com/@Pleochroma">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

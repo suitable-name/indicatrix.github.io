@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gem materials: refractive index, dispersion and color — Indicatrix</title>
-<meta name="description" content="The 34 built-in gem materials in Indicatrix: refractive index, dispersion, birefringence and crystal system from the optics literature, with colors fitted to published measured absorption spectra.">
+<title>Gem materials: refractive index, dispersion and color — Pleochroma</title>
+<meta name="description" content="The 38 built-in gem materials in Pleochroma: refractive index, dispersion, birefringence and crystal system from the optics literature, with colors fitted to published measured absorption spectra.">
 <!-- seo:start -->
-<link rel="canonical" href="https://www.indicatrix-suite.com/materials.html">
+<link rel="canonical" href="https://pleochroma.com/materials.html">
 <meta name="theme-color" content="#16171a">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Indicatrix">
-<meta property="og:title" content="Gem materials: refractive index, dispersion and color — Indicatrix">
-<meta property="og:description" content="The 34 built-in gem materials in Indicatrix: refractive index, dispersion, birefringence and crystal system from the optics literature, with colors fitted to published measured absorption spectra.">
-<meta property="og:url" content="https://www.indicatrix-suite.com/materials.html">
-<meta property="og:image" content="https://www.indicatrix-suite.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:site_name" content="Pleochroma">
+<meta property="og:title" content="Gem materials: refractive index, dispersion and color — Pleochroma">
+<meta property="og:description" content="The 38 built-in gem materials in Pleochroma: refractive index, dispersion, birefringence and crystal system from the optics literature, with colors fitted to published measured absorption spectra.">
+<meta property="og:url" content="https://pleochroma.com/materials.html">
+<meta property="og:image" content="https://pleochroma.com/assets/images/fig_fvs_hero.jpg">
 <meta property="og:image:width" content="1800">
 <meta property="og:image:height" content="1200">
-<meta property="og:image:alt" content="A long octagon sapphire rendered by Indicatrix&#x27;s spectral path tracer">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Pleochroma&#x27;s spectral path tracer">
 <meta name="twitter:card" content="summary_large_image">
 <!-- seo:end -->
 <link rel="icon" type="image/png" href="assets/images/icon.png">
@@ -26,7 +26,7 @@
 
 <header class="masthead">
   <div class="container">
-    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Indicatrix</a>
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Pleochroma</a>
     <nav>
       <a href="index.html">Overview</a>
       <a href="physics.html">Physics</a>
@@ -39,7 +39,7 @@
       <a href="gallery.html">Figures</a>
       <a href="project.html">Project</a>
     </nav>
-    <a href="https://github.com/suitable-name/indicatrix" class="gh-link">GitHub</a>
+    <a href="https://github.com/suitable-name/pleochroma" class="gh-link">GitHub</a>
   </div>
 </header>
 
@@ -47,7 +47,7 @@
   <div class="page-head">
     <span class="tag">Reference</span>
     <h1>Materials</h1>
-    <p class="subtitle">The optical constants Indicatrix ships built in, and where each one comes from.</p>
+    <p class="subtitle">The optical constants Pleochroma ships built in, and where each one comes from.</p>
   </div>
 
   <section id="chart">
@@ -93,9 +93,9 @@
   </section>
 
   <section id="database-table">
-    <h2><span class="sec-num">2</span>The 34 built-in materials</h2>
+    <h2><span class="sec-num">2</span>The 38 built-in materials</h2>
     <p>
-      All figures below are read from <code>crates/indicatrix/src/optics/materials/</code> (one file per group of species).
+      All figures below are read from <code>crates/pleochroma/src/optics/materials/</code> (one file per group of species).
       n_D and dispersion (Δn, F−C) come from each material's own source
       comment: a primary Sellmeier/Cauchy fit where one exists in the optics
       literature, or a value derived from two or more corroborating
@@ -124,7 +124,7 @@
         <tr><td>Cubic zirconia</td><td>Cubic</td><td>Isotropic</td><td>2.15846</td><td>0.0346</td><td>0.0000</td></tr>
         <tr><td>Aquamarine</td><td>Hexagonal</td><td>Uniaxial −</td><td>1.57700</td><td>0.0082</td><td>−0.0060</td></tr>
         <tr><td>Morganite</td><td>Hexagonal</td><td>Uniaxial −</td><td>1.57700</td><td>0.0082</td><td>−0.0060</td></tr>
-        <tr><td>Chrysoberyl (yellow)</td><td>Orthorhombic</td><td>Biaxial +</td><td>1.746</td><td>0.0100</td><td>+0.0090</td></tr>
+        <tr><td>Chrysoberyl (yellow)</td><td>Orthorhombic</td><td>Biaxial +</td><td>1.746</td><td>0.0100</td><td>+0.0076</td></tr>
         <tr><td>Amethyst</td><td>Trigonal</td><td>Uniaxial +</td><td>1.54421</td><td>0.0078</td><td>+0.0091</td></tr>
         <tr><td>Citrine</td><td>Trigonal</td><td>Uniaxial +</td><td>1.54421</td><td>0.0078</td><td>+0.0091</td></tr>
         <tr><td>Ametrine (color zoned)</td><td>Trigonal</td><td>Uniaxial +</td><td>1.54421</td><td>0.0078</td><td>+0.0091</td></tr>
@@ -143,6 +143,10 @@
         <tr><td>Glass (Schott N-BK7)</td><td>—<sup>†</sup></td><td>Isotropic</td><td>1.51672</td><td>0.0081</td><td>0.0000</td></tr>
         <tr><td>Glass (Schott F2)</td><td>—<sup>†</sup></td><td>Isotropic</td><td>1.61989</td><td>0.0171</td><td>0.0000</td></tr>
         <tr><td>Rutile</td><td>Tetragonal</td><td>Uniaxial +</td><td>2.613 (o) / 2.909 (e)</td><td>0.164 (o) / 0.207 (e)</td><td>+0.2957</td></tr>
+        <tr><td>Precious opal (white)</td><td>Amorphous<sup>*</sup></td><td>Isotropic</td><td>1.45</td><td>0.0010</td><td>0.0000</td></tr>
+        <tr><td>Precious opal (black)</td><td>Amorphous<sup>*</sup></td><td>Isotropic</td><td>1.45</td><td>0.0010</td><td>0.0000</td></tr>
+        <tr><td>Labradorite</td><td>Triclinic</td><td>Biaxial +</td><td>1.5625</td><td>0.0070<sup>&Dagger;</sup></td><td>+0.0080</td></tr>
+        <tr><td>Moonstone</td><td>Monoclinic</td><td>Biaxial −</td><td>1.523</td><td>0.0070</td><td>0.0080</td></tr>
       </tbody>
     </table>
     <p class="small">
@@ -150,8 +154,45 @@
       source code stores <code>Cubic</code> as a placeholder for "isotropic,"
       not a mineralogical claim — its own comment says so explicitly.
       <sup>†</sup>The two reference optical glasses are amorphous, included as
-      isotropic calibration materials rather than gemstones. Precious opal's
-      play-of-color (structural diffraction, not absorption) is not modelled.
+      isotropic calibration materials rather than gemstones.
+      <sup>&Dagger;</sup>No measured dispersion was found for labradorite; the
+      entry borrows the size of moonstone&rsquo;s (B&minus;G 0.012) as a
+      placeholder.
+    </p>
+    <h3 id="inside-stones">Stones whose look comes from the inside</h3>
+    <p>
+      The last four rows are the host optics of stones that owe their look to
+      what is inside them: <strong>Precious opal (white)</strong>, with a pale
+      body and a milky veil, <strong>Precious opal (black)</strong>, with a dark
+      neutral body, <strong>Labradorite</strong> and <strong>Moonstone</strong>.
+      The play-of-color of opal, the schiller of labradorite and the
+      adularescence of moonstone are not part of the material but a choice of the
+      design, made in the Stone tab, so the same material can be shown plain or
+      with its effect. The older <strong>Opal</strong> row is the plain
+      body-color opal and is unchanged. The effects, the silk presets of the
+      other materials and the surface finish of a facet are described on the
+      <a href="render-effects.html">surface finish, silk and play-of-color page</a>.
+    </p>
+    <h3 id="ray-curves">A refractive-index curve for each ray</h3>
+    <p>
+      Most birefringent materials give the ordinary ray (or the middle ray of a
+      two-axis crystal) its own dispersion and add the birefringence as one
+      constant. Where a published curve exists for the other rays, the renderer
+      uses the curve:
+    </p>
+    <ul>
+      <li><strong>Sapphire and ruby</strong>: the extraordinary ray of Malitson and Dodge (1972). The index of the extraordinary ray lies 0.0085 below the ordinary one at 400&nbsp;nm and 0.0080 below at 700&nbsp;nm, 0.0081 at the sodium line, the figure in the table.</li>
+      <li><strong>Synthetic moissanite</strong>: the 6H extraordinary ray of Wang (2013).</li>
+      <li><strong>Alexandrite and chrysoberyl (yellow)</strong>: the alpha and gamma rays of Walling (1980). Chrysoberyl takes the published fit, so its total birefringence is +0.0076 and no longer +0.0090.</li>
+      <li><strong>Benitoite</strong>: a separate Cauchy curve for each ray, with the ordinary ray&rsquo;s dispersion set to the published 0.039 and the extraordinary ray&rsquo;s 0.046.</li>
+      <li><strong>Quartz, amethyst, citrine, ametrine and rutile</strong> already had one.</li>
+    </ul>
+    <p>
+      The remaining birefringent built-ins (zircon, tourmaline, the beryls, topaz,
+      tanzanite, peridot, andalusite, labradorite and moonstone) keep a constant
+      offset, because no per-ray dispersion was found for them. Because the
+      direction in which the extraordinary ray is displaced now follows the index
+      at each wavelength, the doubled images of a stone separate a little by color.
     </p>
     <h3 id="color-basis">Where each material&rsquo;s color comes from</h3>
     <p>
@@ -188,6 +229,44 @@
       the blue ray and reads light blue; with the axis along the view it would
       show the nearly colorless ordinary ray.
     </p>
+    <h3 id="color-variants">Color variants and pleochroism</h3>
+    <p>
+      Each built-in material comes with named <strong>color variants</strong>:
+      Pink and Yellow for a sapphire, Rubellite and Verdelite
+      for a tourmaline, Cape Yellow and Blue for a diamond, and so on. A variant is
+      a complete absorption spectrum for every direction through the crystal, not
+      a single tint, so a pleochroic stone keeps its different colors in different
+      directions when you pick one. Its refractive index, dispersion,
+      birefringence and crystal axis stay as they are, and the choice belongs to
+      that design alone: a variant never becomes the material&rsquo;s default.
+      A one-axis crystal (sapphire, tourmaline, quartz, beryl) has two colors, one
+      along the crystal axis and one across it; a two-axis crystal (tanzanite,
+      alexandrite, topaz, andalusite) has three, alpha, beta and gamma. That is
+      why the color list of a pleochroic stone offers no generic one-color presets,
+      and why the custom color editor has one row for each direction.
+    </p>
+    <p>
+      Many of the built-in variants are fitted to measured absorption spectra of the
+      variety, mostly taken with polarized light (the Caltech Mineral Spectroscopy
+      Server, the GIA studies of the causes of color in corundum, and papers on
+      individual gems); the others are built from published band positions. A variant
+      is marked <em>Estimated</em> (in the note on the entry and in the Color Variants
+      section) when its spectrum is not a measured one of that variety or its strength
+      was chosen for a typical face-up color, which is true of almost all of them. Each one keeps its
+      sources. The same beryl color (Heliodor, Red Beryl, Goshenite) is offered for
+      Aquamarine, Emerald and Morganite; it is defined relative to the crystal axis,
+      and each material&rsquo;s own default axis decides which direction you see
+      face-up, so the same variant looks different on the three. You can save your own from the custom
+      color editor (<strong>Save as Variant&hellip;</strong>); they are listed for
+      that material only and are managed in the Material Editor&rsquo;s
+      <strong>Color Variants</strong> section (rename, duplicate, delete). A design keeps
+      its own copy of the variant it uses, so it looks the same on another computer
+      and does not change when the variant is edited later. A design saved before
+      variants keeps its color as it was, and on a pleochroic material the program
+      offers to convert it to a variant or a per-direction color. The same variants
+      color the zones of a <a href="#color-patterns">color pattern</a>; the web app
+      has the same list and editor, and the mobile app can pick a variant.
+    </p>
     <h3 id="ametrine">Ametrine, a color-zoned built-in</h3>
     <p>
       Ametrine is the one built-in material whose color changes across the stone.
@@ -204,14 +283,15 @@
     </p>
     <figure class="fig">
       <a href="assets/images/fig_material_zones.png">
-        <img src="assets/images/fig_material_zones.png" width="880" height="300" alt="The Zones list of the Material Editor for Ametrine: the base zone and one half-space zone" loading="lazy">
+        <img src="assets/images/fig_material_zones.png" width="880" height="204" alt="The Color Pattern section of the Material Editor for Ametrine: two color swatches and notes on built-in zones and on Path-Traced and Ray-Traced views" loading="lazy">
       </a>
-      <figcaption>Fig. 1 &mdash; The Zones list in the Material Editor for a zoned material such as Ametrine: the base zone (the amethyst half, everywhere no zone covers) and Zone 1, a half space with offset 0 (the citrine half), and the Zone Geometry Relative to Stone Size box.</figcaption>
+      <figcaption>Fig. 1 &mdash; The Color Pattern section in the Material Editor for a zoned material such as Ametrine: one swatch for the base zone (the amethyst half, everywhere no zone covers) and one for the half space with offset 0 (the citrine half), the note that built-in color zones change only in a saved copy under a new name, and the note that patterns show in Path-Traced views while Ray-Traced shows the base color.</figcaption>
     </figure>
     <p>
-      In the Material Editor, a <em>Zones</em> list shows both halves with their
-      colors, and saving Ametrine under a new name makes a custom material that
-      keeps both zones. A zoned material&rsquo;s color is its zones, so a
+      In the Material Editor, the <em>Color Pattern</em> section shows both halves
+      as swatches, and saving Ametrine under a new name makes a custom material that
+      keeps both zones, which you can then edit as a
+      <a href="#color-patterns">color pattern</a>. A zoned material&rsquo;s color is its zones, so a
       design&rsquo;s Body Color and the Live Render Color control are greyed out
       for it. The GPU renders Ametrine when the stone has no inclusions; with
       inclusions it is traced on the processor. A remote worker of an older
@@ -232,7 +312,7 @@
       photons, favours the 500 nm window; incandescent light, rich in red
       photons, favours the 680 nm window. Because this is a genuine
       two-window spectral effect rather than a color swap, it falls directly
-      out of Indicatrix's per-wavelength transport rather than needing a
+      out of Pleochroma's per-wavelength transport rather than needing a
       special case. Alexandrite is also biaxial, so the effect is evaluated
       per direction: three independent absorption spectra along its α, β, γ
       axes.
@@ -284,7 +364,9 @@
       Tier 3 image-comparison material used to catch CPU/GPU divergence in it.
       Most uniaxial materials derive the extraordinary ray from the ordinary
       curve plus a constant birefringence offset; quartz, amethyst, citrine,
-      ametrine and rutile carry a separate extraordinary-ray curve. Moissanite's dispersion
+      ametrine, rutile, sapphire, ruby, synthetic moissanite and benitoite carry
+      a separate extraordinary-ray curve, and alexandrite and chrysoberyl carry
+      alpha and gamma curves. Moissanite's dispersion
       (Δn ≈ 0.064) is more than double diamond's.
     </p>
   </section>
@@ -296,16 +378,16 @@
       pencil button next to the live viewport's Render Material dropdown)
       builds a custom material at runtime via
       <code>GemMaterial::new_custom</code>
-      (<code>crates/indicatrix/src/optics/materials/custom.rs</code>), which takes a
+      (<code>crates/pleochroma/src/optics/materials/custom.rs</code>), which takes a
       name, mean refractive index, an F−C dispersion delta, a birefringence
       delta, and an RGB absorption tint, and fits a 2-parameter Cauchy curve
       to the requested dispersion at the sodium D and Fraunhofer F/C lines.
       Saved custom materials are persisted to a <code>custom_gem_materials</code>
       table in the same <code>facet_diagrams.sqlite</code> database the app
-      already uses for designs, via <code>indicatrix-vault</code>'s
+      already uses for designs, via <code>pleochroma-vault</code>'s
       <code>CustomMaterialRow</code> and <code>Database::save_custom_material</code>
       — and, when a design uses the material, a snapshot of its numbers is
-      also written into that design's <code>.isdd</code> file, so the
+      also written into that design's <code>.psdd</code> file, so the
       design still opens with its real optics on a machine whose library has
       no such material. This is a separate
       feature from <strong>Retarget</strong>, which proposes new facet angles
@@ -344,16 +426,34 @@
       close but not identical.
     </p>
     <p>
+      A material that is not isotropic also has a <strong>Per-Axis Curves</strong>
+      row in the editor: <strong>Curves</strong> types a Sellmeier or Cauchy fit
+      for the extraordinary ray of a one-axis material, or the alpha and gamma rays
+      of a two-axis one, with the same fields and checks as the main curve. Up to
+      four <strong>inclusion families</strong> (needles, plates or random needles
+      along the crystal axis, in the basal plane, along the alpha axis or tilted)
+      give the material its own silk, and a <strong>Play-of-Color</strong> section
+      lets it imitate an opal or a labradorite. All of these are stored with the
+      material and written into a design only when used.
+    </p>
+    <p>
       The Material Editor is not the only way to change a stone's color. A
       <strong>Color</strong> control in the Live Render toolbar, next to
       Render Material, shows the stone in another color without making a
-      custom material. It offers the material's own color, nine ready-made
-      colors and any color from a picker. For the design open in the editor,
-      with the render linked to it, a pick becomes that design's own color
-      (one undo step); for anything else it changes the view only, and the app
-      remembers it. A color is a what-if: the stone keeps its refractive
-      index and dispersion, but its own absorption is replaced by an even one
-      in every direction, so pleochroism is not shown while a color is set.
+      custom material. It offers the same list as the Stone tab&rsquo;s Body
+      Color: the material&rsquo;s own color, its
+      <a href="#color-variants">color variants</a> and the ones you saved, the
+      nine ready-made colors for a material that has one color in every
+      direction, and <em>Custom Color&hellip;</em>, which opens the per-direction
+      editor described below. For the design open in the editor, with the render
+      linked to it, a pick becomes that design&rsquo;s own color (one undo step) and
+      the control shows the variant&rsquo;s own name and swatch; for anything else
+      it changes the view only, and the app remembers it. The stone keeps its
+      refractive index and dispersion, and a variant or a Custom Color keeps its
+      different colors in different directions, so a pleochroic stone stays
+      pleochroic. A pleochroic material lists no one-color presets; a stone with an
+      old single color on such a material shows a <em>Legacy</em> row that leaves
+      the picture as it was.
     </p>
     <p>
       Any color can also be described as a <strong>Custom Color</strong> with
@@ -371,23 +471,27 @@
       <em>Reachable</em> with the color difference, or, in amber, that the
       color is not fully reachable at this size and how far the closest
       reachable color is; very rich or very light-and-rich colors are not
-      all reachable. Applying the settings keeps a custom color exactly as it
-      is, even when you change the species in the same step. Older versions
-      show a close three-color version of it; the web app has the same editor.
+      all reachable. For a stone whose crystal shows different colors in
+      different directions the editor has one such color for each direction
+      (<em>Along the Axis</em> and <em>Across the Axis</em>, or <em>Alpha</em>,
+      <em>Beta</em> and <em>Gamma</em>), with a face-up swatch and one swatch per
+      direction, and <strong>Save as Variant&hellip;</strong> keeps the result. Older
+      versions show a close single-color version of it; the web app has the same
+      editor.
     </p>
     <p>
       The app's material pickers are built in two places, both from
       <code>GemMaterial::all_materials()</code>. The studio's Design Settings
       Material combo and the New Design dialog's Starting Material combo start
       from the <code>MaterialCatalogue</code>
-      (<code>crates/indicatrix-cut-core/src/material/catalogue.rs</code>):
-      &ldquo;(none)&rdquo;, then all 34 built-in materials above in
+      (<code>crates/pleochroma-cut-core/src/material/catalogue.rs</code>):
+      &ldquo;(none)&rdquo;, then all 38 built-in materials above in
       <code>all_materials()</code>'s own order; Design Settings then appends
       the custom materials you have saved, and a &ldquo;Custom RI&hellip;&rdquo;
       entry. The Live Render viewport's Render Material dropdown does not use
       the catalogue: it is built in
-      <code>apps/indicatrix-cut/src/gui/startup_settings.rs</code> as the same
-      34 built-ins sorted alphabetically (case-insensitive), with your saved
+      <code>apps/pleochroma-cut/src/gui/startup_settings.rs</code> as the same
+      38 built-ins sorted alphabetically (case-insensitive), with your saved
       custom materials appended after them. A built-in species offered by one
       picker is therefore offered by the others, though the order differs.
     </p>
@@ -401,13 +505,39 @@
       as an ordinary, undoable edit. If nothing built in is within tolerance,
       no guess is shown at all.
     </p>
+    <h3 id="color-patterns">Color patterns</h3>
+    <p>
+      A custom material can have zones of different colors, such as a pink core
+      inside a green rim (a watermelon tourmaline), two halves, bands or sectors.
+      The Material Editor has a <strong>Color Pattern</strong> section with
+      <strong>Add Pattern&hellip;</strong>, <strong>Edit Pattern&hellip;</strong> and
+      <strong>Remove Pattern</strong>; it opens the <strong>Color Pattern Editor</strong>,
+      a window of its own. There you start from a template (Uniform, Bicolor,
+      Tricolor, Banded, Watermelon, Reverse Watermelon, Core and Rim, Split or
+      Sectors) or a saved preset, pick the color of each zone in the usual color
+      editor, and set the pattern&rsquo;s axis, whether its sizes scale with the
+      stone width or stay fixed in millimeters, and how sharp the boundaries are.
+      A pattern has a base zone and at most four more. A zone&rsquo;s
+      <strong>Colors</strong> menu offers <em>One Color</em>, <em>Along and
+      Across</em> (an Along color seen looking along the crystal axis and an
+      Across color that is blended in looking across it) and <em>Alpha, Beta and
+      Gamma</em>, and puts first the form of the stone&rsquo;s own crystal; more than
+      one color needs a birefringent material (a crystal system other than Cubic
+      and a birefringence other than 0). A zone can also take a
+      <a href="#color-variants">color variant</a> of the stone&rsquo;s material as its
+      color. A pattern shows in the Path-Traced views, in render
+      jobs and on remote workers that support zoning; the Ray-Traced view shows the
+      base color. A design on a custom material with a pattern carries the pattern in its
+      <code>.psdd</code> file, so it opens with the zones on another computer.
+    </p>
+    <!-- figure: color_pattern_editor -->
   </section>
 
 </main>
 
 <footer>
   <div class="container">
-    <p>Indicatrix · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/indicatrix/blob/HEAD/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/indicatrix">Source on GitHub</a> · <a href="https://crates.io/crates/indicatrix">crates.io</a> · <a href="https://docs.rs/indicatrix">docs.rs</a> · <a href="https://www.youtube.com/@Indicatrix-Suite">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
+    <p>Pleochroma Gem Design Suite · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/pleochroma/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/pleochroma">Source on GitHub</a> · <a href="https://crates.io/crates/pleochroma">crates.io</a> · <a href="https://docs.rs/pleochroma">docs.rs</a> · <a href="https://www.youtube.com/@Pleochroma">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
     <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
   </div>
 </footer>

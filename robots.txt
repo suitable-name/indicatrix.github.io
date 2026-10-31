@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.indicatrix-suite.com/sitemap.xml
+Sitemap: https://pleochroma.com/sitemap.xml

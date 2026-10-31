@@ -1,6 +1,6 @@
-/* Indicatrix — project datasheet stylesheet.
+/* Pleochroma — project datasheet stylesheet.
  * Spectral gemstone path tracer and faceting-design CAD, in Rust.
- * MIT License. Source: https://github.com/suitable-name/indicatrix
+ * MIT License. Source: https://github.com/suitable-name/pleochroma
  *
  * No web fonts, no CDNs, no JS frameworks. System sans/monospace stacks only.
  */
@@ -410,7 +410,7 @@ table {
   padding-top: 1.1rem;
 }
 
-/* A qualifier beside a tick ("beta", "MIT"): present but deliberately quiet, so the
+/* A qualifier beside a tick ("MIT"): present but deliberately quiet, so the
    column still reads as a column of glyphs at a glance. */
 .qual {
   display: block;

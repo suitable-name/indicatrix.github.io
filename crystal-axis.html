@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crystal axis and stone orientation — Pleochroma</title>
+<meta name="description" content="How Pleochroma uses a stone's crystal axis: color and doubling that follow the axis, presets named by the color you see, a second axis for biaxial stones, orientation rules in the rough planner with overrides and a lock, and the orientation on the cutting sheet.">
+<!-- seo:start -->
+<link rel="canonical" href="https://pleochroma.com/crystal-axis.html">
+<meta name="theme-color" content="#16171a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pleochroma">
+<meta property="og:title" content="Crystal axis and stone orientation — Pleochroma">
+<meta property="og:description" content="How Pleochroma uses a stone's crystal axis: color and doubling that follow the axis, presets named by the color you see, a second axis for biaxial stones, orientation rules in the rough planner with overrides and a lock, and the orientation on the cutting sheet.">
+<meta property="og:url" content="https://pleochroma.com/crystal-axis.html">
+<meta property="og:image" content="https://pleochroma.com/assets/images/fig_fvs_hero.jpg">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="A long octagon sapphire rendered by Pleochroma&#x27;s spectral path tracer">
+<meta name="twitter:card" content="summary_large_image">
+<!-- seo:end -->
+<link rel="icon" type="image/png" href="assets/images/icon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <a href="index.html" class="brand"><img src="assets/images/icon.png" width="24" height="24" alt="">Pleochroma</a>
+    <nav>
+      <a href="index.html">Overview</a>
+      <a href="physics.html">Physics</a>
+      <a href="editor.html">Studio &amp; CAD</a>
+      <a href="web.html">Web app</a>
+      <a href="mobile.html">Mobile app</a>
+      <a href="materials.html">Materials</a>
+      <a href="comparison.html">Comparison</a>
+      <a href="distributed.html">Distributed</a>
+      <a href="gallery.html">Figures</a>
+      <a href="project.html">Project</a>
+    </nav>
+    <a href="https://github.com/suitable-name/pleochroma" class="gh-link">GitHub</a>
+  </div>
+</header>
+
+<main class="container">
+  <div class="page-head">
+    <span class="tag">Feature</span>
+    <h1>The crystal axis</h1>
+    <p class="subtitle">How a stone sits in its crystal decides its color and its doubling. Pleochroma lets you set that direction for a stone, a material or a piece of rough, and carries it from the rough to the cutting sheet.</p>
+    <p class="cta-row">
+      <a class="cta" href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/25-crystal-axis.md">Read the manual chapter</a>
+    </p>
+  </div>
+
+  <div class="status">
+    <span class="status-label">NEW</span>
+    <p>
+      The crystal axis is new. It
+      applies to every material that is not isotropic. For an isotropic material,
+      such as diamond, spinel or cubic zirconia, the controls are hidden and
+      nothing changes. A design that sets no axis renders and is scored as it
+      always was.
+    </p>
+  </div>
+
+  <section id="idea">
+    <h2><span class="sec-num">1</span>The idea</h2>
+    <p>
+      A sapphire looked at along its special axis shows one color and one sharp
+      image. Looked at across it, the same crystal shows another color, and a
+      strongly birefringent stone shows its back facets twice. The direction of
+      that axis in the finished stone is the <strong>Crystal Axis</strong>.
+    </p>
+    <p>
+      The axis is a line, described by two numbers with the table facing up:
+      <strong>tilt</strong>, the angle to the table normal (0 to 90 degrees; 0 runs
+      the axis straight through the table, 90 lays it flat), and
+      <strong>azimuth</strong>, the direction it leans toward, counted clockwise as
+      seen from above, from the first position of the index gear. The cutting sheet
+      prints the azimuth as an index of the design&rsquo;s gear as well, so the
+      rough can be oriented on the machine.
+    </p>
+    <p>
+      For a <strong>biaxial</strong> crystal there are three principal directions.
+      The Crystal Axis fixes one, and a <strong>Second Axis</strong> (0 to 180
+      degrees) turns the other two about it. In a trichroic stone such as
+      tanzanite that turn decides which of the three colors faces up.
+    </p>
+    <dl class="deflist">
+      <dt>Colors named by what you see</dt>
+      <dd>Where color depends strongly on direction, the presets are named by the face-up color they give, with a swatch beside the name: <em>Best Blue Face-Up</em> and <em>Violet Face-Up</em> for tanzanite, <em>Strongest Color Change</em> for alexandrite, <em>Best Green Face-Up</em> for an andalusite that has a green direction (the built-in andalusite color shows none, so it offers no named preset). The geometry presets, <em>Through the Table</em>, <em>In the Table Plane</em> and <em>Along the Width</em>, work for every material that has an axis.</dd>
+
+      <dt>Silk follows the axis</dt>
+      <dd>Needles and plates inside a stone are placed in the crystal, so they turn with the axis. For a one-axis crystal the <em>Silk Turn</em> is the stored second turn, used only to orient them. The cat&rsquo;s-eye preset needs the Second Axis. See <a href="render-effects.html#inclusions">inclusions and silk</a>.</dd>
+
+      <dt>Doubling</dt>
+      <dd>A birefringent stone splits each light path into an ordinary and an extraordinary ray. The <strong>Doubling</strong> figure is how far apart, in arc-minutes, the two images fall when you look through the table. It is zero along the axis and grows as the axis leans away. The brilliance, fire and scintillation figures count both images.</dd>
+    </dl>
+  </section>
+
+  <section id="studio">
+    <h2><span class="sec-num">2</span>In the studio</h2>
+    <p>
+      The <strong>Stone</strong> tab has a <strong>Crystal Axis</strong> section:
+      <strong>As Material</strong> keeps the material&rsquo;s own axis, and
+      <strong>Set for This Stone</strong> takes the tilt, azimuth and, for a
+      biaxial material, the Second Axis, and saves them in the design. Each change
+      is one undo step.
+    </p>
+    <p>
+      The <strong>Crystal Axis</strong> pill in the Solid viewport&rsquo;s toolbar
+      draws the axis over the stone, with a handle to drag. It also appears in the
+      path-traced and ray-traced views and in the diagram&rsquo;s profile panel.
+      Dragging the handle turns the stone live and is one undo step; Escape puts it
+      back. The metrics bar shows two more figures, <strong>Axis</strong> (the angle
+      to the table normal) and <strong>Doubling</strong>, and the Verdict adds an
+      informational note, never a score, saying how far the axis is from the usual
+      orientation for the material.
+    </p>
+    <p>
+      The axis is used everywhere the stone is: live render, exports, render jobs,
+      remote workers, catalogue thumbnails, tilt curves, Compare, the color pattern
+      preview, the scoring behind Optimize, sweeps, Tune and Retarget, and the
+      command-line tool. A zoned color pattern can <strong>Follow the Crystal
+      Axis</strong>, so its zones turn with the stone.
+    </p>
+  </section>
+
+  <section id="materials">
+    <h2><span class="sec-num">3</span>Materials</h2>
+    <p>
+      Each built-in material brings its own axis. A custom material gets the table
+      normal unless the Material Editor&rsquo;s <strong>Crystal Axis</strong> row
+      gives it a default; for a biaxial material the row sets the axis of the
+      largest index. The order of precedence is the design&rsquo;s own setting, then
+      the material&rsquo;s default, then the built-in axis.
+    </p>
+    <p>
+      The rules below are the orientations the program <em>proposes</em> for the
+      built-in materials. It never applies one silently.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Material</th><th>Proposed rule</th><th>Tolerance</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sapphire, Ruby</td><td>Table Across</td><td>15&deg;</td></tr>
+        <tr><td>Emerald</td><td>Table Across</td><td>20&deg;</td></tr>
+        <tr><td>Aquamarine, Benitoite</td><td>In the Table Plane</td><td>15&deg;</td></tr>
+        <tr><td>Tourmaline</td><td>In the Table Plane</td><td>10&deg;</td></tr>
+        <tr><td>Zircon, Synthetic Moissanite, Peridot</td><td>Table Across, for their doubling</td><td>15&deg;</td></tr>
+        <tr><td>Rutile</td><td>Table Across</td><td>10&deg;</td></tr>
+        <tr><td>Tanzanite</td><td>Best Blue Face-Up</td><td>15&deg;</td></tr>
+        <tr><td>Alexandrite</td><td>Strongest Color Change</td><td>15&deg;</td></tr>
+        <tr><td>Andalusite, the quartz family, topaz, chrysoberyl (yellow)</td><td>None</td><td></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="planner">
+    <h2><span class="sec-num">4</span>In the rough planner</h2>
+    <p>
+      The <a href="editor.html#rough-planner">rough planner</a> has a
+      <strong>Crystal Axis</strong> panel for the rough. The axis is
+      <strong>Unknown</strong> until you set it, and the planner then plans exactly
+      as before. Set it by typing a tilt and an azimuth in the rough&rsquo;s own
+      frame, or with <strong>Align to Face</strong>, <strong>Align to Edge</strong>,
+      <strong>Fit to Crystal Length</strong> (with a stated confidence) or
+      <strong>From Color Zones</strong>, which takes the axis of a zone you accepted
+      in the <a href="editor.html#rough-color">Rough Color</a> wizard. The axis is
+      drawn in the 3D view with a handle you can drag, and as a line over the photos.
+    </p>
+    <p>
+      As soon as the axis is set, the material&rsquo;s rule is switched on, with a
+      visible line such as &ldquo;Stones are oriented to the crystal axis: Table
+      Across (Sapphire default)&rdquo;. A rule has a kind, a tolerance and a
+      strength: <strong>Preferred</strong> lets a stone off the rule still count at a
+      reduced value (0.5&nbsp;% per degree beyond the tolerance by default), and
+      <strong>Required</strong> lets no stone be off. A Preferred rule also gives
+      alternative layouts, <em>Best Orientation (Unrefined)</em> and <em>Balanced
+      (Unrefined)</em>, so you can see what the rule costs in weight.
+    </p>
+    <dl class="deflist">
+      <dt>Overrides, with a Reason</dt>
+      <dd>You can differ from the planner for the whole plan (<em>Ignore the Axis</em> or a rule of your own), for one design, or for one stone (one of its four box poses, <em>Re-Fit</em>, or <em>Free Orientation</em> for a single exact stone). Each override has an optional Reason, is one undo step, is saved with the plan, shows as &ldquo;overridden (reason)&rdquo; in the stone&rsquo;s row and is printed on the cutting sheet.</dd>
+
+      <dt>Lock</dt>
+      <dd>Lock keeps one stone and makes the next plan cut the rest of the rough around it. The locked stone is listed first and is cut first; the slabs below it are for the remaining rough. That is a real limit of the saw plan, and the results say so.</dd>
+
+      <dt>Open in Editor</dt>
+      <dd>The design gets the stone&rsquo;s <em>true</em> orientation: the rough&rsquo;s axis turned by the pose the stone actually has, never the rule&rsquo;s target. The rule it was planned under goes with it.</dd>
+    </dl>
+  </section>
+
+  <section id="bench">
+    <h2><span class="sec-num">5</span>At the bench</h2>
+    <p>
+      When a stone&rsquo;s axis is set, the cutting sheet has an
+      <strong>Orientation</strong> block: the tilt and azimuth (with the azimuth as
+      an index of the gear), the Second Axis turn for a biaxial stone, the
+      sentence &ldquo;Orient the rough so the crystal axis (c-axis) &hellip;&rdquo;,
+      whether the stone follows the rule of its material, any Reason, and two small
+      drawings, from above (index 0 at the right) and from the side. The first step
+      of Cutting Mode shows the same instruction and picture. A design without an
+      axis prints the same sheet it always did.
+    </p>
+  </section>
+
+  <section id="other-apps">
+    <h2><span class="sec-num">6</span>Mobile and web</h2>
+    <p>
+      The <a href="mobile.html">Android app</a> has the same presets (including the
+      color-named ones), <em>As Material</em>, the Second Axis, a Doubling readout
+      and the orientation in Cutting Mode. The <a href="web.html">web app</a> reads
+      the linked design&rsquo;s own axis, which wins over the per-user setting, and
+      offers a Second Axis for biaxial materials; its tilt sweep keeps the axis.
+    </p>
+  </section>
+
+  <section id="limits">
+    <h2><span class="sec-num">7</span>Limits</h2>
+    <ul>
+      <li><em>Along the Width</em> needs a solved design.</li>
+      <li>A block of rough offers four poses per stone; <em>Re-Fit</em> and <em>Free Orientation</em> reach the others.</li>
+      <li>Rules take effect at the next plan. A rule is never applied while the axis is Unknown.</li>
+      <li>The alternative layouts of a Preferred rule are not refined like the plan&rsquo;s own.</li>
+      <li>A color pattern adopted from the Rough Color wizard keeps the frame it was measured in and does not follow the axis.</li>
+      <li>The pictures on the cutting sheet and in Cutting Mode draw the Crystal Axis, not the Second Axis. The web app shows no Doubling figure.</li>
+      <li>For a birefringent material the optimizer, sweeps and tilt curves do roughly twice the work per figure, because they follow both images of the light.</li>
+    </ul>
+    <p>
+      The <a href="https://github.com/suitable-name/pleochroma/blob/main/apps/pleochroma-cut/docs/manual/25-crystal-axis.md">manual chapter</a>
+      explains each control. Five short tutorials in the program walk through it:
+      Orient a Sapphire, Tourmaline With the Axis in the Table, Best Blue Tanzanite,
+      Set a Stone&rsquo;s Crystal Axis and Override a Stone&rsquo;s Orientation. The
+      <a href="physics.html#pleochroism">physics page</a> describes the optics
+      underneath, and the <a href="materials.html">materials page</a> lists the
+      materials.
+    </p>
+  </section>
+
+  <section id="ray-traced-update">
+    <h2>Ray-Traced and Path-Traced</h2>
+    <p>Ray-Traced is a deterministic approximation: one d-line index, or three fixed indices with Fire, RGB absorption tint and 1/4/8/16 AA taps. It finishes at the tap count without denoising. It omits polarization, birefringent doubling, scattering, zoning and edge rounding. Path-Traced retains the spectral model. Optical metrics, tilt sweeps and diagnostics keep their separate analytic tracer.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>Pleochroma Gem Design Suite · &copy; 2026 suitable-name · <a href="https://github.com/suitable-name/pleochroma/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/suitable-name/pleochroma">Source on GitHub</a> · <a href="https://crates.io/crates/pleochroma">crates.io</a> · <a href="https://docs.rs/pleochroma">docs.rs</a> · <a href="https://www.youtube.com/@Pleochroma">YouTube</a> · <a href="https://apps.microsoft.com/store/detail/9PF7KR401SNC">Microsoft Store</a></p>
+    <p><a href="index.html">Overview</a> · <a href="physics.html">Physics</a> · <a href="editor.html">Studio &amp; CAD</a> · <a href="web.html">Web app</a> · <a href="mobile.html">Mobile app</a> · <a href="materials.html">Materials</a> · <a href="comparison.html">Comparison</a> · <a href="distributed.html">Distributed</a> · <a href="gallery.html">Figures</a> · <a href="project.html">Project</a> · <a href="privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
